@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+/* Enable class-based dark mode (Tailwind v4) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Light mode corporate palette */
+  --background: #f3f4f6; /* light gray background */
+  --foreground: #0f172a; /* slate-900 text */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Brand tokens for B2B styling */
+  --color-brand-primary: #2563eb; /* blue-600 */
+  --color-brand-primary-soft: #dbeafe; /* blue-100 */
+  --color-brand-accent: #0f172a; /* slate-900 */
+
+  /* User requested custom colors */
+  --color-primary: #111827;
+  --color-secondary: #2563EB;
+  --color-background-light: #F3F4F6;
+  --color-background-dark: #0F172A;
+  --color-surface-light: #FFFFFF;
+  --color-surface-dark: #1E293B;
+
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 1.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #020617; /* slate-950 */
+    --foreground: #e5e7eb; /* gray-200 */
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Scrolling marquee for client logo strip */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: inline-flex;
+  animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Hide scrollbar cross-browser */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
