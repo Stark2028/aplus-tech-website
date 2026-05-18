@@ -1,9 +1,22 @@
 import { Metadata } from "next";
 import Link from "next/link";
 
+const PRIVACY_URL = "https://www.aplustechsol.com/privacy";
+
 export const metadata: Metadata = {
-  title: "Privacy Policy — Aplus Technology Solutions",
-  description: "Privacy policy for Aplus Technology Solutions Pvt. Ltd.",
+  title: "Privacy Policy | Aplus Technology Solutions",
+  description:
+    "Read the privacy policy of Aplus Technology Solutions Pvt. Ltd. — how we collect, use, and protect your data in compliance with India's DPDP Act.",
+  alternates: { canonical: PRIVACY_URL },
+  robots: { index: true, follow: false },
+  openGraph: {
+    type: "website",
+    url: PRIVACY_URL,
+    title: "Privacy Policy | Aplus Technology Solutions",
+    description:
+      "How Aplus Technology Solutions collects, uses, and protects your personal data — in compliance with India's Digital Personal Data Protection Act.",
+    images: [{ url: "/og-default.png", width: 1200, height: 630, alt: "Privacy Policy — Aplus Technology Solutions" }],
+  },
 };
 
 const SECTIONS = [

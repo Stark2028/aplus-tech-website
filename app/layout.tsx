@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -8,8 +8,21 @@ import ComparisonFloatingBar from "@/components/ComparisonFloatingBar";
 import FinderFloatButton from "@/components/FinderFloatButton";
 import { QuoteProvider } from "@/context/QuoteContext";
 import { ComparisonProvider } from "@/context/ComparisonContext";
+import Analytics from "@/components/Analytics";
+import PageTransition from "@/components/PageTransition";
+import CursorSpotlight from "@/components/CursorSpotlight";
+import BackToTop from "@/components/BackToTop";
+import CookieConsent from "@/components/CookieConsent";
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "";
 
 const inter = Inter({ subsets: ["latin"] });
+const jakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["600", "700", "800"],
+  display: "swap",
+});
 
 const SITE_URL = "https://www.aplustechsol.com";
 
@@ -66,19 +79,32 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-background text-foreground`}>
+      <body className={`${inter.className} ${jakartaSans.variable} bg-background text-foreground`}>
+        <Analytics gaId={GA_ID} />
+        <CursorSpotlight />
+
+        {/* Skip-to-content for keyboard/screen-reader users */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-200 focus:bg-blue-600 focus:text-white focus:px-5 focus:py-2.5 focus:rounded-xl focus:font-semibold focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
+
         <QuoteProvider>
           <ComparisonProvider>
             <div className="min-h-screen flex flex-col">
               <Navbar />
-              <main className="flex-1 bg-white">
-                {children}
+              <main id="main-content" className="flex-1 bg-white">
+                <PageTransition>{children}</PageTransition>
               </main>
               <Footer />
             </div>
             <ChatWidget />
             <ComparisonFloatingBar />
             <FinderFloatButton />
+            <BackToTop />
+            <CookieConsent />
           </ComparisonProvider>
         </QuoteProvider>
       </body>

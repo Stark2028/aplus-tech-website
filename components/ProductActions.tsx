@@ -5,6 +5,7 @@ import { Product } from "@/data/products";
 import { useQuote } from "@/context/QuoteContext";
 import { useComparison } from "@/context/ComparisonContext";
 import { ShoppingBag, Scale, Check } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 export default function ProductActions({ product }: { product: Product }) {
     const { addItem } = useQuote();
@@ -17,6 +18,11 @@ export default function ProductActions({ product }: { product: Product }) {
         addItem(product);
         setAdded(true);
         setTimeout(() => setAdded(false), 2000);
+        trackEvent("add_to_quote", {
+            item_id: product.id,
+            item_name: product.name,
+            item_category: product.category,
+        });
     };
 
     const handleCompareToggle = () => {

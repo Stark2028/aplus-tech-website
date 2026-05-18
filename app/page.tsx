@@ -14,7 +14,6 @@ import {
   Wrench,
   LifeBuoy,
   CheckCircle2,
-  Star,
   Phone,
   Tv,
   LayoutGrid,
@@ -22,8 +21,10 @@ import {
 } from "lucide-react";
 import { products } from "@/data/products";
 import { Metadata } from "next";
-import FAQSection from "@/components/FAQSection";
 import ProductCatalogSection from "@/components/ProductCatalogSection";
+import AnimatedCounter from "@/components/AnimatedCounter";
+import AnimatedSection from "@/components/AnimatedSection";
+import MagneticButton from "@/components/MagneticButton";
 
 export const metadata: Metadata = {
   title: "Aplus Technology Solutions — Samsung B2B Display Partner, India",
@@ -89,29 +90,6 @@ const CLIENT_SECTORS = [
   { name: "AIIMS Delhi", sector: "Healthcare" },
 ];
 
-const TESTIMONIALS = [
-  {
-    name: "Rajiv Sharma",
-    title: "IT Head, Five-Star Hotel Chain",
-    quote:
-      "Aplus delivered and installed 200+ hotel TVs across our Delhi properties in under 10 days. The Samsung quality is unmatched and after-sales support has been exemplary.",
-    rating: 5,
-  },
-  {
-    name: "Priya Menon",
-    title: "Facility Manager, Corporate Campus",
-    quote:
-      "We outfitted our entire boardroom and lobby with Samsung displays through Aplus. Their team handled everything — from specification to installation. Zero issues, great pricing.",
-    rating: 5,
-  },
-  {
-    name: "Ankit Verma",
-    title: "Principal, International School",
-    quote:
-      "The Samsung Flip interactive displays have transformed our classrooms. Aplus Technology provided staff training and has been very responsive for any support requests.",
-    rating: 5,
-  },
-];
 
 const CATEGORY_CARDS = [
   {
@@ -157,24 +135,55 @@ const CATEGORY_CARDS = [
 ];
 
 export default function Home() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Aplus Technology Solutions Pvt. Ltd.",
-    url: "https://www.aplustechnology.com",
-    logo: "https://www.aplustechnology.com/images/logo.webp",
-    contactPoint: {
-      "@type": "ContactPoint",
+  const SITE = "https://www.aplustechsol.com";
+
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": ["Organization", "LocalBusiness"],
+      "@id": `${SITE}/#organization`,
+      name: "Aplus Technology Solutions Pvt. Ltd.",
+      url: SITE,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE}/assets/img/logo.webp`,
+      },
       telephone: "+91-9310509909",
-      contactType: "Sales",
-      areaServed: "IN",
-      availableLanguage: "en",
+      email: "info@aplustechsol.com",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Office No. 855, 8th Floor, Supernova Astralis, Sector-94",
+        addressLocality: "Noida",
+        addressRegion: "Uttar Pradesh",
+        postalCode: "201301",
+        addressCountry: "IN",
+      },
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: "+91-9310509909",
+        contactType: "sales",
+        areaServed: "IN",
+        availableLanguage: "en",
+      },
+      openingHours: "Mo-Sa 09:00-18:00",
+      sameAs: [
+        "https://in.linkedin.com/company/aplus-technology-solutions-pvt-ltd",
+      ],
     },
-    sameAs: [
-      "https://www.linkedin.com/company/aplustechnology",
-      "https://www.facebook.com/aplustechnology",
-    ],
-  };
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      url: SITE,
+      name: "Aplus Technology Solutions",
+      description:
+        "Authorized Samsung Business Display distributor serving enterprises across India.",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${SITE}/products?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+  ];
 
   return (
     <main className="min-h-screen bg-white">
@@ -188,6 +197,7 @@ export default function Home() {
         {/* Background video */}
         <video
           src="/videos/hero.mp4"
+          poster="/images/hero-poster.webp"
           autoPlay
           muted
           loop
@@ -251,22 +261,26 @@ export default function Home() {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                href="/quote"
-                className="inline-flex items-center justify-center gap-2.5 bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-xl font-bold text-base transition-all hover:scale-105"
-                style={{ boxShadow: "0 8px 32px rgba(37,99,235,0.45)" }}
-              >
-                Request a Free Quote
-                <ArrowRight size={18} />
-              </Link>
-              <Link
-                href="/products"
-                className="inline-flex items-center justify-center gap-2.5 text-white px-8 py-4 rounded-xl font-bold text-base transition-all hover:bg-white/10"
-                style={{ border: "1px solid rgba(255,255,255,0.15)" }}
-              >
-                Browse Products
-                <ArrowRight size={18} style={{ opacity: 0.45 }} />
-              </Link>
+              <MagneticButton>
+                <Link
+                  href="/quote"
+                  className="inline-flex items-center justify-center gap-2.5 bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-xl font-bold text-base transition-colors"
+                  style={{ boxShadow: "0 8px 32px rgba(37,99,235,0.45)" }}
+                >
+                  Request a Free Quote
+                  <ArrowRight size={18} />
+                </Link>
+              </MagneticButton>
+              <MagneticButton>
+                <Link
+                  href="/products"
+                  className="inline-flex items-center justify-center gap-2.5 text-white px-8 py-4 rounded-xl font-bold text-base transition-all hover:bg-white/10"
+                  style={{ border: "1px solid rgba(255,255,255,0.15)" }}
+                >
+                  Browse Products
+                  <ArrowRight size={18} style={{ opacity: 0.45 }} />
+                </Link>
+              </MagneticButton>
             </div>
           </div>
         </div>
@@ -295,7 +309,7 @@ export default function Home() {
                   }}
                 >
                   <div className="text-2xl md:text-3xl font-black text-white">
-                    {s.value}
+                    <AnimatedCounter value={s.value} />
                   </div>
                   <div className="text-xs font-medium text-gray-500 mt-1">
                     {s.label}
@@ -334,11 +348,11 @@ export default function Home() {
       {/* ── SHOP BY CATEGORY ─────────────────────────────────────────── */}
       <section className="pt-14 pb-4 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
+          <AnimatedSection className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
               Shop by Category
             </h2>
-          </div>
+          </AnimatedSection>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {CATEGORY_CARDS.map((cat) => (
@@ -453,15 +467,14 @@ export default function Home() {
       {/* ── HOW IT WORKS ─────────────────────────────────────────────── */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
+          <AnimatedSection className="text-center mb-10">
             <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full mb-4">
               Our Process
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               From Inquiry to Installation in 4 Steps
             </h2>
-            
-          </div>
+          </AnimatedSection>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {PROCESS_STEPS.map((step, i) => (
@@ -500,14 +513,14 @@ export default function Home() {
       {/* ── WHY CHOOSE US ────────────────────────────────────────────── */}
       <section className="py-14 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
+          <AnimatedSection className="text-center mb-10">
             <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full mb-4">
               Why Aplus
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
               The Aplus Advantage
             </h2>
-          </div>
+          </AnimatedSection>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
@@ -548,50 +561,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ── TESTIMONIALS ─────────────────────────────────────────────── */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full mb-4">
-              Client Stories
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              What Our Clients Say
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {TESTIMONIALS.map((t, i) => (
-              <div
-                key={i}
-                className="bg-white border border-gray-100 rounded-2xl p-7 hover:border-blue-100 hover:shadow-md transition-all"
-              >
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: t.rating }).map((_, j) => (
-                    <Star key={j} size={14} className="text-amber-400 fill-amber-400" />
-                  ))}
-                </div>
-                <p className="text-gray-600 text-sm leading-relaxed mb-6 italic">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                    {t.name.charAt(0)}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900 text-sm">{t.name}</div>
-                    <div className="text-gray-500 text-xs">{t.title}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── FAQ SECTION ──────────────────────────────────────────────── */}
-      <FAQSection />
 
       {/* ── FINAL CTA ────────────────────────────────────────────────── */}
       <section className="relative py-20 overflow-hidden bg-[#0d1526] text-center px-4">

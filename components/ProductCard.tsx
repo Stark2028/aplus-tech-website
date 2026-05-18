@@ -1,12 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ShoppingBag, Scale } from "lucide-react";
+import { ArrowRight, ShoppingBag, Scale, Users, Check } from "lucide-react";
 import { Product } from "@/data/products";
 import { useQuote } from "@/context/QuoteContext";
 import { useComparison } from "@/context/ComparisonContext";
+import { getProductBadge, getInquiryCount } from "@/lib/productBadges";
 
 interface ProductCardProps {
   product: Product;
@@ -17,6 +19,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const router = useRouter();
   const { addItem } = useQuote();
   const { addToCompare, isInCompare, removeFromCompare } = useComparison();
+  const [added, setAdded] = useState(false);
 
   const handleImageClick = () => {
     router.push(`/products/${product.id}`);
@@ -25,6 +28,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleQuoteAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
     addItem(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1800);
   };
 
   const isComparing = isInCompare(product.id);
@@ -37,8 +42,26 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
+  const badge = getProductBadge(product.id);
+  const inquiryCount = getInquiryCount(product.id);
+
+  const badgeStyles: Record<string, string> = {
+    "Best Seller": "bg-amber-500 text-white",
+    Popular: "bg-blue-600 text-white",
+    New: "bg-emerald-500 text-white",
+  };
+
   return (
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full group relative">
+
+      {/* Badge (Top Left) */}
+      {badge && (
+        <div className="absolute top-3 left-3 z-10">
+          <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm ${badgeStyles[badge]}`}>
+            {badge}
+          </span>
+        </div>
+      )}
 
       {/* Compare Checkbox (Top Right) */}
       <button
@@ -53,7 +76,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Product Image Area */}
       <div
         onClick={handleImageClick}
-        className="relative h-64 bg-gray-100 flex items-center justify-center block overflow-hidden cursor-pointer"
+        className="relative h-64 bg-gray-100 flex items-center justify-center overflow-hidden cursor-pointer"
       >
         <div className="relative w-full h-full">
           {primaryImage ? (
@@ -73,7 +96,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Content */}
-      <div className="p-6 flex flex-col flex-grow">
+      <div className="p-6 flex flex-col grow">
         <div className="mb-4">
           <span className="text-xs font-bold text-blue-600 uppercase tracking-wide">
             {product.series}
@@ -100,14 +123,27 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
 
+        {/* Inquiry social proof */}
+        <div className="flex items-center gap-1.5 mb-4 text-xs text-gray-400">
+          <Users size={12} className="text-blue-400" />
+          <span>
+            <span className="font-semibold text-gray-600">{inquiryCount}</span> businesses inquired this week
+          </span>
+        </div>
+
         {/* Footer Buttons */}
         <div className="mt-auto flex gap-2">
           <button
             onClick={handleQuoteAdd}
-            className="flex-1 flex items-center justify-center gap-2 bg-gray-900 text-white font-semibold py-2 rounded-lg hover:bg-gray-800 transition-colors text-sm"
+            disabled={added}
+            className={`flex-1 flex items-center justify-center gap-2 font-semibold py-2 rounded-lg transition-colors text-sm ${
+              added
+                ? "bg-green-600 text-white cursor-default"
+                : "bg-gray-900 text-white hover:bg-gray-800"
+            }`}
           >
-            <ShoppingBag size={16} />
-            Add to Quote
+            {added ? <Check size={16} /> : <ShoppingBag size={16} />}
+            {added ? "Added!" : "Add to Quote"}
           </button>
 
           <Link

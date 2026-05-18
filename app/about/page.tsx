@@ -2,10 +2,28 @@ import { CheckCircle2, Users, Award, Headphones, Truck, ShieldCheck, MapPin, Pho
 import Link from "next/link";
 import { Metadata } from "next";
 
+const ABOUT_URL = "https://www.aplustechsol.com/about";
+
 export const metadata: Metadata = {
   title: "About Us — Aplus Technology Solutions",
   description:
     "Aplus Technology Solutions is an authorized Samsung Business Display distributor serving enterprises across India. Learn about our team, values, and track record.",
+  alternates: { canonical: ABOUT_URL },
+  openGraph: {
+    type: "website",
+    url: ABOUT_URL,
+    title: "About Us | Aplus Technology Solutions",
+    description:
+      "Authorized Samsung distributor with 10+ years of experience, 500+ enterprise clients, and 1,000+ installations across India.",
+    images: [{ url: "/og-default.png", width: 1200, height: 630, alt: "About Aplus Technology Solutions" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Us | Aplus Technology Solutions",
+    description:
+      "Authorized Samsung distributor with 10+ years of experience, 500+ enterprise clients, and 1,000+ installations across India.",
+    images: ["/og-default.png"],
+  },
 };
 
 const STATS = [

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Send, CheckCircle } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 export default function QuoteForm({ productName }: { productName: string }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -30,6 +31,7 @@ export default function QuoteForm({ productName }: { productName: string }) {
     if (data.success) {
       setIsSubmitted(true);
       setResult("Form Submitted Successfully");
+      trackEvent("quote_form_submitted", { product_name: productName });
     } else {
       setResult(data.message || "Something went wrong.");
     }

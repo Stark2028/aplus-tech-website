@@ -75,11 +75,9 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
             <div>
-              <p className="text-blue-300 text-xs font-bold uppercase tracking-widest mb-2">Get In Touch</p>
-              <h1 className="text-3xl md:text-4xl font-bold text-white">Contact Us</h1>
-              <p className="text-blue-200 mt-2 text-base max-w-lg">
-                Speak with a Samsung-certified specialist. We respond within 4 business hours.
-              </p>
+              
+              <h1 className="text-5xl md:text-6xl font-bold text-white">Contact Us</h1>
+              
             </div>
             {/* Quick stats */}
             <div className="flex gap-6">

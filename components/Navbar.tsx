@@ -3,13 +3,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, ChevronDown, ShoppingBag, Sun, Moon, Phone } from "lucide-react";
+import { Menu, X, ChevronDown, ShoppingBag, Phone, Search } from "lucide-react";
 import { productCategories } from "@/data/categories";
 import { useQuote } from "@/context/QuoteContext";
+import SearchModal from "@/components/SearchModal";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mobileProducts, setMobileProducts] = useState(false);
   const [mobileSolutions, setMobileSolutions] = useState(false);
@@ -18,30 +18,10 @@ export default function Navbar() {
   const cartCount = quoteItems.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved === "dark") {
-      setIsDark(true);
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
-
-  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const toggleTheme = () => {
-    const next = !isDark;
-    setIsDark(next);
-    if (next) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  };
 
   const SOLUTIONS = [
     { label: "Hospitality", href: "/solutions/hospitality" },
@@ -163,6 +143,9 @@ export default function Navbar() {
 
           {/* Right side actions */}
           <div className="hidden lg:flex items-center gap-3">
+            {/* Search modal (desktop trigger + modal) */}
+            <SearchModal />
+
             {/* Phone */}
             <a
               href="tel:+919310509909"
@@ -171,15 +154,6 @@ export default function Navbar() {
               <Phone size={14} />
               <span className="font-medium">+91 93105 09909</span>
             </a>
-
-            {/* Theme toggle */}
-            <button
-              onClick={toggleTheme}
-              className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-all"
-              aria-label="Toggle theme"
-            >
-              {isDark ? <Sun size={16} /> : <Moon size={16} />}
-            </button>
 
             {/* Quote cart */}
             <Link
@@ -204,8 +178,15 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile: quote badge + hamburger */}
+          {/* Mobile: search + quote badge + hamburger */}
           <div className="flex items-center gap-2 lg:hidden">
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent("aplus:search:open"))}
+              className="p-2 text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all"
+              aria-label="Search"
+            >
+              <Search size={22} />
+            </button>
             <Link href="/quote" className="relative p-2">
               <ShoppingBag size={22} className="text-gray-700" strokeWidth={1.8} />
               {cartCount > 0 && (

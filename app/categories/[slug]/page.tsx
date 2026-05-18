@@ -3,8 +3,10 @@ import ProductCard from "@/components/ProductCard";
 import { notFound } from "next/navigation";
 import { getCategoryById, CategorySlug } from "@/data/categories";
 import Link from "next/link";
-import { ArrowLeft, Tag } from "lucide-react";
+import { ArrowLeft, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
+
+const SITE = "https://www.aplustechsol.com";
 
 export async function generateMetadata({
   params,
@@ -14,9 +16,24 @@ export async function generateMetadata({
   const { slug } = await params;
   const category = getCategoryById(slug);
   if (!category) return {};
+  const url = `${SITE}/categories/${slug}`;
   return {
     title: `${category.navLabel} — Aplus Technology Solutions`,
     description: category.description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      url,
+      title: `${category.navLabel} | Aplus Technology Solutions`,
+      description: category.description,
+      images: [{ url: "/og-default.png", width: 1200, height: 630, alt: category.navLabel }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${category.navLabel} | Aplus Technology Solutions`,
+      description: category.description,
+      images: ["/og-default.png"],
+    },
   };
 }
 
@@ -41,32 +58,77 @@ export default async function CategoryPage({
 
   const hasSubCategories = subCategories.length > 1;
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE },
+      { "@type": "ListItem", position: 2, name: "Products", item: `${SITE}/products` },
+      { "@type": "ListItem", position: 3, name: category.navLabel, item: `${SITE}/categories/${slug}` },
+    ],
+  };
+
   return (
     <main className="min-h-screen bg-gray-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
 
       {/* Hero banner */}
-      <div className="bg-[#0d1526] py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link
-            href="/products"
-            className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm mb-6 transition-colors"
-          >
-            <ArrowLeft size={15} />
-            All Products
-          </Link>
-          <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-400/10 px-4 py-1.5 rounded-full mb-4">
-            {categoryProducts.length} Products
-          </span>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-            {category.navLabel}
-          </h1>
-          <p className="text-gray-400 text-lg max-w-2xl">{category.description}</p>
-          {category.tagline && (
-            <div className="flex items-center gap-2 mt-4">
-              <Tag size={14} className="text-blue-400" />
-              <span className="text-blue-300 text-sm">{category.tagline}</span>
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+          {/* Breadcrumb */}
+          <nav className="flex items-center gap-1.5 text-xs text-gray-400 mb-6">
+            <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
+            <ChevronRight size={12} className="text-gray-300" />
+            <Link href="/products" className="hover:text-blue-600 transition-colors">Products</Link>
+            <ChevronRight size={12} className="text-gray-300" />
+            <span className="text-gray-600 font-medium">{category.navLabel}</span>
+          </nav>
+
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <div>
+              {/* Label */}
+              <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-2">
+                Samsung Authorized Distributor
+              </p>
+
+              {/* Title */}
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                {category.navLabel}
+              </h1>
+
+              <p className="text-base text-gray-500 mb-2">{category.subtitle}</p>
+              <p className="text-sm text-gray-400 mb-4 max-w-xl leading-relaxed">{category.description}</p>
+
+              {/* Use-case chips */}
+              <div className="flex flex-wrap gap-2">
+                {category.useCases.map((uc) => (
+                  <span
+                    key={uc}
+                    className="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-medium"
+                  >
+                    {uc}
+                  </span>
+                ))}
+              </div>
             </div>
-          )}
+
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="text-sm text-gray-400 font-medium">
+                {categoryProducts.length} products
+              </span>
+              <Link
+                href="/quote"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all"
+              >
+                Request Quote
+              </Link>
+            </div>
+          </div>
+
         </div>
       </div>
 
