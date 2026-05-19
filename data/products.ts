@@ -37,7 +37,7 @@ export const products: Product[] = [
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "300 nit",
-      screenSizes: ["50", "55", "65", "75", "82"],
+      screenSizes: ["43", "50", "55", "65", "70", "75", "82"],
       operationTime: "16/7",
     },
     images: [
@@ -131,7 +131,7 @@ export const products: Product[] = [
     ],
     specs: {
       resolution: "1,920 × 1,080 (FHD)",
-      brightness: "300 nit",
+      brightness: "250–300 nit",
       screenSizes: ["13", "24"],
       operationTime: "16/7",
     },
@@ -152,7 +152,7 @@ export const products: Product[] = [
       "Embedded content player",
     ],
     specs: {
-      resolution: "1,920 × 1,080 (FHD)",
+      resolution: "FHD (32\") / 4K UHD (43\", 55\")",
       brightness: "300 nit",
       screenSizes: ["32", "43", "55"],
       operationTime: "16/7",
@@ -161,12 +161,12 @@ export const products: Product[] = [
   },
   {
     id: "samsung-touch-qbc-t",
-    name: "Samsung Interactive Signage QBC-T Series",
+    name: "Samsung Interactive Signage QMB-T Series",
     category: "Digital Signage",
     subCategory: "Touch Signage",
-    series: "QBC-T",
+    series: "QMB-T",
     description:
-      "Touch-enabled ultra-slim signage combining the design of QBC with responsive capacitive touch for interactive campaigns.",
+      "Mid-to-large capacitive touch signage for interactive retail campaigns, wayfinding walls, and self-service kiosks.",
     features: [
       "Capacitive touch overlay",
       "Ultra-slim depth",
@@ -176,7 +176,7 @@ export const products: Product[] = [
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "300 nit",
-      screenSizes: ["55", "65", "75"],
+      screenSizes: ["43", "55"],
       operationTime: "16/7",
     },
     images: ["/products/digital-signage/samsung-touch-qbc-t/1.jpg", "/products/digital-signage/samsung-touch-qbc-t/2.jpg", "/products/digital-signage/samsung-touch-qbc-t/3.jpg"],
@@ -193,11 +193,11 @@ export const products: Product[] = [
       "Pixel pitch 1.6 mm for crisp close-range viewing",
       "HDR support",
       "Magnetic service access for easy maintenance",
-      "800 nit brightness for indoor impact",
+      "1,200 nit brightness for indoor impact",
     ],
     specs: {
       resolution: "Custom",
-      brightness: "800 nit",
+      brightness: "1,200 nit",
       screenSizes: ["Custom"],
       operationTime: "24/7",
     },
@@ -245,7 +245,7 @@ export const products: Product[] = [
     description:
       "High-brightness razor-thin bezel video wall with non-glare panel, ideal for broadcast studios and command centers.",
     features: [
-      "0.08 cm bezel-to-bezel",
+      "0.088 cm bezel-to-bezel (0.88 mm)",
       "700 nit high brightness",
       "Non-glare panel",
       "Wide viewing angle",
@@ -305,7 +305,7 @@ export const products: Product[] = [
     description:
       "Extreme narrow bezel video wall with non-glare panel for immersive seamless displays.",
     features: [
-      "0.178 cm bezel-to-bezel",
+      "0.174 cm bezel-to-bezel (1.74 mm)",
       "Non-glare panel",
       "Wide viewing angle",
       "500 nit brightness",
@@ -425,7 +425,7 @@ export const products: Product[] = [
     specs: {
       resolution: "1,920 × 1,080 (FHD)",
       brightness: "500 nit",
-      screenSizes: ["46", "55"],
+      screenSizes: ["55"],
       operationTime: "24/7",
     },
     images: ["/products/video-walls/samsung-videowall-vmc-r/1.webp", "/products/video-walls/samsung-videowall-vmc-r/2.webp", "/products/video-walls/samsung-videowall-vmc-r/3.webp"],
@@ -559,7 +559,7 @@ export const products: Product[] = [
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "250 nit",
-      screenSizes: ["50", "55", "65", "75"],
+      screenSizes: ["43", "50", "55", "65", "70", "75", "85"],
       operationTime: "16/7",
     },
     images: ["/products/commercial-tv/samsung-business-tv-bec-h/1.webp", "/products/commercial-tv/samsung-business-tv-bec-h/2.webp", "/products/commercial-tv/samsung-business-tv-bec-h/3.webp"],
@@ -666,7 +666,7 @@ export const products: Product[] = [
     features: [
       "105-inch 5K UHD for breathtaking clarity",
       "Ultra-wide 21:9 aspect ratio for cinematic content",
-      "Quantum Matrix Technology Pro",
+      "Mega Dynamic Contrast for deep blacks and vivid highlights",
       "Built-in MagicINFO S6 content management",
       "24/7 operation certified",
     ],
@@ -695,7 +695,7 @@ export const products: Product[] = [
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "700 nit",
+      brightness: "1,000 nit",
       screenSizes: ["115"],
       operationTime: "24/7",
     },
@@ -782,7 +782,7 @@ export const products: Product[] = [
     ],
     specs: {
       resolution: "1,920 × 1,080 (FHD)",
-      brightness: "500 nit",
+      brightness: "700 nit",
       screenSizes: ["55"],
       operationTime: "24/7",
     },
@@ -793,14 +793,14 @@ export const products: Product[] = [
 
   {
     id: "samsung-flip-2",
-    name: "Samsung Flip 2.0 Interactive Display",
+    name: "Samsung Flip 2 (WM55R) Interactive Display",
     category: "Interactive Display",
-    series: "Flip 2.0",
+    series: "Flip 2",
     description:
       "The second-generation Samsung Flip digital whiteboard — bringing intuitive writing and wireless collaboration to meeting rooms and classrooms.",
     features: [
       "Natural writing experience on a 55-inch panel",
-      "Wireless screen sharing from up to 4 devices simultaneously",
+      "Wireless screen sharing from multiple devices simultaneously",
       "Roll and view content in landscape or portrait",
       "Auto-erase and content export via NFC tap",
     ],
@@ -931,9 +931,9 @@ export const products: Product[] = [
     subCategory: "Hotel TV",
     series: "HGU800F",
     description:
-      "Premium hotel TV series with AirPlay 2, LYNK Cloud management, and Dynamic Crystal Color for a superior guest experience.",
+      "Premium hotel TV series with Google Cast, LYNK Cloud management, and Dynamic Crystal Color for a superior guest experience.",
     features: [
-      "AirPlay 2 for seamless guest device mirroring",
+      "Google Cast for seamless guest device mirroring",
       "Dynamic Crystal Color 4K UHD",
       "LYNK Cloud centralised room management",
       "Slim Fit design for modern interiors",
@@ -941,7 +941,7 @@ export const products: Product[] = [
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "HDR",
-      screenSizes: ["65", "75", "85"],
+      screenSizes: ["43", "50", "55", "65", "75", "85"],
       operationTime: "16/7",
     },
     images: ["/products/commercial-tv/samsung-hotel-tv-hgu800f/1.jpg", "/products/commercial-tv/samsung-hotel-tv-hgu800f/2.jpg", "/products/commercial-tv/samsung-hotel-tv-hgu800f/3.jpg"],
