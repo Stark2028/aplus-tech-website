@@ -186,6 +186,23 @@ export default async function ProductPage({
               </ul>
             </div>
 
+            {/* Product overview — only shown when longDescription is present */}
+            {product.longDescription && (
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-7">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <span className="w-1 h-5 bg-blue-600 rounded-full" />
+                  Product Overview
+                </h3>
+                <div className="space-y-3">
+                  {product.longDescription.split("\n\n").map((para, i) => (
+                    <p key={i} className="text-gray-600 text-sm leading-relaxed">
+                      {para}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Specs table */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="px-7 py-5 border-b border-gray-100 flex items-center gap-2">
@@ -205,6 +222,9 @@ export default async function ProductPage({
                   { label: "Category", value: product.category },
                   ...(product.subCategory
                     ? [{ label: "Sub-category", value: product.subCategory }]
+                    : []),
+                  ...(product.additionalSpecs
+                    ? Object.entries(product.additionalSpecs).map(([label, value]) => ({ label, value }))
                     : []),
                 ].map(({ label, value }) => (
                   <div key={label} className="flex px-7 py-3.5 hover:bg-gray-50 transition-colors">

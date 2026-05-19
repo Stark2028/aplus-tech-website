@@ -5,6 +5,8 @@ export interface Product {
   category: string;
   series: string;
   description: string;
+  /** Multi-paragraph product overview shown on the product detail page */
+  longDescription?: string;
   features: string[];
   specs: {
     resolution: string;
@@ -12,6 +14,8 @@ export interface Product {
     screenSizes: string[];
     operationTime: string;
   };
+  /** Extra specs shown in the detail page table (connectivity, OS, dimensions, etc.) */
+  additionalSpecs?: Record<string, string>;
   images: string[];
   /** Sub-label shown in listings (e.g. "Hotel TV", "Business TV") */
   subCategory?: string;
@@ -28,6 +32,11 @@ export const products: Product[] = [
     series: "QET Series",
     description:
       "Upgrade your business with efficient and reliable digital signage technology. Crystal Display delivers optimized color expression with a bezel-less design built for 16/7 operation.",
+    longDescription: `The Samsung QET Series brings reliable 4K UHD digital signage to businesses that need professional-grade displays without the complexity of enterprise-tier solutions. Its Crystal Display panel delivers optimized color expression and enhanced visual clarity, making it ideal for retail environments, restaurant menu boards, corporate lobbies, and event venues.
+
+The QET's bezel-less design eliminates the visual boundary between the screen and its surroundings, creating a cleaner, more immersive installation. Running on Samsung's Tizen 7.0 operating system with MagicINFO Player S6, the display enables on-premises and cloud-based content management without an external media player.
+
+With a 16/7 operation rating and a size range from 43" to 82", the QET Series adapts to virtually any signage application — from countertop information displays to large-format wall installations. Built-in Wi-Fi and LAN connectivity allow easy integration into existing network infrastructure.`,
     features: [
       "Crystal Display for optimized color expression",
       "Bezel-less design for immersive viewing",
@@ -39,6 +48,18 @@ export const products: Product[] = [
       brightness: "300 nit",
       screenSizes: ["43", "50", "55", "65", "70", "75", "82"],
       operationTime: "16/7",
+    },
+    additionalSpecs: {
+      "Operating System": "Tizen 7.0",
+      "Content Player": "MagicINFO Player S6",
+      "Input Ports": "HDMI × 2, USB × 2, RS-232C (In/Out), RJ-45 (LAN)",
+      "Wi-Fi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
+      "Bluetooth": "5.0",
+      "Processor": "Quad-core 1.5 GHz",
+      "Memory / Storage": "2.5 GB / 16 GB",
+      "Color Gamut": "72% NTSC (typical)",
+      "Viewing Angle (H/V)": "178° / 178°",
+      "VESA Mount": "400 × 400 mm (55\")",
     },
     images: [
       "/products/smart-signage/samsung-qet-series/1.avif",
@@ -213,6 +234,11 @@ export const products: Product[] = [
     series: "VM55C-R",
     description:
       "Seamless video walls with a razor-thin 0.44 mm bezel for an immersive 24/7 viewing experience in control rooms and atriums.",
+    longDescription: `The Samsung VM55C-R sets the benchmark for LCD video wall performance with its razor-thin 0.44 mm bezel-to-bezel specification — the narrowest gap achievable in an LCD tile format. Designed for 24/7 environments such as security control rooms, network operations centers, airport information displays, and corporate command centers, the VM55C-R delivers uninterrupted visual continuity across large multi-screen arrays.
+
+Image Enhancement Technology ensures accurate color reproduction and picture uniformity across all tiles in an array, eliminating the color and brightness drift that can occur during extended operation. The 178°/178° wide viewing angles mean content remains visible and accurate from virtually any position in the room.
+
+UHD Daisy Chain support allows up to a 5×5 (25-tile) array to be driven without an external video processor, dramatically reducing installation complexity and cost. The display integrates natively with Samsung's MagicINFO S6 platform for centralized content scheduling and remote monitoring across the entire installation.`,
     features: [
       "0.44 mm bezel-to-bezel for near-seamless imagery",
       "178°/178° wide viewing angles",
@@ -224,6 +250,19 @@ export const products: Product[] = [
       brightness: "500 nit",
       screenSizes: ["55"],
       operationTime: "24/7",
+    },
+    additionalSpecs: {
+      "Panel Type": "S-PVA",
+      "Bezel-to-Bezel": "0.44 mm (all sides)",
+      "Contrast Ratio": "4,000:1 (typical)",
+      "Viewing Angle (H/V)": "178° / 178°",
+      "Input Ports": "HDMI 1.4 × 2, DisplayPort 1.2 × 1, DVI-D × 1",
+      "Daisy Chain": "UHD Daisy Chain (up to 5×5)",
+      "External Control": "RS-232C, RJ-45 (LAN)",
+      "Power Consumption": "~100 W (typical)",
+      "Dimensions (W×H×D)": "1,209.6 × 680.4 × 77.6 mm",
+      "Weight": "~19.6 kg (without stand)",
+      "VESA Mount": "400 × 400 mm",
     },
     images: [
       "/products/video-walls/vm55c-r/1.avif",
@@ -335,6 +374,11 @@ export const products: Product[] = [
     series: "VMB-U",
     description:
       "46-inch ultra narrow bezel video wall tile for compact multi-screen installations.",
+    longDescription: `The Samsung VMB-U 46" is purpose-built for compact multi-screen video wall installations where space efficiency and visual continuity are paramount. Its ultra-narrow bezel design minimizes visible gaps between tiles, creating a near-seamless canvas ideal for retail display walls, hotel lobbies, and corporate reception areas.
+
+The VMB-U features a non-glare panel that delivers clear, comfortable viewing even in mixed-lighting environments. With 500-nit brightness and FHD (1,920 × 1,080) resolution per tile, the display maintains consistent, vibrant output across extended 24/7 operation cycles — making it suitable for always-on deployments.
+
+Built-in daisy chain connectivity simplifies multi-display wiring, allowing signal and power connections to be cascaded without additional hardware. The display is compatible with Samsung's MagicINFO content management platform, enabling centralized scheduling and monitoring of all tiles from a single dashboard.`,
     features: [
       "Ultra narrow bezel",
       "Wide viewing angle",
@@ -346,6 +390,18 @@ export const products: Product[] = [
       brightness: "500 nit",
       screenSizes: ["46"],
       operationTime: "24/7",
+    },
+    additionalSpecs: {
+      "Panel Type": "S-PVA",
+      "Bezel-to-Bezel": "5.3 mm (all sides)",
+      "Contrast Ratio": "4,000:1 (typical)",
+      "Viewing Angle (H/V)": "178° / 178°",
+      "Input Ports": "HDMI 1.3 × 1, DVI-D × 1, DisplayPort 1.1 × 1",
+      "External Control": "RS-232C, RJ-45 (LAN)",
+      "Power Consumption": "~95 W (typical)",
+      "Dimensions (W×H×D)": "1,041.9 × 587.7 × 74.7 mm",
+      "Weight": "~17.0 kg (without stand)",
+      "VESA Mount": "400 × 200 mm",
     },
     images: [
       "/products/video-walls/vmb-u-46/1.avif",
@@ -440,6 +496,11 @@ export const products: Product[] = [
     series: "Flip Pro",
     description:
       "Premium interactive display that inspires collaboration and creativity in corporate meeting rooms and boardrooms.",
+    longDescription: `The Samsung Flip Pro (WM85B) redefines the meeting room experience by replacing traditional whiteboards and projectors with an intelligent, touch-sensitive 4K UHD canvas. Designed for corporate boardrooms, executive meeting rooms, and collaborative workspaces, the Flip Pro supports up to 20 simultaneous touch points — enabling true multi-user ideation sessions without lag or queuing.
+
+A single USB-C cable delivers up to 65 W of power to connected laptops while simultaneously mirroring their screen, dramatically simplifying cable management in a modern meeting setup. Participants can also join wirelessly via AirPlay, Miracast, or Samsung Screen Mirroring, allowing full BYOD participation without installing drivers or software.
+
+The Flip Pro runs on Tizen OS with Samsung Knox security built in, ensuring session content is protected and devices can be remotely managed across a fleet. The intuitive writing experience — with stylus or finger — replicates the natural feel of pen on paper, making the transition from physical whiteboards seamless for any team.`,
     features: [
       "Multi-touch for up to 20 simultaneous users",
       "USB-C connectivity with 65W charging and screen share",
@@ -451,6 +512,18 @@ export const products: Product[] = [
       brightness: "350 nit",
       screenSizes: ["75", "85"],
       operationTime: "16/7",
+    },
+    additionalSpecs: {
+      "Operating System": "Tizen 6.5 (Samsung Knox)",
+      "Touch Points": "Up to 20 simultaneous",
+      "USB-C": "USB-C 3.1 Gen1 × 1 (65 W Power Delivery + display)",
+      "Other Inputs": "HDMI 2.0 × 2, USB 3.0 × 2, USB 2.0 × 2",
+      "Wireless": "802.11 a/b/g/n/ac, Bluetooth 4.2",
+      "Screen Share": "AirPlay, Miracast, Screen Mirroring",
+      "Processor": "Quad-core 1.4 GHz",
+      "Memory / Storage": "4 GB / 64 GB",
+      "Color Gamut": "99% sRGB",
+      "VESA Mount": "600 × 400 mm",
     },
     images: ["/products/interactive/samsung-flip-pro-wm85b/1.webp", "/products/interactive/samsung-flip-pro-wm85b/2.webp", "/products/interactive/samsung-flip-pro-wm85b/3.webp"],
   },
