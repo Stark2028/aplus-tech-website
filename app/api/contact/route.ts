@@ -1,9 +1,7 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const TO_EMAIL = "info@aplustechsol.com";
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
 
 function row(label: string, value: string) {
   return `
@@ -133,6 +131,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, message: "Missing required fields." }, { status: 400 });
     }
 
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
     const isQuote = Boolean(body.items_list);
     const html = isQuote ? buildQuoteEmail(body) : buildContactEmail(body);
 
