@@ -58,12 +58,38 @@ function ComparePageInner() {
   const handleExportExcel = async () => {
     const XLSX = await import("xlsx");
     const headers = ["Specification", ...selectedProducts.map((p) => p.name)];
-    const rows = [
-      ...SPEC_ROWS.map((row) => [row.label, ...selectedProducts.map((p) => row.getValue(p))]),
-      ["Key Features", ...selectedProducts.map((p) => p.features.slice(0, 4).join("; "))],
+
+    // Collect all additionalSpecs keys present across any selected product
+    const extraSpecKeys = Array.from(
+      new Set(
+        selectedProducts.flatMap((p) =>
+          p.additionalSpecs ? Object.keys(p.additionalSpecs) : []
+        )
+      )
+    );
+
+    const rows: string[][] = [
+      // Core specs
+      ["Category", ...selectedProducts.map((p) => p.category)],
+      ["Series", ...selectedProducts.map((p) => p.series)],
+      ["Sub-category", ...selectedProducts.map((p) => p.subCategory ?? "—")],
+      ["Description", ...selectedProducts.map((p) => p.description)],
+      // Technical specs
+      ["Resolution", ...selectedProducts.map((p) => p.specs.resolution)],
+      ["Brightness", ...selectedProducts.map((p) => p.specs.brightness)],
+      ["Operation Hours", ...selectedProducts.map((p) => p.specs.operationTime)],
+      ["Available Sizes", ...selectedProducts.map((p) => p.specs.screenSizes.map((s) => `${s}"`).join(", "))],
+      // Extended specs — all keys from any product
+      ...extraSpecKeys.map((key) => [
+        key,
+        ...selectedProducts.map((p) => p.additionalSpecs?.[key] ?? "—"),
+      ]),
+      // Features — all of them
+      ["Key Features", ...selectedProducts.map((p) => p.features.join("; "))],
     ];
+
     const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
-    ws["!cols"] = [{ wch: 22 }, ...selectedProducts.map(() => ({ wch: 36 }))];
+    ws["!cols"] = [{ wch: 28 }, ...selectedProducts.map(() => ({ wch: 42 }))];
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Product Comparison");
     XLSX.writeFile(wb, "samsung-product-comparison.xlsx");

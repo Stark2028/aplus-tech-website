@@ -60,10 +60,9 @@ export default function ProductCatalogSection() {
         {/* Product grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {filtered.map((product) => (
-            <Link
+            <div
               key={product.id}
-              href={`/products/${product.id}`}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group flex flex-col cursor-pointer"
+              className="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group flex flex-col"
             >
               {/* Image */}
               <div className="h-48 bg-linear-to-br from-gray-50 to-gray-100 relative overflow-hidden">
@@ -91,7 +90,12 @@ export default function ProductCatalogSection() {
               {/* Content */}
               <div className="p-5 flex flex-col flex-1">
                 <h3 className="text-sm font-bold text-gray-900 mb-1 line-clamp-2 leading-snug">
-                  {product.name}
+                  <Link
+                    href={`/products/${product.id}`}
+                    className="before:absolute before:inset-0 before:content-[''] before:cursor-pointer focus:outline-none"
+                  >
+                    {product.name}
+                  </Link>
                 </h3>
                 <p className="text-xs text-blue-600 font-medium mb-3">
                   {product.series} Series
@@ -111,22 +115,23 @@ export default function ProductCatalogSection() {
                 </div>
 
                 {/* CTAs */}
-                <div className="mt-auto flex items-center gap-2">
+                <div className="mt-auto flex items-center gap-2 relative z-10">
                   <Link
                     href="/contact"
-                    onClick={(e) => e.stopPropagation()}
                     className="flex-1 text-center bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2.5 px-3 rounded-lg transition-colors"
                   >
                     Get Quote
                   </Link>
-                  <span
+                  <Link
+                    href={`/products/${product.id}`}
+                    aria-label={`View ${product.name}`}
                     className="flex items-center justify-center w-9 h-9 border border-gray-200 hover:border-blue-300 hover:text-blue-600 text-gray-400 rounded-lg transition-colors"
                   >
                     <ArrowRight size={15} />
-                  </span>
+                  </Link>
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
 

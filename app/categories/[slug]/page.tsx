@@ -6,6 +6,8 @@ import Link from "next/link";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 
+export const revalidate = 3600;
+
 const SITE = "https://www.aplustechsol.com";
 
 export async function generateMetadata({

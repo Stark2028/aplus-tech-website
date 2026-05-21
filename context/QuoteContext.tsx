@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Product } from "@/data/products";
 
 export interface QuoteItem {
@@ -24,7 +24,6 @@ export function QuoteProvider({ children }: { children: React.ReactNode }) {
     const [quoteItems, setQuoteItems] = useState<QuoteItem[]>([]);
     const [isQuoteOpen, setIsQuoteOpen] = useState(false);
 
-    // Hydrate from localStorage on mount
     useEffect(() => {
         const savedQuote = localStorage.getItem("b2b_quote_cart");
         if (savedQuote) {
@@ -37,12 +36,11 @@ export function QuoteProvider({ children }: { children: React.ReactNode }) {
         }
     }, []);
 
-    // Save to localStorage whenever items change
     useEffect(() => {
         localStorage.setItem("b2b_quote_cart", JSON.stringify(quoteItems));
     }, [quoteItems]);
 
-    const addItem = (product: Product, quantity = 1) => {
+    const addItem = useCallback((product: Product, quantity = 1) => {
         setQuoteItems((prev) => {
             const existing = prev.find((item) => item.product.id === product.id);
             if (existing) {
@@ -54,43 +52,42 @@ export function QuoteProvider({ children }: { children: React.ReactNode }) {
             }
             return [...prev, { product, quantity }];
         });
-        setIsQuoteOpen(true); // Auto-open cart on add
-    };
+        setIsQuoteOpen(true);
+    }, []);
 
-    const removeItem = (productId: string) => {
+    const removeItem = useCallback((productId: string) => {
         setQuoteItems((prev) => prev.filter((item) => item.product.id !== productId));
-    };
+    }, []);
 
-    const updateQuantity = (productId: string, quantity: number) => {
+    const updateQuantity = useCallback((productId: string, quantity: number) => {
         if (quantity < 1) return;
         setQuoteItems((prev) =>
             prev.map((item) =>
                 item.product.id === productId ? { ...item, quantity } : item
             )
         );
-    };
+    }, []);
 
-    const clearQuote = () => {
+    const clearQuote = useCallback(() => {
         setQuoteItems([]);
-    };
+    }, []);
 
-    const toggleQuote = () => setIsQuoteOpen((prev) => !prev);
+    const toggleQuote = useCallback(() => setIsQuoteOpen((prev) => !prev), []);
 
-    return (
-        <QuoteContext.Provider
-            value={{
-                quoteItems,
-                addItem,
-                removeItem,
-                updateQuantity,
-                clearQuote,
-                isQuoteOpen,
-                toggleQuote,
-            }}
-        >
-            {children}
-        </QuoteContext.Provider>
+    const value = useMemo<QuoteContextType>(
+        () => ({
+            quoteItems,
+            addItem,
+            removeItem,
+            updateQuantity,
+            clearQuote,
+            isQuoteOpen,
+            toggleQuote,
+        }),
+        [quoteItems, isQuoteOpen, addItem, removeItem, updateQuantity, clearQuote, toggleQuote]
     );
+
+    return <QuoteContext.Provider value={value}>{children}</QuoteContext.Provider>;
 }
 
 export function useQuote() {

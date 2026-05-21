@@ -9,7 +9,6 @@ import {
   Monitor,
   Phone,
   MessageCircle,
-  Star,
   ShieldCheck,
   Truck,
   Award,
@@ -21,6 +20,8 @@ import SpecSheetButton from "@/components/SpecSheetButton";
 import Image from "next/image";
 import { Metadata } from "next";
 import RecentlyViewed from "@/components/RecentlyViewed";
+
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   return products.map((p) => ({ slug: p.id }));
@@ -35,9 +36,18 @@ export async function generateMetadata({
   const product = products.find((p) => p.id === slug);
   if (!product) return { title: "Product Not Found | Aplus Tech" };
   const url = `https://www.aplustechsol.com/products/${slug}`;
+  const ogAlt = `${product.name} — ${product.series} ${product.category}`;
   return {
     title: product.name,
     description: product.description,
+    keywords: [
+      product.name,
+      product.series,
+      product.category,
+      "Samsung",
+      "B2B",
+      "Aplus Technology Solutions",
+    ],
     alternates: { canonical: url },
     openGraph: {
       type: "website",
@@ -45,7 +55,7 @@ export async function generateMetadata({
       title: product.name,
       description: product.description,
       images: product.images?.[0]
-        ? [{ url: product.images[0], width: 1200, height: 630, alt: product.name }]
+        ? [{ url: product.images[0], width: 1200, height: 630, alt: ogAlt }]
         : [],
     },
     twitter: {
@@ -274,12 +284,6 @@ export default async function ProductPage({
                   <span className="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
                     {product.series}
                   </span>
-                  <div className="flex items-center gap-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} size={12} className="fill-amber-400 text-amber-400" />
-                    ))}
-                    <span className="text-xs text-gray-400 ml-1">5.0</span>
-                  </div>
                 </div>
 
                 <h1 className="text-2xl font-bold text-gray-900 mb-3 leading-tight">

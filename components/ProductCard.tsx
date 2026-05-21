@@ -65,24 +65,35 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Compare Checkbox (Top Right) */}
       <button
+        type="button"
         onClick={handleCompareToggle}
+        aria-pressed={isComparing}
+        aria-label={isComparing ? `Remove ${product.name} from compare` : `Add ${product.name} to compare`}
         className={`absolute top-3 right-3 z-10 p-2 rounded-full transition-colors shadow-sm ${isComparing ? "bg-blue-600 text-white" : "bg-white/80 hover:bg-blue-50 text-gray-500 hover:text-blue-600"
           }`}
-        title="Compare Product"
       >
-        <Scale size={18} />
+        <Scale size={18} aria-hidden="true" />
       </button>
 
       {/* Product Image Area */}
       <div
         onClick={handleImageClick}
-        className="relative h-64 bg-gray-100 flex items-center justify-center overflow-hidden cursor-pointer"
+        role="link"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleImageClick();
+          }
+        }}
+        aria-label={`View details for ${product.name}`}
+        className="relative h-64 bg-gray-100 flex items-center justify-center overflow-hidden cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2"
       >
         <div className="relative w-full h-full">
           {primaryImage ? (
             <Image
               src={primaryImage}
-              alt={product.name}
+              alt={`${product.name} — Samsung ${product.series} ${product.category}`}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -134,15 +145,17 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Footer Buttons */}
         <div className="mt-auto flex gap-2">
           <button
+            type="button"
             onClick={handleQuoteAdd}
             disabled={added}
+            aria-label={`Add ${product.name} to quote cart`}
             className={`flex-1 flex items-center justify-center gap-2 font-semibold py-2 rounded-lg transition-colors text-sm ${
               added
                 ? "bg-green-600 text-white cursor-default"
                 : "bg-gray-900 text-white hover:bg-gray-800"
             }`}
           >
-            {added ? <Check size={16} /> : <ShoppingBag size={16} />}
+            {added ? <Check size={16} aria-hidden="true" /> : <ShoppingBag size={16} aria-hidden="true" />}
             {added ? "Added!" : "Add to Quote"}
           </button>
 

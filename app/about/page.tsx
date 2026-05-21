@@ -1,4 +1,13 @@
-import { CheckCircle2, Users, Award, Headphones, Truck, ShieldCheck, MapPin, Phone, Mail, Star } from "lucide-react";
+import {
+  CheckCircle2,
+  Users,
+  Award,
+  Headphones,
+  Truck,
+  ShieldCheck,
+  ChevronRight,
+  ArrowRight,
+} from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 
@@ -29,7 +38,7 @@ export const metadata: Metadata = {
 const STATS = [
   { value: "10+", label: "Years in Business" },
   { value: "500+", label: "Enterprise Clients" },
-  { value: "1,000+", label: "Installations Done" },
+  { value: "1,000+", label: "Installations" },
   { value: "50+", label: "Cities Served" },
 ];
 
@@ -58,185 +67,215 @@ const VALUES = [
 
 const TEAM = [
   {
-    name: "Vikram Agarwal",
-    role: "Founder & CEO",
-    bio: "20+ years in commercial AV and display technology. Built Aplus from the ground up with a focus on enterprise-grade quality.",
+    name: "Anurag Walia",
+    role: "Director",
+    bio: "Leads business strategy and enterprise partnerships at Aplus. 15+ years driving Samsung B2B display adoption across India's top sectors.",
   },
   {
-    name: "Neha Singh",
-    role: "Head of Sales",
-    bio: "Former Samsung channel manager with deep expertise in B2B display solutions across hospitality, corporate, and retail verticals.",
+    name: "Savita Walia",
+    role: "Director",
+    bio: "Oversees operations and client success. Her focus on process excellence has helped Aplus maintain a 5-star service track record.",
   },
   {
-    name: "Arjun Kapoor",
-    role: "Lead Installation Engineer",
-    bio: "Samsung-certified AV integrator with over 1,000 completed installations across India, including flagship hotel and corporate projects.",
+    name: "Sunil Kumar",
+    role: "Director",
+    bio: "Samsung-certified integration specialist with 1,000+ completed installations across hospitality, corporate, and retail projects.",
   },
 ];
 
 const MILESTONES = [
-  { year: "2014", event: "Founded in Noida with a focus on Samsung commercial displays" },
-  { year: "2016", event: "Became an Authorized Samsung Business Display Distributor" },
-  { year: "2018", event: "Crossed 100+ enterprise clients; opened Mumbai service center" },
-  { year: "2020", event: "Launched dedicated hospitality and education verticals" },
-  { year: "2022", event: "500+ clients milestone; expanded to 50+ cities pan-India" },
-  { year: "2024", event: "Introduced AMC contracts and 24/7 remote support program" },
+  { year: "2014", event: "Founded in Noida with a focus on Samsung commercial displays." },
+  { year: "2016", event: "Became an Authorized Samsung Business Display Distributor." },
+  { year: "2018", event: "Crossed 100+ enterprise clients; opened Mumbai service center." },
+  { year: "2020", event: "Launched dedicated hospitality and education verticals." },
+  { year: "2022", event: "500+ clients milestone; expanded to 50+ cities pan-India." },
+  { year: "2024", event: "Introduced AMC contracts and 24/7 remote support program." },
+];
+
+const STORY_PILLARS = [
+  "Authorized Samsung Platinum Partner",
+  "Pan-India delivery & installation (50+ cities)",
+  "Dedicated account managers",
+  "Volume-based B2B pricing",
+  "AMC contracts with guaranteed SLA",
 ];
 
 export default function AboutPage() {
   return (
     <main className="bg-white">
 
-      {/* Hero */}
-      <section className="relative bg-[#0d1526] py-28 overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600 rounded-full filter blur-[140px] opacity-15" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-cyan-500 rounded-full filter blur-[120px] opacity-10" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-400/10 px-4 py-1.5 rounded-full mb-6">
-            About Aplus Technology
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-            Empowering India&apos;s Enterprises with{" "}
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-300">
-              Visual Excellence
-            </span>
-          </h1>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Since 2014, Aplus Technology Solutions has been the trusted partner for
-            commercial display technology — supplying, installing, and supporting Samsung
-            Business Displays across India&apos;s leading hotels, corporate campuses,
-            educational institutions, and retail chains.
+      {/* ───────────────── Hero ───────────────── */}
+      <section className="relative overflow-hidden bg-linear-to-br from-slate-900 via-blue-950 to-gray-900">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.25),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.35)_100%)]" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-24">
+          {/* Breadcrumb */}
+          <nav className="flex items-center gap-1.5 text-xs text-blue-100/70 mb-12">
+            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <ChevronRight size={12} />
+            <span className="text-white/90 font-medium">About</span>
+          </nav>
+
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-300 mb-4">
+            About Aplus Technology Solutions
           </p>
+          <h1 className="text-4xl md:text-6xl font-bold text-white leading-[1.05] tracking-tight max-w-4xl">
+            Empowering India&apos;s enterprises with visual excellence.
+          </h1>
+          <p className="mt-6 text-base md:text-lg text-blue-100/80 leading-relaxed max-w-2xl">
+            Since 2014, we&apos;ve been the trusted Samsung Business Display partner for India&apos;s
+            leading hotels, corporate campuses, schools, and retail chains — supplying, installing,
+            and supporting every screen we sell.
+          </p>
+
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-xl text-sm font-semibold hover:bg-blue-50 transition-colors"
+            >
+              Talk to our team
+              <ArrowRight size={15} />
+            </Link>
+            <Link
+              href="/products"
+              className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 border border-white/15 text-white px-6 py-3 rounded-xl text-sm font-semibold transition-colors"
+            >
+              Browse the catalog
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-14 bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {STATS.map((s) => (
-              <div key={s.label}>
-                <div className="text-4xl md:text-5xl font-bold text-blue-600 mb-2">
-                  {s.value}
-                </div>
-                <div className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+      {/* ───────────────── Trust Strip ───────────────── */}
+      <section className="bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {STATS.map((s, i) => (
+              <div
+                key={s.label}
+                className={`px-2 md:px-6 ${i > 0 ? "md:border-l md:border-gray-100" : ""}`}
+              >
+                <p className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">{s.value}</p>
+                <p className="text-[11px] text-gray-500 uppercase tracking-wider mt-1.5 font-medium">
                   {s.label}
-                </div>
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Who we are */}
+      {/* ───────────────── Story ───────────────── */}
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div>
-              <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full mb-5">
-                Our Story
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
-                More Than a Distributor — We&apos;re Your Display Partner
+          <div className="grid lg:grid-cols-12 gap-16 items-start">
+            <div className="lg:col-span-7">
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-4">
+                Our story
+              </p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight">
+                More than a distributor — your long-term display partner.
               </h2>
-              <p className="text-gray-500 mb-5 leading-relaxed">
-                Aplus Technology Solutions was founded on a simple belief: businesses deserve
-                more than just a box delivery. They deserve a partner who understands the
-                space, recommends the right technology, installs it correctly, and stands
-                behind it long-term.
-              </p>
-              <p className="text-gray-500 mb-8 leading-relaxed">
-                As an Authorized Samsung Business Display Distributor, we combine
-                manufacturer-backed product quality with local expertise, a pan-India
-                service network, and a team that has completed over 1,000 installations
-                across every major industry vertical.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  "Authorized Samsung Platinum Partner",
-                  "Pan-India delivery & installation network (50+ cities)",
-                  "Dedicated account managers for enterprise clients",
-                  "Competitive B2B pricing with volume discounts",
-                  "AMC contracts with guaranteed SLA response times",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <CheckCircle2
-                      className="text-blue-600 shrink-0 mt-0.5"
-                      size={18}
-                    />
+              <div className="mt-6 space-y-5 text-gray-600 leading-relaxed">
+                <p>
+                  Aplus Technology Solutions was founded on a simple belief: businesses deserve
+                  more than just a box delivery. They deserve a partner who understands the space,
+                  recommends the right technology, installs it correctly, and stands behind it
+                  long-term.
+                </p>
+                <p>
+                  As an Authorized Samsung Business Display Distributor, we combine manufacturer-backed
+                  product quality with local expertise, a pan-India service network, and a team that
+                  has completed over 1,000 installations across every major industry vertical.
+                </p>
+              </div>
+
+              <ul className="mt-8 grid sm:grid-cols-2 gap-x-6 gap-y-3">
+                {STORY_PILLARS.map((item) => (
+                  <li key={item} className="flex items-start gap-2.5">
+                    <CheckCircle2 className="text-blue-600 shrink-0 mt-0.5" size={16} />
                     <span className="text-gray-700 text-sm">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Visual card */}
-            <div className="relative">
-              <div className="bg-linear-to-br from-blue-600 to-cyan-500 rounded-3xl p-8 text-white">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-white font-bold text-xl">
-                    A+
+            {/* Spec card */}
+            <aside className="lg:col-span-5 lg:sticky lg:top-24">
+              <div className="relative rounded-3xl border border-gray-100 bg-linear-to-br from-slate-900 via-blue-950 to-gray-900 p-8 text-white overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.35),transparent_55%)]" />
+                <div className="relative">
+                  <div className="flex items-center gap-3 mb-7">
+                    <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center font-bold text-lg">
+                      A+
+                    </div>
+                    <div>
+                      <p className="font-semibold text-sm leading-tight">Aplus Technology</p>
+                      <p className="text-[11px] text-blue-200/70 leading-tight">Solutions Pvt. Ltd.</p>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-bold text-lg">Aplus Technology</div>
-                    <div className="text-blue-200 text-sm">Solutions Pvt. Ltd.</div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="bg-white/10 rounded-xl p-4">
-                    <div className="text-blue-100 text-xs font-semibold uppercase tracking-wider mb-1">Certification</div>
-                    <div className="font-bold">Authorized Samsung Business Display Partner</div>
-                  </div>
-                  <div className="bg-white/10 rounded-xl p-4">
-                    <div className="text-blue-100 text-xs font-semibold uppercase tracking-wider mb-1">Coverage</div>
-                    <div className="font-bold">Pan-India · 50+ Cities</div>
-                  </div>
-                  <div className="bg-white/10 rounded-xl p-4">
-                    <div className="text-blue-100 text-xs font-semibold uppercase tracking-wider mb-1">Support</div>
-                    <div className="font-bold">24 / 7 Technical Support</div>
-                  </div>
-                </div>
-                <div className="mt-6 flex gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} size={16} className="fill-yellow-300 text-yellow-300" />
-                  ))}
-                  <span className="text-sm text-blue-100 ml-2">5.0 from 200+ reviews</span>
+
+                  <dl className="space-y-5">
+                    {[
+                      { k: "Certification", v: "Authorized Samsung B2B Partner" },
+                      { k: "Coverage", v: "Pan-India · 50+ cities" },
+                      { k: "Support", v: "24 / 7 Technical Response" },
+                      { k: "Founded", v: "2014 · Noida, India" },
+                    ].map((row, i, arr) => (
+                      <div
+                        key={row.k}
+                        className={`flex items-start justify-between gap-6 ${
+                          i < arr.length - 1 ? "pb-5 border-b border-white/10" : ""
+                        }`}
+                      >
+                        <dt className="text-[11px] uppercase tracking-[0.18em] text-blue-200/70 font-semibold pt-0.5">
+                          {row.k}
+                        </dt>
+                        <dd className="text-sm font-semibold text-right">{row.v}</dd>
+                      </div>
+                    ))}
+                  </dl>
                 </div>
               </div>
-              {/* Floating badge */}
-              <div className="absolute -bottom-5 -left-5 bg-white border border-gray-100 shadow-xl rounded-2xl px-5 py-3 flex items-center gap-3">
-                <Award className="text-blue-600" size={24} />
+
+              {/* Award badge */}
+              <div className="mt-5 flex items-center gap-3 rounded-2xl border border-gray-100 bg-white shadow-sm px-5 py-4">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                  <Award className="text-blue-600" size={18} />
+                </div>
                 <div>
-                  <div className="text-xs font-bold text-gray-900">Best AV Distributor</div>
-                  <div className="text-xs text-gray-400">North India, 2023</div>
+                  <p className="text-sm font-semibold text-gray-900 leading-tight">Best AV Distributor</p>
+                  <p className="text-xs text-gray-500 leading-tight">North India · 2023</p>
                 </div>
               </div>
-            </div>
+            </aside>
           </div>
         </div>
       </section>
 
-      {/* Our Values */}
-      <section className="py-20 bg-gray-50">
+      {/* ───────────────── Values ───────────────── */}
+      <section className="py-24 bg-gray-50 border-y border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full mb-4">
-              Our Values
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              What Drives Us
+          <div className="max-w-2xl mb-12">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-4">
+              What we stand for
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight">
+              Four principles that shape every project.
             </h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-gray-100 rounded-3xl overflow-hidden border border-gray-100">
             {VALUES.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="bg-white border border-gray-100 rounded-2xl p-7 hover:border-blue-100 hover:shadow-lg transition-all group"
+                className="group bg-white p-8 hover:bg-linear-to-br hover:from-white hover:to-blue-50/40 transition-colors"
               >
-                <div className="w-12 h-12 bg-blue-50 group-hover:bg-blue-600 rounded-xl flex items-center justify-center mb-5 transition-colors">
-                  <Icon className="text-blue-600 group-hover:text-white transition-colors" size={22} />
+                <div className="w-11 h-11 rounded-xl bg-blue-50 group-hover:bg-blue-600 flex items-center justify-center mb-6 transition-colors">
+                  <Icon className="text-blue-600 group-hover:text-white transition-colors" size={20} />
                 </div>
-                <h3 className="font-bold text-gray-900 mb-2">{title}</h3>
+                <h3 className="font-bold text-gray-900 mb-2 tracking-tight">{title}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
               </div>
             ))}
@@ -244,115 +283,94 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Company Milestones */}
-      <section className="py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full mb-4">
-              Our Journey
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              10 Years of Growth
+      {/* ───────────────── Timeline ───────────────── */}
+      <section className="py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mb-14">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-4">
+              Our journey
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight">
+              A decade of building India&apos;s display backbone.
             </h2>
           </div>
-          <div className="relative">
-            <div className="absolute left-16 top-0 bottom-0 w-px bg-gray-200" />
-            <div className="space-y-8">
-              {MILESTONES.map((m) => (
-                <div key={m.year} className="relative flex gap-8 items-start">
-                  <div className="shrink-0 w-14 text-right">
-                    <span className="text-sm font-bold text-blue-600">{m.year}</span>
+
+          {/* Desktop: horizontal timeline */}
+          <div className="hidden md:block">
+            <div className="relative">
+              <div className="absolute left-0 right-0 top-6.5 h-px bg-gray-200" />
+              <div className="grid grid-cols-6 gap-6 relative">
+                {MILESTONES.map((m) => (
+                  <div key={m.year} className="relative">
+                    <div className="flex justify-center mb-6">
+                      <div className="relative">
+                        <div className="w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-white" />
+                        <div className="absolute inset-0 w-3.5 h-3.5 rounded-full bg-blue-600 animate-ping opacity-20" />
+                      </div>
+                    </div>
+                    <p className="text-center text-sm font-bold text-blue-600 mb-2">{m.year}</p>
+                    <p className="text-center text-xs text-gray-500 leading-relaxed">{m.event}</p>
                   </div>
-                  <div className="relative flex items-center justify-center shrink-0">
-                    <div className="w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow-md z-10" />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile: vertical timeline */}
+          <div className="md:hidden">
+            <div className="relative pl-8">
+              <div className="absolute left-1.75 top-2 bottom-2 w-px bg-gray-200" />
+              <div className="space-y-6">
+                {MILESTONES.map((m) => (
+                  <div key={m.year} className="relative">
+                    <div className="absolute -left-8 top-1.5 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-white" />
+                    <p className="text-sm font-bold text-blue-600 mb-1">{m.year}</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">{m.event}</p>
                   </div>
-                  <div className="pb-2">
-                    <p className="text-gray-700 text-sm leading-relaxed">{m.event}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Team */}
-      <section className="py-20 bg-gray-50">
+      {/* ───────────────── Team ───────────────── */}
+      <section className="py-24 bg-gray-50 border-y border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full mb-4">
-              Our Team
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
-              The People Behind Aplus
+          <div className="max-w-2xl mb-12">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-4">
+              Leadership
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight">
+              The people behind every install.
             </h2>
           </div>
-          <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+
+          <div className="grid md:grid-cols-3 gap-6">
             {TEAM.map((member) => (
               <div
                 key={member.name}
-                className="bg-white border border-gray-100 rounded-2xl p-7 text-center hover:shadow-lg transition-all"
+                className="group bg-white border border-gray-100 rounded-3xl p-8 hover:border-blue-200 hover:shadow-lg transition-all"
               >
-                <div className="w-16 h-16 bg-linear-to-br from-blue-500 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4 shadow-md shadow-blue-500/20">
-                  {member.name.charAt(0)}
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-blue-600 to-cyan-400 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-blue-500/20">
+                    {member.name.charAt(0)}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 tracking-tight leading-tight">
+                      {member.name}
+                    </h3>
+                    <p className="text-[11px] text-blue-600 font-semibold uppercase tracking-wider mt-0.5">
+                      {member.role}
+                    </p>
+                  </div>
                 </div>
-                <h3 className="font-bold text-gray-900 mb-1">{member.name}</h3>
-                <p className="text-xs text-blue-600 font-semibold uppercase tracking-wider mb-3">
-                  {member.role}
-                </p>
-                <p className="text-sm text-gray-500 leading-relaxed">{member.bio}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Office / Contact CTA */}
-      <section className="py-20 bg-[#0d1526]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-400/10 px-4 py-1.5 rounded-full mb-5">
-                Visit Us
-              </span>
-              <h2 className="text-3xl font-bold text-white mb-6">
-                Come See Our Demo Center
-              </h2>
-              <p className="text-gray-400 mb-8 leading-relaxed">
-                Experience our full product range in person at our Noida demo center. Schedule a visit and our specialists will walk you through every display category relevant to your needs.
-              </p>
-              <ul className="space-y-4 text-sm">
-                <li className="flex items-start gap-3 text-gray-300">
-                  <MapPin size={18} className="text-blue-400 shrink-0 mt-0.5" />
-                  Office No. 855, 8th Floor, Supernova Astralis,<br />Sector-94, Noida, UP — 201301
-                </li>
-                <li className="flex items-center gap-3 text-gray-300">
-                  <Phone size={18} className="text-blue-400 shrink-0" />
-                  <a href="tel:+919310509909" className="hover:text-white transition-colors">+91 93105 09909</a>
-                </li>
-                <li className="flex items-center gap-3 text-gray-300">
-                  <Mail size={18} className="text-blue-400 shrink-0" />
-                  <a href="mailto:info@aplustechsol.com" className="hover:text-white transition-colors">info@aplustechsol.com</a>
-                </li>
-              </ul>
-            </div>
-            <div className="flex flex-col gap-4">
-              <Link
-                href="/contact"
-                className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-xl font-semibold text-center transition-all hover:scale-105 shadow-lg shadow-blue-600/20"
-              >
-                Schedule a Demo Visit
-              </Link>
-              <Link
-                href="/quote"
-                className="bg-white/5 hover:bg-white/10 border border-white/15 text-white px-8 py-4 rounded-xl font-semibold text-center transition-all"
-              >
-                Request a Quote
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

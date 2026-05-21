@@ -10,6 +10,8 @@ interface BlogPageParams {
   slug: string;
 }
 
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
@@ -71,12 +73,18 @@ export default async function BlogDetailPage({
   const SITE = "https://www.aplustechsol.com";
   const pageUrl = `${SITE}/blogs/${post.slug}`;
 
+  const wordCount = post.body.trim().split(/\s+/).filter(Boolean).length;
+
   const articleLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
     keywords: post.tags.join(", "),
+    articleSection: post.tags[0] ?? "Insights",
+    wordCount,
+    timeRequired: `PT${post.readingTimeMinutes}M`,
+    inLanguage: "en-IN",
     datePublished: post.date,
     dateModified: post.date,
     image: {

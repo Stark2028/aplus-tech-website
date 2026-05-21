@@ -4,6 +4,8 @@ import { productCategories } from "@/data/categories";
 import ProductsCategoryNav from "@/components/ProductsCategoryNav";
 import ProductsClientShell from "@/components/ProductsClientShell";
 
+export const revalidate = 3600;
+
 const PRODUCTS_URL = "https://www.aplustechsol.com/products";
 
 export const metadata: Metadata = {
