@@ -78,6 +78,7 @@ export default function QuoteItemsCard({
                       src={item.product.images[0]}
                       alt={item.product.name}
                       fill
+                      sizes="(max-width: 640px) 100vw, 112px"
                       className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
