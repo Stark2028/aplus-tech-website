@@ -21,6 +21,7 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
         const saved = localStorage.getItem("b2b_compare_list");
         if (saved) {
             try {
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setSelectedProducts(JSON.parse(saved));
             } catch (e) {
                 console.error("Failed to parse compare list", e);

@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import ProductGallery from "@/components/ProductGallery";
 import ProductActions from "@/components/ProductActions";
+import SpecSheetButton from "@/components/SpecSheetButton";
 import Image from "next/image";
 import { Metadata } from "next";
 import RecentlyViewed from "@/components/RecentlyViewed";
@@ -210,23 +211,29 @@ export default async function ProductPage({
                 <h3 className="text-lg font-bold text-gray-900">Technical Specifications</h3>
               </div>
               <div className="divide-y divide-gray-50">
-                {[
-                  { label: "Resolution", value: product.specs.resolution },
-                  { label: "Brightness", value: product.specs.brightness },
-                  {
-                    label: "Available Sizes",
-                    value: product.specs.screenSizes.map((s) => `${s}"`).join(" · "),
-                  },
-                  { label: "Operation Hours", value: product.specs.operationTime },
-                  { label: "Series", value: product.series },
-                  { label: "Category", value: product.category },
-                  ...(product.subCategory
-                    ? [{ label: "Sub-category", value: product.subCategory }]
-                    : []),
-                  ...(product.additionalSpecs
-                    ? Object.entries(product.additionalSpecs).map(([label, value]) => ({ label, value }))
-                    : []),
-                ].map(({ label, value }) => (
+                {(() => {
+                  const hardcoded = [
+                    { label: "Resolution", value: product.specs.resolution },
+                    { label: "Brightness", value: product.specs.brightness },
+                    {
+                      label: "Available Sizes",
+                      value: product.specs.screenSizes.map((s) => `${s}"`).join(" · "),
+                    },
+                    { label: "Operation Hours", value: product.specs.operationTime },
+                    { label: "Series", value: product.series },
+                    { label: "Category", value: product.category },
+                    ...(product.subCategory
+                      ? [{ label: "Sub-category", value: product.subCategory }]
+                      : []),
+                  ];
+                  const hardcodedKeys = new Set(hardcoded.map((r) => r.label.toLowerCase()));
+                  const additional = product.additionalSpecs
+                    ? Object.entries(product.additionalSpecs)
+                        .filter(([key]) => !hardcodedKeys.has(key.toLowerCase()))
+                        .map(([label, value]) => ({ label, value }))
+                    : [];
+                  return [...hardcoded, ...additional];
+                })().map(({ label, value }) => (
                   <div key={label} className="flex px-7 py-3.5 hover:bg-gray-50 transition-colors">
                     <dt className="w-44 text-sm font-medium text-gray-500 shrink-0">{label}</dt>
                     <dd className="text-sm text-gray-900 font-semibold">{value}</dd>
@@ -251,6 +258,9 @@ export default async function ProductPage({
                 </div>
               ))}
             </div>
+
+            {/* Spec sheet download */}
+            <SpecSheetButton product={product} />
           </div>
 
           {/* ── RIGHT: Sticky info + quote ────────────────────────── */}

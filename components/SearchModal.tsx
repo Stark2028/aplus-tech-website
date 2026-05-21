@@ -25,6 +25,7 @@ function useRecentSearches() {
   useEffect(() => {
     try {
       const stored = localStorage.getItem("aplus_searches");
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (stored) setRecent(JSON.parse(stored));
     } catch {}
   }, []);
@@ -89,7 +90,9 @@ export default function SearchModal() {
   // Auto-focus when opening
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setQuery("");
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveIndex(-1);
       setTimeout(() => inputRef.current?.focus(), 40);
     }

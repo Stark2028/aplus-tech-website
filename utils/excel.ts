@@ -28,7 +28,7 @@ export async function getProductSpecs(productId: string): Promise<ProductSpec[] 
         // Or if it's a table, we can use default (array of objects).
         // Let's assume it's a simple key-value table or a standard table. 
         // Usually specs are "Feature | Value".
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as any[][];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as (string | number)[][];
 
         // Filter out empty rows and map to a clean structure
         // We'll represent it as a list of { label: string, value: string } for generic display

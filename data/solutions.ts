@@ -1,4 +1,5 @@
 import { Zap, Monitor, LayoutGrid, Award } from "lucide-react";
+import { ElementType } from "react";
 
 export interface Solution {
     id: string;
@@ -10,7 +11,7 @@ export interface Solution {
     benefits: {
         title: string;
         description: string;
-        icon: any;
+        icon: ElementType;
     }[];
     recommendedSeries: string[]; // e.g., ["QHC", "VMT"]
 }
@@ -39,7 +40,7 @@ export const solutions: Solution[] = [
                 icon: Award,
             },
         ],
-        recommendedSeries: ["HBU", "QHC", "IWA"],
+        recommendedSeries: ["HBU", "HGU", "HG75", "AU", "BEFX", "BEA", "BEC", "BED", "QHC", "QMC", "QH115"],
     },
     {
         id: "corporate",
@@ -64,7 +65,7 @@ export const solutions: Solution[] = [
                 icon: LayoutGrid,
             },
         ],
-        recommendedSeries: ["QHC", "WMA", "IWA"],
+        recommendedSeries: ["Flip", "WAC", "WAD", "WAFX", "WAF", "QHC", "QMC", "QH115", "VMB", "VMC", "VHC", "VHB", "MP016"],
     },
     {
         id: "education",
@@ -89,7 +90,7 @@ export const solutions: Solution[] = [
                 icon: LayoutGrid,
             },
         ],
-        recommendedSeries: ["WMA", "QBC"],
+        recommendedSeries: ["Flip", "WAC", "WAD", "WAFX", "WAF", "QBC", "QBR", "QMR", "QMB"],
     },
     {
         id: "retail",
@@ -114,6 +115,6 @@ export const solutions: Solution[] = [
                 icon: LayoutGrid,
             },
         ],
-        recommendedSeries: ["QHC", "QBC", "IWA"],
+        recommendedSeries: ["QHC", "QMC", "QBC", "QBR", "QH115", "QPDX", "QET", "QMR", "QMB", "MP016", "VMB", "VMC", "VHC", "VHB", "VH55R"],
     },
 ];

@@ -11,6 +11,7 @@ export default function ProductGallery({ images }: { images: string[] }) {
 
   useEffect(() => {
     controls.start({ scale: 1, x: 0, y: 0 });
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setScale(1);
   }, [activeImage, controls]);
 

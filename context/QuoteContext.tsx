@@ -29,6 +29,7 @@ export function QuoteProvider({ children }: { children: React.ReactNode }) {
         const savedQuote = localStorage.getItem("b2b_quote_cart");
         if (savedQuote) {
             try {
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setQuoteItems(JSON.parse(savedQuote));
             } catch (e) {
                 console.error("Failed to parse quote cart", e);

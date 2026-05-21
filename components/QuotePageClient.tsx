@@ -19,6 +19,7 @@ import {
   Clock,
   FileText,
   MessageCircle,
+  ExternalLink,
 } from "lucide-react";
 import { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
@@ -89,6 +90,15 @@ export default function QuotePageClient() {
       body += `   Product ID: ${item.product.id}\n\n`;
     });
     return body;
+  };
+
+  const generateWhatsAppMessage = () => {
+    let msg = "Hi! I'd like to request a quote for the following Samsung displays from Aplus Technology Solutions:\n\n";
+    quoteItems.forEach((item, i) => {
+      msg += `${i + 1}. ${item.product.name} (${item.product.series}) — Qty: ${item.quantity}\n`;
+    });
+    msg += "\nPlease share pricing, availability, and delivery timeline. Thank you!";
+    return encodeURIComponent(msg);
   };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -307,35 +317,39 @@ export default function QuotePageClient() {
                     key={item.product.id}
                     className="p-5 sm:p-6 flex flex-col sm:flex-row gap-5 sm:items-center group hover:bg-gray-50/60 transition-colors"
                   >
-                    {/* Image */}
-                    <div className="relative w-full sm:w-28 h-28 shrink-0 bg-gray-100 rounded-xl overflow-hidden border border-gray-100">
-                      {item.product.images?.[0] ? (
-                        <Image
-                          src={item.product.images[0]}
-                          alt={item.product.name}
-                          fill
-                          className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">
-                          No Image
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Details */}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">
-                        {item.product.series}
-                      </p>
-                      <h3 className="font-bold text-gray-900 text-base mb-2 line-clamp-2 leading-snug">
-                        {item.product.name}
-                      </h3>
-                      <div className="flex items-center gap-2 text-xs font-semibold text-green-700 bg-green-50 w-fit px-2.5 py-1 rounded-full border border-green-100">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                        In Stock
+                    {/* Image + Details — clickable link to product page */}
+                    <Link
+                      href={`/products/${item.product.id}`}
+                      className="flex flex-col sm:flex-row gap-5 sm:items-center flex-1 min-w-0 hover:opacity-90 transition-opacity"
+                    >
+                      <div className="relative w-full sm:w-28 h-28 shrink-0 bg-gray-100 rounded-xl overflow-hidden border border-gray-100">
+                        {item.product.images?.[0] ? (
+                          <Image
+                            src={item.product.images[0]}
+                            alt={item.product.name}
+                            fill
+                            className="object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">
+                            No Image
+                          </div>
+                        )}
                       </div>
-                    </div>
+
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">
+                          {item.product.series}
+                        </p>
+                        <h3 className="font-bold text-gray-900 text-base mb-2 line-clamp-2 leading-snug">
+                          {item.product.name}
+                        </h3>
+                        <div className="flex items-center gap-2 text-xs font-semibold text-green-700 bg-green-50 w-fit px-2.5 py-1 rounded-full border border-green-100">
+                          <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                          In Stock
+                        </div>
+                      </div>
+                    </Link>
 
                     {/* Qty + remove */}
                     <div className="flex items-center justify-between sm:justify-end gap-4">
@@ -463,7 +477,7 @@ export default function QuotePageClient() {
                   />
                 </div>
 
-                <div className="pt-2">
+                <div className="pt-2 space-y-2.5">
                   <button
                     type="submit"
                     disabled={isSubmitting}
@@ -478,6 +492,26 @@ export default function QuotePageClient() {
                       </>
                     )}
                   </button>
+
+                  <div className="relative flex items-center gap-2">
+                    <div className="flex-1 h-px bg-gray-100" />
+                    <span className="text-[11px] text-gray-400 font-medium">or</span>
+                    <div className="flex-1 h-px bg-gray-100" />
+                  </div>
+
+                  <a
+                    href={`https://wa.me/${WHATSAPP_NUMBER}?text=${generateWhatsAppMessage()}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => trackEvent("quote_whatsapp_click", { total_items: totalItems })}
+                    className="w-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all"
+                  >
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white shrink-0">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                    </svg>
+                    Send Cart via WhatsApp
+                    <ExternalLink size={13} className="opacity-70" />
+                  </a>
                 </div>
 
                 <p className="text-[11px] text-center text-gray-400 pt-1">

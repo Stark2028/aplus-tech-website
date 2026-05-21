@@ -22,6 +22,7 @@ export default function Analytics({ gaId }: { gaId: string }) {
 
   useEffect(() => {
     if (localStorage.getItem("aplus_cookie_consent") === "accepted") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setConsented(true);
     }
     const handler = () => setConsented(true);

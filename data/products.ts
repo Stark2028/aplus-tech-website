@@ -76,16 +76,17 @@ With a 16/7 operation rating and a size range from 43" to 82", the QET Series ad
   },
   {
     id: "samsung-signage-qbc",
-    name: "Samsung Signage Display QBC Series",
+    name: "Samsung Crystal UHD Signage QBC Series",
     category: "Digital Signage",
     series: "QBC",
     description:
-      "Ultra-slim signage with Dynamic Crystal Color and enhanced performance for lobbies, retail, and corporate spaces.",
+      "Ultra-slim 28.5 mm Crystal UHD signage with Dynamic Crystal Color, MagicInfo S10, and ENERGY STAR certification — for lobbies, retail, and corporate spaces.",
     features: [
-      "Dynamic Crystal Color for vibrant visuals",
-      "Ultra-slim depth (28.5 mm)",
-      "Centered IR for easy remote control",
-      "MagicINFO S6 content management",
+      "Dynamic Crystal Color — one billion shades",
+      "Ultra-slim 28.5 mm depth with Slim Fit Wall Mount",
+      "Even bezels and centered VESA for landscape/portrait flexibility",
+      "Tizen 7.0 with built-in MagicInfo S10 (SSSP 10.0)",
+      "ENERGY STAR 8.0 & EPEAT Bronze certified",
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
@@ -94,6 +95,33 @@ With a 16/7 operation rating and a size range from 43" to 82", the QET Series ad
       operationTime: "16/7",
     },
     images: ["/products/digital-signage/samsung-signage-qbc/1.webp", "/products/digital-signage/samsung-signage-qbc/2.webp", "/products/digital-signage/samsung-signage-qbc/3.webp"],
+
+    longDescription: `The Samsung QBC Series delivers the same unparalleled slim 28.5 mm profile as the premium QMC Series, bringing ultra-slim Crystal UHD signage to a wider range of deployments without compromising on design elegance or picture quality. Available in six sizes from 43" to 85", the QBC fits seamlessly into any business environment — retail, healthcare, hospitality, or corporate — with even bezels on all four sides and centered VESA mounting holes that allow easy landscape-to-portrait adjustment.
+
+Dynamic Crystal Color with one billion shades delivers lifelike color variations and consistent imagery across the display, while the Quantum Processor Lite 4K upscales any source content for polished, professional results. Tizen 7.0 with built-in MagicInfo S10 content management means signage deployments require no external media players — content updates, schedules, and device monitoring are all managed from a single secure platform.
+
+With Smart Calibration via the Samsung mobile app, teams can guarantee brand color consistency across every display in a multi-site chain. ENERGY STAR 8.0 and EPEAT Bronze certification demonstrate a commitment to energy efficiency, while the Slim Fit Wall Mount makes installation neat and straightforward in any environment.`,
+    additionalSpecs: {
+      "Operating System": "Tizen 7.0",
+      "Content Player": "Built-in MagicInfo S10 (SSSP 10.0)",
+      "Panel Type": "VA",
+      "Processor": "CA53 1.3GHz Quad-Core",
+      "Storage": "8GB (3GB available)",
+      "Depth": "28.5 mm (ultra-slim)",
+      "Contrast Ratio": "4,000:1",
+      "Haze": "2%",
+      "Color Gamut": "72% NTSC",
+      "Input Ports": "HDMI 2.0 × 3, USB 2.0 × 2",
+      "External Control": "RS-232C (In/Out), RJ-45 (LAN)",
+      "Wi-Fi": "2.4 / 5.0 GHz dual-band",
+      "Bluetooth": "Yes",
+      "IP Rating": "IP5x",
+      "Environment": "ENERGY STAR 8.0, EPEAT Bronze",
+      "Security": "802.1x WPA2 Enterprise (EAP-TLS, EAP-TTLS, EAP-PEAP)",
+      "Smart Calibration": "Yes",
+      "Viewing Angle (H/V)": "178° / 178°",
+      "VESA Mount": "200 × 200 mm (43\"–55\"), 400 × 300 mm (65\"), 400 × 400 mm (75\"), 600 × 400 mm (85\")",
+    },
   },
   {
     id: "samsung-signage-qhc",
@@ -142,12 +170,13 @@ The QHC's 4K UHD resolution combined with Samsung's Crystal Display technology p
     category: "Digital Signage",
     series: "QMC",
     description:
-      "The thinnest display in Samsung's commercial signage lineup — maximized space efficiency without compromising brightness.",
+      "The thinnest display in Samsung's UHD signage lineup — 28.5 mm depth, 500 nit brightness, SmartView+, and MagicInfo S10 for 24/7 commercial deployments.",
     features: [
-      "Ultra-slim depth (thinnest in lineup)",
-      "500 nit brightness",
-      "Anti-glare panel",
-      "24/7 operation grade",
+      "Ultra-slim 28.5 mm depth — thinnest in UHD signage lineup",
+      "500 nit brightness for 24/7 operation",
+      "SmartView+ wireless screen sharing",
+      "Tizen 7.0 with built-in MagicInfo S10 (SSSP 10.0)",
+      "ENERGY STAR 8.0, EPEAT Bronze & TÜV Rheinland Carbon Footprint (50\" model)",
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
@@ -156,25 +185,34 @@ The QHC's 4K UHD resolution combined with Samsung's Crystal Display technology p
       operationTime: "24/7",
     },
     images: ["/products/digital-signage/samsung-signage-qmc/1.webp", "/products/digital-signage/samsung-signage-qmc/2.webp", "/products/digital-signage/samsung-signage-qmc/3.webp"],
-  
-    longDescription: `The Samsung QMC Series redefines space efficiency in commercial signage, boasting the thinnest profile in Samsung's enterprise display lineup without sacrificing the 500-nit brightness required for professional environments. At just 26 mm depth, the QMC fits into architectural recesses, behind counters, and in constrained mounting scenarios where traditional displays would never fit.
 
-Designed for 24/7 operation reliability, the QMC powers menus, corporate communications, retail campaigns, and informational displays in hospitality, healthcare, and retail sectors. Its anti-glare panel reduces reflections and protects content visibility in mixed-lighting environments, while the bezel-less design and narrow bezels create the impression of a unified screen rather than individual displays.
+    longDescription: `The Samsung QMC Series redefines space efficiency in commercial signage, boasting the thinnest profile in Samsung's UHD signage lineup at just 28.5 mm without sacrificing the 500-nit brightness required for professional environments. Designed for 24/7 operation, the QMC powers menus, corporate communications, retail campaigns, and informational displays in hospitality, healthcare, and retail sectors.
 
-The QMC's integrated MagicINFO Player S6 with built-in Wi-Fi and LAN connectivity enables rapid content deployment across multiple locations. From small 43" displays to larger 85" installations, the QMC scales flawlessly to match any signage requirement, making it ideal for retail chains, restaurant groups, and corporate franchises managing hundreds of endpoints.`,
+Even bezels on all four sides and centered VESA mounting holes ensure a consistent look and easy adjustability to portrait mode. SmartView+ enables wireless screen sharing and quick screen switching with a single click, making the QMC ideal for collaboration as well as pure signage. Dynamic Crystal Color and Quantum Processor Lite 4K deliver consistent, lifelike colors to any content regardless of source resolution.
+
+The QMC's integrated MagicInfo S10 with built-in Wi-Fi and LAN connectivity enables rapid content deployment and remote management across multiple locations. Smart Calibration via the Samsung mobile app guarantees brand color consistency across every display in a chain. ENERGY STAR 8.0, EPEAT Bronze, and TÜV Rheinland Carbon Footprint certification (50" model) reflect a commitment to environmental responsibility.`,
     additionalSpecs: {
-      "Operating System": "Tizen 6.5",
-      "Content Player": "MagicINFO Player S6",
-      "Panel Type": "PVA Crystal Display",
-      "Depth": "26 mm (thinnest in lineup)",
-      "Input Ports": "HDMI × 2, USB × 2, RS-232C (In/Out), RJ-45 (LAN)",
-      "Wi-Fi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
-      "Bluetooth": "5.0",
-      "Processor": "Quad-core 1.5 GHz",
-      "Memory / Storage": "2.5 GB / 16 GB",
-      "Anti-Glare": "Yes",
-      "Color Gamut": "72% NTSC (typical)",
-      "VESA Mount": "400 × 400 mm",
+      "Operating System": "Tizen 7.0",
+      "Content Player": "Built-in MagicInfo S10 (SSSP 10.0)",
+      "Panel Type": "VA (55\"–85\"), VA/IPS (43\"–50\")",
+      "Processor": "CA73 1.6GHz Quad-Core",
+      "Storage": "16GB (10GB available)",
+      "Depth": "28.5 mm (ultra-slim)",
+      "Contrast Ratio": "4,000:1 (VA); 1,200:1 (IPS)",
+      "Haze": "25%",
+      "Color Gamut": "72% NTSC",
+      "Input Ports": "DP 1.2 × 1, HDMI 2.0 × 3, USB 2.0 × 2",
+      "External Control": "RS-232C (In/Out), RJ-45 (LAN)",
+      "Wi-Fi": "2.4 / 5.0 GHz dual-band",
+      "Bluetooth": "Yes",
+      "Operation Hour": "24/7",
+      "IP Rating": "IP5x",
+      "Environment": "ENERGY STAR 8.0, EPEAT Bronze, TÜV Rheinland Carbon Footprint (50\" model)",
+      "Security": "802.1x WPA2 Enterprise (EAP-TLS, EAP-TTLS, EAP-PEAP)",
+      "SmartView+": "Yes (wireless screen sharing)",
+      "Smart Calibration": "Yes",
+      "Viewing Angle (H/V)": "178° / 178°",
+      "VESA Mount": "200 × 200 mm (43\"–55\"), 400 × 300 mm (65\"), 400 × 400 mm (75\"), 600 × 400 mm (85\")",
     },
   },
   {
@@ -794,39 +832,42 @@ With a single USB-C connection delivering power, data, and high-bandwidth conten
     category: "Interactive Display",
     series: "WAC",
     description:
-      "Android-based interactive display designed for scalable, connected classrooms and collaborative workspaces.",
+      "Android 11 AOSP interactive display for classrooms — 20-point multi-touch, Dual Pen, powerful screen sharing, and intelligent classroom apps.",
     features: [
-      "Android OS — apps and browser built-in",
-      "EDLA certified for Google Play Store",
-      "Multi-touch support",
-      "Remote device management",
+      "Android 11 (AOSP) — intuitive, familiar interface",
+      "20-point IR multi-touch for whole-class participation",
+      "Dual Pen — front nib and back highlighter without mode switching",
+      "Share up to 9 screens simultaneously",
+      "Split screen and multi-window multitasking",
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "400 nit",
-      screenSizes: ["65", "75", "86"],
+      brightness: "390 cd/m²",
+      screenSizes: ["65", "75"],
       operationTime: "16/7",
     },
     images: ["/products/interactive/samsung-interactive-wac/1.jpg", "/products/interactive/samsung-interactive-wac/2.jpg", "/products/interactive/samsung-interactive-wac/3.jpg"],
-  
-    longDescription: `The Samsung WAC Series brings full Android OS flexibility to large-format interactive displays, enabling educators and trainers to deploy familiar apps and services directly on the display without requiring external computers or media players. With EDLA (Enterprise Device Licensing Agreement) certification for Google Play Store access, the WAC opens thousands of educational applications — from mathematics tutorials to virtual science labs to interactive language learning platforms.
 
-Multi-touch capability supporting up to 20 simultaneous touch points enables whole-class participation where every student can contribute ideas, solve problems, and collaborate in real-time. The 4K UHD resolution ensures content details remain crisp even in auditorium-style classrooms where students are seated far from the display.
+    longDescription: `The Samsung WAC Series brings full Android OS flexibility to large-format interactive displays, enabling educators and trainers to deploy familiar apps and tools directly on the display without requiring external computers. Running Android 11 (AOSP), the WAC offers excellent compatibility with Android-based devices, enabling lively, interactive classes where content flows naturally between student devices and the main screen.
 
-Remote device management through Android's EMM (Enterprise Mobility Management) ecosystem simplifies IT administration for school districts managing hundreds of displays across multiple campuses. The WAC automatically deploys app updates, enforces security policies, and collects usage analytics — helping educators understand which resources engage students most effectively.`,
+Multi-touch capability supporting up to 20 simultaneous touch points enables whole-class participation where every student can contribute ideas, solve problems, and collaborate in real-time. The Dual Pen design — with a front nib and a back highlighter — lets teachers switch writing modes effortlessly without interrupting the lesson flow. Split screen and multi-window modes make it easy to display and work with multiple applications simultaneously.
+
+Powerful screen sharing supports up to nine simultaneous screens so content flows bidirectionally between the large display and individual student devices. Intelligent classroom apps such as timers and stopwatches, easily pinned to the home screen bar, help teachers keep lessons structured and engaging.`,
     additionalSpecs: {
-      "Operating System": "Android 11 (EDLA certified)",
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "400 nit",
-      "Touch Technology": "Infrared multi-touch (20 points)",
-      "Processor": "Octa-core 2.0 GHz",
+      "Operating System": "Android 11 (AOSP)",
+      "Processor": "A55 × 4 (Quad-core)",
       "Memory / Storage": "4 GB / 32 GB",
-      "Input Ports": "HDMI 2.0 × 2, USB 3.0 × 2, USB 2.0 × 2, RS-232C",
-      "Wi-Fi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
-      "Bluetooth": "5.0",
-      "Google Play Store": "Yes (EDLA certified)",
-      "EMM Support": "MDM/EMM compatible",
-      "Color Gamut": "99% sRGB",
+      "Touch Technology": "IR multi-touch (20 points)",
+      "Touch Response Time": "≤10ms",
+      "Drawing Speed": "≤45ms",
+      "Input Ports": "HDMI × 3 (Rear 2, Front 1), USB-C (Front), OPS",
+      "USB": "5 ports (USB 2.0 × 1, USB 3.0 × 4)",
+      "Output": "HDMI Out (Rear), Touch Out × 2 (Front 1, Rear 1)",
+      "External Control": "RS-232C (In/Out), RJ-45 (In/Out)",
+      "Speaker": "Built-in 12W × 2CH",
+      "Glass": "25% haze, 3.2T, ≥8H hardness",
+      "Security": "802.1x WPA2 Enterprise (EAP-TLS, EAP-TTLS, EAP-PEAP)",
+      "VESA Mount": "600 × 400 mm (65\"), 800 × 400 mm (75\")",
     },
   },
   {
@@ -1046,45 +1087,54 @@ With a slim form factor optimized for mounting above modern hospitality furnitur
   },
   {
     id: "samsung-hotel-tv-hgbu800",
-    name: "Samsung Hotel TV HGBU800 Crystal 4K UHD",
+    name: "Samsung Smart Hospitality Display HBU8000 Series",
     category: "Commercial TV",
     subCategory: "Hotel TV",
-    series: "HGBU800",
+    series: "HBU8000",
     description:
-      "Premium hospitality display offering personalized guest engagement with customizable home menus and slim design.",
+      "Smart hospitality display with Netflix access, LYNK Cloud management, Dynamic Crystal Colour, and AirSlim design — delivering home comforts to hotel guests worldwide.",
     features: [
-      "Crystal UHD 4K display",
-      "Customizable Home Menu for hotel branding",
-      "Slim fit design for modern interiors",
-      "LYNK Cloud compatible",
+      "Netflix & leading streaming services built-in",
+      "Samsung LYNK Cloud — centralised remote management",
+      "Dynamic Crystal Colour with HDR10+",
+      "AirSlim ultra-slim design, 3 Bezel-less",
+      "SmartThings Pro for connected hospitality",
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "Standard",
-      screenSizes: ["43", "50", "55", "65", "75"],
+      brightness: "HDR",
+      screenSizes: ["43", "50", "55", "65"],
       operationTime: "16/7",
     },
     images: ["/products/commercial-tv/samsung-hotel-tv-hgbu800/1.webp", "/products/commercial-tv/samsung-hotel-tv-hgbu800/2.webp", "/products/commercial-tv/samsung-hotel-tv-hgbu800/3.webp"],
-  
-    longDescription: `The Samsung HGBU800 brings premium hospitality television to boutique hotels, resorts, and upscale properties seeking to differentiate guest experience through superior display technology. The customizable home menu enables hoteliers to brand the guest room experience — replacing Samsung's default UI with property-specific graphics, logos, and messaging that extends brand presence even when displays are in standby mode.
 
-Crystal UHD 4K display technology ensures streaming content, cable television, and VOD offerings display with exceptional clarity and color accuracy. The slim fit design adapts to modern hospitality furniture arrangements where displays are recessed into built-in cabinetry or mounted above contemporary cabinets.
+    longDescription: `The Samsung HBU8000 Series delivers the comforts of home to guests worldwide. Modern travellers expect the same entertainment amenities they enjoy at home, and the HBU8000 answers with quick access to leading streaming services — including Netflix — in stunning 4K UHD quality with Dynamic Crystal Colour. The instantly familiar Smart TV UI lets guests sign in and enjoy their favourite content without any setup friction.
 
-With LYNK Cloud compatibility, the HGBU800 becomes part of a managed ecosystem where revenue managers can push promotional content, manage room-by-room power settings for energy efficiency, and aggregate analytics about guest viewing patterns to inform content decisions. The 16/7 operation rating ensures displays remain available and reliable throughout guest occupancy cycles.`,
+Safe credentials management via Samsung LYNK Cloud ensures guest logins are retained during their stay and automatically wiped upon check-out through the hotel's Property Management System. Hotel managers can curate the in-room experience remotely — creating and deploying web-based content, updating channel maps, and controlling basic display functions from a centralised LYNK Cloud dashboard across all properties worldwide.
+
+Dynamic Crystal Colour technology with HDR10+ and a billion shades of colour elevates every viewing experience. The AirSlim ultra-slim design with a 3 Bezel-less finish complements any interior and saves space, while the Quantum Processor Lite 4K upscales all content for crisp, vibrant imagery.`,
     additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "Standard (250-300 nit)",
-      "Panel Type": "IPS Crystal UHD",
-      "Operating System": "Tizen 6.5 (Hotel Edition)",
-      "Customizable Home Menu": "Yes (hotel branding)",
-      "LYNK Cloud": "Compatible",
-      "Input Ports": "HDMI × 2, USB × 2, RJ-45 (LAN), RS-232C",
-      "Processor": "Quad-core 1.5 GHz",
-      "Memory / Storage": "2 GB / 8 GB",
-      "Slim Fit": "Yes (modern interiors optimized)",
-      "Color Gamut": "99% BT.709",
+      "Picture Engine": "Quantum Processor Lite 4K",
+      "PQI": "2200",
+      "HDR": "HDR, HDR10+, HLG",
+      "Colour": "Dynamic Crystal Colour",
+      "Micro Dimming": "UHD Dimming",
+      "Operating System": "Tizen Smart TV",
+      "Samsung LYNK Cloud": "Yes",
+      "Sound Output": "20W, 2CH",
+      "Dolby Decoder": "MS12 2ch",
+      "Object Tracking Sound": "OTS Lite",
+      "Q-Symphony": "Yes",
+      "Bluetooth Audio": "Yes",
+      "Input HDMI": "HDMI × 3",
+      "Input USB": "USB × 2",
+      "Ethernet (LAN)": "1",
+      "Digital Audio Out": "Optical (SPDIF) × 1",
+      "Wireless": "Wi-Fi 5, Bluetooth 5.2",
+      "Design": "AirSlim, 3 Bezel-less, Slim look",
+      "Eco Sensor": "Yes",
       "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "300 × 300 mm",
+      "VESA Mount": "200 × 200 mm (43\"–55\"), 400 × 300 mm (65\")",
     },
   },
   {
@@ -1528,41 +1578,46 @@ With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, 
     subCategory: "Business TV",
     series: "BEFX-H2",
     description:
-      "Commercial-grade business television with enhanced brightness and a wide size range — designed for lobbies, waiting rooms, and common-area deployments.",
+      "400 nit 4K UHD business TV with VXT cloud CMS, PlayLock, SmartThings Pro, and Samsung Business TV App — optimised for cafés, clinics, retail, and lobbies.",
     features: [
-      "Enhanced 300 nit brightness for commercial spaces",
-      "Crystal Processor 4K for upscaled content",
-      "Business TV App for content scheduling",
-      "Clean cable solution for tidy installations",
-      "16/7 operation",
+      "400 nit 4K UHD for well-lit commercial spaces",
+      "Samsung VXT cloud content management (S Series plan)",
+      "PlayLock — pin-code screen protection",
+      "SmartThings Pro for smart building integration",
+      "Samsung Business TV App (Android & iOS)",
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "300 nit",
-      screenSizes: ["43", "55", "65", "75", "85"],
+      brightness: "400 nit",
+      screenSizes: ["43", "50", "55", "65", "75", "85"],
       operationTime: "16/7",
     },
     images: ["/products/commercial-tv/samsung-business-tv-befx-h2/1.jpg", "/products/commercial-tv/samsung-business-tv-befx-h2/2.jpg", "/products/commercial-tv/samsung-business-tv-befx-h2/3.jpg"],
-  
-    longDescription: `The Samsung BEFX-H2 Series represents the smart choice for business environments where brightness, reliability, and visual quality must align with budget consciousness. The enhanced 300-nit brightness lifts the display above standard business TVs, ensuring content remains visible and vibrant in well-lit commercial spaces — corporate lobbies, waiting rooms, training facilities, and open office environments.
 
-Crystal Processor 4K intelligently upscales standard-definition inputs — legacy office systems, cable broadcasts, video calls — to near-4K clarity, breathing new life into mixed-source environments that contain both modern and legacy equipment. The Business TV App enables content scheduling and remote management, allowing organizations to synchronize messaging across multiple locations from a centralized dashboard.
+    longDescription: `The Samsung BEFX-H2 Series is optimised for a wide range of business environments — from cafés and boutiques to pharmacies, clinics, and retail chains. Built on the trusted performance of Samsung's consumer TV platform, it delivers stunning 4K UHD picture quality that captures attention and elevates your space.
 
-With a comprehensive size range from 43" to 85", the BEFX-H2 adapts to any business environment. The clean cable solution routes connectivity through a single elegant conduit, improving aesthetics while reducing installation complexity. The 16/7 operation rating ensures reliability during business hours while providing adequate thermal headroom for extended operation without overheating.`,
+Combined with practical tools like the Samsung Business TV App and VXT cloud content management, you can easily create, schedule, and manage promotional content without extra hardware or complex systems. PlayLock prevents unauthorised users from tampering with the screen using a pin-code system, ensuring only your selected content is displayed. SmartThings Pro connectivity enhances convenience, safety, and energy efficiency across varied business settings.
+
+Available in six sizes from 43" to 85", the BEFX-H2 adapts to any commercial space. HDR10+ support and Crystal Processor 4K deliver vibrant upscaled imagery, while the 16/7 operation rating ensures the display holds up reliably throughout extended business hours.`,
     additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "300 nit",
-      "Panel Type": "IPS Crystal",
-      "Processor": "Crystal Processor 4K",
-      "Operating System": "Tizen 6.5",
-      "Clean Cable": "Yes (single conduit solution)",
-      "Business TV App": "Yes",
-      "Input Ports": "HDMI × 2, USB × 2, RJ-45 (LAN), RS-232C",
-      "Processor Speed": "Quad-core 1.5 GHz",
-      "Memory / Storage": "2.5 GB / 16 GB",
-      "Color Gamut": "72% NTSC (typical)",
+      "Picture Engine": "Crystal Processor 4K",
+      "HDR10+": "Yes",
+      "Operating System": "Tizen Smart TV",
+      "Colour Gamut": "98% sRGB",
+      "Operation Hour": "16/7",
+      "Input Video": "HDMI × 3",
+      "Input USB": "USB × 1",
+      "Input RF": "1 Terrestrial / 1 Cable / 1 Satellite",
+      "External Control": "RJ-45 (LAN)",
+      "Wireless": "Wi-Fi 5, Bluetooth 5.2",
+      "Audio": "20W, 2CH (10W + 10W), Bluetooth Audio",
       "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "300 × 300 mm (43\"-65\"), 400 × 400 mm (75\"-85\")",
+      "Business TV App": "Yes (Android / iOS)",
+      "VXT CMS": "Yes (S Series plan)",
+      "PlayLock": "Yes",
+      "SmartThings Pro": "Yes",
+      "Digital Art (Niio)": "Yes (subscription required)",
+      "VESA Mount": "200 × 200 mm (43\"–55\"), 400 × 300 mm (65\"–85\")",
     },
   },
   {
@@ -1692,6 +1747,71 @@ Dynamic Crystal Color technology delivers exceptional color saturation and vibra
       "Color Gamut": "99% BT.709",
       "Viewing Angle (H/V)": "178° / 178°",
       "VESA Mount": "300 × 300 mm (43\"-65\"), 400 × 400 mm (75\"-85\")",
+    },
+  },
+  {
+    id: "samsung-interactive-wafx-p",
+    name: "Samsung WAFX-P Series Interactive Display",
+    category: "Interactive Display",
+    series: "WAFX-P",
+    description:
+      "Next-generation interactive display with Android 15, EDLA certification, 48MP camera, 8-mic far-field array, and embedded AI — for classrooms and meeting rooms.",
+    features: [
+      "Android 15 with EDLA — full Google Play, Chrome, YouTube, Drive",
+      "48MP built-in camera with 114.9° wide-angle FOV",
+      "8-mic far-field array with 10 m pickup range",
+      "50-point IR touch with ≤3ms response time",
+      "AI Write & Search — circle handwriting to search instantly",
+      "Wi-Fi 6 (802.11ax) and 1 Gbps Ethernet",
+    ],
+    specs: {
+      resolution: "3,840 × 2,160 (4K UHD)",
+      brightness: "450 cd/m²",
+      screenSizes: ["65", "75", "86"],
+      operationTime: "16/7",
+    },
+    images: [
+      "/products/interactive/samsung-interactive-wafx-p/1.jpg",
+      "/products/interactive/samsung-interactive-wafx-p/2.jpg",
+      "/products/interactive/samsung-interactive-wafx-p/3.jpg",
+    ],
+
+    longDescription: `The Samsung WAFX-P Series is a next-generation interactive display built for both classrooms and meeting rooms, delivering unlimited learning and collaboration possibilities. Powered by Android 15 and a high-performance Octa-core CPU (A78 × 4 + A55 × 4), it delivers a fast, intuitive experience for accessing essential apps and tools. As an EDLA-certified device, the WAFX-P provides official access to Google apps and services — including Google Play, Chrome, YouTube, and Google Drive — optimised for education and collaboration.
+
+The built-in 48MP camera with 114.9° diagonal field of view and an 8-mic far-field array with 10-metre 180° pickup range make the WAFX-P a true all-in-one video call system — no extra equipment required. Dual 20W speakers with a dedicated woofer deliver clear, room-filling audio for presentations, lessons, and calls. NFC support enables tap-to-connect and tap-to-authenticate workflows.
+
+Embedded AI functions unlock AI Write & Search: simply circle handwritten notes on screen and tap the search icon to instantly surface web results, images, and resources without typing. A dedicated Annotation button lets users annotate over any content — videos, documents, live feeds — without switching apps. An on-premise Device Management Solution supports local network environments, enabling IT teams to remotely manage whiteboard settings and apps across multiple rooms.`,
+    additionalSpecs: {
+      "Operating System": "Android 15 (EDLA certified)",
+      "Processor": "Octa-core (A78 × 4 + A55 × 4)",
+      "RAM": "16GB",
+      "Storage": "128GB",
+      "Contrast Ratio": "1,200:1 (typical) / 4,000:1 (dynamic)",
+      "Viewing Angle (H/V)": "178° / 178°",
+      "Response Time (G-to-G)": "8ms",
+      "Backlight Life": "50,000 hrs",
+      "Glass": "25% haze, 3.2T, ≥8H hardness",
+      "Touch Technology": "IR multi-touch (50 points)",
+      "Touch Response Time": "≤3ms",
+      "Drawing Speed": "35ms (Android 15)",
+      "Touch Pen": "Passive Pen (Front 3mm / Back 8mm recognition)",
+      "Camera": "48MP, UVC, 114.9° diagonal FOV",
+      "Camera Formats": "MJPEG 3840×2160@30fps / 1920×1080@30fps / 1280×720@30fps",
+      "Microphone": "8-mic array, 10m pickup (180°), AEC, AGC, Speech Enhancement",
+      "Speaker": "Built-in 20W × 2CH + Woofer (4Ω 20W)",
+      "NFC": "ISO/IEC 14443 A/B, MIFARE/FeliCa, <30mm range",
+      "Input Ports": "HDMI × 3 (Rear 2, Front 1), USB-C (Front), OPS, DisplayPort",
+      "USB": "5 ports (USB 2.0 × 3, USB 3.0 × 2)",
+      "Output": "HDMI Out (Rear), Touch Out × 2, Audio Out (Stereo Mini Jack)",
+      "External Control": "RS-232C In, RJ-45 In/Out",
+      "Wi-Fi": "Wi-Fi 6 (802.11ax), dual-band",
+      "Bluetooth": "BT 5.0",
+      "Ethernet": "1 Gbps",
+      "Screen Share": "Yes (up to 9 simultaneous screens)",
+      "WebRTC": "Yes",
+      "Environment": "ENERGY STAR",
+      "Security": "WFA/WPA/WPA2/WPA3 Personal, WPS 2.0",
+      "VESA Mount": "600 × 400 mm (65\"), 800 × 400 mm (75\"), 800 × 600 mm (86\")",
     },
   },
 ];

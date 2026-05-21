@@ -1,9 +1,8 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowRight, ChevronRight, Phone } from "lucide-react";
 import { solutions } from "@/data/solutions";
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
@@ -22,101 +21,107 @@ export default function IndustryPage({ params }: { params: Promise<{ slug: strin
     );
 
     const gradients: Record<string, string> = {
-        hospitality: "bg-linear-to-r from-teal-900 to-blue-900",
-        corporate: "bg-linear-to-r from-slate-900 to-gray-800",
-        education: "bg-linear-to-r from-indigo-900 to-blue-800",
-        retail: "bg-linear-to-r from-purple-900 to-pink-900",
+        hospitality: "from-teal-900 via-cyan-900 to-blue-950",
+        corporate: "from-slate-900 via-blue-950 to-gray-900",
+        education: "from-indigo-900 via-blue-900 to-violet-950",
+        retail: "from-purple-900 via-fuchsia-900 to-rose-950",
     };
 
-    const bgGradient = gradients[slug] || "bg-linear-to-r from-blue-900 to-slate-900";
+    const accentGradient = gradients[slug] || "from-blue-900 via-blue-950 to-slate-900";
+
+    const stats = [
+        { value: "15+", label: "Years Experience" },
+        { value: "500+", label: "Deployments" },
+        { value: "Pan-India", label: "Service Coverage" },
+        { value: "Samsung", label: "Authorized Partner" },
+    ];
 
     return (
-        <div className="bg-white">
-            {/* Hero Section */}
-            <div className={`relative h-[50vh] min-h-[400px] w-full overflow-hidden ${bgGradient} flex items-center`}>
-                {/* Abstract Pattern Overlay */}
-                <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+        <main className="bg-white">
+            {/* ───────────────── Hero ───────────────── */}
+            <section className={`relative overflow-hidden bg-linear-to-br ${accentGradient}`}>
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.25),transparent_50%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.35)_100%)]" />
 
-                <div className="relative z-10 w-full px-6 max-w-7xl mx-auto flex flex-col justify-center h-full">
-                    <Link
-                        href="/"
-                        className="text-blue-200 hover:text-white mb-6 flex items-center gap-2 font-medium w-fit transition-colors"
-                    >
-                        <ArrowLeft size={16} /> Back to Home
-                    </Link>
-                    <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20">
+                    {/* Breadcrumb */}
+                    <nav className="flex items-center gap-1.5 text-xs text-blue-100/70 mb-12">
+                        <Link href="/" className="hover:text-white transition-colors">Home</Link>
+                        <ChevronRight size={12} />
+                        <span className="text-white/90 font-medium">{solution.title}</span>
+                    </nav>
+
+                    <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-300 mb-4">
+                        Samsung B2B Industry Solution
+                    </p>
+                    <h1 className="text-4xl md:text-6xl font-bold text-white leading-[1.05] tracking-tight">
                         {solution.title}
                     </h1>
-                    <p className="text-xl md:text-2xl text-blue-100 max-w-2xl font-light">
-                        {solution.subtitle}
-                    </p>
                 </div>
-            </div>
+            </section>
 
-            {/* Main Content */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            {/* ───────────────── Trust Strip ───────────────── */}
+            <section className="bg-white border-b border-gray-100">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        {stats.map((s, i) => (
+                            <div
+                                key={s.label}
+                                className={`px-2 md:px-6 ${i > 0 ? "md:border-l md:border-gray-100" : ""}`}
+                            >
+                                <p className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">{s.value}</p>
+                                <p className="text-[11px] text-gray-500 uppercase tracking-wider mt-1.5 font-medium">{s.label}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
 
-                {/* Overview & Benefits */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
-                    <div>
-                        <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                            Tailored Visual Solutions
-                        </h2>
-                        <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                            {solution.description}
-                        </p>
-                        <div className="space-y-6">
-                            {solution.benefits.map((benefit, idx) => (
-                                <div key={idx} className="flex gap-4">
-                                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
-                                        <benefit.icon size={24} />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-gray-900 mb-1">{benefit.title}</h3>
-                                        <p className="text-gray-600 text-sm leading-relaxed">{benefit.description}</p>
-                                    </div>
-                                </div>
+            {/* ───────────────── Recommended Products ───────────────── */}
+            {recommendedProducts.length > 0 && (
+                <section className="py-20 bg-white">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            {recommendedProducts.map((product) => (
+                                <ProductCard key={product.id} product={product} />
                             ))}
                         </div>
                     </div>
+                </section>
+            )}
 
-                    {/* Removed placeholder image block */}
-                </div>
-
-                {/* Recommended Products */}
-                <div className="mb-12">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-8 border-b border-gray-100 pb-4">
-                        Recommended For {solution.title}
-                    </h2>
-
-                    {recommendedProducts.length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                            {recommendedProducts.map(product => (
-                                <div key={product.id} className="h-full">
-                                    <ProductCard product={product} />
-                                </div>
-                            ))}
+            {/* ───────────────── CTA ───────────────── */}
+            <section className="py-20 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className={`relative overflow-hidden rounded-3xl bg-linear-to-br ${accentGradient} p-10 md:p-14`}>
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_30%,rgba(59,130,246,0.3),transparent_50%)]" />
+                        <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                            <div className="lg:col-span-7">
+                                <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
+                                    Planning a {solution.title.toLowerCase()} project?
+                                </h2>
+                                <p className="text-blue-100/90 text-lg max-w-xl leading-relaxed">
+                                    Share your requirements and our solution architects will recommend the right Samsung hardware, sizing, and deployment plan.
+                                </p>
+                            </div>
+                            <div className="lg:col-span-5 flex flex-col gap-3">
+                                <Link
+                                    href="/quote"
+                                    className="inline-flex items-center justify-center gap-2 bg-white text-blue-700 font-semibold px-6 py-4 rounded-lg hover:bg-blue-50 transition-colors shadow-lg shadow-blue-950/30"
+                                >
+                                    Request a Quote <ArrowRight size={16} />
+                                </Link>
+                                <Link
+                                    href="/contact"
+                                    className="inline-flex items-center justify-center gap-2 border border-white/25 text-white font-semibold px-6 py-4 rounded-lg hover:bg-white/10 transition-colors backdrop-blur-sm"
+                                >
+                                    <Phone size={16} /> Talk to a Specialist
+                                </Link>
+                            </div>
                         </div>
-                    ) : (
-                        <p className="text-gray-500 italic">No specific products currently highlighted for this sector. Please view our full catalog.</p>
-                    )}
+                    </div>
                 </div>
-
-                {/* Call to Action */}
-                <div className="bg-blue-600 rounded-2xl p-12 text-center text-white">
-                    <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Space?</h2>
-                    <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
-                        Get a custom quote tailored to your project requirements. Our experts are here to help you choose the right display solution.
-                    </p>
-                    <Link
-                        href="/contact"
-                        className="inline-block bg-white text-blue-600 font-bold px-8 py-4 rounded-lg shadow-lg hover:bg-gray-100 transition-colors"
-                    >
-                        Contact Sales Team
-                    </Link>
-                </div>
-
-            </div>
-        </div>
+            </section>
+        </main>
     );
 }

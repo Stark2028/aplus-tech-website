@@ -38,6 +38,7 @@ export default function RecentlyViewed({ currentProductId }: RecentlyViewedProps
     const resolved = otherIds
       .map((id) => products.find((p) => p.id === id))
       .filter((p): p is (typeof products)[0] => p !== undefined);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setRecentProducts(resolved);
   }, [currentProductId]);
 

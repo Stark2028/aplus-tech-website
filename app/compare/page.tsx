@@ -10,7 +10,7 @@ import { products as allProducts } from "@/data/products";
 import type { Product } from "@/data/products";
 import {
   ArrowLeft, X, ShoppingBag, Printer, Share2, Check,
-  Monitor, Plus,
+  Monitor, Plus, FileSpreadsheet,
 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
@@ -54,6 +54,21 @@ function ComparePageInner() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [copied, setCopied] = useState(false);
+
+  const handleExportExcel = async () => {
+    const XLSX = await import("xlsx");
+    const headers = ["Specification", ...selectedProducts.map((p) => p.name)];
+    const rows = [
+      ...SPEC_ROWS.map((row) => [row.label, ...selectedProducts.map((p) => row.getValue(p))]),
+      ["Key Features", ...selectedProducts.map((p) => p.features.slice(0, 4).join("; "))],
+    ];
+    const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+    ws["!cols"] = [{ wch: 22 }, ...selectedProducts.map(() => ({ wch: 36 }))];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Product Comparison");
+    XLSX.writeFile(wb, "samsung-product-comparison.xlsx");
+    trackEvent("compare_export_excel", { product_count: selectedProducts.length });
+  };
 
   // Load from URL params on first render (enables link sharing)
   useEffect(() => {
@@ -138,6 +153,13 @@ function ComparePageInner() {
               >
                 <Printer size={14} />
                 Print / PDF
+              </button>
+              <button
+                onClick={handleExportExcel}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-green-400 hover:text-green-700 transition-all"
+              >
+                <FileSpreadsheet size={14} />
+                Export Excel
               </button>
             </div>
           </div>

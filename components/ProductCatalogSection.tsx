@@ -60,9 +60,10 @@ export default function ProductCatalogSection() {
         {/* Product grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {filtered.map((product) => (
-            <div
+            <Link
               key={product.id}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group flex flex-col"
+              href={`/products/${product.id}`}
+              className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group flex flex-col cursor-pointer"
             >
               {/* Image */}
               <div className="h-48 bg-linear-to-br from-gray-50 to-gray-100 relative overflow-hidden">
@@ -113,20 +114,19 @@ export default function ProductCatalogSection() {
                 <div className="mt-auto flex items-center gap-2">
                   <Link
                     href="/contact"
+                    onClick={(e) => e.stopPropagation()}
                     className="flex-1 text-center bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2.5 px-3 rounded-lg transition-colors"
                   >
                     Get Quote
                   </Link>
-                  <Link
-                    href={`/products/${product.id}`}
+                  <span
                     className="flex items-center justify-center w-9 h-9 border border-gray-200 hover:border-blue-300 hover:text-blue-600 text-gray-400 rounded-lg transition-colors"
-                    title="View details"
                   >
                     <ArrowRight size={15} />
-                  </Link>
+                  </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
