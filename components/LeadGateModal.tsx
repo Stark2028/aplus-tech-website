@@ -14,6 +14,7 @@ import {
   type GatedLead,
 } from "@/lib/leadGate";
 import { trackEvent } from "@/lib/analytics";
+import { toast } from "sonner";
 
 interface Props {
   isOpen: boolean;
@@ -125,12 +126,15 @@ export default function LeadGateModal({
       trackEvent(`${analyticsKey}_submitted`, {});
 
       setStatus("success");
+      toast.success("Resource unlocked! Downloading now...");
       setTimeout(() => {
         onUnlock(lead);
       }, 400);
     } catch (err) {
       console.error(err);
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
+      const msg = err instanceof Error ? err.message : "Something went wrong.";
+      setErrorMsg(msg);
+      toast.error(msg);
       setStatus("error");
     }
   };

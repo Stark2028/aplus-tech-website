@@ -9,6 +9,8 @@ import Analytics from "@/components/Analytics";
 import PostHogProvider from "@/components/PostHogProvider";
 import PageTransition from "@/components/PageTransition";
 import ClientFloats from "@/components/ClientFloats";
+import ScrollProgress from "@/components/ScrollProgress";
+import { Toaster } from "sonner";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "";
 
@@ -91,6 +93,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} ${jakartaSans.variable} bg-background text-foreground`}>
+        <ScrollProgress />
+        <Toaster richColors position="bottom-right" />
         <Analytics gaId={GA_ID} />
 
         {/* Skip-to-content for keyboard/screen-reader users */}

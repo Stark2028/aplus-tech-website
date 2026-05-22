@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Loader2 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
+import { toast } from "sonner";
 
 export default function QuoteForm({ productName }: { productName: string }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -31,9 +32,11 @@ export default function QuoteForm({ productName }: { productName: string }) {
     if (data.success) {
       setIsSubmitted(true);
       setResult("Form Submitted Successfully");
+      toast.success("Quote request sent successfully!");
       trackEvent("quote_form_submitted", { product_name: productName });
     } else {
       setResult(data.message || "Something went wrong.");
+      toast.error(data.message || "Failed to send request.");
     }
   }
 
@@ -116,9 +119,10 @@ export default function QuoteForm({ productName }: { productName: string }) {
 
         <button 
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]"
+          disabled={result === "Sending..."}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
-          <Send size={18} />
+          {result === "Sending..." ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}
           {result === "Sending..." ? "Sending..." : "Send Request"}
         </button>
 
