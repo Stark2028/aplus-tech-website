@@ -96,6 +96,13 @@ export default function NavbarDesktop({ cartCount }: Props) {
         </div>
 
         <Link
+          href="/room-configurator"
+          className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
+        >
+          Room Configurator
+        </Link>
+
+        <Link
           href="/about"
           className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
         >

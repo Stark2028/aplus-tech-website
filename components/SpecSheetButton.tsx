@@ -325,69 +325,29 @@ function triggerPdf(product: Product) {
 }
 
 function buildSpecSheetHtml(product: Product): string {
-  const allSpecs = [
-    { label: "Resolution", value: product.specs.resolution },
-    { label: "Brightness", value: product.specs.brightness },
-    {
-      label: "Available Sizes",
-      value: product.specs.screenSizes.map((s) => `${s}"`).join(" · "),
-    },
-    { label: "Operation Hours", value: product.specs.operationTime },
-    { label: "Series", value: product.series },
-    { label: "Category", value: product.category },
-    ...(product.subCategory
-      ? [{ label: "Sub-category", value: product.subCategory }]
-      : []),
-    ...(product.additionalSpecs
-      ? Object.entries(product.additionalSpecs).map(([l, v]) => ({
-          label: l,
-          value: v,
-        }))
-      : []),
-  ];
-
-  const specRows = allSpecs
-    .map(
-      ({ label, value }) => `
+  const additionalSpecRows = product.additionalSpecs
+    ? Object.entries(product.additionalSpecs)
+        .map(
+          ([label, value]) => `
       <tr>
         <td class="spec-label">${label}</td>
         <td class="spec-value">${value}</td>
       </tr>`
-    )
-    .join("");
+        )
+        .join("")
+    : "";
 
   const featureItems = product.features
-    .map(
-      (f) => `
-      <li>
-        <span class="feat-dot"></span>
-        <span>${f}</span>
-      </li>`
-    )
-    .join("");
-
-  const quickSpecs = [
-    {
-      label: "Resolution",
-      value: product.specs.resolution.split("(")[0].trim(),
-    },
-    { label: "Brightness", value: product.specs.brightness },
-    { label: "Operation", value: product.specs.operationTime },
-    {
-      label: "Sizes",
-      value: product.specs.screenSizes.map((s) => `${s}"`).join(" · "),
-    },
-  ]
-    .map(
-      ({ label, value }) => `
-      <div class="quickspec">
-        <div class="quickspec-label">${label}</div>
-        <div class="quickspec-value">${value}</div>
-      </div>`
-    )
+    .map((f) => `<li>${f}</li>`)
     .join("");
 
   const heroImage = product.images?.[0] ?? "";
+
+  const docDate = new Date().toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -399,299 +359,258 @@ function buildSpecSheetHtml(product: Product): string {
     html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: #f4f6fb;
+      background: #fff;
       color: #111;
-      font-size: 10.5pt;
-      line-height: 1.5;
+      font-size: 10pt;
+      line-height: 1.55;
       -webkit-font-smoothing: antialiased;
     }
     .sheet {
       max-width: 210mm;
       margin: 0 auto;
+      padding: 18mm 16mm;
       background: #fff;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
-    .page { padding: 16mm 14mm; }
 
     /* HEADER */
-    .header {
-      position: relative;
-      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #4338ca 100%);
-      color: #fff;
-      padding: 22px 14mm 26px;
-      overflow: hidden;
-    }
-    .header::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 90% -30%, rgba(255,255,255,0.18), transparent 50%),
-        radial-gradient(circle at -10% 110%, rgba(99,102,241,0.5), transparent 55%);
-      pointer-events: none;
-    }
-    .header-inner {
-      position: relative;
+    .head {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
-      gap: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #111;
     }
-    .brand-mark {
+    .head .brand {
       font-size: 9pt;
-      font-weight: 800;
-      letter-spacing: .14em;
-      color: #c7d2fe;
+      font-weight: 700;
+      letter-spacing: .18em;
+      color: #111;
       text-transform: uppercase;
     }
-    .brand-name {
-      font-size: 13pt;
-      font-weight: 800;
-      letter-spacing: -.01em;
-      margin-top: 2px;
+    .head .brand-sub {
+      font-size: 8pt;
+      color: #6b7280;
+      margin-top: 3px;
+      letter-spacing: .02em;
     }
-    .brand-sub {
-      font-size: 8.5pt;
-      color: #bfdbfe;
-      margin-top: 4px;
-    }
-    .stamp {
+    .head .meta {
       text-align: right;
       font-size: 8pt;
-      color: #c7d2fe;
+      color: #6b7280;
+      line-height: 1.6;
     }
-    .stamp .ref {
-      display: inline-block;
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 999px;
-      padding: 3px 10px;
-      font-weight: 600;
-      letter-spacing: .04em;
-    }
-    .stamp .date { margin-top: 6px; }
+    .head .meta strong { color: #111; font-weight: 600; }
 
-    /* HERO */
-    .hero {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 20px;
-      align-items: center;
-      padding: 22px 14mm 8px;
-    }
-    .hero-text .series-tag {
-      display: inline-block;
-      background: #eff6ff;
-      color: #2563eb;
+    /* TITLE BLOCK */
+    .title-block { padding: 22px 0 18px; }
+    .title-block .eyebrow {
       font-size: 8pt;
-      font-weight: 800;
-      letter-spacing: .1em;
+      font-weight: 600;
+      letter-spacing: .18em;
+      color: #2563eb;
       text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 999px;
       margin-bottom: 8px;
     }
-    .hero-text h1 {
-      font-size: 19pt;
-      font-weight: 800;
-      color: #0f172a;
+    .title-block h1 {
+      font-size: 22pt;
+      font-weight: 700;
+      color: #111;
       line-height: 1.15;
-      letter-spacing: -.015em;
-      margin-bottom: 8px;
+      letter-spacing: -.02em;
+      margin-bottom: 6px;
     }
-    .hero-text p {
-      font-size: 9.5pt;
-      color: #475569;
-      line-height: 1.65;
+    .title-block .subtitle {
+      font-size: 10pt;
+      color: #6b7280;
+      font-weight: 400;
     }
-    .hero-image {
-      background: linear-gradient(135deg, #f8fafc, #eef2ff);
+
+    /* HERO IMAGE */
+    .hero {
+      padding: 4px 0 22px;
+    }
+    .hero-frame {
       border: 1px solid #e5e7eb;
-      border-radius: 14px;
-      aspect-ratio: 4 / 3;
+      aspect-ratio: 16 / 9;
       display: flex;
       align-items: center;
       justify-content: center;
+      background: #fafafa;
       overflow: hidden;
     }
-    .hero-image img {
-      max-width: 92%;
-      max-height: 92%;
+    .hero-frame img {
+      max-width: 78%;
+      max-height: 86%;
       object-fit: contain;
     }
-    .hero-image .ph {
+    .hero-frame .ph {
       font-size: 9pt;
       color: #9ca3af;
-      font-weight: 600;
     }
 
-    /* QUICK SPECS */
-    .quickspecs {
+    /* DESCRIPTION */
+    .desc {
+      font-size: 10pt;
+      color: #374151;
+      line-height: 1.7;
+      max-width: 600px;
+      margin-bottom: 22px;
+    }
+
+    /* HEADLINE STATS */
+    .stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      padding: 14px 14mm 4px;
+      gap: 0;
+      border-top: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 14px 0;
+      margin-bottom: 26px;
     }
-    .quickspec {
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 10px 12px;
-      background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+    .stat {
+      padding: 0 14px;
+      border-right: 1px solid #e5e7eb;
     }
-    .quickspec-label {
-      font-size: 7pt;
+    .stat:last-child { border-right: none; }
+    .stat-label {
+      font-size: 7.5pt;
       text-transform: uppercase;
-      letter-spacing: .08em;
-      color: #94a3b8;
-      font-weight: 800;
-      margin-bottom: 4px;
+      letter-spacing: .12em;
+      color: #9ca3af;
+      font-weight: 600;
+      margin-bottom: 5px;
     }
-    .quickspec-value {
-      font-size: 10pt;
-      font-weight: 800;
-      color: #0f172a;
+    .stat-value {
+      font-size: 11pt;
+      font-weight: 600;
+      color: #111;
       letter-spacing: -.01em;
     }
 
     /* SECTION */
-    .section {
-      padding: 16px 14mm 0;
-    }
-    .section-title {
-      font-size: 8.5pt;
-      font-weight: 800;
+    .section { margin-bottom: 24px; }
+    .section h2 {
+      font-size: 9pt;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: .12em;
-      color: #1e3a8a;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .section-title::before {
-      content: "";
-      display: inline-block;
-      width: 3px;
-      height: 14px;
-      background: linear-gradient(180deg, #2563eb, #4338ca);
-      border-radius: 2px;
-    }
-    .section-title::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, #e5e7eb, transparent);
+      letter-spacing: .16em;
+      color: #111;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #111;
+      margin-bottom: 12px;
     }
 
     /* FEATURES */
     .features {
       list-style: none;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px 18px;
+      columns: 2;
+      column-gap: 28px;
     }
     .features li {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 9pt;
-      color: #1e293b;
+      font-size: 9.5pt;
+      color: #1f2937;
+      padding: 5px 0 5px 14px;
+      position: relative;
+      break-inside: avoid;
       line-height: 1.55;
     }
-    .feat-dot {
-      width: 14px;
-      height: 14px;
-      flex-shrink: 0;
-      margin-top: 2px;
-      background: #eff6ff;
-      border-radius: 50%;
-      position: relative;
-    }
-    .feat-dot::after {
+    .features li::before {
       content: "";
       position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 5px; height: 5px;
+      left: 0;
+      top: 12px;
+      width: 6px;
+      height: 1px;
       background: #2563eb;
-      border-radius: 50%;
     }
 
     /* SPEC TABLE */
     .spec-table {
       width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      overflow: hidden;
+      border-collapse: collapse;
     }
-    .spec-table tr:nth-child(even) { background: #f8fafc; }
     .spec-table td {
-      padding: 8px 14px;
-      border-bottom: 1px solid #f1f5f9;
-      font-size: 9pt;
+      padding: 9px 0;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 9.5pt;
+      vertical-align: top;
     }
     .spec-table tr:last-child td { border-bottom: none; }
     .spec-label {
-      width: 38%;
-      font-weight: 700;
-      color: #64748b;
-      text-transform: uppercase;
-      font-size: 8pt;
-      letter-spacing: .04em;
+      width: 42%;
+      color: #6b7280;
+      font-weight: 400;
+      padding-right: 16px;
     }
-    .spec-value { color: #0f172a; font-weight: 600; }
+    .spec-value {
+      color: #111;
+      font-weight: 500;
+    }
 
-    /* CTA */
-    .cta {
-      margin: 18px 14mm 0;
-      padding: 16px 18px;
-      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
-      color: #fff;
-      border-radius: 14px;
+    /* CONTACT STRIP */
+    .contact {
+      margin-top: 14px;
+      padding: 18px 0 14px;
+      border-top: 1px solid #111;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
-      gap: 18px;
+      gap: 24px;
     }
-    .cta-title {
-      font-size: 11pt;
-      font-weight: 800;
+    .contact-left .label {
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+    .contact-left .lead {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: #111;
       letter-spacing: -.01em;
     }
-    .cta-sub {
-      font-size: 8.5pt;
-      color: #bfdbfe;
-      margin-top: 2px;
-    }
-    .cta-contact {
+    .contact-right {
       text-align: right;
       font-size: 9pt;
-      line-height: 1.55;
+      color: #374151;
+      line-height: 1.7;
     }
-    .cta-contact strong { font-weight: 800; }
+    .contact-right .phone {
+      font-size: 10.5pt;
+      font-weight: 600;
+      color: #111;
+      letter-spacing: -.01em;
+    }
 
     /* FOOTER */
     .footer {
       margin-top: 18px;
-      padding: 14px 14mm 16px;
+      padding-top: 12px;
       border-top: 1px solid #e5e7eb;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
+      gap: 24px;
       font-size: 7.5pt;
-      color: #94a3b8;
+      color: #9ca3af;
+      line-height: 1.6;
     }
-    .footer .ftr-brand { font-weight: 700; color: #475569; }
+    .footer .legal { letter-spacing: .04em; }
+    .footer .legal .label {
+      color: #6b7280;
+      font-weight: 600;
+      margin-right: 4px;
+    }
+    .footer .copy { text-align: right; }
 
     /* PRINT */
     @media print {
       body { background: #fff; }
-      .sheet { box-shadow: none; max-width: 100%; }
-      .page { padding: 0; }
-      .header, .hero, .quickspecs, .section, .cta, .footer { break-inside: avoid; }
-      @page { size: A4; margin: 8mm; }
+      .sheet { padding: 0; max-width: 100%; }
+      .head, .title-block, .hero, .stats, .section, .contact, .footer { break-inside: avoid; }
+      @page { size: A4; margin: 14mm 14mm 12mm; }
     }
   </style>
 </head>
@@ -699,79 +618,133 @@ function buildSpecSheetHtml(product: Product): string {
 <div class="sheet">
 
   <!-- HEADER -->
-  <div class="header">
-    <div class="header-inner">
-      <div>
-        <div class="brand-mark">Aplus Technology Solutions</div>
-        <div class="brand-name">Product Specification Sheet</div>
-        <div class="brand-sub">Authorized Samsung Commercial Display Distributor · Noida, India</div>
-      </div>
-      <div class="stamp">
-        <div class="ref">${product.series}</div>
-        <div class="date">${new Date().toLocaleDateString("en-IN", {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        })}</div>
-      </div>
+  <div class="head">
+    <div>
+      <div class="brand">Aplus Technology Solutions</div>
+      <div class="brand-sub">Authorized Samsung Commercial Display Distributor · Noida, India</div>
+    </div>
+    <div class="meta">
+      <div><strong>Spec Sheet</strong></div>
+      <div>${product.series}</div>
+      <div>${docDate}</div>
     </div>
   </div>
 
-  <!-- HERO -->
+  <!-- TITLE -->
+  <div class="title-block">
+    <div class="eyebrow">${product.category}${
+      product.subCategory ? ` · ${product.subCategory}` : ""
+    }</div>
+    <h1>${product.name}</h1>
+    <div class="subtitle">${product.series} Series</div>
+  </div>
+
+  <!-- HERO IMAGE -->
   <div class="hero">
-    <div class="hero-text">
-      <div class="series-tag">${product.category}</div>
-      <h1>${product.name}</h1>
-      <p>${product.description}</p>
-    </div>
-    <div class="hero-image">
+    <div class="hero-frame">
       ${
         heroImage
-          ? `<img src="${heroImage}" alt="${product.name}" onerror="this.parentNode.innerHTML='<div class=&quot;ph&quot;>Product Image</div>' " />`
+          ? `<img src="${heroImage}" alt="${product.name}" onerror="this.parentNode.innerHTML='<div class=&quot;ph&quot;>Product Image</div>'" />`
           : `<div class="ph">Product Image</div>`
       }
     </div>
   </div>
 
-  <!-- QUICK SPECS -->
-  <div class="quickspecs">${quickSpecs}</div>
+  <!-- DESCRIPTION -->
+  <p class="desc">${product.description}</p>
+
+  <!-- HEADLINE STATS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Resolution</div>
+      <div class="stat-value">${product.specs.resolution
+        .split("(")[0]
+        .trim()}</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Brightness</div>
+      <div class="stat-value">${product.specs.brightness}</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Operation</div>
+      <div class="stat-value">${product.specs.operationTime}</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Sizes</div>
+      <div class="stat-value">${product.specs.screenSizes
+        .map((s) => `${s}"`)
+        .join(" · ")}</div>
+    </div>
+  </div>
 
   ${
     product.features.length > 0
       ? `
   <div class="section">
-    <div class="section-title">Key Highlights</div>
+    <h2>Key Features</h2>
     <ul class="features">${featureItems}</ul>
   </div>`
       : ""
   }
 
-  <!-- FULL SPECS -->
   <div class="section">
-    <div class="section-title">Technical Specifications</div>
-    <table class="spec-table"><tbody>${specRows}</tbody></table>
+    <h2>Technical Specifications</h2>
+    <table class="spec-table"><tbody>
+      <tr>
+        <td class="spec-label">Resolution</td>
+        <td class="spec-value">${product.specs.resolution}</td>
+      </tr>
+      <tr>
+        <td class="spec-label">Brightness</td>
+        <td class="spec-value">${product.specs.brightness}</td>
+      </tr>
+      <tr>
+        <td class="spec-label">Available Sizes</td>
+        <td class="spec-value">${product.specs.screenSizes
+          .map((s) => `${s}"`)
+          .join(" · ")}</td>
+      </tr>
+      <tr>
+        <td class="spec-label">Operation Hours</td>
+        <td class="spec-value">${product.specs.operationTime}</td>
+      </tr>
+      <tr>
+        <td class="spec-label">Series</td>
+        <td class="spec-value">${product.series}</td>
+      </tr>
+      <tr>
+        <td class="spec-label">Category</td>
+        <td class="spec-value">${product.category}${
+    product.subCategory ? ` — ${product.subCategory}` : ""
+  }</td>
+      </tr>
+      ${additionalSpecRows}
+    </tbody></table>
   </div>
 
-  <!-- CTA -->
-  <div class="cta">
-    <div>
-      <div class="cta-title">Ready to deploy the ${product.series}?</div>
-      <div class="cta-sub">Bulk B2B pricing, GST invoice & pan-India installation.</div>
+  <!-- CONTACT -->
+  <div class="contact">
+    <div class="contact-left">
+      <div class="label">Contact Sales</div>
+      <div class="lead">Bulk pricing · GST invoice · Pan-India installation</div>
     </div>
-    <div class="cta-contact">
-      <strong>+91 93105 09909</strong><br />
-      sales@aplustechsol.com<br />
-      aplustechsol.com
+    <div class="contact-right">
+      <div class="phone">+91 93105 09909</div>
+      <div>sales@aplustechsol.com</div>
+      <div>aplustechsol.com</div>
     </div>
   </div>
 
   <!-- FOOTER -->
   <div class="footer">
-    <div>
-      <span class="ftr-brand">© ${new Date().getFullYear()} Aplus Technology Solutions Pvt. Ltd.</span>
-      &nbsp;·&nbsp; All specifications subject to change without notice.
+    <div class="legal">
+      <div><span class="label">CIN</span>U72900DL2020PTC374888</div>
+      <div><span class="label">GSTIN</span>07AAUCA5631L1Z6</div>
     </div>
-    <div>aplustechsol.com</div>
+    <div class="copy">
+      <div>© ${new Date().getFullYear()} Aplus Technology Solutions Pvt. Ltd.</div>
+      <div>All specifications subject to change without notice.</div>
+    </div>
   </div>
 
 </div>
