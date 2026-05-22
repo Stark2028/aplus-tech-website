@@ -1,8 +1,21 @@
 const TOKEN_URL = "https://accounts.zoho.in/oauth/v2/token";
 const LEADS_URL = "https://www.zohoapis.in/crm/v2/Leads";
 
+async function fetchWithRetry(url: string, options: RequestInit, retries = 3): Promise<Response> {
+  let lastErr: unknown;
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fetch(url, options);
+    } catch (err) {
+      lastErr = err;
+      await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+
 async function getAccessToken(): Promise<string> {
-  const res = await fetch(TOKEN_URL, {
+  const res = await fetchWithRetry(TOKEN_URL, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
@@ -43,7 +56,7 @@ export async function createZohoLead(body: Record<string, string>): Promise<void
     Lead_Status: "New",
   };
 
-  const res = await fetch(LEADS_URL, {
+  const res = await fetchWithRetry(LEADS_URL, {
     method: "POST",
     headers: {
       Authorization: `Zoho-oauthtoken ${accessToken}`,
