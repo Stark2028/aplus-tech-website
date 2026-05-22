@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { QuoteProvider } from "@/context/QuoteContext";
 import { ComparisonProvider } from "@/context/ComparisonContext";
 import Analytics from "@/components/Analytics";
+import PostHogProvider from "@/components/PostHogProvider";
 import PageTransition from "@/components/PageTransition";
 import ClientFloats from "@/components/ClientFloats";
 
@@ -100,23 +101,23 @@ export default function RootLayout({
           Skip to main content
         </a>
 
-        <QuoteProvider>
-          <ComparisonProvider>
-            <div className="min-h-screen flex flex-col">
-              <Navbar />
-              <main
-                id="main-content"
-                // pb-[72px] reserves space for the mobile sticky CTA bar so
-                // content isn't obscured. Desktop has no sticky bar → no padding.
-                className="flex-1 bg-white pb-18 md:pb-0 print:pb-0"
-              >
-                <PageTransition>{children}</PageTransition>
-              </main>
-              <Footer />
-            </div>
-            <ClientFloats />
-          </ComparisonProvider>
-        </QuoteProvider>
+        <PostHogProvider>
+          <QuoteProvider>
+            <ComparisonProvider>
+              <div className="min-h-screen flex flex-col">
+                <Navbar />
+                <main
+                  id="main-content"
+                  className="flex-1 bg-white pb-18 md:pb-0 print:pb-0"
+                >
+                  <PageTransition>{children}</PageTransition>
+                </main>
+                <Footer />
+              </div>
+              <ClientFloats />
+            </ComparisonProvider>
+          </QuoteProvider>
+        </PostHogProvider>
       </body>
     </html>
   );

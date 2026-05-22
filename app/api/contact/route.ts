@@ -1,5 +1,6 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
+import { createZohoLead } from "@/lib/zoho";
 
 const TO_EMAIL = "info@aplustechsol.com";
 
@@ -147,6 +148,10 @@ export async function POST(req: Request) {
     if (error) {
       console.error("[resend]", error);
       return NextResponse.json({ success: false, message: "Failed to send email." }, { status: 500 });
+    }
+
+    if (isQuote && process.env.ZOHO_REFRESH_TOKEN) {
+      createZohoLead(body).catch((err) => console.error("[zoho]", err));
     }
 
     return NextResponse.json({ success: true });
