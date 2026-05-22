@@ -43,7 +43,7 @@ export default function ProductGallery({
     <div className="flex flex-col gap-4 w-full group">
       {/* Main Large Image */}
       <div
-        className="h-[400px] flex items-center justify-center overflow-hidden relative rounded-xl bg-gray-50 group-hover:cursor-zoom-in"
+        className="h-100 flex items-center justify-center overflow-hidden relative rounded-xl bg-gray-50 group-hover:cursor-zoom-in"
         onWheel={(e) => {
           // Prevent page scroll when zooming
           // Note: React's onWheel is passive by default in some versions, but we can try to preventDefault if possible,

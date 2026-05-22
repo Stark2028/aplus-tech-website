@@ -59,7 +59,7 @@ export default function ProductMarquee() {
                                 )}
                             </div>
                             <div className="p-4 bg-white border-t border-gray-100">
-                                <h3 className="font-semibold text-gray-900 text-sm md:text-base line-clamp-2 min-h-[3rem]">
+                                <h3 className="font-semibold text-gray-900 text-sm md:text-base line-clamp-2 min-h-12">
                                     {product.name}
                                 </h3>
                                 <p className="text-xs text-blue-600 font-medium mt-2 uppercase tracking-wide">

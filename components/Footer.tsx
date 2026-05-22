@@ -40,8 +40,8 @@ export default function Footer() {
     <footer className="relative bg-[#070b15] text-gray-400 overflow-hidden print:hidden">
       {/* Ambient gradient */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-blue-500/40 to-transparent" />
-      <div className="absolute -top-40 left-1/4 w-[600px] h-[600px] bg-blue-600 rounded-full filter blur-[180px] opacity-[0.08] pointer-events-none" />
-      <div className="absolute -top-40 right-1/4 w-[500px] h-[500px] bg-cyan-500 rounded-full filter blur-[160px] opacity-[0.06] pointer-events-none" />
+      <div className="absolute -top-40 left-1/4 w-150 h-150 bg-blue-600 rounded-full filter blur-[180px] opacity-[0.08] pointer-events-none" />
+      <div className="absolute -top-40 right-1/4 w-125 h-125 bg-cyan-500 rounded-full filter blur-[160px] opacity-[0.06] pointer-events-none" />
 
       {/* ───────────────── Top CTA band ───────────────── */}
       <div className="relative border-b border-white/5">

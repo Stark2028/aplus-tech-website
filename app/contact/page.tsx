@@ -333,7 +333,7 @@ export default function ContactPage() {
                   Office No. 855, 8th Floor,<br />Supernova Astralis, Sector-94,<br />Noida, UP — 201301
                 </p>
               </div>
-              <div className="relative h-[200px] w-full overflow-hidden">
+              <div className="relative h-50 w-full overflow-hidden">
                 <iframe
                   title="Aplus Technology Solutions Office"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3504.5!2d77.3216431!3d28.5505377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce546a104a66d%3A0x735f3944b1574a06!2sAplus%20Technology%20Solutions%20Private%20Limited!5e0!3m2!1sen!2sin!4v1747344000000!5m2!1sen!2sin"

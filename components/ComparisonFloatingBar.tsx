@@ -54,7 +54,7 @@ export default function ComparisonFloatingBar() {
                                 key={p.id}
                                 className="flex items-center gap-2 bg-gray-50 border border-gray-100 rounded-full pl-3 pr-2 py-1"
                             >
-                                <span className="text-xs font-medium text-gray-700 truncate max-w-[100px]">
+                                <span className="text-xs font-medium text-gray-700 truncate max-w-25">
                                     {p.name}
                                 </span>
                                 <button

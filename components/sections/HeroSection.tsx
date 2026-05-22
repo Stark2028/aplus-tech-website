@@ -44,7 +44,7 @@ export default function HeroSection() {
 
       {/* Cinematic mesh gradients */}
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
-      <div className="absolute bottom-1/4 right-0 md:right-1/4 w-[500px] h-[500px] bg-indigo-500/20 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
+      <div className="absolute bottom-1/4 right-0 md:right-1/4 w-125 h-125 bg-indigo-500/20 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
 
       <div className="relative flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center py-28 md:py-36">
         <div className="max-w-2xl">
@@ -54,7 +54,7 @@ export default function HeroSection() {
               Authorized Samsung Business Partner
             </span>
             <span
-              className="h-px flex-1 max-w-[52px]"
+              className="h-px flex-1 max-w-13"
               style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
             />
           </div>
