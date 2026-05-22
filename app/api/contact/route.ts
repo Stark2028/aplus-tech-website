@@ -2,7 +2,7 @@ import { Resend } from "resend";
 import { NextResponse } from "next/server";
 import { createZohoLead } from "@/lib/zoho";
 
-const TO_EMAIL = "spworks134@gmail.com";
+const TO_EMAIL = "iit2023134@iiita.ac.in";
 
 function row(label: string, value: string) {
   return `
