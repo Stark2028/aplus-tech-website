@@ -325,6 +325,17 @@ function buildSpecSheetHtml(product: Product): string {
       color: #111;
       letter-spacing: -.01em;
     }
+    .contact-right a {
+      color: #2563eb;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(37,99,235,0.25);
+    }
+    .contact-right a:hover { border-bottom-color: #2563eb; }
+    .contact-right .phone a {
+      color: #111;
+      border-bottom: none;
+    }
+    .contact-right .phone a:hover { color: #2563eb; }
 
     /* FOOTER */
     .footer {
@@ -471,9 +482,9 @@ function buildSpecSheetHtml(product: Product): string {
       <div class="lead">Bulk pricing · GST invoice · Pan-India installation</div>
     </div>
     <div class="contact-right">
-      <div class="phone">+91 93105 09909</div>
-      <div>sales@aplustechsol.com</div>
-      <div>aplustechsol.com</div>
+      <div class="phone"><a href="tel:+919310509909">+91 93105 09909</a></div>
+      <div><a href="mailto:sales@aplustechsol.com">sales@aplustechsol.com</a></div>
+      <div><a href="https://www.aplustechsol.com" target="_blank" rel="noopener">aplustechsol.com</a></div>
     </div>
   </div>
 

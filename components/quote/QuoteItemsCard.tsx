@@ -270,7 +270,6 @@ function buildQuotePdfHtml({
   totalItems,
   quoteRef,
   quoteDate,
-  validUntil,
 }: QuotePdfParams): string {
   const itemRows = items
     .map(
@@ -483,14 +482,14 @@ function buildQuotePdfHtml({
     /* INFO GRID */
     .info-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1.4fr 1fr;
       gap: 0;
       margin-top: 26px;
       padding-top: 18px;
       border-top: 1px solid #111;
     }
     .info-col {
-      padding: 0 16px;
+      padding: 0 20px;
       border-right: 1px solid #e5e7eb;
     }
     .info-col:first-child { padding-left: 0; }
@@ -506,12 +505,24 @@ function buildQuotePdfHtml({
     .info-col .body {
       font-size: 9pt;
       color: #111;
-      line-height: 1.65;
+      line-height: 1.7;
     }
     .info-col .body strong {
       font-weight: 600;
       color: #111;
     }
+    .info-col .body a {
+      color: #2563eb;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(37,99,235,0.25);
+    }
+    .info-col .body a:hover { border-bottom-color: #2563eb; }
+    .head .addr a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px dotted #9ca3af;
+    }
+    .head .addr a:hover { color: #2563eb; border-bottom-color: #2563eb; }
 
     /* FOOTER */
     .footer {
@@ -558,14 +569,13 @@ function buildQuotePdfHtml({
       <div class="addr">
         Office No. 855, 8th Floor, Supernova Astralis<br/>
         Sector-94, Noida, Uttar Pradesh 201301<br/>
-        +91 93105 09909 · info@aplustechsol.com
+        <a href="tel:+919310509909">+91 93105 09909</a> · <a href="mailto:info@aplustechsol.com">info@aplustechsol.com</a>
       </div>
     </div>
     <div class="meta">
       <div class="doc-type">Quote Request</div>
       <div class="ref">${quoteRef}</div>
       <div>Issued <strong>${quoteDate}</strong></div>
-      <div>Valid until <strong>${validUntil}</strong></div>
     </div>
   </div>
 
@@ -609,22 +619,16 @@ function buildQuotePdfHtml({
       <div class="label">Next Steps</div>
       <div class="body">
         Submit this quote online or share this PDF with our team to receive
-        formal pricing within 24 business hours.
+        formal pricing within 24 business hours. This is a quote request, not
+        an invoice — pricing is subject to confirmation.
       </div>
     </div>
     <div class="info-col">
       <div class="label">Reach Us</div>
       <div class="body">
-        <strong>+91 93105 09909</strong><br/>
-        info@aplustechsol.com<br/>
-        aplustechsol.com/quote
-      </div>
-    </div>
-    <div class="info-col">
-      <div class="label">Validity</div>
-      <div class="body">
-        This is a quote request, not an invoice. Pricing subject to
-        confirmation. Reference ${quoteRef} valid until ${validUntil}.
+        <a href="tel:+919310509909"><strong>+91 93105 09909</strong></a><br/>
+        <a href="mailto:info@aplustechsol.com">info@aplustechsol.com</a><br/>
+        <a href="https://www.aplustechsol.com" target="_blank" rel="noopener">aplustechsol.com</a>
       </div>
     </div>
   </div>
