@@ -151,7 +151,7 @@ export async function POST(req: Request) {
     }
 
     if (isQuote && process.env.ZOHO_REFRESH_TOKEN) {
-      createZohoLead(body).catch((err) => console.error("[zoho]", err));
+      await createZohoLead(body).catch((err) => console.error("[zoho]", err));
     }
 
     return NextResponse.json({ success: true });
