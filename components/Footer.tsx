@@ -270,8 +270,8 @@ export default function Footer() {
             <p>
               &copy; {new Date().getFullYear()} Aplus Technology Solutions Pvt. Ltd. All rights reserved.
             </p>
-            <p className="text-[10px] text-gray-600">
-              CIN: U72900DL2020PTC374888 <span className="mx-2">|</span> GSTIN: 07AAUCA5631L1Z6
+            <p className="text-xs text-gray-400">
+              CIN: U72900DL2020PTC374888 <span className="mx-2 text-gray-600">|</span> GSTIN: 07AAUCA5631L1Z6
             </p>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center">

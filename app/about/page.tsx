@@ -232,7 +232,7 @@ export default function AboutPage() {
                       { k: "Support", v: "24 / 7 Technical Response" },
                       { k: "Founded", v: "2014 · Noida, India" },
                       { k: "CIN", v: "U72900DL2020PTC374888" },
-                      { k: "GST", v: "07AAUCA5631L1Z6" },
+                      { k: "GSTIN", v: "07AAUCA5631L1Z6" },
                     ].map((row, i, arr) => (
                       <div
                         key={row.k}
