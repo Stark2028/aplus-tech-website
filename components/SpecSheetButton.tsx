@@ -327,15 +327,17 @@ function buildSpecSheetHtml(product: Product): string {
     }
     .contact-right a {
       color: #2563eb;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(37,99,235,0.25);
+      text-decoration: underline;
+      text-decoration-color: rgba(37,99,235,0.45);
+      text-underline-offset: 2px;
     }
-    .contact-right a:hover { border-bottom-color: #2563eb; }
+    .contact-right a:hover { text-decoration-color: #2563eb; }
     .contact-right .phone a {
       color: #111;
-      border-bottom: none;
+      text-decoration: underline;
+      text-decoration-color: rgba(17,17,17,0.35);
     }
-    .contact-right .phone a:hover { color: #2563eb; }
+    .contact-right .phone a:hover { color: #2563eb; text-decoration-color: #2563eb; }
 
     /* FOOTER */
     .footer {

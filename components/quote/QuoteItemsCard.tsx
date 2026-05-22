@@ -513,16 +513,18 @@ function buildQuotePdfHtml({
     }
     .info-col .body a {
       color: #2563eb;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(37,99,235,0.25);
+      text-decoration: underline;
+      text-decoration-color: rgba(37,99,235,0.45);
+      text-underline-offset: 2px;
     }
-    .info-col .body a:hover { border-bottom-color: #2563eb; }
+    .info-col .body a:hover { text-decoration-color: #2563eb; }
     .head .addr a {
-      color: inherit;
-      text-decoration: none;
-      border-bottom: 1px dotted #9ca3af;
+      color: #374151;
+      text-decoration: underline;
+      text-decoration-color: rgba(107,114,128,0.45);
+      text-underline-offset: 2px;
     }
-    .head .addr a:hover { color: #2563eb; border-bottom-color: #2563eb; }
+    .head .addr a:hover { color: #2563eb; text-decoration-color: #2563eb; }
 
     /* FOOTER */
     .footer {
