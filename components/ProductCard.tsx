@@ -52,7 +52,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full group relative">
+    <div className="bg-white rounded-xl border border-gray-100 overflow-hidden shadow-sm hover:-translate-y-1.5 hover:shadow-premium transition-all duration-400 flex flex-col h-full group relative">
 
       {/* Badge (Top Left) */}
       {badge && (
