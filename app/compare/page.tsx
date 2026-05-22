@@ -56,7 +56,7 @@ function ComparePageInner() {
   const [copied, setCopied] = useState(false);
 
   const handleExportExcel = async () => {
-    const XLSX = await import("xlsx");
+    const ExcelJS = await import("exceljs");
     const headers = ["Specification", ...selectedProducts.map((p) => p.name)];
 
     // Collect all additionalSpecs keys present across any selected product
@@ -88,11 +88,24 @@ function ComparePageInner() {
       ["Key Features", ...selectedProducts.map((p) => p.features.join("; "))],
     ];
 
-    const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
-    ws["!cols"] = [{ wch: 28 }, ...selectedProducts.map(() => ({ wch: 42 }))];
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Product Comparison");
-    XLSX.writeFile(wb, "samsung-product-comparison.xlsx");
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("Product Comparison");
+    sheet.addRow(headers);
+    rows.forEach(row => sheet.addRow(row));
+    
+    sheet.getColumn(1).width = 28;
+    for (let i = 0; i < selectedProducts.length; i++) {
+        sheet.getColumn(i + 2).width = 42;
+    }
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "samsung-product-comparison.xlsx";
+    a.click();
+    window.URL.revokeObjectURL(url);
     trackEvent("compare_export_excel", { product_count: selectedProducts.length });
   };
 
@@ -288,7 +301,7 @@ function ComparePageInner() {
                         <td className="px-5 py-4 text-sm font-semibold text-gray-600 border-r border-gray-100">
                           {row.label}
                         </td>
-                        {selectedProducts.map((p, pi) => (
+                        {selectedProducts.map((p) => (
                           <td
                             key={p.id}
                             className={`px-5 py-4 text-sm text-center border-r border-gray-100 ${

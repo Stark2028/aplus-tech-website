@@ -43,7 +43,7 @@ const SIZE_RANGES = [
 
 export default function ProductFinderSection() {
   const [step, setStep] = useState<Step>(1);
-  const [industry, setIndustry] = useState("");
+  const [, setIndustry] = useState("");
   const [displayType, setDisplayType] = useState("");
   const [sizeRangeId, setSizeRangeId] = useState("");
 

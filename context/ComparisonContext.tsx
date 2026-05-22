@@ -9,12 +9,15 @@ interface ComparisonContextType {
     removeFromCompare: (productId: string) => void;
     clearCompare: () => void;
     isInCompare: (productId: string) => boolean;
+    limitReached: boolean;
 }
 
 const ComparisonContext = createContext<ComparisonContextType | undefined>(undefined);
 
 export function ComparisonProvider({ children }: { children: React.ReactNode }) {
     const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+    const [limitReached, setLimitReached] = useState(false);
+    const limitTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         const saved = localStorage.getItem("b2b_compare_list");
@@ -41,7 +44,9 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
         (product: Product) => {
             setSelectedProducts((prev) => {
                 if (prev.length >= 3) {
-                    alert("You can compare up to 3 products at a time.");
+                    setLimitReached(true);
+                    if (limitTimerRef.current) clearTimeout(limitTimerRef.current);
+                    limitTimerRef.current = setTimeout(() => setLimitReached(false), 2500);
                     return prev;
                 }
                 if (prev.some((p) => p.id === product.id)) return prev;
@@ -64,8 +69,9 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
             removeFromCompare,
             clearCompare,
             isInCompare,
+            limitReached,
         }),
-        [selectedProducts, addToCompare, removeFromCompare, clearCompare, isInCompare]
+        [selectedProducts, addToCompare, removeFromCompare, clearCompare, isInCompare, limitReached]
     );
 
     return <ComparisonContext.Provider value={value}>{children}</ComparisonContext.Provider>;

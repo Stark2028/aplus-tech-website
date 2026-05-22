@@ -3,7 +3,7 @@ import ProductCard from "@/components/ProductCard";
 import { notFound } from "next/navigation";
 import { getCategoryById, CategorySlug } from "@/data/categories";
 import Link from "next/link";
-import { ArrowLeft, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 
 export const revalidate = 3600;

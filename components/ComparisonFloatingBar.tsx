@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { X, ArrowRight, Scale } from "lucide-react";
+import { X, ArrowRight, Scale, AlertCircle } from "lucide-react";
 import { useComparison } from "@/context/ComparisonContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ComparisonFloatingBar() {
-    const { selectedProducts, removeFromCompare, clearCompare } = useComparison();
+    const { selectedProducts, removeFromCompare, clearCompare, limitReached } = useComparison();
 
     if (selectedProducts.length === 0) return null;
 
@@ -16,8 +16,22 @@ export default function ComparisonFloatingBar() {
                 initial={{ y: 100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 100, opacity: 0 }}
-                className="fixed bottom-6 left-0 right-0 z-50 flex justify-center px-4"
+                className="fixed bottom-6 left-0 right-0 z-50 flex flex-col items-center gap-2 px-4"
             >
+                <AnimatePresence>
+                    {limitReached && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 8 }}
+                            className="flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-4 py-2 rounded-full shadow-md"
+                        >
+                            <AlertCircle size={13} />
+                            Maximum 3 products can be compared at once
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
                 <div className="bg-white border border-gray-200 shadow-2xl rounded-full p-4 flex items-center gap-6 max-w-2xl w-full mx-auto ring-1 ring-black/5">
 
                     <div className="flex items-center gap-3">

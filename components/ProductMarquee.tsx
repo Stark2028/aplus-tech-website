@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import { motion, useAnimation, useMotionValue } from "framer-motion";
 import { products } from "@/data/products";
 
 export default function ProductMarquee() {
