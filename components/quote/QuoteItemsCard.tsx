@@ -72,9 +72,18 @@ export default function QuoteItemsCard({
   const [isGateOpen, setIsGateOpen] = useState(false);
 
   const doDownload = () => {
-    if (typeof window !== "undefined") {
-      window.print();
-    }
+    if (typeof window === "undefined") return;
+    const html = buildQuotePdfHtml({
+      items,
+      totalItems,
+      quoteRef,
+      quoteDate,
+      validUntil,
+    });
+    const win = window.open("", "_blank");
+    if (!win) return;
+    win.document.write(html);
+    win.document.close();
   };
 
   const handleDownload = () => {
@@ -92,50 +101,10 @@ export default function QuoteItemsCard({
     .join("\n");
 
   return (
-    <div className="space-y-6 print:space-y-0">
-      {/* ─── PRINT-ONLY LETTERHEAD ───────────────────────────────────── */}
-      <header className="hidden print:block mb-6 pb-5 border-b-2 border-gray-300 avoid-break">
-        <div className="flex items-start justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <Image
-              src="/logo.png"
-              alt="Aplus Technology Solutions"
-              width={64}
-              height={64}
-              className="w-16 h-16 object-contain"
-              unoptimized
-            />
-            <div>
-              <p className="text-lg font-bold text-gray-900 leading-tight">
-                Aplus Technology Solutions Pvt. Ltd.
-              </p>
-              <p className="text-[11px] text-gray-600 leading-snug mt-1">
-                Office No. 855, 8th Floor, Supernova Astralis<br />
-                Sector-94, Noida, Uttar Pradesh 201301
-              </p>
-              <p className="text-[11px] text-gray-600 mt-1">
-                +91 93105 09909 · info@aplustechsol.com · aplustechsol.com
-              </p>
-            </div>
-          </div>
-          <div className="text-right">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-blue-700 mb-1 print-text-brand">
-              Quote Request
-            </p>
-            <p className="text-sm font-bold text-gray-900">{quoteRef}</p>
-            <p className="text-[11px] text-gray-600 mt-2">
-              Issued: <span className="font-semibold">{quoteDate}</span>
-            </p>
-            <p className="text-[11px] text-gray-600">
-              Valid until: <span className="font-semibold">{validUntil}</span>
-            </p>
-          </div>
-        </div>
-      </header>
-
+    <div className="space-y-6">
       {/* ─── ITEMS CARD ───────────────────────────────────────────────── */}
-      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm print:border-0 print:shadow-none print:rounded-none">
-        <div className="px-6 py-5 border-b border-gray-100 flex justify-between items-center flex-wrap gap-4 print:hidden">
+      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
+        <div className="px-6 py-5 border-b border-gray-100 flex justify-between items-center flex-wrap gap-4">
           <h2 className="font-bold text-gray-800 text-lg flex items-center gap-2">
             <ShoppingBag size={18} className="text-gray-400" />
             Items ({totalItems})
@@ -168,18 +137,8 @@ export default function QuoteItemsCard({
           </div>
         </div>
 
-        {/* Print-only items header — table style */}
-        <div className="hidden print:block px-0 pb-3 mb-2 border-b border-gray-300 print-border">
-          <div className="grid grid-cols-12 text-[10px] font-bold uppercase tracking-wider text-gray-600">
-            <div className="col-span-1">#</div>
-            <div className="col-span-7">Product</div>
-            <div className="col-span-3">Specifications</div>
-            <div className="col-span-1 text-right">Qty</div>
-          </div>
-        </div>
-
-        {/* Interactive items (hidden in print) */}
-        <div className="divide-y divide-gray-50 print:hidden">
+        {/* Interactive items */}
+        <div className="divide-y divide-gray-50">
           {items.map((item) => (
             <div
               key={item.product.id}
@@ -251,54 +210,10 @@ export default function QuoteItemsCard({
             </div>
           ))}
         </div>
-
-        {/* Print-only items table */}
-        <div className="hidden print:block">
-          {items.map((item, idx) => (
-            <div
-              key={item.product.id}
-              className="grid grid-cols-12 py-3 border-b border-gray-200 print-border avoid-break text-[11px]"
-            >
-              <div className="col-span-1 text-gray-500">{String(idx + 1).padStart(2, "0")}</div>
-              <div className="col-span-7 pr-3">
-                <p className="font-bold text-gray-900 leading-snug">{item.product.name}</p>
-                <p className="text-[10px] text-gray-600 mt-0.5">
-                  Series: {item.product.series} · Category: {item.product.category}
-                </p>
-              </div>
-              <div className="col-span-3 text-[10px] text-gray-700 leading-relaxed">
-                <p>{item.product.specs.resolution}</p>
-                <p>{item.product.specs.brightness}</p>
-                <p>
-                  Sizes: {item.product.specs.screenSizes.map((s) => `${s}"`).join(" · ")}
-                </p>
-              </div>
-              <div className="col-span-1 text-right font-bold text-gray-900">
-                {item.quantity}
-              </div>
-            </div>
-          ))}
-
-          {/* Print-only summary line */}
-          <div className="grid grid-cols-12 py-3 mt-2 text-[11px] font-bold">
-            <div className="col-span-11">Total items</div>
-            <div className="col-span-1 text-right">{totalItems}</div>
-          </div>
-
-          {/* Print-only pricing notice */}
-          <div className="mt-4 p-3 border border-gray-300 print-border bg-gray-50 text-[10px] text-gray-700 leading-relaxed avoid-break">
-            <p className="font-bold text-gray-900 mb-1">Pricing</p>
-            <p>
-              Final pricing will be issued by our sales team within 24 business hours
-              of submission. Volume discounts apply on orders of 5+ units. Prices are
-              exclusive of GST; formal GST invoice issued with order confirmation.
-            </p>
-          </div>
-        </div>
       </div>
 
-      {/* ─── INTERACTIVE TRUST STRIP (hidden in print) ────────────────── */}
-      <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6 print:hidden">
+      {/* ─── TRUST STRIP ──────────────────────────────────────────────── */}
+      <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6">
         <p className="font-bold text-gray-900 mb-5">Why partner with Aplus?</p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {TRUST_ITEMS.map(({ icon: Icon, title, desc }) => (
@@ -333,35 +248,415 @@ export default function QuoteItemsCard({
         privacyNote="Same details used for the Submit Request form below — we'll prefill it for you."
         analyticsKey="quote_pdf_gate"
       />
-
-      {/* ─── PRINT-ONLY FOOTER ────────────────────────────────────────── */}
-      <footer className="hidden print:block mt-6 pt-4 border-t border-gray-300 print-border text-[10px] text-gray-600 avoid-break">
-        <div className="grid grid-cols-3 gap-6">
-          <div>
-            <p className="font-bold text-gray-900 mb-1">Next steps</p>
-            <p className="leading-relaxed">
-              Submit this quote online or share this PDF with our team to receive
-              formal pricing within 24 business hours.
-            </p>
-          </div>
-          <div>
-            <p className="font-bold text-gray-900 mb-1">Reach us</p>
-            <p>+91 93105 09909</p>
-            <p>info@aplustechsol.com</p>
-            <p>aplustechsol.com/quote</p>
-          </div>
-          <div>
-            <p className="font-bold text-gray-900 mb-1">Validity</p>
-            <p className="leading-relaxed">
-              This is a quote request, not an invoice. Pricing subject to confirmation.
-              Reference {quoteRef} valid until {validUntil}.
-            </p>
-          </div>
-        </div>
-        <p className="text-center text-gray-500 mt-4 pt-3 border-t border-gray-200 print-border">
-          Aplus Technology Solutions Pvt. Ltd. · Authorized Samsung B2B Display Distributor · Pan-India
-        </p>
-      </footer>
     </div>
   );
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+ * Quote PDF builder — opens a dedicated print-ready window
+ * (Minimal Samsung-style layout, mirrors the spec sheet design)
+ * ────────────────────────────────────────────────────────────────────── */
+
+interface QuotePdfParams {
+  items: QuoteItem[];
+  totalItems: number;
+  quoteRef: string;
+  quoteDate: string;
+  validUntil: string;
+}
+
+function buildQuotePdfHtml({
+  items,
+  totalItems,
+  quoteRef,
+  quoteDate,
+  validUntil,
+}: QuotePdfParams): string {
+  const itemRows = items
+    .map(
+      (item, idx) => `
+      <tr>
+        <td class="col-num">${String(idx + 1).padStart(2, "0")}</td>
+        <td class="col-product">
+          <div class="product-name">${escapeHtml(item.product.name)}</div>
+          <div class="product-meta">${escapeHtml(item.product.series)} · ${escapeHtml(item.product.category)}</div>
+        </td>
+        <td class="col-specs">
+          <div>${escapeHtml(item.product.specs.resolution)}</div>
+          <div>${escapeHtml(item.product.specs.brightness)}</div>
+          <div>Sizes: ${item.product.specs.screenSizes
+            .map((s) => `${s}"`)
+            .join(" · ")}</div>
+        </td>
+        <td class="col-qty">${item.quantity}</td>
+      </tr>`
+    )
+    .join("");
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quote Request ${quoteRef} | Aplus Technology Solutions</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #fff;
+      color: #111;
+      font-size: 10pt;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    .sheet {
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 18mm 16mm;
+      background: #fff;
+    }
+
+    /* HEADER */
+    .head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #111;
+    }
+    .head .brand-block { max-width: 60%; }
+    .head .brand {
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: .12em;
+      color: #111;
+      text-transform: uppercase;
+    }
+    .head .addr {
+      font-size: 8.5pt;
+      color: #6b7280;
+      margin-top: 6px;
+      line-height: 1.55;
+    }
+    .head .meta {
+      text-align: right;
+      font-size: 8pt;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+    .head .meta .doc-type {
+      font-size: 8.5pt;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #2563eb;
+      margin-bottom: 4px;
+    }
+    .head .meta .ref {
+      font-size: 11.5pt;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: -.01em;
+      margin-bottom: 6px;
+    }
+    .head .meta strong { color: #111; font-weight: 600; }
+
+    /* TITLE BLOCK */
+    .title-block { padding: 22px 0 18px; }
+    .title-block h1 {
+      font-size: 20pt;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+    .title-block .subtitle {
+      font-size: 10pt;
+      color: #6b7280;
+    }
+
+    /* ITEMS TABLE */
+    .section { margin-bottom: 24px; }
+    .section h2 {
+      font-size: 9pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      color: #111;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #111;
+      margin-bottom: 0;
+    }
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .items-table thead th {
+      text-align: left;
+      font-size: 7.5pt;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      padding: 12px 8px 10px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .items-table thead th.col-qty { text-align: right; }
+    .items-table tbody td {
+      padding: 12px 8px;
+      border-bottom: 1px solid #f3f4f6;
+      vertical-align: top;
+      font-size: 9.5pt;
+    }
+    .items-table .col-num {
+      width: 36px;
+      color: #9ca3af;
+      font-variant-numeric: tabular-nums;
+    }
+    .items-table .col-product { width: 54%; }
+    .items-table .product-name {
+      font-weight: 600;
+      color: #111;
+      line-height: 1.35;
+      margin-bottom: 3px;
+    }
+    .items-table .product-meta {
+      font-size: 8.5pt;
+      color: #6b7280;
+    }
+    .items-table .col-specs {
+      font-size: 8.5pt;
+      color: #374151;
+      line-height: 1.6;
+    }
+    .items-table .col-qty {
+      width: 60px;
+      text-align: right;
+      font-weight: 700;
+      color: #111;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* TOTAL ROW */
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 8px;
+      border-top: 2px solid #111;
+      margin-top: 4px;
+    }
+    .total-row .label {
+      font-size: 9pt;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: #111;
+    }
+    .total-row .value {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: -.01em;
+    }
+
+    /* PRICING NOTE */
+    .pricing-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      background: #f8fafc;
+      border-left: 3px solid #2563eb;
+      font-size: 8.5pt;
+      color: #374151;
+      line-height: 1.65;
+    }
+    .pricing-note .label {
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #2563eb;
+      margin-bottom: 4px;
+    }
+
+    /* INFO GRID */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid #111;
+    }
+    .info-col {
+      padding: 0 16px;
+      border-right: 1px solid #e5e7eb;
+    }
+    .info-col:first-child { padding-left: 0; }
+    .info-col:last-child { border-right: none; padding-right: 0; }
+    .info-col .label {
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: #6b7280;
+      margin-bottom: 6px;
+    }
+    .info-col .body {
+      font-size: 9pt;
+      color: #111;
+      line-height: 1.65;
+    }
+    .info-col .body strong {
+      font-weight: 600;
+      color: #111;
+    }
+
+    /* FOOTER */
+    .footer {
+      margin-top: 22px;
+      padding-top: 14px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      font-size: 7.5pt;
+      color: #9ca3af;
+      line-height: 1.65;
+    }
+    .footer .legal { letter-spacing: .04em; }
+    .footer .legal .label {
+      color: #6b7280;
+      font-weight: 600;
+      margin-right: 4px;
+    }
+    .footer .copy { text-align: right; }
+    .footer .copy .tag {
+      font-weight: 600;
+      color: #475569;
+    }
+
+    /* PRINT */
+    @media print {
+      body { background: #fff; }
+      .sheet { padding: 0; max-width: 100%; }
+      .head, .title-block, .section, .total-row, .pricing-note, .info-grid, .footer { break-inside: avoid; }
+      tr { break-inside: avoid; }
+      @page { size: A4; margin: 14mm 14mm 12mm; }
+    }
+  </style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="brand-block">
+      <div class="brand">Aplus Technology Solutions</div>
+      <div class="addr">
+        Office No. 855, 8th Floor, Supernova Astralis<br/>
+        Sector-94, Noida, Uttar Pradesh 201301<br/>
+        +91 93105 09909 · info@aplustechsol.com
+      </div>
+    </div>
+    <div class="meta">
+      <div class="doc-type">Quote Request</div>
+      <div class="ref">${quoteRef}</div>
+      <div>Issued <strong>${quoteDate}</strong></div>
+      <div>Valid until <strong>${validUntil}</strong></div>
+    </div>
+  </div>
+
+  <!-- TITLE -->
+  <div class="title-block">
+    <h1>Request for Quote</h1>
+    <div class="subtitle">${totalItems} item${totalItems !== 1 ? "s" : ""} · Authorized Samsung Commercial Display Distributor</div>
+  </div>
+
+  <!-- ITEMS -->
+  <div class="section">
+    <h2>Items Requested</h2>
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th class="col-num">#</th>
+          <th class="col-product">Product</th>
+          <th class="col-specs">Specifications</th>
+          <th class="col-qty">Qty</th>
+        </tr>
+      </thead>
+      <tbody>${itemRows}</tbody>
+    </table>
+
+    <div class="total-row">
+      <div class="label">Total Items</div>
+      <div class="value">${totalItems}</div>
+    </div>
+
+    <div class="pricing-note">
+      <div class="label">Pricing</div>
+      Final pricing will be issued by our sales team within 24 business hours of
+      submission. Volume discounts apply on orders of 5+ units. All prices are
+      exclusive of GST; a formal GST invoice is issued with order confirmation.
+    </div>
+  </div>
+
+  <!-- INFO GRID -->
+  <div class="info-grid">
+    <div class="info-col">
+      <div class="label">Next Steps</div>
+      <div class="body">
+        Submit this quote online or share this PDF with our team to receive
+        formal pricing within 24 business hours.
+      </div>
+    </div>
+    <div class="info-col">
+      <div class="label">Reach Us</div>
+      <div class="body">
+        <strong>+91 93105 09909</strong><br/>
+        info@aplustechsol.com<br/>
+        aplustechsol.com/quote
+      </div>
+    </div>
+    <div class="info-col">
+      <div class="label">Validity</div>
+      <div class="body">
+        This is a quote request, not an invoice. Pricing subject to
+        confirmation. Reference ${quoteRef} valid until ${validUntil}.
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="legal">
+      <div><span class="label">CIN</span>U72900DL2020PTC374888</div>
+      <div><span class="label">GSTIN</span>07AAUCA5631L1Z6</div>
+    </div>
+    <div class="copy">
+      <div class="tag">Aplus Technology Solutions Pvt. Ltd.</div>
+      <div>Authorized Samsung B2B Display Distributor · Pan-India</div>
+      <div>© ${new Date().getFullYear()} All rights reserved.</div>
+    </div>
+  </div>
+
+</div>
+<script>
+  window.onload = function(){
+    setTimeout(function(){ window.print(); }, 300);
+  };
+</script>
+</body>
+</html>`;
+}
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
