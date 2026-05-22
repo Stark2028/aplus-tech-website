@@ -13,6 +13,15 @@ const STATS = [
 export default function HeroSection() {
   return (
     <section className="relative min-h-screen flex flex-col overflow-hidden bg-[#050b15]">
+      {/* Preload the video poster — it's the LCP element until the video
+          paints its first frame. Without this, browsers fetch posters at
+          low priority. */}
+      <link
+        rel="preload"
+        as="image"
+        href="/images/hero-poster.webp"
+        fetchPriority="high"
+      />
       <video
         src="/videos/hero.mp4"
         poster="/images/hero-poster.webp"
@@ -20,6 +29,7 @@ export default function HeroSection() {
         muted
         loop
         playsInline
+        preload="metadata"
         className="absolute inset-0 w-full h-full object-cover"
       />
 

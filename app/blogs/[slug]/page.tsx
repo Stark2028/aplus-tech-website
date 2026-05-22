@@ -5,6 +5,9 @@ import type { Metadata } from "next";
 import ReadingProgress from "@/components/ReadingProgress";
 import ShareButtons from "@/components/ShareButtons";
 import { Calendar, Clock, ArrowRight, Tag } from "lucide-react";
+import { SITE, breadcrumbLd } from "@/lib/jsonLd";
+
+const ORG_REF = { "@id": `${SITE}/#organization` };
 
 interface BlogPageParams {
   slug: string;
@@ -70,7 +73,6 @@ export default async function BlogDetailPage({
     related.length >= 2 ? related : fallback.slice(0, 3);
 
   const publishedDate = new Date(post.date);
-  const SITE = "https://www.aplustechsol.com";
   const pageUrl = `${SITE}/blogs/${post.slug}`;
 
   const wordCount = post.body.trim().split(/\s+/).filter(Boolean).length;
@@ -93,30 +95,19 @@ export default async function BlogDetailPage({
       width: 1200,
       height: 630,
     },
-    author: {
-      "@type": "Organization",
-      name: "Aplus Technology Solutions",
-      url: SITE,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Aplus Technology Solutions",
-      logo: { "@type": "ImageObject", url: `${SITE}/assets/img/logo.webp` },
-    },
+    author: ORG_REF,
+    publisher: ORG_REF,
     mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
   };
 
-  const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE },
-      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE}/blogs` },
-      { "@type": "ListItem", position: 3, name: post.title, item: pageUrl },
-    ],
-  };
-
-  const jsonLd = [articleLd, breadcrumbLd];
+  const jsonLd = [
+    articleLd,
+    breadcrumbLd([
+      { name: "Home", url: "/" },
+      { name: "Blog", url: "/blogs" },
+      { name: post.title, url: `/blogs/${post.slug}` },
+    ]),
+  ];
 
   return (
     <>

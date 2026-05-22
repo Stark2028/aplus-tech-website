@@ -3,6 +3,7 @@ import { products } from "@/data/products";
 import { productCategories } from "@/data/categories";
 import { solutions } from "@/data/solutions";
 import { blogPosts } from "@/data/blogs";
+import { useCaseCombos } from "@/data/useCaseCombos";
 import { SITE } from "@/lib/jsonLd";
 
 // Bump this date whenever you add or update products, categories, or solutions.
@@ -44,6 +45,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }));
 
+  // Programmatic landing pages — industry × category combos.
+  const comboUrls: MetadataRoute.Sitemap = useCaseCombos.map((combo) => ({
+    url: `${SITE}/solutions/${combo.industry}/${combo.category}`,
+    lastModified: CATALOG_LAST_UPDATED,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
   const blogUrls: MetadataRoute.Sitemap = blogPosts.map((post) => ({
     url: `${SITE}/blogs/${post.slug}`,
     lastModified: new Date(post.date),
@@ -51,5 +60,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...productUrls, ...categoryUrls, ...solutionUrls, ...blogUrls];
+  return [
+    ...staticPages,
+    ...productUrls,
+    ...categoryUrls,
+    ...solutionUrls,
+    ...comboUrls,
+    ...blogUrls,
+  ];
 }

@@ -4,8 +4,15 @@ import Image from "next/image";
 import { motion, useAnimation } from "framer-motion";
 import { Plus, Minus, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function ProductGallery({ images }: { images: string[] }) {
+export default function ProductGallery({
+  images,
+  productName,
+}: {
+  images: string[];
+  productName: string;
+}) {
   const [activeImage, setActiveImage] = useState(images?.[0] ?? "");
+  const activeIndex = Math.max(images.indexOf(activeImage), 0);
   const [scale, setScale] = useState(1);
   const controls = useAnimation();
 
@@ -83,9 +90,9 @@ export default function ProductGallery({ images }: { images: string[] }) {
             >
               <Image
                 src={activeImage}
-                alt="Product image"
+                alt={`${productName} — view ${activeIndex + 1} of ${images.length}`}
                 fill
-                sizes="(max-width: 1024px) 100vw, 800px"
+                sizes="(max-width: 1024px) 100vw, 700px"
                 className="object-contain pointer-events-none"
                 priority
               />
@@ -178,7 +185,7 @@ export default function ProductGallery({ images }: { images: string[] }) {
             <div className="relative w-full h-full">
               <Image
                 src={img}
-                alt={`Thumbnail ${index + 1}`}
+                alt={`${productName} thumbnail ${index + 1}`}
                 fill
                 sizes="80px"
                 className="object-cover rounded-md"

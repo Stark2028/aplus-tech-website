@@ -146,7 +146,7 @@ export default async function ProductPage({
             {/* Image gallery */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
               {product.images && product.images.length > 0 ? (
-                <ProductGallery images={product.images} />
+                <ProductGallery images={product.images} productName={product.name} />
               ) : (
                 <div className="h-72 flex flex-col items-center justify-center text-gray-300 gap-3">
                   <Monitor size={64} strokeWidth={1} />

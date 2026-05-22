@@ -43,3 +43,7 @@ next-env.d.ts
 # IDE / AI workspace
 /.claude/
 /.cursor/
+/.vscode/
+
+# Local-only backups of large media (kept outside git for size)
+/public/videos/*-original.*

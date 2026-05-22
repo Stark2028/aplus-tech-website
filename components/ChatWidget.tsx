@@ -14,38 +14,7 @@ import {
   Clock,
 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
-
-const WHATSAPP_NUMBER = "919310509909"; // country code + number, no +
-const WHATSAPP_DEFAULT_MSG =
-  "Hi! I'm interested in Samsung display solutions for my business. Could you help?";
-
-function getContextMessage(pathname: string): string {
-  if (pathname.startsWith("/products/")) {
-    const slug = pathname.replace("/products/", "").replace(/-/g, " ");
-    return `Hi! I'm interested in the ${slug} and would like pricing details. Could you help?`;
-  }
-  if (pathname.startsWith("/categories/digital-signage"))
-    return "Hi! I'm looking for Samsung digital signage solutions for my business. Could you share more details?";
-  if (pathname.startsWith("/categories/video-wall") || pathname.startsWith("/categories/video-walls"))
-    return "Hi! I'm interested in Samsung video wall solutions. Could you help me with specifications and pricing?";
-  if (pathname.startsWith("/categories/interactive"))
-    return "Hi! I'm looking for Samsung interactive display solutions for meeting rooms or classrooms. Could you help?";
-  if (pathname.startsWith("/categories/commercial-tv"))
-    return "Hi! I'm looking for Samsung hospitality or commercial TV solutions. Could you share more details?";
-  if (pathname.startsWith("/solutions/hospitality"))
-    return "Hi! I need Samsung display solutions for my hospitality property. Could you help?";
-  if (pathname.startsWith("/solutions/corporate"))
-    return "Hi! I'm looking for Samsung display solutions for our corporate offices. Could you assist?";
-  if (pathname.startsWith("/solutions/education"))
-    return "Hi! I'm interested in Samsung display solutions for our educational institution. Could you help?";
-  if (pathname.startsWith("/solutions/retail"))
-    return "Hi! I need Samsung digital signage for our retail spaces. Could you share options and pricing?";
-  if (pathname.startsWith("/quote"))
-    return "Hi! I've submitted a quote request and would like to discuss it further. Could you help?";
-  if (pathname.startsWith("/contact"))
-    return "Hi! I'd like to speak with your sales team about Samsung display solutions.";
-  return WHATSAPP_DEFAULT_MSG;
-}
+import { WHATSAPP_NUMBER, getWhatsAppMessage } from "@/lib/whatsapp";
 
 const QUICK_ACTIONS = [
   { label: "Get a product quote", msg: "Hi, I need a quote for Samsung display products." },
@@ -91,7 +60,7 @@ export default function ChatWidget() {
   }, [isOpen, messages]);
 
   const openWhatsApp = (msg?: string) => {
-    const text = encodeURIComponent(msg ?? getContextMessage(pathname));
+    const text = encodeURIComponent(msg ?? getWhatsAppMessage(pathname));
     trackEvent("whatsapp_click", { source: "chat_widget", page: pathname });
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, "_blank", "noopener,noreferrer");
   };
@@ -124,7 +93,9 @@ export default function ChatWidget() {
   };
 
   return (
-    <>
+    // Desktop-only. On mobile, the sticky bottom MobileStickyCTA bar provides
+    // the same WhatsApp/Call entry points without competing with thumb area.
+    <div className="hidden md:contents">
       {/* WhatsApp floating button (always visible) */}
       <div className="fixed bottom-24 right-5 z-50">
         {/* Online pulse ring */}
@@ -171,7 +142,7 @@ export default function ChatWidget() {
           <div className="bg-blue-600 px-5 py-4 flex items-center gap-3">
             <div className="relative shrink-0">
               <Image
-                src="https://www.aplustechsol.com/assets/img/logo.webp"
+                src="/logo.png"
                 alt="Aplus Technology"
                 width={36}
                 height={36}
@@ -319,6 +290,6 @@ export default function ChatWidget() {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }

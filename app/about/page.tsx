@@ -7,6 +7,7 @@ import {
   ShieldCheck,
   ChevronRight,
   ArrowRight,
+  Linkedin,
 } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -70,6 +71,7 @@ const TEAM = [
     name: "Anurag Walia",
     role: "Director",
     bio: "Leads business strategy and enterprise partnerships at Aplus. 15+ years driving Samsung B2B display adoption across India's top sectors.",
+    linkedin: "https://www.linkedin.com/in/anurag-walia-bba9103/",
   },
   {
     name: "Savita Walia",
@@ -80,6 +82,13 @@ const TEAM = [
     name: "Sunil Kumar",
     role: "Director",
     bio: "Samsung-certified integration specialist with 1,000+ completed installations across hospitality, corporate, and retail projects.",
+    linkedin: "https://www.linkedin.com/in/sunil-kumar-a5850217/",
+  },
+  {
+    name: "Ramkrishna Dasgupta",
+    role: "Director",
+    bio: "Brings extensive industry experience and strategic leadership, driving growth and enterprise partnerships at Aplus.",
+    linkedin: "https://www.linkedin.com/in/ramkrishna-dasgupta-75b61294",
   },
 ];
 
@@ -222,6 +231,8 @@ export default function AboutPage() {
                       { k: "Coverage", v: "Pan-India · 50+ cities" },
                       { k: "Support", v: "24 / 7 Technical Response" },
                       { k: "Founded", v: "2014 · Noida, India" },
+                      { k: "CIN", v: "U72900DL2020PTC374888" },
+                      { k: "GST", v: "07AAUCA5631L1Z6" },
                     ].map((row, i, arr) => (
                       <div
                         key={row.k}
@@ -346,7 +357,7 @@ export default function AboutPage() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {TEAM.map((member) => (
               <div
                 key={member.name}
@@ -357,8 +368,19 @@ export default function AboutPage() {
                     {member.name.charAt(0)}
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 tracking-tight leading-tight">
+                    <h3 className="font-bold text-gray-900 tracking-tight leading-tight flex items-center gap-2">
                       {member.name}
+                      {member.linkedin && (
+                        <a 
+                          href={member.linkedin} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="text-[#0a66c2]/60 hover:text-[#0a66c2] transition-colors"
+                          aria-label={`${member.name} on LinkedIn`}
+                        >
+                          <Linkedin size={15} />
+                        </a>
+                      )}
                     </h3>
                     <p className="text-[11px] text-blue-600 font-semibold uppercase tracking-wider mt-0.5">
                       {member.role}

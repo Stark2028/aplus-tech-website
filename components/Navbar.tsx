@@ -21,7 +21,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`bg-white sticky top-0 z-50 transition-all duration-300 ${
+      className={`bg-white sticky top-0 z-50 transition-all duration-300 print:hidden ${
         scrolled ? "shadow-md border-b border-gray-100" : "border-b border-gray-100"
       }`}
     >
@@ -29,9 +29,9 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-18 py-3">
           <Link href="/" className="flex items-center gap-3 shrink-0">
             <Image
-              src="https://www.aplustechsol.com/assets/img/logo.webp"
+              src="/logo.png"
               alt="Aplus Technology Solutions"
-              width={160}
+              width={48}
               height={48}
               className="h-10 w-auto object-contain"
               priority

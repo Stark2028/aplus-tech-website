@@ -80,3 +80,43 @@ h1, h2 {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* ─── Print styles ────────────────────────────────────────────────────────
+   Used by the "Download as PDF" flow on /quote. We rely on Tailwind's `print:`
+   variants for most hide/show logic; these globals cover what variants can't
+   easily reach (page-level chrome, shadows, page margins).
+*/
+@media print {
+  /* Page setup */
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  /* Strip shadows and excessive backgrounds for a print-ready look. */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Ensure colors print as drawn (Chrome/Safari/Edge). */
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Keep quote rows from breaking mid-row. */
+  .avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Anchor visible blue accents to print-friendly colors. */
+  .print-text-brand { color: #1d4ed8 !important; }
+  .print-border    { border-color: #d1d5db !important; }
+}

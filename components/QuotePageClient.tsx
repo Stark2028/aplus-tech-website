@@ -27,7 +27,7 @@ export default function QuotePageClient() {
 
   return (
     <div className="bg-gray-50 min-h-screen pb-20">
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-white border-b border-gray-100 print:hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
@@ -52,9 +52,9 @@ export default function QuotePageClient() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-          <div className="lg:col-span-2">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 print:py-0 print:max-w-none print:px-0">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 print:block">
+          <div className="lg:col-span-2 print:col-span-3">
             <QuoteItemsCard
               items={quoteItems}
               totalItems={totalItems}
@@ -64,7 +64,7 @@ export default function QuotePageClient() {
             />
           </div>
 
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 print:hidden">
             <QuoteSubmitForm
               items={quoteItems}
               totalItems={totalItems}

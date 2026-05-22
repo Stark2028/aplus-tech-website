@@ -1,6 +1,7 @@
 import type { Product } from "@/data/products";
 import type { ProductCategory } from "@/data/categories";
 import type { Solution } from "@/data/solutions";
+import type { UseCaseCombo } from "@/data/useCaseCombos";
 
 export const SITE = "https://www.aplustechsol.com";
 
@@ -19,7 +20,7 @@ export function organizationLd() {
     "@id": ORG_ID,
     name: "Aplus Technology Solutions Pvt. Ltd.",
     url: SITE,
-    logo: { "@type": "ImageObject", url: `${SITE}/og-default.png` },
+    logo: { "@type": "ImageObject", url: `${SITE}/logo.png` },
     image: `${SITE}/og-default.png`,
     telephone: "+91-9310509909",
     email: "info@aplustechsol.com",
@@ -174,6 +175,47 @@ export function solutionServiceLd(solution: Solution) {
           "@type": "Product",
           name: `Samsung ${series} Series`,
           brand: { "@type": "Brand", name: "Samsung" },
+        },
+      })),
+    },
+  };
+}
+
+/**
+ * Service JSON-LD for an industry+category programmatic landing page.
+ * Combines solution context with a specific product category, and references
+ * the parent Solution and the Organization by @id so Google understands the
+ * page hierarchy.
+ */
+export function industryCategoryServiceLd(
+  combo: UseCaseCombo,
+  solution: Solution,
+  category: ProductCategory,
+  productsOnPage: Product[]
+) {
+  const url = `${SITE}/solutions/${combo.industry}/${combo.category}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${url}#service`,
+    url,
+    name: combo.title,
+    description: combo.intro,
+    serviceType: `${category.navLabel} for ${solution.title}`,
+    provider: { "@id": ORG_ID },
+    areaServed: { "@type": "Country", name: "India" },
+    audience: { "@type": "BusinessAudience", audienceType: "Business" },
+    isPartOf: { "@id": `${SITE}/solutions/${combo.industry}#service` },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: `Samsung ${category.navLabel} recommended for ${solution.title}`,
+      itemListElement: productsOnPage.map((p) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Product",
+          "@id": `${SITE}/products/${p.id}#product`,
+          name: p.name,
+          url: `${SITE}/products/${p.id}`,
         },
       })),
     },

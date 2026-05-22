@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ArrowRight, ChevronRight, Phone } from "lucide-react";
 import { solutions } from "@/data/solutions";
 import { products } from "@/data/products";
+import { getCategoryById } from "@/data/categories";
+import { useCaseCombos } from "@/data/useCaseCombos";
 import ProductCard from "@/components/ProductCard";
 import type { Metadata } from "next";
 import { SITE, breadcrumbLd, solutionServiceLd } from "@/lib/jsonLd";
@@ -10,19 +12,19 @@ import { SITE, breadcrumbLd, solutionServiceLd } from "@/lib/jsonLd";
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-    return solutions.map((s) => ({ slug: s.slug }));
+    return solutions.map((s) => ({ industry: s.slug }));
 }
 
 export async function generateMetadata({
     params,
 }: {
-    params: Promise<{ slug: string }>;
+    params: Promise<{ industry: string }>;
 }): Promise<Metadata> {
-    const { slug } = await params;
-    const solution = solutions.find((s) => s.slug === slug);
+    const { industry } = await params;
+    const solution = solutions.find((s) => s.slug === industry);
     if (!solution) return { title: "Solution Not Found | Aplus Tech" };
 
-    const url = `${SITE}/solutions/${slug}`;
+    const url = `${SITE}/solutions/${industry}`;
     const description = `Samsung B2B display solutions for ${solution.title.toLowerCase()} — recommended hardware, sizing, and deployment guidance from Aplus Technology Solutions.`;
     return {
         title: `${solution.title} | Aplus Technology Solutions`,
@@ -57,9 +59,9 @@ const STATS = [
     { value: "Samsung", label: "Authorized Partner" },
 ];
 
-export default async function IndustryPage({ params }: { params: Promise<{ slug: string }> }) {
-    const { slug } = await params;
-    const solution = solutions.find((s) => s.slug === slug);
+export default async function IndustryPage({ params }: { params: Promise<{ industry: string }> }) {
+    const { industry } = await params;
+    const solution = solutions.find((s) => s.slug === industry);
 
     if (!solution) {
         notFound();
@@ -69,7 +71,9 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
         solution.recommendedSeries.some((series) => p.series.includes(series))
     );
 
-    const accentGradient = GRADIENTS[slug] || "from-blue-900 via-blue-950 to-slate-900";
+    const combosForIndustry = useCaseCombos.filter((c) => c.industry === industry);
+
+    const accentGradient = GRADIENTS[industry] || "from-blue-900 via-blue-950 to-slate-900";
 
     const jsonLd = [
         solutionServiceLd(solution),
@@ -122,9 +126,56 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
                 </div>
             </section>
 
-            {recommendedProducts.length > 0 && (
+            {combosForIndustry.length > 0 && (
                 <section className="py-20 bg-white">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="max-w-3xl mb-12">
+                            <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-3">
+                                Display categories
+                            </p>
+                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+                                Samsung displays used in {solution.title.toLowerCase()}
+                            </h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                            {combosForIndustry.map((combo) => {
+                                const cat = getCategoryById(combo.category);
+                                if (!cat) return null;
+                                return (
+                                    <Link
+                                        key={combo.category}
+                                        href={`/solutions/${combo.industry}/${combo.category}`}
+                                        className="group bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-md hover:border-blue-100 transition-all"
+                                    >
+                                        <p className="text-[10px] font-bold uppercase tracking-widest text-blue-600 mb-2">
+                                            {cat.navLabel}
+                                        </p>
+                                        <h3 className="text-base font-bold text-gray-900 mb-2 leading-snug group-hover:text-blue-700 transition-colors">
+                                            {combo.title}
+                                        </h3>
+                                        <p className="text-sm text-gray-500 line-clamp-3">{combo.subtitle}</p>
+                                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 mt-4 group-hover:gap-2 transition-all">
+                                            Explore <ArrowRight size={12} />
+                                        </span>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+            )}
+
+            {recommendedProducts.length > 0 && (
+                <section className="py-20 bg-gray-50">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="mb-8">
+                            <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-2">
+                                Featured products
+                            </p>
+                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                                Top recommendations for {solution.title.toLowerCase()}
+                            </h2>
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             {recommendedProducts.map((product) => (
                                 <ProductCard key={product.id} product={product} />

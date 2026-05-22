@@ -4,13 +4,13 @@ import { solutions } from "@/data/solutions";
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ industry: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const solution = solutions.find((s) => s.slug === slug);
+  const { industry } = await params;
+  const solution = solutions.find((s) => s.slug === industry);
   if (!solution) return {};
 
-  const url = `https://www.aplustechsol.com/solutions/${slug}`;
+  const url = `https://www.aplustechsol.com/solutions/${industry}`;
   return {
     title: solution.title,
     description: solution.description,

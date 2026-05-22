@@ -3,20 +3,21 @@ import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ChatWidget from "@/components/ChatWidget";
-import ComparisonFloatingBar from "@/components/ComparisonFloatingBar";
-import FinderFloatButton from "@/components/FinderFloatButton";
 import { QuoteProvider } from "@/context/QuoteContext";
 import { ComparisonProvider } from "@/context/ComparisonContext";
 import Analytics from "@/components/Analytics";
 import PageTransition from "@/components/PageTransition";
-import CursorSpotlight from "@/components/CursorSpotlight";
-import BackToTop from "@/components/BackToTop";
-import CookieConsent from "@/components/CookieConsent";
+import ClientFloats from "@/components/ClientFloats";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  // Variable font; specifying explicit numeric range keeps payload tight
+  // and avoids loading 100/200 weights we never style with.
+  weight: ["400", "500", "600", "700"],
+});
 const jakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-display",
@@ -63,6 +64,15 @@ export const metadata: Metadata = {
     images: ["/og-default.png"],
   },
   alternates: { canonical: SITE_URL },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 export const viewport: Viewport = {
@@ -81,7 +91,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} ${jakartaSans.variable} bg-background text-foreground`}>
         <Analytics gaId={GA_ID} />
-        <CursorSpotlight />
 
         {/* Skip-to-content for keyboard/screen-reader users */}
         <a
@@ -95,16 +104,17 @@ export default function RootLayout({
           <ComparisonProvider>
             <div className="min-h-screen flex flex-col">
               <Navbar />
-              <main id="main-content" className="flex-1 bg-white">
+              <main
+                id="main-content"
+                // pb-[72px] reserves space for the mobile sticky CTA bar so
+                // content isn't obscured. Desktop has no sticky bar → no padding.
+                className="flex-1 bg-white pb-18 md:pb-0 print:pb-0"
+              >
                 <PageTransition>{children}</PageTransition>
               </main>
               <Footer />
             </div>
-            <ChatWidget />
-            <ComparisonFloatingBar />
-            <FinderFloatButton />
-            <BackToTop />
-            <CookieConsent />
+            <ClientFloats />
           </ComparisonProvider>
         </QuoteProvider>
       </body>

@@ -48,7 +48,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-[#070b15] text-gray-400 overflow-hidden">
+    <footer className="relative bg-[#070b15] text-gray-400 overflow-hidden print:hidden">
       {/* Ambient gradient */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-blue-500/40 to-transparent" />
       <div className="absolute -top-40 left-1/4 w-[600px] h-[600px] bg-blue-600 rounded-full filter blur-[180px] opacity-[0.08] pointer-events-none" />
@@ -94,9 +94,9 @@ export default function Footer() {
           <div className="col-span-2 lg:col-span-4">
             <Link href="/" className="inline-block mb-5">
               <Image
-                src="https://www.aplustechsol.com/assets/img/logo.webp"
+                src="/logo.png"
                 alt="Aplus Technology Solutions"
-                width={160}
+                width={48}
                 height={48}
                 className="h-10 w-auto object-contain"
               />
@@ -265,10 +265,15 @@ export default function Footer() {
 
       {/* ───────────────── Bottom bar ───────────────── */}
       <div className="relative border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-gray-500">
-          <p>
-            &copy; {new Date().getFullYear()} Aplus Technology Solutions Pvt. Ltd. All rights reserved.
-          </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+          <div className="flex flex-col gap-1 text-center sm:text-left">
+            <p>
+              &copy; {new Date().getFullYear()} Aplus Technology Solutions Pvt. Ltd. All rights reserved.
+            </p>
+            <p className="text-[10px] text-gray-600">
+              CIN: U72900DL2020PTC374888 <span className="mx-2">|</span> GSTIN: 07AAUCA5631L1Z6
+            </p>
+          </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center">
             <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy Policy

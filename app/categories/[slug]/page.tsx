@@ -2,8 +2,10 @@ import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import { notFound } from "next/navigation";
 import { getCategoryById, CategorySlug } from "@/data/categories";
+import { solutions } from "@/data/solutions";
+import { useCaseCombos } from "@/data/useCaseCombos";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import { SITE, breadcrumbLd, categoryCollectionLd } from "@/lib/jsonLd";
 
@@ -158,6 +160,50 @@ export default async function CategoryPage({
           </div>
         )}
       </div>
+
+      {/* ── INDUSTRIES USING THIS CATEGORY ─────────────────────────────── */}
+      {(() => {
+        const combosForCategory = useCaseCombos.filter((c) => c.category === slug);
+        if (combosForCategory.length === 0) return null;
+        return (
+          <section className="bg-white border-t border-gray-100">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+              <div className="max-w-3xl mb-10">
+                <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-3">
+                  Industries we serve
+                </p>
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
+                  {category.navLabel} for your industry
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                {combosForCategory.map((combo) => {
+                  const sol = solutions.find((s) => s.slug === combo.industry);
+                  if (!sol) return null;
+                  return (
+                    <Link
+                      key={combo.industry}
+                      href={`/solutions/${combo.industry}/${combo.category}`}
+                      className="group bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-md hover:border-blue-100 transition-all"
+                    >
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-blue-600 mb-2">
+                        {sol.title}
+                      </p>
+                      <h3 className="text-base font-bold text-gray-900 mb-2 leading-snug group-hover:text-blue-700 transition-colors">
+                        {combo.title}
+                      </h3>
+                      <p className="text-sm text-gray-500 line-clamp-3">{combo.subtitle}</p>
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 mt-4 group-hover:gap-2 transition-all">
+                        Explore <ArrowRight size={12} />
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        );
+      })()}
     </main>
   );
 }

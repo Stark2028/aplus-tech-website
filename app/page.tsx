@@ -7,6 +7,7 @@ import CategoryGrid from "@/components/sections/CategoryGrid";
 import IndustrySolutions from "@/components/sections/IndustrySolutions";
 import HowItWorks from "@/components/sections/HowItWorks";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
+import FAQSection from "@/components/FAQSection";
 import FinalCTA from "@/components/sections/FinalCTA";
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function Home() {
       <IndustrySolutions />
       <HowItWorks />
       <WhyChooseUs />
+      <FAQSection />
       <FinalCTA />
     </main>
   );
