@@ -13,6 +13,8 @@ import {
   Monitor, Plus, FileSpreadsheet,
 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
+import LeadGateModal from "@/components/LeadGateModal";
+import { hasGated } from "@/lib/leadGate";
 
 const SPEC_ROWS: { label: string; getValue: (p: Product) => string }[] = [
   { label: "Category", getValue: (p) => p.category },
@@ -54,8 +56,9 @@ function ComparePageInner() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [copied, setCopied] = useState(false);
+  const [gate, setGate] = useState<null | "excel" | "print">(null);
 
-  const handleExportExcel = async () => {
+  const exportExcelNow = async () => {
     const ExcelJS = await import("exceljs");
     const headers = ["Specification", ...selectedProducts.map((p) => p.name)];
 
@@ -109,6 +112,17 @@ function ComparePageInner() {
     trackEvent("compare_export_excel", { product_count: selectedProducts.length });
   };
 
+  const handleExportExcel = () => {
+    if (hasGated()) {
+      trackEvent("compare_export_excel_cached", {
+        product_count: selectedProducts.length,
+      });
+      exportExcelNow();
+      return;
+    }
+    setGate("excel");
+  };
+
   // Load from URL params on first render (enables link sharing)
   useEffect(() => {
     const ids = searchParams.get("ids");
@@ -137,10 +151,25 @@ function ComparePageInner() {
     } catch {}
   };
 
-  const handlePrint = () => {
+  const printNow = () => {
     trackEvent("compare_print", { product_count: selectedProducts.length });
     window.print();
   };
+
+  const handlePrint = () => {
+    if (hasGated()) {
+      trackEvent("compare_print_cached", {
+        product_count: selectedProducts.length,
+      });
+      printNow();
+      return;
+    }
+    setGate("print");
+  };
+
+  const productSummary = selectedProducts
+    .map((p) => `• ${p.name} (${p.series})`)
+    .join("\n");
 
   if (selectedProducts.length === 0) return <EmptyState />;
 
@@ -354,6 +383,45 @@ function ComparePageInner() {
           </p>
         </div>
       </div>
+
+      {/* Lead gate for downloads */}
+      <LeadGateModal
+        isOpen={gate !== null}
+        onClose={() => setGate(null)}
+        onUnlock={() => {
+          const action = gate;
+          setGate(null);
+          if (action === "excel") {
+            exportExcelNow();
+          } else if (action === "print") {
+            printNow();
+          }
+        }}
+        title={
+          gate === "excel"
+            ? "Download Comparison Spreadsheet"
+            : "Download Comparison PDF"
+        }
+        subtitle={
+          gate === "excel"
+            ? `Enter your details to download the side-by-side comparison Excel for ${selectedProducts.length} product${selectedProducts.length !== 1 ? "s" : ""}.`
+            : `Enter your details to download the side-by-side comparison PDF for ${selectedProducts.length} product${selectedProducts.length !== 1 ? "s" : ""}.`
+        }
+        subject={
+          gate === "excel"
+            ? `Comparison Excel Download — ${selectedProducts.length} products`
+            : `Comparison PDF Download — ${selectedProducts.length} products`
+        }
+        itemDescription={productSummary || "Product comparison requested"}
+        eyebrow="Comparison Document"
+        ctaLabel={
+          gate === "excel" ? "Download Excel" : "Download PDF"
+        }
+        privacyNote="We'll only use this to follow up with pricing on the products you're comparing."
+        analyticsKey={
+          gate === "excel" ? "compare_excel_gate" : "compare_print_gate"
+        }
+      />
     </>
   );
 }

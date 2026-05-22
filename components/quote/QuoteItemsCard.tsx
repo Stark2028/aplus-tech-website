@@ -15,6 +15,9 @@ import {
   Scale,
 } from "lucide-react";
 import type { QuoteItem } from "@/context/QuoteContext";
+import LeadGateModal from "@/components/LeadGateModal";
+import { hasGated } from "@/lib/leadGate";
+import { trackEvent } from "@/lib/analytics";
 
 const TRUST_ITEMS = [
   {
@@ -66,12 +69,27 @@ export default function QuoteItemsCard({
   onClear,
 }: Props) {
   const { ref: quoteRef, date: quoteDate, validUntil } = useQuoteRef();
+  const [isGateOpen, setIsGateOpen] = useState(false);
 
-  const handleDownload = () => {
+  const doDownload = () => {
     if (typeof window !== "undefined") {
       window.print();
     }
   };
+
+  const handleDownload = () => {
+    // Smart gate: skip if visitor has already submitted any Aplus form
+    if (hasGated()) {
+      trackEvent("quote_pdf_downloaded_cached", { total_items: totalItems });
+      doDownload();
+      return;
+    }
+    setIsGateOpen(true);
+  };
+
+  const itemsSummary = items
+    .map((i) => `• ${i.product.name} (${i.product.series}) — Qty: ${i.quantity}`)
+    .join("\n");
 
   return (
     <div className="space-y-6 print:space-y-0">
@@ -296,6 +314,25 @@ export default function QuoteItemsCard({
           ))}
         </div>
       </div>
+
+      {/* ─── LEAD GATE MODAL ──────────────────────────────────────────── */}
+      <LeadGateModal
+        isOpen={isGateOpen}
+        onClose={() => setIsGateOpen(false)}
+        onUnlock={() => {
+          setIsGateOpen(false);
+          trackEvent("quote_pdf_downloaded", { total_items: totalItems });
+          doDownload();
+        }}
+        title="Download Your Quote PDF"
+        subtitle={`Enter your details to download the formal quote PDF for your ${totalItems} item${totalItems !== 1 ? "s" : ""}. Our sales team will follow up with pricing.`}
+        subject={`Quote PDF Download — ${totalItems} item${totalItems !== 1 ? "s" : ""}`}
+        itemDescription={itemsSummary || "Quote cart PDF requested"}
+        eyebrow="Quote Document"
+        ctaLabel="Download Quote PDF"
+        privacyNote="Same details used for the Submit Request form below — we'll prefill it for you."
+        analyticsKey="quote_pdf_gate"
+      />
 
       {/* ─── PRINT-ONLY FOOTER ────────────────────────────────────────── */}
       <footer className="hidden print:block mt-6 pt-4 border-t border-gray-300 print-border text-[10px] text-gray-600 avoid-break">

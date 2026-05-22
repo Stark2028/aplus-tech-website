@@ -1,18 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import type { QuoteItem } from "@/context/QuoteContext";
 import WhatsAppIcon from "./WhatsAppIcon";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
+import { getCachedLead, setCachedLead } from "@/lib/leadGate";
 
 const FIELDS = [
   { id: "name", label: "Full Name", type: "text", placeholder: "John Doe" },
   { id: "email", label: "Company Email", type: "email", placeholder: "you@company.com" },
   { id: "phone", label: "Phone Number", type: "tel", placeholder: "+91 99999 99999" },
-];
+] as const;
 
 function generateEmailBody(items: QuoteItem[]) {
   let body = "I would like to request a quote for the following items:\n\n";
@@ -41,6 +42,19 @@ interface Props {
 
 export default function QuoteSubmitForm({ items, totalItems, onSuccess }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [prefill, setPrefill] = useState<Record<string, string>>({});
+
+  // Prefill from the shared lead-gate cache (if visitor already gated a download)
+  useEffect(() => {
+    const cached = getCachedLead();
+    if (cached) {
+      setPrefill({
+        name: cached.name,
+        email: cached.email,
+        phone: cached.phone,
+      });
+    }
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -65,6 +79,12 @@ export default function QuoteSubmitForm({ items, totalItems, onSuccess }: Props)
       });
       const data = await response.json();
       if (data.success) {
+        // Cache submitted contact info so future downloads (spec sheet, compare PDF/Excel) skip the gate
+        setCachedLead({
+          name,
+          email: payload.email ?? "",
+          phone: payload.phone ?? "",
+        });
         trackEvent("quote_cart_submitted", { total_items: totalItems });
         onSuccess(name);
       }
@@ -104,6 +124,8 @@ export default function QuoteSubmitForm({ items, totalItems, onSuccess }: Props)
               name={id}
               type={type}
               placeholder={placeholder}
+              defaultValue={prefill[id] ?? ""}
+              key={`${id}-${prefill[id] ?? ""}`}
               className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-300 text-gray-900 text-sm"
             />
           </div>
