@@ -8,10 +8,8 @@ import {
   Phone,
   Mail,
   ArrowRight,
-  CheckCircle2,
   ShieldCheck,
   Clock,
-  Send,
 } from "lucide-react";
 
 const PRODUCT_LINKS = [
@@ -37,15 +35,6 @@ const COMPANY_LINKS = [
 ];
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    setSubscribed(true);
-    setEmail("");
-  };
 
   return (
     <footer className="relative bg-[#070b15] text-gray-400 overflow-hidden print:hidden">
@@ -91,8 +80,8 @@ export default function Footer() {
         <div className="grid grid-cols-2 lg:grid-cols-12 gap-y-12 gap-x-8">
 
           {/* Brand column */}
-          <div className="col-span-2 lg:col-span-4">
-            <Link href="/" className="inline-block mb-5">
+          <div className="col-span-2 lg:col-span-3 pr-4">
+            <Link href="/" className="inline-block mb-6">
               <Image
                 src="/logo.png"
                 alt="Aplus Technology Solutions"
@@ -101,73 +90,37 @@ export default function Footer() {
                 className="h-10 w-auto object-contain"
               />
             </Link>
-            <p className="text-sm leading-relaxed text-gray-400 max-w-sm mb-6">
-              Authorized Samsung Display distributor providing<br></br>
-              end-to-end commercial solutions across India.
+            <p className="text-sm leading-relaxed text-slate-400 mb-6">
+              Authorized Samsung Display distributor providing end-to-end commercial solutions across India.
             </p>
 
             {/* Authorized badge */}
-            <div className="inline-flex items-center gap-3 bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 mb-6">
-              <div className="w-9 h-9 rounded-lg bg-blue-600/15 border border-blue-500/30 flex items-center justify-center shrink-0">
-                <ShieldCheck size={16} className="text-blue-300" />
+            <div className="inline-flex items-center gap-3 bg-slate-800/40 border border-slate-700/50 rounded-xl px-4 py-3">
+              <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+                <ShieldCheck size={16} className="text-blue-400" />
               </div>
               <div>
-                <p className="text-xs font-semibold text-white leading-tight">
+                <p className="text-xs font-semibold text-slate-200 leading-tight">
                   Samsung Authorized
                 </p>
-                <p className="text-[11px] text-gray-500 leading-tight mt-0.5">
-                  Business Display Partner · India
+                <p className="text-[11px] text-slate-500 leading-tight mt-0.5">
+                  Business Display Partner
                 </p>
               </div>
-            </div>
-
-            {/* Newsletter */}
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white mb-2">
-                Stay updated
-              </p>
-              <p className="text-xs text-gray-500 mb-3 max-w-sm">
-                Quarterly product launches, display trends, and B2B offers.
-              </p>
-              {subscribed ? (
-                <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 text-green-300 text-xs font-medium rounded-lg px-3 py-2">
-                  <CheckCircle2 size={14} />
-                  You&apos;re subscribed.
-                </div>
-              ) : (
-                <form onSubmit={handleSubscribe} className="flex gap-2 max-w-sm">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    required
-                    aria-label="Email address"
-                    className="flex-1 min-w-0 bg-white/[0.04] border border-white/10 rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-blue-500/60 focus:bg-white/[0.06] transition-colors"
-                  />
-                  <button
-                    type="submit"
-                    aria-label="Subscribe"
-                    className="inline-flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-lg text-xs font-semibold transition-colors shrink-0"
-                  >
-                    <Send size={13} />
-                  </button>
-                </form>
-              )}
             </div>
           </div>
 
           {/* Links: Products */}
-          <div className="lg:col-span-2">
-            <h4 className="text-white font-semibold text-xs uppercase tracking-[0.18em] mb-5">
+          <div className="col-span-1 lg:col-span-2">
+            <h4 className="text-slate-200 font-semibold text-xs uppercase tracking-widest mb-6">
               Products
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-3.5">
               {PRODUCT_LINKS.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="group inline-flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors"
+                    className="group inline-flex items-center gap-1 text-sm text-slate-400 hover:text-white transition-colors"
                   >
                     {l.label}
                   </Link>
@@ -177,32 +130,35 @@ export default function Footer() {
           </div>
 
           {/* Links: Solutions */}
-          <div className="lg:col-span-2">
-            <h4 className="text-white font-semibold text-xs uppercase tracking-[0.18em] mb-5">
+          <div className="col-span-1 lg:col-span-2">
+            <h4 className="text-slate-200 font-semibold text-xs uppercase tracking-widest mb-6">
               Solutions
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-3.5">
               {SOLUTION_LINKS.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-sm text-slate-400 hover:text-white transition-colors"
                   >
                     {l.label}
                   </Link>
                 </li>
               ))}
             </ul>
+          </div>
 
-            <h4 className="text-white font-semibold text-xs uppercase tracking-[0.18em] mt-8 mb-5">
+          {/* Links: Company */}
+          <div className="col-span-1 lg:col-span-2">
+            <h4 className="text-slate-200 font-semibold text-xs uppercase tracking-widest mb-6">
               Company
             </h4>
-            <ul className="space-y-3">
+            <ul className="space-y-3.5">
               {COMPANY_LINKS.map((l) => (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                    className="text-sm text-slate-400 hover:text-white transition-colors"
                   >
                     {l.label}
                   </Link>
@@ -212,49 +168,49 @@ export default function Footer() {
           </div>
 
           {/* Contact */}
-          <div className="col-span-2 lg:col-span-4">
-            <h4 className="text-white font-semibold text-xs uppercase tracking-[0.18em] mb-5">
+          <div className="col-span-2 lg:col-span-3">
+            <h4 className="text-slate-200 font-semibold text-xs uppercase tracking-widest mb-6">
               Contact
             </h4>
 
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center shrink-0">
-                  <MapPin size={14} className="text-blue-300" />
+                <div className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0 mt-0.5">
+                  <MapPin size={14} className="text-blue-400" />
                 </div>
-                <div className="text-sm leading-relaxed text-gray-400">
+                <div className="text-sm leading-relaxed text-slate-400">
                   Office No. 855, 8th Floor,<br />
                   Supernova Astralis, Sector-94,<br />
                   Noida, UP — 201301
                 </div>
               </li>
               <li className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center shrink-0">
-                  <Phone size={14} className="text-blue-300" />
+                <div className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
+                  <Phone size={14} className="text-blue-400" />
                 </div>
                 <a
                   href="tel:+919310509909"
-                  className="text-sm text-gray-300 hover:text-white transition-colors"
+                  className="text-sm text-slate-300 hover:text-white transition-colors"
                 >
                   +91 93105 09909
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center shrink-0">
-                  <Mail size={14} className="text-blue-300" />
+                <div className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
+                  <Mail size={14} className="text-blue-400" />
                 </div>
                 <a
                   href="mailto:info@aplustechsol.com"
-                  className="text-sm text-gray-300 hover:text-white transition-colors"
+                  className="text-sm text-slate-300 hover:text-white transition-colors"
                 >
                   info@aplustechsol.com
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center shrink-0">
-                  <Clock size={14} className="text-blue-300" />
+                <div className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
+                  <Clock size={14} className="text-blue-400" />
                 </div>
-                <div className="text-sm text-gray-400">
+                <div className="text-sm text-slate-400">
                   Mon – Sat · 9:00 AM – 6:00 PM IST
                 </div>
               </li>
@@ -264,24 +220,24 @@ export default function Footer() {
       </div>
 
       {/* ───────────────── Bottom bar ───────────────── */}
-      <div className="relative border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+      <div className="relative border-t border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
           <div className="flex flex-col gap-1 text-center sm:text-left">
             <p>
               &copy; {new Date().getFullYear()} Aplus Technology Solutions Pvt. Ltd. All rights reserved.
             </p>
-            <p className="text-xs text-gray-400">
-              CIN: U72900DL2020PTC374888 <span className="mx-2 text-gray-600">|</span> GSTIN: 07AAUCA5631L1Z6
+            <p className="text-xs text-slate-500">
+              CIN: U72900DL2020PTC374888 <span className="mx-2 text-slate-700">|</span> GSTIN: 07AAUCA5631L1Z6
             </p>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center">
-            <Link href="/privacy" className="hover:text-white transition-colors">
+            <Link href="/privacy" className="hover:text-slate-300 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-white transition-colors">
+            <Link href="/terms" className="hover:text-slate-300 transition-colors">
               Terms &amp; Conditions
             </Link>
-            <Link href="/contact" className="hover:text-white transition-colors">
+            <Link href="/contact" className="hover:text-slate-300 transition-colors">
               Support
             </Link>
           </div>
