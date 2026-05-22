@@ -3,14 +3,31 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Monitor } from "lucide-react";
-import { products } from "@/data/products";
+import { ArrowRight, Check, Monitor, ShoppingBag } from "lucide-react";
+import { products, Product } from "@/data/products";
 import { productCategories } from "@/data/categories";
+import { useQuote } from "@/context/QuoteContext";
+import { trackEvent } from "@/lib/analytics";
 
 export default function ProductCatalogSection() {
   const [activeTab, setActiveTab] = useState(productCategories[0].name);
+  const [addedId, setAddedId] = useState<string | null>(null);
+  const { addItem } = useQuote();
 
   const filtered = products.filter((p) => p.category === activeTab);
+
+  const handleAddToQuote = (e: React.MouseEvent, product: Product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product);
+    setAddedId(product.id);
+    setTimeout(() => setAddedId((prev) => (prev === product.id ? null : prev)), 1800);
+    trackEvent("add_to_quote", {
+      item_id: product.id,
+      item_name: product.name,
+      item_category: product.category,
+    });
+  };
 
   const sizeRange = (sizes: string[]) => {
     if (sizes.length === 1) return `${sizes[0]}″`;
@@ -117,12 +134,29 @@ export default function ProductCatalogSection() {
 
                 {/* CTAs */}
                 <div className="mt-auto flex items-center gap-2 relative z-10">
-                  <Link
-                    href="/contact"
-                    className="flex-1 text-center bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2.5 px-3 rounded-lg transition-colors"
+                  <button
+                    type="button"
+                    onClick={(e) => handleAddToQuote(e, product)}
+                    disabled={addedId === product.id}
+                    aria-label={`Add ${product.name} to quote`}
+                    className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-2.5 px-3 rounded-lg transition-colors ${
+                      addedId === product.id
+                        ? "bg-green-600 text-white cursor-default"
+                        : "bg-blue-600 hover:bg-blue-500 text-white"
+                    }`}
                   >
-                    Get Quote
-                  </Link>
+                    {addedId === product.id ? (
+                      <>
+                        <Check size={14} aria-hidden="true" />
+                        Added
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag size={14} aria-hidden="true" />
+                        Add to Quote
+                      </>
+                    )}
+                  </button>
                   <Link
                     href={`/products/${product.id}`}
                     aria-label={`View ${product.name}`}
