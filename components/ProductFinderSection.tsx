@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -15,12 +15,19 @@ import {
   Store,
   Hotel,
   CheckCircle2,
+  Sparkles,
+  ShoppingBag,
+  Check,
 } from "lucide-react";
-import { products } from "@/data/products";
+import { products, Product } from "@/data/products";
+import { useQuote } from "@/context/QuoteContext";
+import { trackEvent } from "@/lib/analytics";
 
 type Step = 1 | 2 | 3 | "results";
 
-const INDUSTRIES = [
+type IndustryId = "hospitality" | "corporate" | "education" | "retail" | "any";
+
+const INDUSTRIES: { id: IndustryId; label: string; sub: string; Icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
   { id: "hospitality", label: "Hospitality", sub: "Hotels & Resorts", Icon: Hotel },
   { id: "corporate", label: "Corporate", sub: "Offices & Boardrooms", Icon: Building2 },
   { id: "education", label: "Education", sub: "Schools & Universities", Icon: GraduationCap },
@@ -41,27 +48,105 @@ const SIZE_RANGES = [
   { id: "xlarge", label: "Extra Large", sub: '100" and above', min: 100, max: 999 },
 ];
 
+// Per-industry preference scores by display category. Higher = stronger fit.
+// Used to (a) rank results when an industry is picked and (b) suggest
+// alternatives in the empty state.
+const INDUSTRY_CATEGORY_SCORE: Record<Exclude<IndustryId, "any">, Record<string, number>> = {
+  hospitality: { "Commercial TV": 3, "Digital Signage": 2, "Interactive Display": 1, "Video Wall": 1 },
+  corporate:   { "Interactive Display": 3, "Digital Signage": 2, "Video Wall": 2, "Commercial TV": 1 },
+  education:   { "Interactive Display": 3, "Digital Signage": 1, "Video Wall": 1, "Commercial TV": 0 },
+  retail:      { "Digital Signage": 3, "Video Wall": 3, "Interactive Display": 1, "Commercial TV": 0 },
+};
+
+type ScoredProduct = { product: Product; score: number; sizeFit: "exact" | "near" | "any" };
+
 export default function ProductFinderSection() {
   const [step, setStep] = useState<Step>(1);
-  const [, setIndustry] = useState("");
+  const [industry, setIndustry] = useState<IndustryId | "">("");
   const [displayType, setDisplayType] = useState("");
   const [sizeRangeId, setSizeRangeId] = useState("");
+  const [addedId, setAddedId] = useState<string | null>(null);
+  const { addItem } = useQuote();
 
-  const getResults = () => {
-    const sizeConfig = SIZE_RANGES.find((s) => s.id === sizeRangeId);
-    return products
-      .filter((p) => {
-        if (p.category !== displayType) return false;
-        if (!sizeConfig) return true;
-        return p.specs.screenSizes.some((s) => {
-          const n = parseInt(s);
-          return n >= sizeConfig.min && n <= sizeConfig.max;
-        });
-      })
+  const sizeConfig = SIZE_RANGES.find((s) => s.id === sizeRangeId);
+
+  const { primary, fallbackKind, fallbackProducts } = useMemo(() => {
+    if (step !== "results") {
+      return { primary: [] as ScoredProduct[], fallbackKind: "none" as const, fallbackProducts: [] as ScoredProduct[] };
+    }
+
+    const scoreFor = (p: Product) =>
+      industry && industry !== "any"
+        ? INDUSTRY_CATEGORY_SCORE[industry][p.category] ?? 0
+        : 0;
+
+    const inSize = (p: Product) => {
+      if (!sizeConfig) return true;
+      return p.specs.screenSizes.some((s) => {
+        const n = parseInt(s);
+        return n >= sizeConfig.min && n <= sizeConfig.max;
+      });
+    };
+
+    // Primary: must match category exactly; size matters if chosen.
+    const exact = products
+      .filter((p) => p.category === displayType && inSize(p))
+      .map<ScoredProduct>((p) => ({ product: p, score: scoreFor(p), sizeFit: sizeConfig ? "exact" : "any" }))
+      .sort((a, b) => b.score - a.score)
       .slice(0, 4);
-  };
 
-  const results = step === "results" ? getResults() : [];
+    if (exact.length > 0) {
+      return { primary: exact, fallbackKind: "none" as const, fallbackProducts: [] as ScoredProduct[] };
+    }
+
+    // Fallback 1: same category, ignore size — "different size, same type"
+    const sameCategoryDifferentSize = products
+      .filter((p) => p.category === displayType)
+      .map<ScoredProduct>((p) => ({ product: p, score: scoreFor(p), sizeFit: "near" }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 4);
+
+    if (sameCategoryDifferentSize.length > 0) {
+      return {
+        primary: [] as ScoredProduct[],
+        fallbackKind: "size" as const,
+        fallbackProducts: sameCategoryDifferentSize,
+      };
+    }
+
+    // Fallback 2: industry-recommended alternatives (different category)
+    if (industry && industry !== "any") {
+      const ranked = products
+        .filter((p) => (INDUSTRY_CATEGORY_SCORE[industry][p.category] ?? 0) > 0)
+        .map<ScoredProduct>((p) => ({ product: p, score: scoreFor(p), sizeFit: "any" }))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 4);
+
+      if (ranked.length > 0) {
+        return {
+          primary: [] as ScoredProduct[],
+          fallbackKind: "industry" as const,
+          fallbackProducts: ranked,
+        };
+      }
+    }
+
+    return { primary: [] as ScoredProduct[], fallbackKind: "none" as const, fallbackProducts: [] as ScoredProduct[] };
+  }, [step, industry, displayType, sizeConfig]);
+
+  const handleAddToQuote = (e: React.MouseEvent, product: Product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product);
+    setAddedId(product.id);
+    setTimeout(() => setAddedId((prev) => (prev === product.id ? null : prev)), 1800);
+    trackEvent("add_to_quote", {
+      item_id: product.id,
+      item_name: product.name,
+      item_category: product.category,
+      source: "product_finder",
+    });
+  };
 
   const reset = () => {
     setStep(1);
@@ -70,7 +155,93 @@ export default function ProductFinderSection() {
     setSizeRangeId("");
   };
 
+  const goToResults = () => {
+    setStep("results");
+    trackEvent("product_finder_complete", {
+      industry: industry || "any",
+      display_type: displayType,
+      size_range: sizeRangeId || "any",
+    });
+  };
+
   const stepLabel = step === "results" ? "" : ["", "Your Industry", "Display Type", "Screen Size"][step as number];
+
+  const industryLabel = industry && industry !== "any"
+    ? INDUSTRIES.find((i) => i.id === industry)?.label
+    : null;
+
+  const renderProductCard = (sp: ScoredProduct) => {
+    const { product, score } = sp;
+    const isAdded = addedId === product.id;
+    const isRecommended = industryLabel && score >= 2;
+
+    return (
+      <div
+        key={product.id}
+        className="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col"
+      >
+        {isRecommended && (
+          <div className="absolute top-2 left-2 z-10 inline-flex items-center gap-1 bg-blue-600 text-white text-[10px] font-semibold px-2 py-1 rounded-md shadow">
+            <Sparkles size={10} aria-hidden="true" />
+            Recommended for {industryLabel}
+          </div>
+        )}
+        <div className="h-36 bg-gray-50 relative">
+          {product.images?.[0] ? (
+            <Image
+              src={product.images[0]}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-contain p-4"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <Monitor size={40} className="text-gray-200" />
+            </div>
+          )}
+        </div>
+        <div className="p-4 flex flex-col flex-1">
+          <p className="font-bold text-gray-900 text-sm line-clamp-2 mb-1 leading-snug">
+            {product.name}
+          </p>
+          <p className="text-blue-600 text-xs font-medium mb-3">
+            {product.series} Series
+          </p>
+          <div className="mt-auto flex items-center gap-2">
+            <button
+              type="button"
+              onClick={(e) => handleAddToQuote(e, product)}
+              disabled={isAdded}
+              aria-label={`Add ${product.name} to quote`}
+              className={`flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-semibold py-2 rounded-lg transition-colors ${
+                isAdded
+                  ? "bg-green-600 text-white cursor-default"
+                  : "bg-blue-600 hover:bg-blue-500 text-white"
+              }`}
+            >
+              {isAdded ? (
+                <>
+                  <Check size={13} aria-hidden="true" /> Added
+                </>
+              ) : (
+                <>
+                  <ShoppingBag size={13} aria-hidden="true" /> Get Quote
+                </>
+              )}
+            </button>
+            <Link
+              href={`/products/${product.id}`}
+              aria-label={`View ${product.name}`}
+              className="flex items-center justify-center w-8 h-8 border border-gray-200 rounded-lg hover:border-blue-300 text-gray-400 hover:text-blue-600 transition-colors"
+            >
+              <ArrowRight size={13} />
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <section className="py-16 bg-white border-b border-gray-100">
@@ -95,6 +266,7 @@ export default function ProductFinderSection() {
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center gap-3">
                 <div
+                  aria-current={s === (step as number) ? "step" : undefined}
                   className="flex items-center justify-center w-9 h-9 rounded-full text-sm font-bold transition-all duration-300"
                   style={{
                     backgroundColor:
@@ -126,24 +298,32 @@ export default function ProductFinderSection() {
           </p>
         )}
 
-        {/* ── Step 1: Industry ── */}
+        {/* Step 1: Industry */}
         {step === 1 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {INDUSTRIES.map(({ id, label, sub, Icon }) => (
-              <button
-                key={id}
-                onClick={() => { setIndustry(id); setStep(2); }}
-                className="group p-6 rounded-2xl border-2 border-gray-200 bg-white text-left hover:border-blue-400 hover:bg-blue-50 transition-all duration-200"
-              >
-                <Icon size={28} className="mb-3 text-gray-400 group-hover:text-blue-500 transition-colors" />
-                <div className="font-bold text-gray-900 text-sm">{label}</div>
-                <div className="text-gray-400 text-xs mt-0.5">{sub}</div>
-              </button>
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {INDUSTRIES.map(({ id, label, sub, Icon }) => (
+                <button
+                  key={id}
+                  onClick={() => { setIndustry(id); setStep(2); }}
+                  className="group p-6 rounded-2xl border-2 border-gray-200 bg-white text-left hover:border-blue-400 hover:bg-blue-50 transition-all duration-200"
+                >
+                  <Icon size={28} className="mb-3 text-gray-400 group-hover:text-blue-500 transition-colors" />
+                  <div className="font-bold text-gray-900 text-sm">{label}</div>
+                  <div className="text-gray-400 text-xs mt-0.5">{sub}</div>
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => { setIndustry("any"); setStep(2); }}
+              className="mt-5 text-sm text-gray-500 hover:text-blue-600 underline underline-offset-2 transition-colors block mx-auto"
+            >
+              Skip — no specific industry
+            </button>
+          </>
         )}
 
-        {/* ── Step 2: Display Type ── */}
+        {/* Step 2: Display Type */}
         {step === 2 && (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -165,14 +345,14 @@ export default function ProductFinderSection() {
           </>
         )}
 
-        {/* ── Step 3: Size ── */}
+        {/* Step 3: Size */}
         {step === 3 && (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {SIZE_RANGES.map(({ id, label, sub }) => (
                 <button
                   key={id}
-                  onClick={() => { setSizeRangeId(id); setStep("results"); }}
+                  onClick={() => { setSizeRangeId(id); goToResults(); }}
                   className="group p-6 rounded-2xl border-2 border-gray-200 bg-white text-left hover:border-blue-400 hover:bg-blue-50 transition-all duration-200"
                 >
                   <div className="text-2xl font-black text-gray-200 group-hover:text-blue-100 mb-2 transition-colors">
@@ -183,21 +363,39 @@ export default function ProductFinderSection() {
                 </button>
               ))}
             </div>
-            <button onClick={() => setStep(2)} className="mt-5 text-sm text-gray-400 hover:text-gray-600 transition-colors block mx-auto">
-              ← Back
-            </button>
+            <div className="mt-5 flex flex-col items-center gap-2">
+              <button
+                onClick={() => { setSizeRangeId(""); goToResults(); }}
+                className="text-sm text-gray-500 hover:text-blue-600 underline underline-offset-2 transition-colors"
+              >
+                Skip — show all sizes
+              </button>
+              <button onClick={() => setStep(2)} className="text-sm text-gray-400 hover:text-gray-600 transition-colors">
+                ← Back
+              </button>
+            </div>
           </>
         )}
 
-        {/* ── Results ── */}
+        {/* Results */}
         {step === "results" && (
           <div>
-            <div className="flex items-center justify-between mb-6">
-              <p className="font-semibold text-gray-800">
-                {results.length > 0
-                  ? `${results.length} product${results.length > 1 ? "s" : ""} matched for you`
-                  : "No exact matches found"}
-              </p>
+            <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+              <div>
+                <p className="font-semibold text-gray-800">
+                  {primary.length > 0
+                    ? `${primary.length} product${primary.length > 1 ? "s" : ""} matched for you`
+                    : fallbackProducts.length > 0
+                      ? "No exact matches — here are close alternatives"
+                      : "No matches found"}
+                </p>
+                {industryLabel && (primary.length > 0 || fallbackProducts.length > 0) && (
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Ranked for <span className="font-medium text-gray-700">{industryLabel}</span>
+                    {sizeConfig && <> · {sizeConfig.sub}</>}
+                  </p>
+                )}
+              </div>
               <button
                 onClick={reset}
                 className="inline-flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-700 font-semibold transition-colors"
@@ -206,55 +404,11 @@ export default function ProductFinderSection() {
               </button>
             </div>
 
-            {results.length > 0 ? (
+            {primary.length > 0 && (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {results.map((product) => (
-                    <div
-                      key={product.id}
-                      className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col"
-                    >
-                      <div className="h-36 bg-gray-50 relative">
-                        {product.images?.[0] ? (
-                          <Image
-                            src={product.images[0]}
-                            alt={product.name}
-                            fill
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                            className="object-contain p-4"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Monitor size={40} className="text-gray-200" />
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-4 flex flex-col flex-1">
-                        <p className="font-bold text-gray-900 text-sm line-clamp-2 mb-1 leading-snug">
-                          {product.name}
-                        </p>
-                        <p className="text-blue-600 text-xs font-medium mb-3">
-                          {product.series} Series
-                        </p>
-                        <div className="mt-auto flex items-center gap-2">
-                          <Link
-                            href="/contact"
-                            className="flex-1 text-center bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold py-2 rounded-lg transition-colors"
-                          >
-                            Get Quote
-                          </Link>
-                          <Link
-                            href={`/products/${product.id}`}
-                            className="flex items-center justify-center w-8 h-8 border border-gray-200 rounded-lg hover:border-blue-300 text-gray-400 hover:text-blue-600 transition-colors"
-                          >
-                            <ArrowRight size={13} />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                  {primary.map(renderProductCard)}
                 </div>
-
                 <div className="mt-6 text-center">
                   <Link
                     href={`/products?category=${encodeURIComponent(displayType)}`}
@@ -264,10 +418,42 @@ export default function ProductFinderSection() {
                   </Link>
                 </div>
               </>
-            ) : (
+            )}
+
+            {primary.length === 0 && fallbackProducts.length > 0 && (
+              <>
+                <div className="mb-4 px-4 py-3 rounded-xl bg-amber-50 border border-amber-100 text-sm text-amber-900">
+                  {fallbackKind === "size" && sizeConfig && (
+                    <>
+                      We couldn&apos;t find <span className="font-semibold">{displayType}</span> in the {sizeConfig.sub} range —
+                      showing other sizes in the same category instead.
+                    </>
+                  )}
+                  {fallbackKind === "industry" && industryLabel && (
+                    <>
+                      No <span className="font-semibold">{displayType}</span> matches — here are displays we recommend
+                      for <span className="font-semibold">{industryLabel}</span>.
+                    </>
+                  )}
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {fallbackProducts.map(renderProductCard)}
+                </div>
+                <div className="mt-6 text-center">
+                  <Link
+                    href="/products"
+                    className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors"
+                  >
+                    Browse the full catalog <ArrowRight size={14} />
+                  </Link>
+                </div>
+              </>
+            )}
+
+            {primary.length === 0 && fallbackProducts.length === 0 && (
               <div className="text-center py-12 bg-gray-50 rounded-2xl">
                 <p className="text-gray-500 mb-5">
-                  No products matched your exact criteria — try a different size or browse the full catalog.
+                  We couldn&apos;t find anything matching your criteria — try a different combination or browse the full catalog.
                 </p>
                 <div className="flex items-center justify-center gap-3">
                   <button
