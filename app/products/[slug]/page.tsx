@@ -244,9 +244,6 @@ export default async function ProductPage({
                 </div>
               ))}
             </div>
-
-            {/* Spec sheet download */}
-            <SpecSheetButton product={product} />
           </div>
 
           {/* ── RIGHT: Sticky info + quote ────────────────────────── */}
@@ -313,6 +310,11 @@ export default async function ProductPage({
 
                 {/* Action buttons */}
                 <ProductActions product={product} />
+
+                {/* Spec sheet download (email-gated) */}
+                <div className="mb-4">
+                  <SpecSheetButton product={product} />
+                </div>
 
                 {/* Direct contact */}
                 <div className="flex gap-2 mt-4">

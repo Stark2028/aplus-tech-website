@@ -133,14 +133,6 @@ export default function NavbarMobile({ cartCount }: Props) {
             </div>
 
             <Link
-              href="/room-configurator"
-              onClick={close}
-              className="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
-            >
-              Room Configurator
-            </Link>
-
-            <Link
               href="/about"
               onClick={close}
               className="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
