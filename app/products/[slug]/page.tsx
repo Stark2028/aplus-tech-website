@@ -19,6 +19,7 @@ import SpecSheetButton from "@/components/SpecSheetButton";
 import Image from "next/image";
 import { Metadata } from "next";
 import RecentlyViewed from "@/components/RecentlyViewed";
+import { breadcrumbLd, productLd } from "@/lib/jsonLd";
 
 export const revalidate = 3600;
 
@@ -87,39 +88,15 @@ export default async function ProductPage({
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
-  const SITE = "https://www.aplustechsol.com";
-
-  const productLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    image: product.images?.map((img) =>
-      img.startsWith("http") ? img : `${SITE}${img}`
-    ) ?? [],
-    description: product.description,
-    brand: { "@type": "Brand", name: "Samsung" },
-    offers: {
-      "@type": "AggregateOffer",
-      availability: "https://schema.org/InStock",
-      priceCurrency: "INR",
-      seller: { "@type": "Organization", name: "Aplus Technology Solutions Pvt. Ltd." },
-    },
-    sku: product.id,
-    category: product.category,
-  };
-
-  const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE },
-      { "@type": "ListItem", position: 2, name: "Products", item: `${SITE}/products` },
-      { "@type": "ListItem", position: 3, name: product.category, item: `${SITE}/categories/${categorySlug}` },
-      { "@type": "ListItem", position: 4, name: product.name, item: `${SITE}/products/${product.id}` },
-    ],
-  };
-
-  const jsonLd = [productLd, breadcrumbLd];
+  const jsonLd = [
+    productLd(product),
+    breadcrumbLd([
+      { name: "Home", url: "/" },
+      { name: "Products", url: "/products" },
+      { name: product.category, url: `/categories/${categorySlug}` },
+      { name: product.name, url: `/products/${product.id}` },
+    ]),
+  ];
 
   return (
     <main className="min-h-screen bg-gray-50 pb-20">

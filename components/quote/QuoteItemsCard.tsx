@@ -10,6 +10,7 @@ import {
   ShoppingBag,
   Trash2,
   Truck,
+  Scale,
 } from "lucide-react";
 import type { QuoteItem } from "@/context/QuoteContext";
 
@@ -49,17 +50,28 @@ export default function QuoteItemsCard({
   return (
     <div className="space-y-6">
       <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
-        <div className="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
+        <div className="px-6 py-5 border-b border-gray-100 flex justify-between items-center flex-wrap gap-4">
           <h2 className="font-bold text-gray-800 text-lg flex items-center gap-2">
             <ShoppingBag size={18} className="text-gray-400" />
             Items ({totalItems})
           </h2>
-          <button
-            onClick={onClear}
-            className="text-sm text-red-400 hover:text-red-600 font-medium transition-colors"
-          >
-            Clear all
-          </button>
+          <div className="flex items-center gap-5">
+            {items.length > 0 && (
+              <Link
+                href={`/compare?ids=${items.map(i => i.product.id).join(',')}`}
+                className="text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors flex items-center gap-1.5"
+              >
+                <Scale size={15} />
+                Compare Items
+              </Link>
+            )}
+            <button
+              onClick={onClear}
+              className="text-sm text-red-400 hover:text-red-600 font-medium transition-colors"
+            >
+              Clear all
+            </button>
+          </div>
         </div>
 
         <div className="divide-y divide-gray-50">

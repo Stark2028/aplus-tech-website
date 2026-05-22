@@ -59,11 +59,11 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7">
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-300 mb-3">
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-300 mb-2">
                 Get in touch
               </p>
               <h3 className="text-white text-2xl md:text-3xl font-bold tracking-tight leading-tight">
-                Need help choosing the right display?
+                Need help choosing the right display !
               </h3>
             </div>
             <div className="lg:col-span-5 flex flex-col sm:flex-row gap-3 lg:justify-end">

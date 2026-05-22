@@ -5,10 +5,9 @@ import { solutions } from "@/data/solutions";
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import type { Metadata } from "next";
+import { SITE, breadcrumbLd, solutionServiceLd } from "@/lib/jsonLd";
 
 export const revalidate = 3600;
-
-const SITE = "https://www.aplustechsol.com";
 
 export async function generateStaticParams() {
     return solutions.map((s) => ({ slug: s.slug }));
@@ -72,14 +71,27 @@ export default async function IndustryPage({ params }: { params: Promise<{ slug:
 
     const accentGradient = GRADIENTS[slug] || "from-blue-900 via-blue-950 to-slate-900";
 
+    const jsonLd = [
+        solutionServiceLd(solution),
+        breadcrumbLd([
+            { name: "Home", url: "/" },
+            { name: "Solutions", url: "/#solutions" },
+            { name: solution.title, url: `/solutions/${solution.slug}` },
+        ]),
+    ];
+
     return (
         <main className="bg-white">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <section className={`relative overflow-hidden bg-linear-to-br ${accentGradient}`}>
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.25),transparent_50%)]" />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.35)_100%)]" />
 
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20">
-                    <nav className="flex items-center gap-1.5 text-xs text-blue-100/70 mb-12" aria-label="Breadcrumb">
+                    <nav className="flex items-center justify-end gap-1.5 text-xs text-blue-100/70 mb-12" aria-label="Breadcrumb">
                         <Link href="/" className="hover:text-white transition-colors">Home</Link>
                         <ChevronRight size={12} aria-hidden="true" />
                         <span className="text-white/90 font-medium">{solution.title}</span>

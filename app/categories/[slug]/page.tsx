@@ -5,10 +5,9 @@ import { getCategoryById, CategorySlug } from "@/data/categories";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
+import { SITE, breadcrumbLd, categoryCollectionLd } from "@/lib/jsonLd";
 
 export const revalidate = 3600;
-
-const SITE = "https://www.aplustechsol.com";
 
 export async function generateMetadata({
   params,
@@ -60,21 +59,20 @@ export default async function CategoryPage({
 
   const hasSubCategories = subCategories.length > 1;
 
-  const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE },
-      { "@type": "ListItem", position: 2, name: "Products", item: `${SITE}/products` },
-      { "@type": "ListItem", position: 3, name: category.navLabel, item: `${SITE}/categories/${slug}` },
-    ],
-  };
+  const jsonLd = [
+    categoryCollectionLd(category, categoryProducts),
+    breadcrumbLd([
+      { name: "Home", url: "/" },
+      { name: "Products", url: "/products" },
+      { name: category.navLabel, url: `/categories/${slug}` },
+    ]),
+  ];
 
   return (
     <main className="min-h-screen bg-gray-50">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
       {/* Hero banner */}
