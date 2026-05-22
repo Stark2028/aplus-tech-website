@@ -6,8 +6,7 @@ import { ArrowRight, ExternalLink } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import type { QuoteItem } from "@/context/QuoteContext";
 import WhatsAppIcon from "./WhatsAppIcon";
-
-const WHATSAPP_NUMBER = "919310509909";
+import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 
 const FIELDS = [
   { id: "name", label: "Full Name", type: "text", placeholder: "John Doe" },
