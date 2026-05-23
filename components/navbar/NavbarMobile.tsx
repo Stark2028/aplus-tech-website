@@ -53,7 +53,10 @@ export default function NavbarMobile({ cartCount }: Props) {
       </div>
 
       {isOpen && (
-        <div id="mobile-menu" className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
+        <div
+          id="mobile-menu"
+          className="lg:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-100 shadow-lg max-h-[calc(100vh-4.5rem)] overflow-y-auto"
+        >
           <div className="max-w-7xl mx-auto px-4 py-4 space-y-1">
             <Link
               href="/"
