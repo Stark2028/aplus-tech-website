@@ -1,5 +1,6 @@
-export interface Product {
+export interface Product {
   id: string;
+  popularity?: number;
   name: string;
   /** Must match ProductCategory.name exactly */
   category: string;

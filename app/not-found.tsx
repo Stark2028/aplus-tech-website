@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Search, Phone, ArrowRight } from "lucide-react";
+import { ArrowLeft, Search, Phone, ArrowRight, Monitor } from "lucide-react";
 import { products } from "@/data/products";
 
 const POPULAR = products.slice(0, 4);
