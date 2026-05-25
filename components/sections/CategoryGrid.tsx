@@ -83,10 +83,7 @@ export default function CategoryGrid() {
 
                 <h3 className="text-xl font-bold text-gray-900 mb-6">{cat.title}</h3>
 
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                  <span className="text-xs font-semibold text-gray-400">
-                    {cat.count} products
-                  </span>
+                <div className="flex items-center justify-end pt-4 border-t border-gray-100">
                   <span
                     className="flex items-center gap-1 text-sm font-semibold group-hover:gap-2 transition-all"
                     style={{ color: cat.iconColor }}

@@ -9,6 +9,7 @@ import HowItWorks from "@/components/sections/HowItWorks";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import FAQSection from "@/components/FAQSection";
 import FinalCTA from "@/components/sections/FinalCTA";
+import LatestBlogsSection from "@/components/sections/LatestBlogsSection";
 
 export const metadata: Metadata = {
   title: "Aplus Technology Solutions — Samsung B2B Display Partner, India",
@@ -36,6 +37,7 @@ export default function Home() {
       <IndustrySolutions />
       <HowItWorks />
       <WhyChooseUs />
+      <LatestBlogsSection />
       <FAQSection />
       <FinalCTA />
     </main>

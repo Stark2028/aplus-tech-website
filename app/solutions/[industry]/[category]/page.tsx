@@ -124,7 +124,7 @@ export default async function IndustryCategoryPage({
         <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.35)_100%)]" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
-          <nav className="flex items-center gap-1.5 text-xs text-blue-100/70 mb-10 flex-wrap" aria-label="Breadcrumb">
+          <nav className="flex items-center justify-end gap-1.5 text-xs text-blue-100/70 mb-10 flex-wrap" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight size={12} aria-hidden="true" />
             <Link href={`/solutions/${industry}`} className="hover:text-white transition-colors">

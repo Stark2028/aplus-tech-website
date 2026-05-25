@@ -10,6 +10,22 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "future-of-retail-samsung-video-walls",
+    title: "The Future of Retail with Samsung Video Walls",
+    date: "2026-05-20",
+    readingTimeMinutes: 4,
+    tags: ["Video Wall", "Retail", "Trends"],
+    excerpt:
+      "Discover how ultra-narrow bezel video walls are transforming retail environments and boosting customer engagement.",
+    body: [
+      "Retail spaces are becoming increasingly experiential. In a crowded marketplace, capturing customer attention is more critical than ever.",
+      "",
+      "Samsung's high-brightness, ultra-narrow bezel video walls provide a seamless, captivating canvas for brand storytelling. Whether displaying high-fashion runway shows or interactive product catalogs, these displays ensure your message is unmissable.",
+      "",
+      "At Aplus Technology Solutions, we design video wall installations that integrate flawlessly with your store's architecture, providing a premium aesthetic that elevates the entire shopping experience."
+    ].join("\n"),
+  },
+  {
     slug: "planning-your-samsung-digital-signage-rollout",
     title: "Planning Your Samsung Digital Signage Rollout",
     date: "2025-11-05",

@@ -46,9 +46,9 @@ export default function SpecSheetButton({ product }: Props) {
       <button
         onClick={handleClick}
         disabled={isGenerating}
-        className="flex items-center justify-center gap-2.5 w-full py-3 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:border-blue-400 hover:text-blue-700 hover:bg-blue-50 transition-all bg-white disabled:opacity-60 disabled:cursor-not-allowed"
+        className="flex items-center justify-center gap-2 w-full py-3.5 border border-slate-200 rounded-xl text-[15px] font-semibold text-slate-700 hover:border-slate-300 hover:text-blue-700 hover:bg-slate-50 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 bg-white disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
       >
-        <FileDown size={16} />
+        <FileDown size={18} />
         {isGenerating ? "Preparing PDF…" : "Download Spec Sheet (PDF)"}
       </button>
 
@@ -64,7 +64,6 @@ export default function SpecSheetButton({ product }: Props) {
           triggerPdf();
         }}
         title={`Download the ${product.series} Spec Sheet`}
-        subtitle={`Enter your details to instantly download the full technical specification PDF for the ${product.name}.`}
         subject={`Spec Sheet Download — ${product.name}`}
         itemDescription={`• ${product.name} (${product.series}) — Spec Sheet Requested`}
         ctaLabel="Download Spec Sheet"

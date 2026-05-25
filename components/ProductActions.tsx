@@ -34,29 +34,29 @@ export default function ProductActions({ product }: { product: Product }) {
     };
 
     return (
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row gap-3 mb-1">
             {/* Add to Quote Cart Button */}
             <button
                 onClick={handleAddToCart}
                 disabled={added}
-                className={`flex-1 py-3 px-6 rounded-lg font-bold flex items-center justify-center gap-2 transition-all ${added
-                        ? "bg-green-600 text-white"
-                        : "bg-gray-900 text-white hover:bg-gray-800 hover:shadow-lg"
+                className={`flex-1 py-3.5 px-6 rounded-xl font-semibold text-[15px] flex items-center justify-center gap-2 transition-all duration-300 shadow-sm ${added
+                        ? "bg-emerald-500 text-white shadow-emerald-500/20"
+                        : "bg-slate-900 text-white hover:bg-blue-600 hover:shadow-md hover:shadow-blue-600/20 hover:-translate-y-0.5"
                     }`}
             >
-                {added ? <Check size={20} /> : <ShoppingBag size={20} />}
+                {added ? <Check size={18} strokeWidth={2.5} /> : <ShoppingBag size={18} />}
                 {added ? "Added to Quote" : "Add to Quote List"}
             </button>
 
             {/* Compare Button */}
             <button
                 onClick={handleCompareToggle}
-                className={`flex-1 py-3 px-6 rounded-lg font-bold flex items-center justify-center gap-2 border-2 transition-all ${isComparing
-                        ? "bg-blue-50 border-blue-600 text-blue-600"
-                        : "border-gray-200 text-gray-700 hover:border-blue-600 hover:text-blue-600"
+                className={`flex-1 py-3.5 px-6 rounded-xl font-semibold text-[15px] flex items-center justify-center gap-2 border transition-all duration-300 ${isComparing
+                        ? "bg-blue-50 border-blue-200 text-blue-700"
+                        : "bg-white border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 hover:-translate-y-0.5 hover:shadow-sm"
                     }`}
             >
-                <Scale size={20} />
+                <Scale size={18} strokeWidth={isComparing ? 2.5 : 2} />
                 {isComparing ? "Comparing" : "Compare"}
             </button>
         </div>

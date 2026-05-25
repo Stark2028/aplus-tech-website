@@ -29,10 +29,6 @@ export default function BlogListingPage() {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Blogs &amp; Insights
           </h1>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-            Practical guidance on planning, deploying, and scaling Samsung display solutions
-            for enterprise, retail, and hospitality environments.
-          </p>
         </div>
       </div>
 

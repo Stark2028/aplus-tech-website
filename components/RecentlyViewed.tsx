@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Monitor, Clock } from "lucide-react";
+import { Monitor, Clock, Scale } from "lucide-react";
 import { products } from "@/data/products";
+import { useComparison } from "@/context/ComparisonContext";
 
 const STORAGE_KEY = "aplus_recently_viewed";
 const MAX_STORED = 8;
@@ -15,6 +16,17 @@ interface RecentlyViewedProps {
 
 export default function RecentlyViewed({ currentProductId }: RecentlyViewedProps) {
   const [recentProducts, setRecentProducts] = useState<typeof products>([]);
+  const { addToCompare, isInCompare, removeFromCompare } = useComparison();
+
+  const handleCompareToggle = (e: React.MouseEvent, product: typeof products[0]) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isInCompare(product.id)) {
+      removeFromCompare(product.id);
+    } else {
+      addToCompare(product);
+    }
+  };
 
   useEffect(() => {
     let stored: string[] = [];
@@ -52,11 +64,25 @@ export default function RecentlyViewed({ currentProductId }: RecentlyViewedProps
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {recentProducts.map((product) => (
-          <Link
+          <div
             key={product.id}
-            href={`/products/${product.id}`}
-            className="group bg-white rounded-xl border border-gray-100 overflow-hidden hover:border-blue-200 hover:shadow-md transition-all"
+            className="group bg-white rounded-xl border border-gray-100 overflow-hidden hover:border-blue-200 hover:shadow-md transition-all relative block"
           >
+            {/* Compare Checkbox */}
+            <button
+              type="button"
+              onClick={(e) => handleCompareToggle(e, product)}
+              aria-pressed={isInCompare(product.id)}
+              aria-label={isInCompare(product.id) ? `Remove ${product.name} from compare` : `Add ${product.name} to compare`}
+              className={`absolute top-2 right-2 z-20 p-2 rounded-full transition-all duration-300 shadow-sm backdrop-blur-md ${
+                isInCompare(product.id)
+                  ? "bg-blue-600 text-white shadow-blue-600/30"
+                  : "bg-white/80 text-gray-400 hover:bg-white hover:text-blue-600 hover:shadow-md"
+              }`}
+            >
+              <Scale size={14} strokeWidth={isInCompare(product.id) ? 2.5 : 2} />
+            </button>
+
             <div className="h-28 bg-gray-50 relative overflow-hidden">
               {product.images?.[0] ? (
                 <Image
@@ -72,15 +98,20 @@ export default function RecentlyViewed({ currentProductId }: RecentlyViewedProps
                 </div>
               )}
             </div>
-            <div className="p-3">
+            <div className="p-3 relative z-10">
               <p className="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-0.5">
                 {product.series}
               </p>
               <h3 className="text-xs font-semibold text-gray-800 line-clamp-2 leading-snug">
-                {product.name}
+                <Link
+                  href={`/products/${product.id}`}
+                  className="before:absolute before:inset-0 before:z-0 focus:outline-none cursor-pointer"
+                >
+                  {product.name}
+                </Link>
               </h3>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </section>

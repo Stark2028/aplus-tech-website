@@ -93,7 +93,7 @@ export default async function CategoryPage({
             </div>
 
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-xs text-gray-400 shrink-0 pt-1">
+            <nav className="flex items-center justify-end gap-1.5 text-xs text-gray-400 shrink-0 pt-1">
               <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
               <ChevronRight size={12} className="text-gray-300" />
               <Link href="/products" className="hover:text-blue-600 transition-colors">Products</Link>

@@ -3,11 +3,24 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { Scale } from "lucide-react";
 import { products } from "@/data/products";
+import { useComparison } from "@/context/ComparisonContext";
 
 export default function ProductMarquee() {
     // Double the products list to ensure smooth seamless looping
     const marqueeProducts = [...products, ...products];
+    const { addToCompare, isInCompare, removeFromCompare } = useComparison();
+
+    const handleCompareToggle = (e: React.MouseEvent, product: typeof products[0]) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (isInCompare(product.id)) {
+        removeFromCompare(product.id);
+      } else {
+        addToCompare(product);
+      }
+    };
 
     return (
         <section className="py-20 bg-white overflow-hidden relative">
@@ -40,11 +53,24 @@ export default function ProductMarquee() {
                     whileHover={{ animationPlayState: "paused" }}
                 >
                     {marqueeProducts.map((product, index) => (
-                        <Link
+                        <div
                             key={`${product.id}-${index}`}
-                            href={`/products/${product.id}`}
-                            className="flex-shrink-0 w-64 md:w-80 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group/card block"
+                            className="relative flex-shrink-0 w-64 md:w-80 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow group/card block"
                         >
+                            {/* Compare Checkbox */}
+                            <button
+                              type="button"
+                              onClick={(e) => handleCompareToggle(e, product)}
+                              aria-pressed={isInCompare(product.id)}
+                              aria-label={isInCompare(product.id) ? `Remove ${product.name} from compare` : `Add ${product.name} to compare`}
+                              className={`absolute top-3 right-3 z-20 p-2 rounded-full transition-all duration-300 shadow-sm backdrop-blur-md ${
+                                isInCompare(product.id)
+                                  ? "bg-blue-600 text-white shadow-blue-600/30"
+                                  : "bg-white/80 text-gray-400 hover:bg-white hover:text-blue-600 hover:shadow-md"
+                              }`}
+                            >
+                              <Scale size={15} strokeWidth={isInCompare(product.id) ? 2.5 : 2} />
+                            </button>
                             <div className="relative h-48 w-full bg-white p-6 flex items-center justify-center">
                                 {product.images?.[0] ? (
                                     <Image
@@ -58,15 +84,20 @@ export default function ProductMarquee() {
                                     <div className="text-gray-300 text-sm">No Image</div>
                                 )}
                             </div>
-                            <div className="p-4 bg-white border-t border-gray-100">
+                            <div className="p-4 bg-white border-t border-gray-100 relative z-10">
                                 <h3 className="font-semibold text-gray-900 text-sm md:text-base line-clamp-2 min-h-12">
-                                    {product.name}
+                                    <Link
+                                      href={`/products/${product.id}`}
+                                      className="before:absolute before:inset-0 before:z-0 focus:outline-none cursor-pointer"
+                                    >
+                                      {product.name}
+                                    </Link>
                                 </h3>
                                 <p className="text-xs text-blue-600 font-medium mt-2 uppercase tracking-wide">
                                     {product.series}
                                 </p>
                             </div>
-                        </Link>
+                        </div>
                     ))}
                 </motion.div>
             </div>

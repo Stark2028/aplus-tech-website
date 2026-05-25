@@ -10,7 +10,9 @@ import {
   Linkedin,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Metadata } from "next";
+import LatestBlogsSection from "@/components/sections/LatestBlogsSection";
 
 const ABOUT_URL = "https://www.aplustechsol.com/about";
 
@@ -24,20 +26,20 @@ export const metadata: Metadata = {
     url: ABOUT_URL,
     title: "About Us | Aplus Technology Solutions",
     description:
-      "Authorized Samsung distributor with 10+ years of experience, 500+ enterprise clients, and 1,000+ installations across India.",
+      "Authorized Samsung distributor with 7+ years of experience, 500+ enterprise clients, and 1,000+ installations across India.",
     images: [{ url: "/og-default.png", width: 1200, height: 630, alt: "About Aplus Technology Solutions" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "About Us | Aplus Technology Solutions",
     description:
-      "Authorized Samsung distributor with 10+ years of experience, 500+ enterprise clients, and 1,000+ installations across India.",
+      "Authorized Samsung distributor with 7+ years of experience, 500+ enterprise clients, and 1,000+ installations across India.",
     images: ["/og-default.png"],
   },
 };
 
 const STATS = [
-  { value: "10+", label: "Years in Business" },
+  { value: "7+", label: "Years in Business" },
   { value: "500+", label: "Enterprise Clients" },
   { value: "1,000+", label: "Installations" },
   { value: "50+", label: "Cities Served" },
@@ -70,35 +72,31 @@ const TEAM = [
   {
     name: "Anurag Walia",
     role: "Director",
-    bio: "Leads business strategy and enterprise partnerships at Aplus. 15+ years driving Samsung B2B display adoption across India's top sectors.",
     linkedin: "https://www.linkedin.com/in/anurag-walia-bba9103/",
   },
   {
     name: "Savita Walia",
     role: "Director",
-    bio: "Oversees operations and client success. Her focus on process excellence has helped Aplus maintain a 5-star service track record.",
   },
   {
     name: "Sunil Kumar",
     role: "Director",
-    bio: "Samsung-certified integration specialist with 1,000+ completed installations across hospitality, corporate, and retail projects.",
     linkedin: "https://www.linkedin.com/in/sunil-kumar-a5850217/",
   },
   {
-    name: "Ramkrishna Dasgupta",
+    name: "R.K Dasgupta",
     role: "Director",
-    bio: "Brings extensive industry experience and strategic leadership, driving growth and enterprise partnerships at Aplus.",
     linkedin: "https://www.linkedin.com/in/ramkrishna-dasgupta-75b61294",
   },
 ];
 
 const MILESTONES = [
-  { year: "2014", event: "Founded in Noida with a focus on Samsung commercial displays." },
-  { year: "2016", event: "Became an Authorized Samsung Business Display Distributor." },
-  { year: "2018", event: "Crossed 100+ enterprise clients; opened Mumbai service center." },
-  { year: "2020", event: "Launched dedicated hospitality and education verticals." },
-  { year: "2022", event: "500+ clients milestone; expanded to 50+ cities pan-India." },
-  { year: "2024", event: "Introduced AMC contracts and 24/7 remote support program." },
+  { year: "2019", event: "Founded in Noida with a focus on Samsung commercial displays." },
+  { year: "2020", event: "Became an Authorized Samsung Business Display Distributor." },
+  { year: "2022", event: "Crossed 100+ enterprise clients; opened Mumbai service center." },
+  { year: "2023", event: "Launched dedicated hospitality and education verticals." },
+  { year: "2024", event: "500+ clients milestone; expanded to 50+ cities pan-India." },
+  { year: "2025", event: "Introduced AMC contracts and 24/7 remote support program." },
 ];
 
 const STORY_PILLARS = [
@@ -111,7 +109,7 @@ const STORY_PILLARS = [
 
 export default function AboutPage() {
   return (
-    <main className="bg-white">
+    <main className="bg-white bg-waves">
 
       {/* ───────────────── Hero ───────────────── */}
       <section className="relative overflow-hidden bg-linear-to-br from-slate-900 via-blue-950 to-gray-900">
@@ -120,7 +118,7 @@ export default function AboutPage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-24">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-1.5 text-xs text-blue-100/70 mb-12">
+          <nav className="flex items-center justify-end gap-1.5 text-xs text-blue-100/70 mb-12">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight size={12} />
             <span className="text-white/90 font-medium">About</span>
@@ -132,11 +130,6 @@ export default function AboutPage() {
           <h1 className="text-4xl md:text-6xl font-bold text-white leading-[1.05] tracking-tight max-w-4xl">
             Empowering India&apos;s enterprises with visual excellence.
           </h1>
-          <p className="mt-6 text-base md:text-lg text-blue-100/80 leading-relaxed max-w-2xl">
-            Since 2014, we&apos;ve been the trusted Samsung Business Display partner for India&apos;s
-            leading hotels, corporate campuses, schools, and retail chains — supplying, installing,
-            and supporting every screen we sell.
-          </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <Link
@@ -181,47 +174,50 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-12 gap-16 items-start">
             <div className="lg:col-span-7">
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-4">
-                Our story
+                Our Mission
               </p>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight">
-                More than a distributor — your long-term display partner.
+              <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 leading-[1.15] tracking-tight mb-8">
+                Your end-to-end commercial display partner.
               </h2>
-              <div className="mt-6 space-y-5 text-gray-600 leading-relaxed">
-                <p>
-                  Aplus Technology Solutions was founded on a simple belief: businesses deserve
-                  more than just a box delivery. They deserve a partner who understands the space,
-                  recommends the right technology, installs it correctly, and stands behind it
-                  long-term.
-                </p>
-                <p>
-                  As an Authorized Samsung Business Display Distributor, we combine manufacturer-backed
-                  product quality with local expertise, a pan-India service network, and a team that
-                  has completed over 1,000 installations across every major industry vertical.
-                </p>
-              </div>
 
-              <ul className="mt-8 grid sm:grid-cols-2 gap-x-6 gap-y-3">
-                {STORY_PILLARS.map((item) => (
-                  <li key={item} className="flex items-start gap-2.5">
-                    <CheckCircle2 className="text-blue-600 shrink-0 mt-0.5" size={16} />
-                    <span className="text-gray-700 text-sm">{item}</span>
-                  </li>
+
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                {STORY_PILLARS.map((item, i) => (
+                  <div key={item} className="flex items-center gap-4 bg-slate-50 border border-slate-100 rounded-2xl p-4 hover:bg-blue-50/50 hover:border-blue-100/60 transition-colors">
+                    <div className="w-10 h-10 shrink-0 rounded-full bg-blue-100/80 flex items-center justify-center">
+                      <CheckCircle2 className="text-blue-600" size={18} strokeWidth={2.5} />
+                    </div>
+                    <span className="text-slate-800 text-[14px] font-bold leading-snug block">{item}</span>
+                  </div>
                 ))}
-              </ul>
+
+                {/* Award badge moved to grid */}
+                <div className="flex items-center gap-4 bg-gradient-to-br from-blue-50/50 to-white border border-blue-100/60 rounded-2xl p-4 hover:shadow-sm hover:border-blue-200 transition-all group relative overflow-hidden">
+                  <div className="absolute right-0 top-0 w-24 h-24 bg-blue-100/50 rounded-full blur-2xl -mr-8 -mt-8 group-hover:bg-blue-200/60 transition-colors duration-500" />
+                  <div className="w-10 h-10 shrink-0 rounded-full bg-blue-100/80 flex items-center justify-center relative z-10 group-hover:scale-105 transition-transform duration-500">
+                    <Award className="text-blue-600" size={18} strokeWidth={2.5} />
+                  </div>
+                  <div className="relative z-10">
+                    <span className="text-slate-900 text-[14px] font-extrabold leading-snug block mb-0.5">Best AV Distributor</span>
+                    <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest leading-tight block">North India · 2023</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Spec card */}
             <aside className="lg:col-span-5 lg:sticky lg:top-24">
-              <div className="relative rounded-3xl border border-gray-100 bg-linear-to-br from-slate-900 via-blue-950 to-gray-900 p-8 text-white overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(59,130,246,0.35),transparent_55%)]" />
+              <div className="relative rounded-[2rem] shadow-xl shadow-slate-200/60 bg-gradient-to-br from-white via-slate-50 to-blue-50/40 p-8 text-slate-800 overflow-hidden border border-slate-200/80">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,rgba(59,130,246,0.08),transparent_50%)]" />
                 <div className="relative">
-                  <div className="flex items-center gap-3 mb-7">
-                    <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center font-bold text-lg">
-                      A+
+                  <div className="flex items-center gap-5 mb-8">
+                    <div className="w-14 h-14 rounded-2xl bg-white border border-slate-100 shadow-sm flex items-center justify-center p-2.5 shrink-0">
+                      <Image src="/logo.png" alt="Aplus Technology" width={44} height={44} className="object-contain" />
                     </div>
                     <div>
-                      <p className="font-semibold text-sm leading-tight">Aplus Technology</p>
-                      <p className="text-[11px] text-blue-200/70 leading-tight">Solutions Pvt. Ltd.</p>
+                      <p className="font-extrabold text-[16px] leading-tight mb-0.5 tracking-wide text-slate-900">Aplus Technology</p>
+                      <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-blue-600 leading-tight">Solutions Pvt. Ltd.</p>
                     </div>
                   </div>
 
@@ -230,34 +226,22 @@ export default function AboutPage() {
                       { k: "Certification", v: "Authorized Samsung B2B Partner" },
                       { k: "Coverage", v: "Pan-India · 50+ cities" },
                       { k: "Support", v: "24 / 7 Technical Response" },
-                      { k: "Founded", v: "2014 · Noida, India" },
+                      { k: "Founded", v: "2019 · Noida, India" },
                       { k: "CIN", v: "U72900DL2020PTC374888" },
                       { k: "GSTIN", v: "07AAUCA5631L1Z6" },
                     ].map((row, i, arr) => (
                       <div
                         key={row.k}
-                        className={`flex items-start justify-between gap-6 ${
-                          i < arr.length - 1 ? "pb-5 border-b border-white/10" : ""
-                        }`}
+                        className={`flex items-start justify-between gap-6 ${i < arr.length - 1 ? "pb-5 border-b border-slate-200/70" : ""
+                          }`}
                       >
-                        <dt className="text-[11px] uppercase tracking-[0.18em] text-blue-200/70 font-semibold pt-0.5">
+                        <dt className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-bold pt-0.5">
                           {row.k}
                         </dt>
-                        <dd className="text-sm font-semibold text-right">{row.v}</dd>
+                        <dd className="text-[13px] font-semibold text-right text-slate-900">{row.v}</dd>
                       </div>
                     ))}
                   </dl>
-                </div>
-              </div>
-
-              {/* Award badge */}
-              <div className="mt-5 flex items-center gap-3 rounded-2xl border border-gray-100 bg-white shadow-sm px-5 py-4">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                  <Award className="text-blue-600" size={18} />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-900 leading-tight">Best AV Distributor</p>
-                  <p className="text-xs text-gray-500 leading-tight">North India · 2023</p>
                 </div>
               </div>
             </aside>
@@ -302,7 +286,7 @@ export default function AboutPage() {
               Our journey
             </p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight">
-              A decade of building India&apos;s display backbone.
+              Building India&apos;s display backbone since 2019.
             </h2>
           </div>
 
@@ -371,14 +355,14 @@ export default function AboutPage() {
                     <h3 className="font-bold text-gray-900 tracking-tight leading-tight flex items-center gap-2">
                       {member.name}
                       {member.linkedin && (
-                        <a 
-                          href={member.linkedin} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          className="text-[#0a66c2]/60 hover:text-[#0a66c2] transition-colors"
+                        <a
+                          href={member.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-6 h-6 ml-1 rounded-md bg-[#0a66c2]/10 text-[#0a66c2] flex items-center justify-center hover:bg-[#0a66c2] hover:text-white transition-all shadow-[0_2px_8px_rgba(10,102,194,0.15)] hover:shadow-[0_4px_12px_rgba(10,102,194,0.3)]"
                           aria-label={`${member.name} on LinkedIn`}
                         >
-                          <Linkedin size={15} />
+                          <Linkedin size={13} strokeWidth={2.5} fill="currentColor" />
                         </a>
                       )}
                     </h3>
@@ -392,6 +376,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* ───────────────── Blogs (SEO) ───────────────── */}
+      <LatestBlogsSection />
 
     </main>
   );

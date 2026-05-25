@@ -3,18 +3,30 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Check, Monitor, ShoppingBag } from "lucide-react";
+import { ArrowRight, Check, Monitor, ShoppingBag, Scale } from "lucide-react";
 import { products, Product } from "@/data/products";
 import { productCategories } from "@/data/categories";
 import { useQuote } from "@/context/QuoteContext";
+import { useComparison } from "@/context/ComparisonContext";
 import { trackEvent } from "@/lib/analytics";
 
 export default function ProductCatalogSection() {
   const [activeTab, setActiveTab] = useState(productCategories[0].name);
   const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useQuote();
+  const { addToCompare, isInCompare, removeFromCompare } = useComparison();
 
   const filtered = products.filter((p) => p.category === activeTab);
+
+  const handleCompareToggle = (e: React.MouseEvent, product: Product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isInCompare(product.id)) {
+      removeFromCompare(product.id);
+    } else {
+      addToCompare(product);
+    }
+  };
 
   const handleAddToQuote = (e: React.MouseEvent, product: Product) => {
     e.preventDefault();
@@ -96,13 +108,29 @@ export default function ProductCatalogSection() {
                     <Monitor className="text-gray-300" size={56} />
                   </div>
                 )}
-{product.subCategory && (
+                
+                {product.subCategory && (
                   <div className="absolute top-3 left-3">
                     <span className="bg-gray-900/70 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-1 rounded-md">
                       {product.subCategory}
                     </span>
                   </div>
                 )}
+
+                {/* Compare Checkbox */}
+                <button
+                  type="button"
+                  onClick={(e) => handleCompareToggle(e, product)}
+                  aria-pressed={isInCompare(product.id)}
+                  aria-label={isInCompare(product.id) ? `Remove ${product.name} from compare` : `Add ${product.name} to compare`}
+                  className={`absolute top-3 right-3 z-20 p-2 rounded-full transition-all duration-300 shadow-sm backdrop-blur-md ${
+                    isInCompare(product.id)
+                      ? "bg-blue-600 text-white shadow-blue-600/30"
+                      : "bg-white/80 text-gray-400 hover:bg-white hover:text-blue-600 hover:shadow-md"
+                  }`}
+                >
+                  <Scale size={15} strokeWidth={isInCompare(product.id) ? 2.5 : 2} />
+                </button>
               </div>
 
               {/* Content */}
