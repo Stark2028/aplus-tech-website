@@ -12,7 +12,6 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
-import LatestBlogsSection from "@/components/sections/LatestBlogsSection";
 
 const ABOUT_URL = "https://www.aplustechsol.com/about";
 
@@ -72,6 +71,7 @@ const TEAM = [
   {
     name: "Anurag Walia",
     role: "Director",
+    image: "/team/anurag-walia-v2.jpg",
     linkedin: "https://www.linkedin.com/in/anurag-walia-bba9103/",
   },
   {
@@ -81,6 +81,7 @@ const TEAM = [
   {
     name: "Sunil Kumar",
     role: "Director",
+    image: "/team/sunil-kumar.png",
     linkedin: "https://www.linkedin.com/in/sunil-kumar-a5850217/",
   },
   {
@@ -169,7 +170,7 @@ export default function AboutPage() {
       </section>
 
       {/* ───────────────── Story ───────────────── */}
-      <section className="py-24">
+      <section className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-16 items-start">
             <div className="lg:col-span-7">
@@ -250,7 +251,7 @@ export default function AboutPage() {
       </section>
 
       {/* ───────────────── Values ───────────────── */}
-      <section className="py-24 bg-gray-50 border-y border-gray-100">
+      <section className="py-12 md:py-16 bg-gray-50 border-y border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-4">
@@ -279,7 +280,7 @@ export default function AboutPage() {
       </section>
 
       {/* ───────────────── Timeline ───────────────── */}
-      <section className="py-24">
+      <section className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-14">
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-4">
@@ -330,7 +331,7 @@ export default function AboutPage() {
       </section>
 
       {/* ───────────────── Team ───────────────── */}
-      <section className="py-24 bg-gray-50 border-y border-gray-100">
+      <section className="py-12 md:py-16 bg-gray-50 border-y border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-4">
@@ -348,9 +349,15 @@ export default function AboutPage() {
                 className="group bg-white border border-gray-100 rounded-3xl p-8 hover:border-blue-200 hover:shadow-lg transition-all"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-blue-600 to-cyan-400 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-blue-500/20">
-                    {member.name.charAt(0)}
-                  </div>
+                  {member.image ? (
+                    <div className="w-16 h-16 rounded-2xl overflow-hidden border border-gray-100 shadow-md shadow-blue-500/10 shrink-0">
+                      <Image src={member.image} alt={member.name} width={64} height={64} className="object-cover w-full h-full" />
+                    </div>
+                  ) : (
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-slate-200 font-semibold text-2xl shadow-md shadow-slate-900/10 shrink-0 border border-slate-700">
+                      {member.name.charAt(0)}
+                    </div>
+                  )}
                   <div>
                     <h3 className="font-bold text-gray-900 tracking-tight leading-tight flex items-center gap-2">
                       {member.name}
@@ -376,9 +383,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-      {/* ───────────────── Blogs (SEO) ───────────────── */}
-      <LatestBlogsSection />
 
     </main>
   );

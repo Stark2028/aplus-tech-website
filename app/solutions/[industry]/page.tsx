@@ -69,7 +69,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
 
     const recommendedProducts = products.filter((p) =>
         solution.recommendedSeries.some((series) => p.series.includes(series))
-    );
+    ).sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
 
     const combosForIndustry = useCaseCombos.filter((c) => c.industry === industry);
 
@@ -126,8 +126,28 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
                 </div>
             </section>
 
+            {recommendedProducts.length > 0 && (
+                <section className="py-12 md:py-16 bg-gray-50">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="mb-8">
+                            <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-2">
+                                Featured products
+                            </p>
+                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                                Top recommendations for {solution.title.toLowerCase()}
+                            </h2>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            {recommendedProducts.map((product) => (
+                                <ProductCard key={product.id} product={product} />
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
             {combosForIndustry.length > 0 && (
-                <section className="py-20 bg-white">
+                <section className="py-12 md:py-16 bg-white">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="max-w-3xl mb-12">
                             <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-3">
@@ -165,27 +185,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
                 </section>
             )}
 
-            {recommendedProducts.length > 0 && (
-                <section className="py-20 bg-gray-50">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="mb-8">
-                            <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-2">
-                                Featured products
-                            </p>
-                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-                                Top recommendations for {solution.title.toLowerCase()}
-                            </h2>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {recommendedProducts.map((product) => (
-                                <ProductCard key={product.id} product={product} />
-                            ))}
-                        </div>
-                    </div>
-                </section>
-            )}
-
-            <section className="py-20 bg-gray-50">
+            <section className="py-12 md:py-16 bg-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className={`relative overflow-hidden rounded-3xl bg-linear-to-br ${accentGradient} p-10 md:p-14`}>
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_30%,rgba(59,130,246,0.3),transparent_50%)]" />

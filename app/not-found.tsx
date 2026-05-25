@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Monitor, Search, Phone, ArrowRight } from "lucide-react";
+import { ArrowLeft, Search, Phone, ArrowRight } from "lucide-react";
 import { products } from "@/data/products";
 
 const POPULAR = products.slice(0, 4);
@@ -24,24 +24,15 @@ export default function NotFound() {
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           {/* 404 graphic */}
-          <div className="relative inline-flex items-center justify-center mb-8">
+          <div className="mb-8">
             <span className="text-[9rem] font-black text-gray-100 leading-none select-none">
               404
             </span>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-20 h-20 bg-blue-50 border border-blue-100 rounded-2xl flex items-center justify-center shadow-sm">
-                <Monitor className="text-blue-600" size={38} />
-              </div>
-            </div>
           </div>
 
           <h1 className="text-2xl font-bold text-gray-900 mb-3">
             Page Not Found
           </h1>
-          <p className="text-gray-500 mb-8 max-w-md mx-auto leading-relaxed">
-            The page you&apos;re looking for doesn&apos;t exist or has been moved.
-            Try searching for what you need or browse popular products below.
-          </p>
 
           {/* Search trigger */}
           <button

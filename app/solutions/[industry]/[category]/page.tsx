@@ -84,13 +84,13 @@ export default async function IndustryCategoryPage({
     (p) =>
       p.category === categoryObj.name &&
       solution.recommendedSeries.some((series) => p.series.includes(series))
-  );
+  ).sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
 
   // Fallback: if the combo has no recommended-series matches, show top products in the category.
   const featuredProducts =
     matchingProducts.length > 0
       ? matchingProducts.slice(0, 8)
-      : products.filter((p) => p.category === categoryObj.name).slice(0, 4);
+      : products.filter((p) => p.category === categoryObj.name).sort((a, b) => (b.popularity || 0) - (a.popularity || 0)).slice(0, 4);
 
   const showingFallback = matchingProducts.length === 0;
   const accentGradient = GRADIENTS[industry] || "from-blue-900 via-blue-950 to-slate-900";
@@ -165,7 +165,7 @@ export default async function IndustryCategoryPage({
       </section>
 
       {/* ── USE CASES ────────────────────────────────────────────────────── */}
-      <section className="py-20 bg-white">
+      <section className="py-12 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-12">
             <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-3">
@@ -195,7 +195,7 @@ export default async function IndustryCategoryPage({
 
       {/* ── RECOMMENDED PRODUCTS ─────────────────────────────────────────── */}
       {featuredProducts.length > 0 && (
-        <section className="py-20 bg-gray-50">
+        <section className="py-12 md:py-16 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
               <div>
@@ -225,7 +225,7 @@ export default async function IndustryCategoryPage({
       )}
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-20 bg-white">
+      <section className="py-12 md:py-16 bg-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-3">
@@ -300,7 +300,7 @@ export default async function IndustryCategoryPage({
       )}
 
       {/* ── FINAL CTA ────────────────────────────────────────────────────── */}
-      <section className="py-20 bg-white">
+      <section className="py-12 md:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`relative overflow-hidden rounded-3xl bg-linear-to-br ${accentGradient} p-10 md:p-14`}>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_30%,rgba(59,130,246,0.3),transparent_50%)]" />

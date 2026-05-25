@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
-import type { ProductCategory } from "@/data/categories";
 import {
   BRIGHTNESS_BANDS,
   MIN_SIZE_OPTIONS,
@@ -22,10 +23,10 @@ function FilterChip({
   return (
     <button
       onClick={onClick}
-      className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all whitespace-nowrap ${
+      className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all whitespace-nowrap ${
         active
-          ? "bg-blue-600 text-white border-blue-600"
-          : "bg-white text-gray-600 border-gray-200 hover:border-blue-300 hover:text-blue-700"
+          ? "bg-slate-900 text-white border-slate-900 shadow-sm shadow-slate-900/10"
+          : "bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:text-slate-900 hover:bg-slate-50"
       }`}
     >
       {label}
@@ -41,28 +42,27 @@ function FilterGroup({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-2">
-      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+    <div className="flex flex-col gap-3">
+      <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">
         {title}
       </span>
-      <div className="flex flex-wrap gap-1.5">{children}</div>
+      <div className="flex flex-wrap gap-2">{children}</div>
     </div>
   );
 }
 
 function ActivePill({ label, onRemove }: { label: string; onRemove: () => void }) {
   return (
-    <span className="flex items-center gap-1 text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full font-medium">
+    <span className="flex items-center gap-1.5 text-xs bg-slate-100 text-slate-700 border border-slate-200 px-3 py-1.5 rounded-full font-bold shadow-sm">
       {label}
-      <button onClick={onRemove}>
-        <X size={11} />
+      <button onClick={onRemove} className="hover:text-red-500 transition-colors bg-white rounded-full p-0.5 shadow-sm ml-0.5">
+        <X size={12} strokeWidth={3} />
       </button>
     </span>
   );
 }
 
 interface Props {
-  productCategories: ProductCategory[];
   filters: Filters;
   setFilters: React.Dispatch<React.SetStateAction<Filters>>;
   filtersOpen: boolean;
@@ -73,7 +73,6 @@ interface Props {
 }
 
 export default function ProductFilterBar({
-  productCategories,
   filters,
   setFilters,
   filtersOpen,
@@ -86,21 +85,37 @@ export default function ProductFilterBar({
     setFilters((prev) => ({ ...prev, [key]: prev[key] === value ? null : value }));
   };
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        filtersOpen &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setFiltersOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [filtersOpen, setFiltersOpen]);
+
   return (
-    <div className="sticky top-16 z-30 bg-white border-b border-gray-100 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-3 flex-wrap">
+    <div ref={containerRef} className="sticky top-16 z-30 bg-white border-b border-gray-100 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center gap-3 flex-wrap">
         <button
           onClick={() => setFiltersOpen((o) => !o)}
-          className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-sm font-semibold transition-all ${
-            activeCount > 0
-              ? "bg-blue-600 text-white border-blue-600"
-              : "bg-white text-gray-600 border-gray-200 hover:border-blue-300"
+          className={`flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-bold transition-all ${
+            activeCount > 0 || filtersOpen
+              ? "bg-slate-900 text-white border-slate-900 shadow-md shadow-slate-900/10"
+              : "bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50"
           }`}
         >
           <SlidersHorizontal size={15} />
           Filters
           {activeCount > 0 && (
-            <span className="bg-white text-blue-600 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+            <span className="bg-white text-slate-900 text-xs font-black rounded-full w-5 h-5 flex items-center justify-center shadow-sm">
               {activeCount}
             </span>
           )}
@@ -111,13 +126,7 @@ export default function ProductFilterBar({
         </button>
 
         {activeCount > 0 && (
-          <div className="flex items-center gap-1.5 flex-wrap">
-            {filters.category && (
-              <ActivePill
-                label={filters.category}
-                onRemove={() => setFilters((f) => ({ ...f, category: null }))}
-              />
-            )}
+          <div className="flex items-center gap-2 flex-wrap">
             {filters.resolution && (
               <ActivePill
                 label={filters.resolution}
@@ -144,31 +153,22 @@ export default function ProductFilterBar({
             )}
             <button
               onClick={onClearAll}
-              className="text-xs text-gray-400 hover:text-red-500 font-medium transition-colors px-1"
+              className="text-xs text-slate-400 hover:text-red-500 font-bold transition-colors px-2 underline decoration-transparent hover:decoration-red-500 underline-offset-4"
             >
               Clear all
             </button>
           </div>
         )}
 
-        <div className="ml-auto text-xs text-gray-400 font-medium shrink-0">
+        <div className="ml-auto text-xs text-slate-500 font-bold shrink-0 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-100 shadow-sm">
           {resultCount} product{resultCount !== 1 ? "s" : ""}
         </div>
       </div>
 
       {filtersOpen && (
-        <div className="border-t border-gray-100 bg-gray-50/70">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-wrap gap-8">
-            <FilterGroup title="Category">
-              {productCategories.map((cat) => (
-                <FilterChip
-                  key={cat.id}
-                  label={cat.name}
-                  active={filters.category === cat.name}
-                  onClick={() => toggle("category", cat.name)}
-                />
-              ))}
-            </FilterGroup>
+        <div className="border-t border-gray-100 bg-slate-50/50 shadow-inner">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-wrap gap-x-12 gap-y-8">
+
 
             <FilterGroup title="Resolution">
               {RESOLUTION_OPTIONS.map((opt) => (

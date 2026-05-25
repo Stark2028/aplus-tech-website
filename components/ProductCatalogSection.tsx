@@ -16,7 +16,7 @@ export default function ProductCatalogSection() {
   const { addItem } = useQuote();
   const { addToCompare, isInCompare, removeFromCompare } = useComparison();
 
-  const filtered = products.filter((p) => p.category === activeTab);
+  const filtered = products.filter((p) => p.category === activeTab).sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
 
   const handleCompareToggle = (e: React.MouseEvent, product: Product) => {
     e.preventDefault();

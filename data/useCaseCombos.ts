@@ -48,13 +48,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Digital Signage for Hotels & Hospitality",
     subtitle: "Wayfinding, lobby displays, and dynamic guest information — built for 16/7 reliability.",
     intro:
-      "Samsung digital signage for hospitality transforms lobbies, banquet halls, and corridors into branded, revenue-generating surfaces. Our installations span boutique properties to 500-key hotels — from arrival wayfinding to F&B menu boards that switch automatically between breakfast, lunch, and bar service.",
+      "Samsung digital signage transforms hotel lobbies and corridors into dynamic, revenue-generating surfaces with automated wayfinding and day-parted menu boards.",
     useCases: [
-      { title: "Lobby & Reception Signage", description: "Welcome screens with personalised messaging for VIP arrivals, conference groups, and weddings." },
-      { title: "Banquet & Conference Wayfinding", description: "Auto-updating directional displays for multi-event days — eliminate printed standees and last-minute reprints." },
-      { title: "F&B Menu Boards", description: "Day-parted menus that switch from breakfast to all-day dining to bar pricing without staff intervention." },
-      { title: "In-Lift & Corridor Displays", description: "Brand storytelling and event promotions delivered to captive guest audiences." },
-      { title: "Spa & Recreation Promotions", description: "Drive ancillary revenue with vivid 4K visuals for spa, pool, and excursion bookings." },
+      { title: "Lobby & Reception Signage", description: "Dynamic welcome displays with personalized messaging for VIPs and event groups." },
+      { title: "Banquet & Conference Wayfinding", description: "Automated directional signage to streamline guest navigation during multi-event schedules." },
+      { title: "F&B Menu Boards", description: "Automated, day-parted digital menus requiring zero manual intervention." },
+      { title: "In-Lift & Corridor Displays", description: "Targeted brand storytelling and promotional content for high-dwell-time areas." },
+      { title: "Spa & Recreation Promotions", description: "High-impact 4K visual merchandising to drive ancillary revenue." },
     ],
     faqs: [
       { q: "Can your signage run 16+ hours a day without burn-in?", a: "Yes. We deploy Samsung's commercial-grade panels (QHC, QMC, QH115 series) rated for 16/7 or 24/7 operation. Consumer TVs are not warranted for this duty cycle and will fail within months — we never sell them for signage applications." },
@@ -70,13 +70,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Video Walls for Hotel Lobbies & Hospitality",
     subtitle: "Floor-to-ceiling impact for arrivals, banquets, and brand storytelling.",
     intro:
-      "Hotel video walls are no longer just decoration — they're the first impression that justifies your room rate. We install seamless, ultra-narrow-bezel Samsung video walls in lobbies, banquet pre-function areas, and luxury retail concessions where individual displays would feel undersized.",
+      "Deliver unforgettable first impressions with seamless, ultra-narrow-bezel Samsung video walls designed for luxury lobbies and premium event spaces.",
     useCases: [
-      { title: "Lobby Statement Walls", description: "2×2 to 5×5 configurations that turn the check-in moment into an experience." },
-      { title: "Banquet Pre-Function Areas", description: "Single large canvas for wedding mood reels, corporate event branding, and sponsor logos." },
-      { title: "Restaurant & Bar Backdrops", description: "Mood-driven visuals that change with service period — coffee morning to cocktail evening." },
-      { title: "Porte-Cochère & Driveway Displays", description: "Outdoor-rated panels for arrival branding visible to vehicles approaching the property." },
-      { title: "Convention & MICE Spaces", description: "Configurable walls that brand for one client today and another tomorrow." },
+      { title: "Lobby Statement Walls", description: "Scalable configurations designed to elevate the guest arrival experience." },
+      { title: "Banquet Pre-Function Areas", description: "A unified digital canvas for premium event branding and sponsorship displays." },
+      { title: "Restaurant & Bar Backdrops", description: "Dynamic, schedule-driven visuals that seamlessly adapt to different dining periods." },
+      { title: "Porte-Cochère & Driveway Displays", description: "High-visibility, weather-rated panels for impactful arrival and exterior branding." },
+      { title: "Convention & MICE Spaces", description: "Highly configurable display systems to support rapid turnaround for diverse client events." },
     ],
     faqs: [
       { q: "What's the difference between LCD video walls and LED walls for hotel lobbies?", a: "LCD video walls (Samsung VM, VH series) are best for indoor lobbies up to ~5×3 metres — sharper at close viewing distance and significantly more affordable per square metre. Direct-view LED is the right choice when the canvas exceeds 6 metres or when bezels are unacceptable for the brand. We help you pick based on viewing distance and ambient light." },
@@ -92,13 +92,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Interactive Kiosks for Hotels — Self Check-in & Concierge",
     subtitle: "Cut front-desk queues, upsell experiences, and serve guests in 12 languages.",
     intro:
-      "Samsung interactive displays let hotels deploy self-service check-in, digital concierge, and wayfinding kiosks that work even at 2 AM. Our hospitality clients see 30-40% of arrivals self-check-in within 90 days of deployment — freeing front-desk staff to handle exceptions and upsells.",
+      "Deploy self-service kiosks and digital concierges to streamline check-ins, automate wayfinding, and free your staff to focus on premium guest experiences.",
     useCases: [
-      { title: "Self Check-in & Check-out Kiosks", description: "PMS-integrated kiosks issue room keys and accept payment for late checkouts, mini-bar, and damages." },
-      { title: "Digital Concierge", description: "Interactive city guides, restaurant booking, and excursion sales with multi-language support." },
-      { title: "Wayfinding & Floor Plans", description: "Touch-driven property maps for sprawling resorts and convention centres." },
-      { title: "Banquet Hall Selection Tools", description: "Wedding and event planners explore halls, capacities, and decor options on a 75-inch interactive canvas." },
-      { title: "F&B Pre-Order & Loyalty Sign-up", description: "Drive ancillary revenue by letting guests pre-order spa, F&B, and loyalty enrolment from the lobby." },
+      { title: "Self Check-in & Check-out Kiosks", description: "PMS-integrated terminals for automated key issuance and seamless payment processing." },
+      { title: "Digital Concierge", description: "Multilingual interactive kiosks for self-serve reservations and localized recommendations." },
+      { title: "Wayfinding & Floor Plans", description: "Intuitive, touch-enabled property navigation for large-scale resorts and venues." },
+      { title: "Banquet Hall Selection Tools", description: "Immersive, large-format interactive displays for event planning and venue visualization." },
+      { title: "F&B Pre-Order & Loyalty Sign-up", description: "Self-service touchpoints to accelerate loyalty enrollment and ancillary purchases." },
     ],
     faqs: [
       { q: "Can the kiosk integrate with our PMS for real room-key issuance?", a: "Yes. Samsung interactive displays run a full Android-class OS (Tizen 7.0+) and host vendor PMS apps directly. We've integrated with Opera Cloud, IDS Next, and Hotelogix — and can build custom REST integrations where needed." },
@@ -114,13 +114,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Hotel TVs & In-Room Entertainment (HG Series)",
     subtitle: "Samsung Hospitality TVs with personalisation, Chromecast built-in, and PMS integration.",
     intro:
-      "Samsung Hospitality TVs are purpose-built for hotel rooms — they survive 24/7 power cycles, support enterprise content management, and let guests cast from their own phones without WiFi pairing battles. We deploy across boutique, mid-market, and luxury segments with PMS integration done end-to-end.",
+      "Enterprise-grade Samsung Hospitality TVs feature seamless PMS integration and native BYOD casting, built to withstand 24/7 hotel environments.",
     useCases: [
-      { title: "In-Room Entertainment with Casting", description: "Guests cast Netflix, YouTube, and personal streaming from their phones — no app installs, no pairing." },
-      { title: "Personalised Welcome Screens", description: "Custom greeting with guest name, room number, and tailored offers from the PMS." },
-      { title: "Hotel Services Browser", description: "Order room service, book spa, request housekeeping — all from the TV remote." },
-      { title: "Mini-Bar & F&B Promotions", description: "Day-parted promotions for breakfast buffet, sundowner cocktails, and dinner reservations." },
-      { title: "Multi-Property Standardisation", description: "Centralised management across properties via Samsung LYNK REACH — push firmware, channels, and branding from one console." },
+      { title: "In-Room Entertainment with Casting", description: "Seamless BYOD casting capabilities requiring no app installations or complex pairing." },
+      { title: "Personalised Welcome Screens", description: "PMS-driven custom greetings and tailored offers upon guest arrival." },
+      { title: "Hotel Services Browser", description: "Integrated digital directory for room service, spa bookings, and housekeeping requests." },
+      { title: "Mini-Bar & F&B Promotions", description: "Automated, day-parted promotional content to drive on-property dining." },
+      { title: "Multi-Property Standardisation", description: "Centralized fleet management for consistent branding and firmware across all locations." },
     ],
     faqs: [
       { q: "Why not just use a regular TV with a Chromecast?", a: "Consumer TVs power-cycle hundreds of times daily in a hotel and burn out their power boards within 12-18 months. They also don't support 'Hotel Mode' — locked channel lists, no guest access to factory reset, automatic logout of streaming apps between guests. Samsung HG-series TVs are warranted for this duty cycle and ship with hotel mode built in." },
@@ -138,13 +138,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Corporate Digital Signage for Offices & Workplaces",
     subtitle: "Lobbies, internal comms, meeting room schedulers, and town-hall displays.",
     intro:
-      "Modern offices use digital signage for visitor welcomes, real-time KPI dashboards, internal communications, and meeting-room availability. Samsung's QHC/QMC commercial signage replaces print noticeboards with always-current content controllable from anywhere — and integrates with the calendaring systems your office already runs.",
+      "Modernize internal communications with centralized digital signage for visitor welcomes, KPI dashboards, and calendar-integrated meeting room displays.",
     useCases: [
-      { title: "Reception & Visitor Welcome", description: "Personalised greetings for client visits — names auto-pulled from Outlook calendar invites." },
-      { title: "Meeting Room Schedulers", description: "Outside-door displays show booking, occupant, and end time — book-on-the-spot for free slots." },
-      { title: "Town-Hall & Cafeteria Displays", description: "All-hands streams, leadership messages, and HR announcements pushed company-wide." },
-      { title: "KPI & Operations Dashboards", description: "Live data from Salesforce, Jira, or PowerBI piped to wall displays in sales bullpens and ops rooms." },
-      { title: "Wayfinding for Multi-Floor Campuses", description: "Interactive and static wayfinding for IT parks, corporate campuses, and innovation centres." },
+      { title: "Reception & Visitor Welcome", description: "Calendar-integrated digital greetings to elevate the corporate visitor experience." },
+      { title: "Meeting Room Schedulers", description: "Real-time room availability displays with instant at-door booking capabilities." },
+      { title: "Town-Hall & Cafeteria Displays", description: "Centralized broadcast networks for all-hands meetings and enterprise-wide communications." },
+      { title: "KPI & Operations Dashboards", description: "Live data visualization from enterprise platforms for operational transparency." },
+      { title: "Wayfinding for Multi-Floor Campuses", description: "Scalable navigational displays for complex corporate and campus environments." },
     ],
     faqs: [
       { q: "Can it integrate with Outlook / Google Workspace for meeting rooms?", a: "Yes. Standard integration with Microsoft 365, Google Workspace, and Robin/Teem booking systems. The display reflects calendar status in real time and lets walk-ups book free slots." },
@@ -160,13 +160,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Corporate Video Walls — Control Rooms, Lobbies & Executive Briefing",
     subtitle: "Mission-critical 24/7 walls and statement lobby installations.",
     intro:
-      "Corporate video walls split into two distinct use cases: 24/7 mission-critical (security operations centres, NOCs, trading floors) and statement lobbies (HQ branding, executive briefing centres). Samsung's VMB/VHC/VHB lines cover both — we'll match the right panel to your duty cycle and viewing distance.",
+      "From 24/7 mission-critical operations centers to high-impact HQ statement lobbies, Samsung video walls deliver uncompromised reliability and visual scale.",
     useCases: [
-      { title: "Security Operations Centres (SOCs)", description: "Multi-source 4K walls for live camera feeds, threat intelligence dashboards, and incident response." },
-      { title: "Network Operations Centres (NOCs)", description: "24/7 monitoring walls for global infrastructure, with redundant power and panel-level failover." },
-      { title: "Executive Briefing Centres", description: "Customer demo theatres with seamless walls that showcase product roadmaps and pitch decks at scale." },
-      { title: "Trading Floor & Dealing Rooms", description: "High-brightness panels visible across long, lit floors with multi-source video processing." },
-      { title: "HQ Lobby Brand Walls", description: "Statement installations at headquarters reception that anchor the brand story for visitors and recruits." },
+      { title: "Security Operations Centres (SOCs)", description: "High-resolution, multi-source displays for critical threat monitoring and incident response." },
+      { title: "Network Operations Centres (NOCs)", description: "Mission-critical 24/7 visualization walls featuring redundant power and failover systems." },
+      { title: "Executive Briefing Centres", description: "Immersive, seamless digital canvases designed for high-stakes corporate presentations." },
+      { title: "Trading Floor & Dealing Rooms", description: "High-brightness, multi-source arrays engineered for demanding financial environments." },
+      { title: "HQ Lobby Brand Walls", description: "Architectural statement displays to reinforce corporate identity at the point of entry." },
     ],
     faqs: [
       { q: "What's the difference between SOC-grade and lobby-grade video walls?", a: "SOC walls (VHC/VHB series) are 24/7 rated, ~700 nits brightness, with redundant power supplies and hot-swappable PSUs. Lobby walls (VMB series) are 16/7 rated, lower nits, less expensive — appropriate for environments that aren't manned overnight. Picking the wrong tier wastes 30-40% of budget or causes mid-life failures." },
@@ -182,13 +182,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Interactive Displays for Meeting Rooms (Samsung Flip)",
     subtitle: "Touch-driven whiteboarding, wireless presentation, and hybrid video calls — without the dongle drama.",
     intro:
-      "Samsung Flip and WAC/WAD interactive displays replace the trifecta of whiteboard, projector, and conferencing camera with one device. Walk into the room, tap to start, share wirelessly from any laptop, and the whiteboard session emails itself to attendees automatically. Built for the way meetings actually happen now.",
+      "Consolidate your meeting room technology with interactive displays that combine wireless casting, touch whiteboarding, and hybrid conferencing in one device.",
     useCases: [
-      { title: "Huddle Rooms (4-6 people)", description: "55-65\" Samsung Flip 2 / WAC for quick whiteboarding and Zoom/Teams calls without booking a big room." },
-      { title: "Boardrooms (10-20 people)", description: "85\" Flip Pro or WAFX with dual displays for content + camera view on hybrid calls." },
-      { title: "Training Rooms", description: "Large interactive displays for facilitator-led sessions with simultaneous remote attendees." },
-      { title: "Design & Engineering Reviews", description: "4K interactive canvas for code reviews, architecture diagrams, and CAD walkthroughs." },
-      { title: "Customer Briefing & Demo Rooms", description: "Polished interactive surfaces for sales conversations and product demos." },
+      { title: "Huddle Rooms", description: "Compact interactive displays optimized for agile collaboration and rapid unified communications." },
+      { title: "Boardrooms", description: "Large-format interactive systems supporting dual-display hybrid conferencing." },
+      { title: "Training Rooms", description: "Engaging interactive platforms designed for hybrid facilitator-led sessions." },
+      { title: "Design & Engineering Reviews", description: "High-fidelity 4K touch canvases for precision technical and architectural workflows." },
+      { title: "Customer Briefing Rooms", description: "Premium interactive surfaces engineered to drive impactful client demonstrations." },
     ],
     faqs: [
       { q: "How is this different from a Microsoft Surface Hub or Google Jamboard?", a: "Samsung Flip runs without a Microsoft 365 dependency — it works on any network with any laptop. Surface Hub locks you into the Microsoft ecosystem; Jamboard was discontinued in 2024. Flip's content-sharing layer is platform-agnostic (Windows, Mac, iOS, Android all cast to it natively)." },
@@ -204,13 +204,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Commercial TVs for Offices, Reception & Break Areas",
     subtitle: "Samsung BE-series — designed for office duty cycles, not living rooms.",
     intro:
-      "Office reception TVs, cafeteria displays, and break-area screens see far harder use than residential — they're on 10-12 hours a day, often unsupervised. Samsung's BE-series (BEA, BEC, BED, BEFX) commercial TVs are warranted for this duty and ship with content-management features consumer TVs don't have.",
+      "Samsung's BE-series commercial TVs deliver the durability and centralized scheduling required for demanding 12-hour office duty cycles.",
     useCases: [
-      { title: "Reception & Lobby TVs", description: "Welcome screens that auto-update with the day's visitors and company news." },
-      { title: "Cafeteria & Break Area Displays", description: "Internal comms loops, lunch menus, and live news feeds during break hours." },
-      { title: "Department Information Boards", description: "Team-specific dashboards in engineering, sales, and operations bullpens." },
-      { title: "Recruitment & Visitor Lounges", description: "Branded content loops for waiting candidates and visiting partners." },
-      { title: "Training & Library Spaces", description: "Reservable TV displays for ad-hoc training sessions and content review." },
+      { title: "Reception & Lobby TVs", description: "Automated digital signage for dynamic visitor greetings and corporate messaging." },
+      { title: "Cafeteria & Break Area Displays", description: "Centralized internal communications networks for scheduled corporate broadcasts." },
+      { title: "Department Information Boards", description: "Localized, team-specific digital dashboards for operational alignment." },
+      { title: "Recruitment & Visitor Lounges", description: "Curated brand storytelling displays designed for candidate and partner engagement." },
+      { title: "Training & Library Spaces", description: "Deployable commercial displays for ad-hoc departmental training requirements." },
     ],
     faqs: [
       { q: "Why not just buy a regular Samsung TV from a retail store?", a: "Commercial BE-series TVs include features your office actually needs: USB-based content playback, RS-232 / IP control for centralised power on/off, hotel-mode lockouts that prevent staff from changing inputs or installing apps, and a 3-year commercial warranty that covers business use (residential warranties exclude commercial use)." },
@@ -228,13 +228,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Digital Signage for Schools, Colleges & Universities",
     subtitle: "Campus wayfinding, exam schedules, event boards, and emergency alerts.",
     intro:
-      "Educational campuses are sprawling, multi-building environments where printed notice boards go ignored. Samsung digital signage replaces the dusty cork board with always-current, eye-catching displays for exam schedules, event announcements, wayfinding, and emergency alerts — controllable from a single admin console.",
+      "Replace static campus notice boards with dynamic digital signage for real-time exam schedules, wayfinding, and centralized emergency alerts.",
     useCases: [
-      { title: "Reception & Main Entrance Displays", description: "Welcome screens for parents, visitors, and prospective students with today's events highlighted." },
-      { title: "Exam Schedules & Time Tables", description: "Auto-updating displays outside examination halls — eliminate confusion and last-minute reprints." },
-      { title: "Event & Notice Boards", description: "Replace static cork boards with rich-media displays that students actually look at." },
-      { title: "Wayfinding Across Campus", description: "Multi-building campus maps with department, lab, and lecture-hall directories." },
-      { title: "Emergency Alert Integration", description: "Instant takeover of all campus displays for evacuation, severe weather, or security incidents." },
+      { title: "Main Entrance Displays", description: "Dynamic campus orientation and event highlights for students and visitors." },
+      { title: "Exam Schedules & Timetables", description: "Real-time, automated scheduling displays to streamline academic operations." },
+      { title: "Digital Notice Boards", description: "Centralized rich-media broadcasting to replace decentralized static campus announcements." },
+      { title: "Campus Wayfinding", description: "Comprehensive digital directories for multi-building institutional navigation." },
+      { title: "Emergency Alert Integration", description: "Centralized network override capabilities for critical campus-wide safety broadcasts." },
     ],
     faqs: [
       { q: "Are these tough enough for student environments?", a: "Yes. We use Samsung QBC/QBR/QMR series with toughened front glass for high-traffic zones. Touch and walk-by environments use anti-vandal protective frames where needed. Failure rates in school deployments are under 2% per year — significantly better than projectors in the same environment." },
@@ -250,13 +250,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Video Walls for Auditoriums & University Spaces",
     subtitle: "Auditorium backdrops, sports facility displays, and convocation hall installations.",
     intro:
-      "University auditoriums, convocation halls, and sports facilities benefit from video walls where a single projector would feel undersized or wash out under venue lighting. Samsung's VMB and VHC series provide the brightness and seamlessness needed for tiered seating venues where the back row still needs to read clearly.",
+      "Equip auditoriums and convocation halls with high-brightness, seamless video walls that overcome venue lighting and ensure perfect visibility.",
     useCases: [
-      { title: "Auditorium Stage Backdrops", description: "Configurable backdrops for guest lectures, convocations, and cultural events — eliminate banner printing." },
-      { title: "Convocation & Ceremony Halls", description: "Statement walls for degree ceremonies, founder's day, and accreditation events." },
-      { title: "Sports Facility Scoreboards", description: "Live scoreboard, replay, and sponsor integration for indoor courts and pavilions." },
-      { title: "Library Atriums", description: "Featured content, journal of the month, and event programming in shared study spaces." },
-      { title: "Innovation Centre / Research Walls", description: "Live data dashboards showcasing ongoing research outputs to visiting funders." },
+      { title: "Auditorium Stage Backdrops", description: "Dynamic, reconfigurable digital backdrops for academic events and guest lectures." },
+      { title: "Convocation Halls", description: "High-impact visual canvases designed for premium institutional ceremonies." },
+      { title: "Sports Facility Displays", description: "Integrated media walls for live scoring, instant replay, and sponsorship activation." },
+      { title: "Library Atriums", description: "Informational displays for academic programming and institutional announcements." },
+      { title: "Innovation & Research Centers", description: "High-resolution data visualization walls for showcasing institutional research." },
     ],
     faqs: [
       { q: "Why not just use a large projector for the auditorium?", a: "Projectors wash out under house lights and need darkening. Video walls work in fully lit rooms — important for ceremonies where the audience needs to see each other and the stage simultaneously. Projector lamps also need replacement every 2-3 years; LCD walls run 10+ years on the same panels." },
@@ -272,13 +272,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Interactive Smart Boards for Classrooms (Samsung Flip & WAC)",
     subtitle: "Replace chalk, whiteboard, and projector with one device — touch, write, share, save.",
     intro:
-      "Samsung's interactive flat panels are the modern smart classroom standard — they replace the projector + whiteboard + connected PC trio with a single touch-driven device that runs Android-class apps, supports stylus and finger input simultaneously, and saves lesson notes automatically. Teachers stop wasting class time on tech setup.",
+      "Transform classrooms with interactive smart boards that combine multi-touch collaboration, integrated lesson recording, and instant wireless screen sharing.",
     useCases: [
-      { title: "K-12 Classrooms", description: "65-75\" interactive displays for full-class teaching with split-screen for student work." },
-      { title: "Higher Education Lecture Halls", description: "Large-format 86\" WAFX displays for engineering, medicine, and architecture programmes where detail matters." },
-      { title: "Computer Labs & Practical Rooms", description: "Demonstration screens for teacher-led walkthroughs while students follow on their own machines." },
-      { title: "Teacher Training Rooms", description: "Interactive professional development sessions with built-in screen recording and content archiving." },
-      { title: "Special Education Resource Rooms", description: "Touch-driven accessible interfaces with adjustable height mounts for diverse learner needs." },
+      { title: "K-12 Classrooms", description: "Interactive pedagogical platforms engineered for full-class engagement and split-screen collaboration." },
+      { title: "Higher Education Lecture Halls", description: "Large-format, high-fidelity interactive displays for advanced academic disciplines." },
+      { title: "Computer Labs", description: "Centralized demonstration screens optimized for software instruction and technical training." },
+      { title: "Faculty Training Rooms", description: "Integrated professional development suites featuring automated session archiving." },
+      { title: "Special Education Resources", description: "Accessible, height-adjustable interactive interfaces tailored for diverse learning requirements." },
     ],
     faqs: [
       { q: "How does this compare to a projector + whiteboard setup?", a: "Projector setups have three failure points (projector lamp, screen surface, connected PC) and require lights dimmed. Interactive flat panels are a single device, lamp-free, work in fully lit rooms, and the touch layer means teachers interact directly without going to the laptop. Total cost of ownership over 7 years typically favours the flat panel." },
@@ -294,13 +294,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Commercial TVs for Hostels, Common Areas & Student Lounges",
     subtitle: "Durable TVs built for shared student spaces — not retail consumer panels.",
     intro:
-      "Residential schools, university hostels, and student common areas need TVs that survive shared use — power cycling, occasional abuse, and 14-hour days. Samsung's BE-series commercial TVs are the right tier: longer warranty, RS-232 control for central power scheduling, and locked-down menus that prevent students from changing inputs or installing random apps.",
+      "Samsung's BE-series commercial TVs are built for the heavy demands of student spaces. They offer locked-down menus to prevent unauthorized changes, central power scheduling, and longer warranties—ensuring durability where standard retail TVs fail.",
     useCases: [
-      { title: "Hostel Common Rooms", description: "Locked-channel TVs for shared viewing — sports, news, movies during designated hours." },
-      { title: "Mess & Dining Hall Displays", description: "Menu boards, announcements, and ambient content during meal service." },
-      { title: "Sports Lounge / Recreation Areas", description: "Larger 65-75\" TVs for sports viewing with central scheduling of on/off hours." },
-      { title: "Reception & Visitor Lounges", description: "Branded content loops for parents and visitors waiting in reception." },
-      { title: "Library Study Spaces", description: "Lower-brightness TVs for reference content and digital reading rooms." },
+      { title: "Hostel Common Rooms", description: "Durable, centrally managed displays with restricted channel access for shared student spaces." },
+      { title: "Mess & Dining Halls", description: "Automated digital menu boards and institutional messaging systems." },
+      { title: "Recreation Areas", description: "Large-format commercial displays featuring centralized power scheduling." },
+      { title: "Visitor Lounges", description: "Automated digital signage for parent and guest communications." },
+      { title: "Library Study Spaces", description: "Optimized commercial displays configured for academic reference environments." },
     ],
     faqs: [
       { q: "Why commercial TVs over regular consumer models for hostels?", a: "Three reasons: warranty (consumer warranty excludes shared-use environments), lockdown (students can't reset to factory or install unauthorised apps on commercial models), and central control (RS-232/IP scheduling for power on/off times). The 30-40% price premium pays back through lower failure rates." },
@@ -318,13 +318,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Retail Digital Signage — Storefronts, Menu Boards & In-Store Promo",
     subtitle: "Window displays, shelf-edge promotions, and QSR menu boards that day-part automatically.",
     intro:
-      "Retail digital signage is one of the highest-ROI applications of commercial displays — a single bright storefront display can drive a measurable footfall lift, and a digital menu board pays for itself in eliminated reprint costs within 12-18 months. We deploy Samsung QHC, QMC, QH115, and QPDX series across QSR chains, fashion retail, and shopping mall tenants.",
+      "Drive footfall and accelerate ROI with high-brightness storefront displays and automated digital menu boards built for retail environments.",
     useCases: [
-      { title: "High-Brightness Storefront Displays", description: "QPDX semi-outdoor and QH115 ultra-high-brightness panels visible through windows even in direct sunlight." },
-      { title: "QSR Menu Boards", description: "Day-parted menus that switch from breakfast to lunch to all-day; promotions auto-rotate." },
-      { title: "Mall Atrium & Centre-Court Displays", description: "Statement displays for landlord-driven promotions and tenant adverts." },
-      { title: "Shelf-Edge & End-Cap Promotions", description: "43-55\" displays at the shelf and aisle-end driving product awareness." },
-      { title: "Fitting Room Wayfinding & Brand Content", description: "Customer-facing displays inside fitting rooms increase basket size through styling suggestions." },
+      { title: "Storefront Displays", description: "Ultra-high-brightness commercial panels engineered for direct-sunlight visibility." },
+      { title: "QSR Menu Boards", description: "Fully automated, day-parted digital menu systems for streamlined quick-service operations." },
+      { title: "Mall Atriums", description: "High-impact advertising networks for premium tenant and landlord promotions." },
+      { title: "End-Cap Promotions", description: "Targeted point-of-sale digital merchandising to drive product awareness." },
+      { title: "Fitting Room Engagement", description: "Interactive styling and upselling displays to maximize customer basket size." },
     ],
     faqs: [
       { q: "How bright does a storefront display need to be in direct sunlight?", a: "Minimum 2,500 nits for sun-facing windows. Samsung's QPDX (~3,500 nits) and QH115 (5,000 nits) are designed for this — standard 350-nit signage panels wash out completely. We do a brightness assessment during the site survey based on glass tinting and orientation." },
@@ -340,13 +340,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Video Walls for Flagship Retail & Shopping Centres",
     subtitle: "Statement walls for brand experience, atrium centrepieces, and immersive product launches.",
     intro:
-      "Flagship retail and shopping centre atriums use video walls to create the moments that make a destination worth visiting. Samsung's VMB and VHC series deliver the seamlessness and brightness needed in lit retail environments where customers walk by within 1-2 metres — and notice every bezel and every reflection.",
+      "Create destination-worthy retail experiences with seamless, high-brightness video walls designed to captivate shoppers in highly lit environments.",
     useCases: [
-      { title: "Flagship Store Atrium Walls", description: "3-storey-high atrium walls for fashion, electronics, and automotive flagship destinations." },
-      { title: "Brand Experience Zones", description: "Curved or angled wall configurations for immersive brand storytelling." },
-      { title: "Mall Centre-Court Walls", description: "Anchor displays for centre-court events, holiday programming, and landlord ad sales." },
-      { title: "Product Launch Environments", description: "Reconfigurable walls that brand for a launch this week and another next month." },
-      { title: "Window Walls / Shop-Front Displays", description: "Multi-panel walls behind storefront glass for night-time visibility and brand presence." },
+      { title: "Flagship Store Atriums", description: "Large-scale architectural video walls designed for premium retail destinations." },
+      { title: "Brand Experience Zones", description: "Customizable, multi-panel configurations for immersive experiential marketing." },
+      { title: "Mall Centre-Courts", description: "High-visibility anchor displays for seasonal programming and premium advertising." },
+      { title: "Product Launch Environments", description: "Rapidly reconfigurable digital canvases to support dynamic retail marketing calendars." },
+      { title: "Shop-Front Displays", description: "High-impact, multi-panel window installations for 24/7 brand visibility." },
     ],
     faqs: [
       { q: "Bezel-less LED versus LCD video walls for retail — which is right?", a: "For close viewing (within 3m, common in store interiors), LCD walls with 0.44-1.7mm combined bezels are sharper, cheaper, and easier to service. Direct-view LED is correct for atriums where viewing distance exceeds 5m and the canvas is large (12+ square metres). We size the comparison during the site survey — sometimes a hybrid is the right answer." },
@@ -362,13 +362,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Interactive Kiosks for Retail — Endless Aisle & Self-Service",
     subtitle: "Touch displays that turn store footprint into a 10x larger catalogue.",
     intro:
-      "Retail interactive kiosks let stores show their full catalogue without holding stock in-store — customers browse, customize, and order on the kiosk; items ship to home or are reserved for a return visit. Samsung's WAC and WAD interactive panels are the standard tier for these deployments, with toughened glass and 50,000-hour touch ratings.",
+      "Deploy interactive endless-aisle kiosks to expand in-store catalogs, accelerate checkouts, and capture valuable omnichannel retail data.",
     useCases: [
-      { title: "Endless Aisle Browse", description: "Browse and order items not held in store stock — colour, size, and variant selection on a 55-65\" touch screen." },
-      { title: "Self-Checkout / Express Lane", description: "Reduce queues at peak hours with self-service checkout for small-basket purchases." },
-      { title: "Loyalty Sign-up & Personalisation", description: "Walk-up kiosks for loyalty enrolment, profile update, and personalised offer redemption." },
-      { title: "Product Configurator (Made-to-Order)", description: "Furniture, jewellery, and made-to-order fashion configured visually on a large interactive canvas." },
-      { title: "Wayfinding in Large Stores & Malls", description: "Touch-driven floor plans for big-box stores and multi-floor shopping centres." },
+      { title: "Endless Aisle Kiosks", description: "Omnichannel inventory interfaces enabling in-store access to expanded product catalogs." },
+      { title: "Self-Checkout Terminals", description: "Automated point-of-sale kiosks to accelerate transaction times and reduce queueing." },
+      { title: "Loyalty Integration", description: "Self-service touchpoints for rapid loyalty program enrollment and data capture." },
+      { title: "Product Configurators", description: "Interactive visual configuration tools for customized and made-to-order merchandise." },
+      { title: "Retail Wayfinding", description: "Intuitive digital directories for complex big-box and multi-tenant environments." },
     ],
     faqs: [
       { q: "Will customers actually use a touch kiosk instead of asking staff?", a: "Yes, especially Gen Z and millennial shoppers — they often prefer kiosks for routine queries (where is X, do you have my size in Y) and turn to staff only for complex needs. We've seen 40-60% usage rates within 60 days of deployment in fashion retail." },
@@ -384,13 +384,13 @@ export const useCaseCombos: UseCaseCombo[] = [
     title: "Commercial TVs for Retail Back-of-House & Staff Areas",
     subtitle: "Durable TVs for stockrooms, staff lounges, and operations back rooms.",
     intro:
-      "Retail back-of-house spaces — stockrooms, staff break areas, manager offices — need reliable TVs for shift briefings, training videos, and operations dashboards. Samsung's BE-series commercial TVs are the appropriate tier: business-warranted, with USB content playback and central scheduling built in.",
+      "Equip retail back-of-house operations with durable commercial displays optimized for shift briefings, KPI dashboards, and staff training.",
     useCases: [
-      { title: "Stockroom & Operations Dashboards", description: "Live dashboards for inventory levels, shipment ETAs, and shift KPIs." },
-      { title: "Staff Break Areas", description: "Brand content, training loops, and announcements during shift breaks." },
-      { title: "Manager's Office & Back Office", description: "CCTV feed monitoring and operations TV for store managers." },
-      { title: "Staff Training & Onboarding Rooms", description: "Reservable TVs for new-joiner training sessions and product launches." },
-      { title: "Loading Bay & Receiving Areas", description: "Schedule and dock-status displays for inbound goods coordination." },
+      { title: "Operations Dashboards", description: "Real-time visualization of inventory metrics, logistics, and shift KPIs." },
+      { title: "Staff Break Areas", description: "Centrally managed networks for corporate communications and training content." },
+      { title: "Manager's Office", description: "Reliable commercial displays for security monitoring and operational oversight." },
+      { title: "Training Facilities", description: "Dedicated commercial displays for standardized retail staff onboarding." },
+      { title: "Loading Bay Coordination", description: "Ruggedized scheduling displays for streamlined inbound logistics management." },
     ],
     faqs: [
       { q: "We just need basic TVs for the stockroom — why commercial?", a: "Retail stockrooms run TVs 12+ hours a day. Consumer TVs warranty exclude business use — first failure and you're paying out of pocket. The 30% commercial premium pays for warranty coverage that actually applies, plus central power scheduling that consumer models don't offer." },

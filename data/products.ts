@@ -27,6 +27,7 @@ export const products: Product[] = [
 
   {
     id: "samsung-qet-series",
+    popularity: 71,
     name: "Samsung Smart Signage QET Series",
     category: "Digital Signage",
     series: "QET Series",
@@ -76,6 +77,7 @@ With a 16/7 operation rating and a size range from 43" to 82", the QET Series ad
   },
   {
     id: "samsung-signage-qbc",
+    popularity: 81,
     name: "Samsung Crystal UHD Signage QBC Series",
     category: "Digital Signage",
     series: "QBC",
@@ -125,6 +127,7 @@ With Smart Calibration via the Samsung mobile app, teams can guarantee brand col
   },
   {
     id: "samsung-signage-qhc",
+    popularity: 70,
     name: "Samsung Signage QHC Series — High Brightness",
     category: "Digital Signage",
     series: "QHC",
@@ -166,6 +169,7 @@ The QHC's 4K UHD resolution combined with Samsung's Crystal Display technology p
   },
   {
     id: "samsung-signage-qmc",
+    popularity: 95,
     name: "Samsung Crystal UHD Signage QMC Series",
     category: "Digital Signage",
     series: "QMC",
@@ -217,6 +221,7 @@ The QMC's integrated MagicInfo S10 with built-in Wi-Fi and LAN connectivity enab
   },
   {
     id: "samsung-signage-qbr-b",
+    popularity: 61,
     name: "Samsung Small Display Full HD QBR-B Series",
     category: "Digital Signage",
     series: "QBR-B",
@@ -257,6 +262,7 @@ The QBR-B's 16/7 operation rating and robust industrial design ensure dependable
   },
   {
     id: "samsung-touch-qmr-t",
+    popularity: 89,
     name: "Samsung Touch Signage QMR-T Series",
     category: "Digital Signage",
     subCategory: "Touch Signage",
@@ -298,6 +304,7 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
   },
   {
     id: "samsung-touch-qbc-t",
+    popularity: 97,
     name: "Samsung Interactive Signage QMB-T Series",
     category: "Digital Signage",
     subCategory: "Touch Signage",
@@ -320,6 +327,7 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
   },
   {
     id: "samsung-mp016f",
+    popularity: 69,
     name: "Samsung LED Display MP016F",
     category: "Digital Signage",
     subCategory: "LED Display",
@@ -364,6 +372,7 @@ Magnetic service access design allows technicians to swap panels or perform main
 
   {
     id: "samsung-vm55c-r",
+    popularity: 62,
     name: "Samsung VM55C-R Razor-Thin Bezel Video Wall",
     category: "Video Wall",
     series: "VM55C-R",
@@ -413,6 +422,7 @@ UHD Daisy Chain support allows up to a 5×5 (25-tile) array to be driven without
   },
   {
     id: "samsung-vh55c-r",
+    popularity: 81,
     name: "Samsung VH55C-R Razor-Thin Bezel Video Wall",
     category: "Video Wall",
     series: "VH55C-R",
@@ -463,6 +473,7 @@ Image Enhancement Technology ensures each tile in a multi-screen array maintains
   },
   {
     id: "samsung-vh55c-e",
+    popularity: 60,
     name: "Samsung VH55C-E Extreme Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VH55C-E",
@@ -513,6 +524,7 @@ With 24/7 operation certification and Samsung's Image Enhancement Technology, ea
   },
   {
     id: "samsung-vm55c-e",
+    popularity: 77,
     name: "Samsung VM55C-E Extreme Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VM55C-E",
@@ -565,6 +577,7 @@ With full daisy chain support and Samsung's Image Enhancement Technology ensurin
   },
   {
     id: "samsung-vmb-u-46",
+    popularity: 97,
     name: "Samsung VMB-U 46\" Ultra Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VMB-U",
@@ -613,6 +626,7 @@ Built-in daisy chain connectivity simplifies multi-display wiring, allowing sign
   },
   {
     id: "samsung-vmb-u-55",
+    popularity: 98,
     name: "Samsung VMB-U 55\" Ultra Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VMB-U",
@@ -662,6 +676,7 @@ With factory-calibrated color performance and Samsung's daisy chain connectivity
   },
   {
     id: "samsung-videowall-vmb-r",
+    popularity: 96,
     name: "Samsung VMB-R Razor Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VMB-R",
@@ -704,6 +719,7 @@ With 24/7 operation certification and wide 178°/178° viewing angles, the VMB-R
   },
   {
     id: "samsung-videowall-vmc-r",
+    popularity: 62,
     name: "Samsung VMC-R Series Video Wall",
     category: "Video Wall",
     series: "VMC-R",
@@ -749,6 +765,7 @@ DP 1.2 daisy chain support allows up to 4K content to be driven through a single
 
   {
     id: "samsung-flip-pro-wm85b",
+    popularity: 99,
     name: "Samsung Flip Pro (WM85B) Interactive Display",
     category: "Interactive Display",
     series: "Flip Pro",
@@ -787,6 +804,7 @@ The Flip Pro runs on Tizen OS with Samsung Knox security built in, ensuring sess
   },
   {
     id: "samsung-interactive-flip-3",
+    popularity: 99,
     name: "Samsung Flip 3 Interactive Display",
     category: "Interactive Display",
     series: "Flip 3",
@@ -828,6 +846,7 @@ With a single USB-C connection delivering power, data, and high-bandwidth conten
   },
   {
     id: "samsung-interactive-wac",
+    popularity: 99,
     name: "Samsung WAC Series Interactive Display",
     category: "Interactive Display",
     series: "WAC",
@@ -872,6 +891,7 @@ Powerful screen sharing supports up to nine simultaneous screens so content flow
   },
   {
     id: "samsung-interactive-wad",
+    popularity: 92,
     name: "Samsung WAD Series Interactive Display",
     category: "Interactive Display",
     series: "WAD",
@@ -917,6 +937,7 @@ The WAD's 4K UHD resolution, wide 178°/178° viewing angles, and 400-nit bright
 
   {
     id: "samsung-business-tv-bea-h",
+    popularity: 82,
     name: "Samsung Business TV BEA-H Series",
     category: "Commercial TV",
     subCategory: "Business TV",
@@ -959,6 +980,7 @@ With built-in Business TV app support and a range of sizes from 43" to 75", the 
   },
   {
     id: "samsung-business-tv-bec-h",
+    popularity: 87,
     name: "Samsung Business TV BEC-H Series",
     category: "Commercial TV",
     subCategory: "Business TV",
@@ -1002,6 +1024,7 @@ With Business TV App support for content scheduling and a comprehensive size ran
   },
   {
     id: "samsung-business-tv-bed-h",
+    popularity: 69,
     name: "Samsung Business TV Pro BED-H Series",
     category: "Commercial TV",
     subCategory: "Business TV",
@@ -1045,6 +1068,7 @@ The wide 43" to 75" size range and 16/7 operation rating make the BED-H adaptabl
   },
   {
     id: "samsung-hotel-tv-hg55au800t",
+    popularity: 76,
     name: "Samsung Hotel TV HG55AU800T",
     category: "Commercial TV",
     subCategory: "Hotel TV",
@@ -1087,6 +1111,7 @@ With a slim form factor optimized for mounting above modern hospitality furnitur
   },
   {
     id: "samsung-hotel-tv-hgbu800",
+    popularity: 94,
     name: "Samsung Smart Hospitality Display HBU8000 Series",
     category: "Commercial TV",
     subCategory: "Hotel TV",
@@ -1139,6 +1164,7 @@ Dynamic Crystal Colour technology with HDR10+ and a billion shades of colour ele
   },
   {
     id: "samsung-hotel-tv-hg55au700f",
+    popularity: 67,
     name: "Samsung Hotel TV HG55AU700F",
     category: "Commercial TV",
     subCategory: "Hotel TV",
@@ -1185,6 +1211,7 @@ Slim Fit Wall Mount support ensures seamless integration with modern hospitality
 
   {
     id: "samsung-qpdx105",
+    popularity: 77,
     name: "Samsung Commercial Display QPDX 5K (105\")",
     category: "Digital Signage",
     subCategory: "Large Format",
@@ -1228,6 +1255,7 @@ With 24/7 operation certification and integrated MagicINFO S6 content management
   },
   {
     id: "samsung-qh115fx",
+    popularity: 97,
     name: "Samsung Commercial Display QH115FX (115\")",
     category: "Digital Signage",
     subCategory: "Large Format",
@@ -1273,6 +1301,7 @@ With 24/7 operation certification and MagicINFO compatibility, the QH115FX becom
 
   {
     id: "samsung-vhc-e",
+    popularity: 60,
     name: "Samsung VHC-E FHD Video Wall Display",
     category: "Video Wall",
     series: "VHC-E",
@@ -1315,6 +1344,7 @@ With factory-calibrated color performance and straightforward daisy chain connec
   },
   {
     id: "samsung-vmb-e",
+    popularity: 96,
     name: "Samsung VMB-E Extreme Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VMB-E",
@@ -1357,6 +1387,7 @@ With daisy chain support eliminating external video processors from many install
   },
   {
     id: "samsung-vhb-e",
+    popularity: 67,
     name: "Samsung VHB-E High-Brightness Extreme Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VHB-E",
@@ -1399,6 +1430,7 @@ With 24/7 operation certification and Samsung's Image Enhancement Technology mai
   },
   {
     id: "samsung-vh55r",
+    popularity: 96,
     name: "Samsung VH55R Razor Thin Bezel Video Wall",
     category: "Video Wall",
     series: "VH55R",
@@ -1445,6 +1477,7 @@ With 24/7 operation reliability and wide 178°/178° viewing angles, the VH55R s
 
   {
     id: "samsung-flip-2",
+    popularity: 98,
     name: "Samsung Flip 2 (WM55R) Interactive Display",
     category: "Interactive Display",
     series: "Flip 2",
@@ -1487,6 +1520,7 @@ Roll-and-view capability enables the Flip 2 to be used in either landscape or po
   },
   {
     id: "samsung-waf-series",
+    popularity: 66,
     name: "Samsung WAF Series Interactive Display",
     category: "Interactive Display",
     series: "WAF",
@@ -1528,6 +1562,7 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
   },
   {
     id: "samsung-qbc-t",
+    popularity: 64,
     name: "Samsung QBC-T Interactive Touch Display",
     category: "Interactive Display",
     series: "QBC-T",
@@ -1573,6 +1608,7 @@ With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, 
 
   {
     id: "samsung-business-tv-befx-h2",
+    popularity: 81,
     name: "Samsung Business TV BEFX-H2 Series",
     category: "Commercial TV",
     subCategory: "Business TV",
@@ -1622,6 +1658,7 @@ Available in six sizes from 43" to 85", the BEFX-H2 adapts to any commercial spa
   },
   {
     id: "samsung-hotel-tv-hgu701f",
+    popularity: 65,
     name: "Samsung Hotel TV HGU701F",
     category: "Commercial TV",
     subCategory: "Hotel TV",
@@ -1665,6 +1702,7 @@ With multiple HDMI and USB ports supporting diverse guest devices — from older
   },
   {
     id: "samsung-hotel-tv-hg75u700f",
+    popularity: 97,
     name: "Samsung Hotel TV HG75U700F (75\")",
     category: "Commercial TV",
     subCategory: "Hotel TV",
@@ -1708,6 +1746,7 @@ Hotel Mode restricts guest access to critical settings while enabling easy strea
   },
   {
     id: "samsung-hotel-tv-hgu800f",
+    popularity: 78,
     name: "Samsung Hotel TV HGU800F",
     category: "Commercial TV",
     subCategory: "Hotel TV",
@@ -1751,6 +1790,7 @@ Dynamic Crystal Color technology delivers exceptional color saturation and vibra
   },
   {
     id: "samsung-interactive-wafx-p",
+    popularity: 91,
     name: "Samsung WAFX-P Series Interactive Display",
     category: "Interactive Display",
     series: "WAFX-P",

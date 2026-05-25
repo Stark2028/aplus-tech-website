@@ -30,7 +30,7 @@ export default function ProductsClientShell({ products, productCategories }: Pro
     return productCategories
       .map((cat) => ({
         category: cat,
-        items: filtered.filter((p) => p.category === cat.name),
+        items: filtered.filter((p) => p.category === cat.name).sort((a, b) => (b.popularity || 0) - (a.popularity || 0)),
       }))
       .filter((g) => g.items.length > 0);
   }, [productCategories, filtered]);
@@ -38,7 +38,6 @@ export default function ProductsClientShell({ products, productCategories }: Pro
   return (
     <>
       <ProductFilterBar
-        productCategories={productCategories}
         filters={filters}
         setFilters={setFilters}
         filtersOpen={filtersOpen}

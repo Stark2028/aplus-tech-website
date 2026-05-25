@@ -60,10 +60,6 @@ export default function QuoteSuccessState({ submittedName }: { submittedName: st
                 Thank you, <span className="font-semibold text-gray-700">{submittedName}</span>.
               </p>
             )}
-            <p className="text-gray-500 max-w-md mx-auto leading-relaxed mb-10">
-              We&apos;ve received your enquiry and will send a formal PDF proposal
-              with itemised pricing to your email.
-            </p>
 
             <div className="bg-gray-50 rounded-2xl p-6 text-left mb-8">
               <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-5">

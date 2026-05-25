@@ -51,8 +51,8 @@ export default function Footer() {
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-300 mb-2">
                 Get in touch
               </p>
-              <h3 className="text-white text-2xl md:text-3xl font-bold tracking-tight leading-tight">
-                Need help choosing the right display !
+              <h3 className="text-white text-2xl md:text-2xl font-bold tracking-tight leading-tight">
+                Need Help Choosing The Right Display !
               </h3>
             </div>
             <div className="lg:col-span-5 flex flex-col sm:flex-row gap-3 lg:justify-end">
@@ -81,13 +81,13 @@ export default function Footer() {
 
           {/* Brand column */}
           <div className="col-span-2 lg:col-span-3 pr-4">
-            <Link href="/" className="inline-block mb-6">
+            <Link href="/" className="inline-flex items-center justify-center bg-white p-2 rounded-lg mb-6 shadow-sm">
               <Image
                 src="/logo.png"
                 alt="Aplus Technology Solutions"
-                width={48}
-                height={48}
-                className="h-10 w-auto object-contain"
+                width={150}
+                height={100}
+                className="h-12 w-auto object-contain"
               />
             </Link>
             <p className="text-sm leading-relaxed text-slate-400 mb-6">
@@ -211,7 +211,7 @@ export default function Footer() {
                   <Clock size={14} className="text-blue-400" />
                 </div>
                 <div className="text-sm text-slate-400">
-                  Mon – Sat · 9:00 AM – 6:00 PM IST
+                  Mon – Sat · 10:00 – 18:00 IST
                 </div>
               </li>
             </ul>

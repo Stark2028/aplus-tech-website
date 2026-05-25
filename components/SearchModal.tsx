@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback, useDeferredValue } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,6 +15,7 @@ export default function SearchModal() {
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { recent, add, clear } = useRecentSearches();
 
@@ -24,6 +25,7 @@ export default function SearchModal() {
     setActiveIndex(-1);
   }, []);
 
+  // Open via keyboard shortcut or custom event
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -40,17 +42,31 @@ export default function SearchModal() {
     };
   }, []);
 
+  // Focus input when opened
   useEffect(() => {
     if (open) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setQuery("");
       setActiveIndex(-1);
       setTimeout(() => inputRef.current?.focus(), 40);
     }
   }, [open]);
 
-  const results = useMemo(() => computeSearchResults(query), [query]);
+  // Close on outside click — document-level mousedown so it works regardless of DOM nesting / stacking contexts
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        close();
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open, close]);
 
+  const deferredQuery = useDeferredValue(query);
+  const results = useMemo(() => computeSearchResults(deferredQuery), [deferredQuery]);
+
+  // Keyboard navigation within search results
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
@@ -104,17 +120,17 @@ export default function SearchModal() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             className="fixed inset-0 z-[200] flex items-start justify-center pt-[10vh] px-4"
-            onClick={close}
           >
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+            {/* Dark background overlay */}
+            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm pointer-events-none" />
 
             <motion.div
+              ref={modalRef}
               initial={{ opacity: 0, scale: 0.97, y: -8 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.97, y: -8 }}
               transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
               className="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl overflow-hidden"
-              onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-100">
                 <Search size={18} className="text-gray-400 shrink-0" />

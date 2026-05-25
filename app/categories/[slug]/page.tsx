@@ -52,7 +52,7 @@ export default async function CategoryPage({
 
   const categoryProducts = products.filter(
     (p) => p.category === category.name
-  );
+  ).sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
 
   // Group by subCategory when present (e.g. Commercial TV → Hotel TV / Business TV)
   const subCategories = Array.from(

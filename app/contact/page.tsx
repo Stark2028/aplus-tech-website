@@ -4,8 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Phone, Mail, MapPin, Clock, Send, CheckCircle,
-  MessageCircle, ChevronDown, ChevronUp,
-  Building2, Timer, BadgeCheck, Linkedin
+  ChevronDown, ChevronUp,
+  Building2, Timer, BadgeCheck, Linkedin, ChevronRight
 } from "lucide-react";
 
 const INQUIRY_TYPES = [
@@ -27,16 +27,16 @@ const FAQS = [
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-white/10 last:border-0">
+    <div className="border-b border-slate-200/70 last:border-0">
       <button
         onClick={() => setOpen(!open)}
         className="flex justify-between items-center w-full py-3.5 text-left gap-3 group"
         type="button"
       >
-        <span className="text-sm font-medium text-blue-100 group-hover:text-white transition-colors leading-snug">{q}</span>
+        <span className="text-sm font-semibold text-slate-700 group-hover:text-slate-900 transition-colors leading-snug">{q}</span>
         {open
-          ? <ChevronUp size={14} className="shrink-0 text-blue-300" />
-          : <ChevronDown size={14} className="shrink-0 text-blue-400" />}
+          ? <ChevronUp size={14} className="shrink-0 text-blue-500" />
+          : <ChevronDown size={14} className="shrink-0 text-slate-400" />}
       </button>
       <AnimatePresence>
         {open && (
@@ -46,7 +46,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <p className="text-sm text-blue-200/70 pb-3.5 leading-relaxed">{a}</p>
+            <p className="text-sm text-slate-500 pb-3.5 leading-relaxed">{a}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -98,34 +98,38 @@ export default function ContactPage() {
     <main className="min-h-screen bg-gray-50">
 
       {/* ── PAGE HEADER ──────────────────────────────────────────────── */}
-      <div style={{ background: "linear-gradient(135deg, #1e40af 0%, #4338ca 100%)" }} className="py-16 md:py-20 relative overflow-hidden">
-        {/* Abstract background shapes */}
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-blue-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none" />
+      <div style={{ background: "linear-gradient(135deg, #0f1b3d 0%, #1e3a6e 40%, #2563eb 100%)" }} className="py-20 md:py-28 relative overflow-hidden">
+        {/* Animated dot grid */}
+        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+        {/* Glow orbs */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 rounded-full bg-blue-400/15 blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-indigo-500/20 blur-[80px] pointer-events-none" />
+        <div className="absolute top-1/2 right-0 w-48 h-48 rounded-full bg-cyan-400/10 blur-[60px] pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div 
             initial="hidden" animate="visible" variants={staggerContainer}
-            className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-8"
+            className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10"
           >
-            <motion.div variants={fadeUp}>
-              <h1 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-2">Contact Us</h1>
-              
+            <motion.div variants={fadeUp} className="max-w-xl">
+              <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-blue-300 mb-4">Get in touch</p>
+              <h1 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-4 leading-[1.1]">Let&apos;s build your display solution.</h1>
+              <p className="text-blue-200/80 text-base md:text-lg leading-relaxed">From consultation to installation — our team is ready to help you find the perfect Samsung display for your business.</p>
             </motion.div>
             
             {/* Quick stats */}
-            <motion.div variants={fadeUp} className="flex gap-6 sm:gap-8 bg-white/10 p-5 rounded-2xl backdrop-blur-sm border border-white/10">
+            <motion.div variants={fadeUp} className="flex gap-6 sm:gap-10 bg-white/[0.07] p-6 rounded-2xl backdrop-blur-sm border border-white/10">
               {[
                 { icon: Timer,      value: "4 hrs",  label: "Response Time" },
                 { icon: BadgeCheck, value: "Samsung",label: "Certified Partner" },
                 { icon: Building2,  value: "Noida",  label: "Headquarters" },
               ].map(({ icon: Icon, value, label }) => (
                 <div key={label} className="text-center">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-2 bg-white/10 shadow-inner">
-                    <Icon size={18} className="text-white" />
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-2.5 bg-white/10 border border-white/10">
+                    <Icon size={18} className="text-blue-200" />
                   </div>
-                  <p className="text-white font-bold text-sm sm:text-base">{value}</p>
-                  <p className="text-blue-200 text-[10px] sm:text-xs uppercase tracking-wider">{label}</p>
+                  <p className="text-white font-bold text-base">{value}</p>
+                  <p className="text-blue-300/70 text-[10px] uppercase tracking-wider mt-0.5">{label}</p>
                 </div>
               ))}
             </motion.div>
@@ -134,22 +138,23 @@ export default function ContactPage() {
       </div>
 
       {/* ── INFO STRIP ───────────────────────────────────────────────── */}
-      <div className="bg-white border-b border-gray-100 shadow-sm relative z-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-white border-b border-gray-100 shadow-lg shadow-gray-100/50 relative z-20 -mt-6 mx-4 sm:mx-6 lg:mx-auto max-w-6xl rounded-2xl">
+        <div className="px-2">
           <motion.div 
             initial="hidden" animate="visible" variants={staggerContainer}
             className="grid grid-cols-2 lg:grid-cols-4"
           >
             {[
-              { icon: Phone,  label: "Call Us",      value: "+91 93105 09909",       sub: "Mon – Sat, 9 AM – 6 PM",      href: "tel:+919310509909",         iconColor: "#2563eb", iconBg: "#eff6ff" },
-              { icon: Mail,   label: "Email",         value: "info@aplustechsol.com", sub: "Reply within 24 hours",        href: "mailto:info@aplustechsol.com",iconColor: "#7c3aed", iconBg: "#f5f3ff" },
-              { icon: MapPin, label: "Office",        value: "Sector-94, Noida",      sub: "Supernova Astralis, 8th Fl.", href: "https://maps.google.com/?q=Aplus+Technology+Solutions+Private+Limited+Noida", iconColor: "#059669", iconBg: "#ecfdf5" },
-              { icon: Clock,  label: "Support",  value: "24 × 7",   sub: "Emergency assistance",    href: null,                          iconColor: "#d97706", iconBg: "#fffbeb" },
-            ].map(({ icon: Icon, label, value, sub, href, iconColor, iconBg }) => {
+              { icon: Phone,  label: "Call Us",      value: "+91 93105 09909",       sub: "Mon – Sat, 10 AM – 6 PM",      href: "tel:+919310509909",         iconColor: "#2563eb", iconBg: "#eff6ff", accent: "#3b82f6" },
+              { icon: Mail,   label: "Email",         value: "info@aplustechsol.com", sub: "Reply within 24 hours",        href: "mailto:info@aplustechsol.com",iconColor: "#7c3aed", iconBg: "#f5f3ff", accent: "#8b5cf6" },
+              { icon: MapPin, label: "Office",        value: "Sector-94, Noida",      sub: "Supernova Astralis, 8th Fl.", href: "https://maps.google.com/?q=Aplus+Technology+Solutions+Private+Limited+Noida", iconColor: "#059669", iconBg: "#ecfdf5", accent: "#10b981" },
+              { icon: Clock,  label: "Support",  value: "24 × 7",   sub: "Emergency assistance",    href: null,                          iconColor: "#d97706", iconBg: "#fffbeb", accent: "#f59e0b" },
+            ].map(({ icon: Icon, label, value, sub, href, iconColor, iconBg, accent }) => {
               const inner = (
-                <div className="flex items-center gap-3 px-4 lg:px-6 py-5 hover:bg-gray-50 transition-colors h-full group">
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 group-hover:rotate-3" style={{ background: iconBg, color: iconColor }}>
-                    <Icon size={20} />
+                <div className="flex items-center gap-3.5 px-4 lg:px-5 py-5 hover:bg-gray-50/80 transition-colors h-full group relative overflow-hidden rounded-xl">
+                  <div className="absolute top-0 left-4 right-4 h-[2px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: accent }} />
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all group-hover:scale-110 group-hover:shadow-md" style={{ background: iconBg, color: iconColor }}>
+                    <Icon size={19} />
                   </div>
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">{label}</p>
@@ -161,8 +166,8 @@ export default function ContactPage() {
               return href ? (
                 <motion.a variants={fadeUp} key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined}
                   rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="border-b lg:border-b-0 lg:border-r border-gray-100 last:border-0 block">{inner}</motion.a>
-              ) : <motion.div variants={fadeUp} key={label} className="border-b lg:border-b-0 border-gray-100">{inner}</motion.div>;
+                  className="block">{inner}</motion.a>
+              ) : <motion.div variants={fadeUp} key={label}>{inner}</motion.div>;
             })}
           </motion.div>
         </div>
@@ -177,12 +182,21 @@ export default function ContactPage() {
             initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
             className="lg:col-span-2"
           >
-            <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden relative">
+            <div className="bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden relative">
+              {/* Decorative corner accent */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-50 to-transparent pointer-events-none" />
 
               {/* Form header */}
-              <div className="px-8 pt-8 pb-6 border-b border-gray-50 bg-gradient-to-r from-blue-50 to-white">
-                <h2 className="text-2xl font-bold text-gray-900">Send Us a Message</h2>
-                <p className="text-gray-500 text-sm mt-2">Fill out the form below and a specialist will get back to you within one business day.</p>
+              <div className="px-8 pt-8 pb-6 border-b border-gray-100/80 relative">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/25">
+                    <Send size={16} className="text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900">Send Us a Message</h2>
+                    <p className="text-gray-400 text-xs mt-0.5">We&apos;ll respond within one business day</p>
+                  </div>
+                </div>
               </div>
 
               <AnimatePresence mode="wait">
@@ -323,77 +337,98 @@ export default function ContactPage() {
             className="flex flex-col gap-6"
           >
             {/* Contact info + Map */}
-            <div className="bg-white rounded-3xl shadow-lg shadow-gray-200/40 border border-gray-100 overflow-hidden group">
-              <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-gray-50 to-white border-b border-gray-50">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
-                  <Building2 size={20} className="text-blue-600" />
+            <div className="bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden group">
+              <div className="px-6 pt-6 pb-5 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 border-b border-gray-100/60 relative">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-blue-50 to-transparent pointer-events-none" />
+                <div className="flex items-center gap-3.5 mb-4 relative">
+                  <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/25">
+                    <Building2 size={18} className="text-white" />
+                  </div>
+                  <div>
+                    <p className="text-base font-bold text-gray-900">Aplus Technology Solutions</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-blue-600">Samsung Authorized Partner</p>
+                  </div>
                 </div>
-                <p className="text-base font-bold text-gray-900">Aplus Technology Solutions</p>
-                <p className="text-sm text-gray-500 mt-2 leading-relaxed">
+                <p className="text-sm text-gray-500 leading-relaxed pl-0.5">
                   Office No. 855, 8th Floor,<br />Supernova Astralis, Sector-94,<br />Noida, UP — 201301
                 </p>
               </div>
-              <div className="relative h-50 w-full overflow-hidden">
+              <div className="relative h-56 w-full overflow-hidden">
                 <iframe
                   title="Aplus Technology Solutions Office"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3504.5!2d77.3216431!3d28.5505377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce546a104a66d%3A0x735f3944b1574a06!2sAplus%20Technology%20Solutions%20Private%20Limited!5e0!3m2!1sen!2sin!4v1747344000000!5m2!1sen!2sin"
-                  width="100%" height="100%" style={{ border: 0, display: "block", filter: "grayscale(20%) contrast(1.1)" }} allowFullScreen={false} loading="lazy"
+                  width="100%" height="100%" style={{ border: 0, display: "block", filter: "grayscale(15%) contrast(1.05) saturate(0.9)" }} allowFullScreen={false} loading="lazy"
                   className="transition-transform duration-700 group-hover:scale-105"
                 />
-                {/* Inner shadow overlay for premium look */}
-                <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)] pointer-events-none" />
+                <div className="absolute inset-0 shadow-[inset_0_2px_16px_rgba(0,0,0,0.08)] pointer-events-none" />
               </div>
-              <div className="px-6 py-4 bg-white hover:bg-gray-50 transition-colors">
+              <div className="px-6 py-4 bg-white hover:bg-blue-50/40 transition-colors flex items-center justify-between group/link">
                 <a href="https://www.google.com/maps/place/Aplus+Technology+Solutions+Private+Limited/@28.5505377,77.3216431,17z"
                   target="_blank" rel="noopener noreferrer"
-                  className="text-sm font-semibold flex items-center justify-between text-blue-600">
-                  Open in Google Maps <MapPin size={14} />
+                  className="text-sm font-semibold flex items-center gap-2 text-blue-600">
+                  <MapPin size={14} />
+                  Open in Google Maps
                 </a>
+                <ChevronRight size={14} className="text-blue-400 group-hover/link:translate-x-0.5 transition-transform" />
               </div>
             </div>
 
             {/* WhatsApp */}
-            <div className="rounded-3xl overflow-hidden shadow-lg shadow-green-600/20 bg-gradient-to-br from-[#075e54] to-[#128c7e] relative group">
-              <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay" />
-              <div className="px-6 py-5 flex items-center gap-4 relative z-10">
-                <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 bg-white/20 backdrop-blur-md relative">
-                  <div className="absolute inset-0 rounded-full border border-white/40 animate-ping opacity-50" />
-                  <MessageCircle size={24} className="text-white" />
+            <div className="rounded-3xl overflow-hidden shadow-xl shadow-green-700/25 bg-gradient-to-br from-[#064e45] via-[#075e54] to-[#128c7e] relative group">
+              {/* Subtle grid texture */}
+              <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(255,255,255,0.3) 20px, rgba(255,255,255,0.3) 21px), repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,255,255,0.3) 20px, rgba(255,255,255,0.3) 21px)" }} />
+              {/* Glow orb */}
+              <div className="absolute -top-6 -right-6 w-32 h-32 rounded-full bg-[#25d366]/30 blur-2xl pointer-events-none" />
+              <div className="px-6 pt-6 pb-4 flex items-center gap-4 relative z-10">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-white/15 backdrop-blur-md border border-white/20 shadow-inner relative">
+                  <div className="absolute inset-0 rounded-2xl border-2 border-white/20 animate-pulse" />
+                  <svg viewBox="0 0 24 24" className="w-7 h-7 fill-white">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
                 </div>
                 <div>
-                  <p className="font-bold text-white text-base">Chat on WhatsApp</p>
-                  <p className="text-xs text-white/80 mt-0.5">Fastest way to reach our sales team</p>
+                  <p className="font-bold text-white text-lg leading-tight">Chat on WhatsApp</p>
+                  <p className="text-sm text-white/70 mt-0.5">Fastest way to reach our sales team</p>
                 </div>
               </div>
-              <div className="px-5 pb-5 relative z-10">
+              <div className="px-5 pb-6 relative z-10">
                 <a href="https://wa.me/919310509909?text=Hi%2C%20I%20have%20an%20inquiry%20about%20your%20Samsung%20display%20products."
                   target="_blank" rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full text-sm font-bold py-3.5 rounded-xl transition-all shadow-md bg-[#25d366] text-white hover:bg-[#20ba5a] hover:shadow-lg transform group-hover:-translate-y-0.5">
-                  <MessageCircle size={16} />
+                  className="flex items-center justify-center gap-2.5 w-full text-sm font-bold py-4 rounded-2xl transition-all bg-[#25d366] hover:bg-[#20ba5a] text-white shadow-lg shadow-green-900/30 hover:shadow-xl hover:shadow-green-900/40 hover:-translate-y-0.5 active:translate-y-0">
+                  <svg viewBox="0 0 24 24" className="w-4.5 h-4.5 fill-white">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
                   Start a Conversation
                 </a>
               </div>
             </div>
 
             {/* Social Media */}
-            <div className="bg-white rounded-3xl shadow-lg shadow-gray-200/40 border border-gray-100 p-6">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-4">Connect With Us</p>
-              <div className="flex items-center gap-3">
-                <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#0a66c2]/10 text-[#0a66c2] hover:bg-[#0a66c2] hover:text-white flex items-center justify-center transition-colors">
-                  <Linkedin size={18} fill="currentColor" />
-                </a>
-                <div className="flex-1 text-sm text-gray-500 font-medium pl-3 border-l border-gray-100">
-                  Follow us on LinkedIn for updates and project showcases.
-                </div>
+            <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer"
+              className="group bg-white rounded-3xl shadow-lg shadow-gray-200/40 border border-gray-100 p-5 flex items-center gap-4 hover:border-[#0a66c2]/30 hover:shadow-xl hover:shadow-[#0a66c2]/10 transition-all hover:-translate-y-0.5"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-[#0a66c2] flex items-center justify-center shrink-0 shadow-lg shadow-[#0a66c2]/30 group-hover:scale-105 transition-transform">
+                <Linkedin size={26} className="text-white" fill="white" />
               </div>
-            </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-1">Connect With Us</p>
+                <p className="text-sm font-semibold text-gray-900 group-hover:text-[#0a66c2] transition-colors">Follow on LinkedIn</p>
+                <p className="text-xs text-gray-400 mt-0.5">Updates &amp; project showcases</p>
+              </div>
+              <ChevronRight size={16} className="text-gray-300 group-hover:text-[#0a66c2] group-hover:translate-x-0.5 transition-all shrink-0" />
+            </a>
 
             {/* FAQ */}
-            <div className="rounded-3xl shadow-lg p-6 bg-gradient-to-br from-[#1e3a5f] to-[#0f172a]">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-blue-300 mb-4">Quick Answers</p>
-              <div>
-                {FAQS.map((faq) => <FAQItem key={faq.q} q={faq.q} a={faq.a} />)}
+            <div className="relative rounded-[2rem] shadow-xl shadow-slate-200/60 bg-gradient-to-br from-white via-slate-50 to-blue-50/40 p-6 border border-slate-200/80 overflow-hidden">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,rgba(59,130,246,0.08),transparent_50%)]" />
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-5">
+                  <div className="w-1 h-4 rounded-full bg-blue-500" />
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600">Quick Answers</p>
+                </div>
+                <div>
+                  {FAQS.map((faq) => <FAQItem key={faq.q} q={faq.q} a={faq.a} />)}
+                </div>
               </div>
             </div>
 
@@ -402,39 +437,30 @@ export default function ContactPage() {
       </div>
       
       {/* ── TRUST SIGNALS BANNER ─────────────────────────────────────── */}
-      <div className="border-t border-gray-200 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}
-              className="flex flex-col items-center p-4"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-5">
-                <BadgeCheck size={28} />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Certified Expertise</h3>
-              <p className="text-sm text-gray-500 leading-relaxed max-w-xs">We are authorized Samsung partners, delivering authentic products with official warranties.</p>
-            </motion.div>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}
-              className="flex flex-col items-center p-4"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center mb-5">
-                <MapPin size={28} />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Pan-India Support</h3>
-              <p className="text-sm text-gray-500 leading-relaxed max-w-xs">From local offices to nationwide rollouts, our logistics and installation network covers you.</p>
-            </motion.div>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}
-              className="flex flex-col items-center p-4"
-            >
-              <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-5">
-                <Timer size={28} />
-              </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">End-to-End Service</h3>
-              <p className="text-sm text-gray-500 leading-relaxed max-w-xs">Consultation, supply, installation, and 24/7 post-sale AMC all handled by one expert team.</p>
-            </motion.div>
+      <div className="border-t border-gray-100 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-3">Why choose us</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Your trusted display partner</h2>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { icon: BadgeCheck, color: "blue",  bg: "bg-blue-50",  text: "text-blue-600",  shadow: "shadow-blue-100/60",  title: "Certified Expertise",   desc: "Authorized Samsung partners — authentic products with official warranties." },
+              { icon: MapPin,     color: "green", bg: "bg-green-50", text: "text-green-600", shadow: "shadow-green-100/60", title: "Pan-India Support",     desc: "Nationwide logistics & installation network covering 50+ cities." },
+              { icon: Timer,      color: "amber", bg: "bg-amber-50", text: "text-amber-600", shadow: "shadow-amber-100/60", title: "End-to-End Service",    desc: "Consultation, supply, installation & 24/7 AMC — one expert team." },
+            ].map(({ icon: Icon, bg, text, shadow, title, desc }, i) => (
+              <motion.div
+                key={title}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
+                className={`relative bg-white rounded-2xl border border-gray-100 p-7 text-center shadow-lg ${shadow} hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group`}
+              >
+                <div className={`w-14 h-14 rounded-2xl ${bg} ${text} flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform`}>
+                  <Icon size={26} />
+                </div>
+                <h3 className="text-base font-bold text-gray-900 mb-2">{title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ export default function ProductMarquee() {
     };
 
     return (
-        <section className="py-20 bg-white overflow-hidden relative">
+        <section className="py-12 md:py-16 bg-white overflow-hidden relative">
             <div className="max-w-7xl mx-auto px-6 mb-10 text-center">
                 <h2 className="text-6xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
                     Our Lineup

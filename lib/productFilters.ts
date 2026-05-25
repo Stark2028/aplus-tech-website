@@ -1,7 +1,6 @@
 import type { Product } from "@/data/products";
 
 export interface Filters {
-  category: string | null;
   brightness: string | null;
   resolution: string | null;
   operation: string | null;
@@ -9,7 +8,6 @@ export interface Filters {
 }
 
 export const DEFAULT_FILTERS: Filters = {
-  category: null,
   brightness: null,
   resolution: null,
   operation: null,
@@ -51,8 +49,6 @@ function parseMaxSize(screenSizes: string[]): number {
 
 export function applyFilters(products: Product[], filters: Filters): Product[] {
   return products.filter((p) => {
-    if (filters.category && p.category !== filters.category) return false;
-
     if (filters.resolution) {
       const opt = RESOLUTION_OPTIONS.find((o) => o.label === filters.resolution);
       if (opt && !opt.match(p.specs.resolution)) return false;
