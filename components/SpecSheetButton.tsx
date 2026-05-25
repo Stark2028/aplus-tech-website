@@ -64,6 +64,7 @@ export default function SpecSheetButton({ product }: Props) {
           triggerPdf();
         }}
         title={`Download the ${product.series} Spec Sheet`}
+        subtitle="Enter your details to instantly access the full technical specification PDF."
         subject={`Spec Sheet Download — ${product.name}`}
         itemDescription={`• ${product.name} (${product.series}) — Spec Sheet Requested`}
         ctaLabel="Download Spec Sheet"
