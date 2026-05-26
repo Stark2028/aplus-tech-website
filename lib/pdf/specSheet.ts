@@ -34,12 +34,13 @@ interface Ctx {
 }
 
 // Column layout for the two-column spec table
-const LABEL_W = CONTENT_WIDTH * 0.44;
-const VALUE_X = MARGIN_X + LABEL_W + 16;
-const VALUE_W = CONTENT_WIDTH - LABEL_W - 16;
+const LABEL_W = CONTENT_WIDTH * 0.40;       // 40% for labels
+const COL_GAP = 14;                          // gap between columns
+const VALUE_X = MARGIN_X + LABEL_W + COL_GAP;
+const VALUE_W = CONTENT_WIDTH - LABEL_W - COL_GAP;
 const ROW_FONT_SIZE = 9;
-const ROW_LINE_H = 13;
-const ROW_PAD_V = 5; // vertical padding inside each row
+const ROW_LINE_H = 15;                       // generous line-height (was 13)
+const ROW_PAD_V = 7;                         // vertical padding — must exceed ascender height (~6.5pt for 9pt Helvetica)
 
 export async function buildSpecSheetPdf(product: Product): Promise<Uint8Array> {
   const { PDFDocument, StandardFonts } = await import("pdf-lib");
@@ -295,9 +296,10 @@ function drawSpecRow(
   shaded: boolean
 ) {
   const { fonts } = ctx;
-  const labelLines = wrapText(safe(label), fonts.regular, ROW_FONT_SIZE, LABEL_W - 8);
-  const valueLines = wrapText(safe(value), fonts.bold, ROW_FONT_SIZE, VALUE_W);
-  const rowH = Math.max(labelLines.length, valueLines.length) * ROW_LINE_H + ROW_PAD_V * 2;
+  const labelLines = wrapText(safe(label), fonts.regular, ROW_FONT_SIZE, LABEL_W - 6);
+  const valueLines = wrapText(safe(value), fonts.bold, ROW_FONT_SIZE, VALUE_W - 4);
+  const contentLines = Math.max(labelLines.length, valueLines.length);
+  const rowH = contentLines * ROW_LINE_H + ROW_PAD_V * 2;
 
   ensureSpace(ctx, rowH + 2);
 
@@ -309,22 +311,34 @@ function drawSpecRow(
     });
   }
 
+  // Vertical separator between label and value columns
+  ctx.page.drawLine({
+    start: { x: MARGIN_X + LABEL_W + COL_GAP / 2, y: ctx.y },
+    end:   { x: MARGIN_X + LABEL_W + COL_GAP / 2, y: ctx.y - rowH },
+    thickness: 0.4,
+    color: C.gray200,
+  });
+
+  // Vertically center shorter column when lines differ
+  const labelOffset = Math.round((contentLines - labelLines.length) * ROW_LINE_H / 2);
+  const valueOffset = Math.round((contentLines - valueLines.length) * ROW_LINE_H / 2);
+
   labelLines.forEach((line, i) => {
     ctx.page.drawText(line, {
       x: MARGIN_X + 6,
-      y: ctx.y - ROW_PAD_V - i * ROW_LINE_H,
+      y: ctx.y - ROW_PAD_V - labelOffset - i * ROW_LINE_H,
       size: ROW_FONT_SIZE, font: fonts.regular, color: C.gray600,
     });
   });
   valueLines.forEach((line, i) => {
     ctx.page.drawText(line, {
       x: VALUE_X,
-      y: ctx.y - ROW_PAD_V - i * ROW_LINE_H,
+      y: ctx.y - ROW_PAD_V - valueOffset - i * ROW_LINE_H,
       size: ROW_FONT_SIZE, font: fonts.bold, color: C.black,
     });
   });
 
-  // Bottom divider
+  // Bottom divider — full width
   drawHr(ctx.page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y - rowH, 0.4, C.gray200);
   ctx.y -= rowH;
 }
