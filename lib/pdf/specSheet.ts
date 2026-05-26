@@ -475,16 +475,22 @@ function drawSpecsTable(ctx: Ctx, product: Product) {
 }
 
 function drawSpecsGrouped(ctx: Ctx, product: Product) {
-  const { page, fonts } = ctx;
+  const { fonts } = ctx;
   const labelW = CONTENT_WIDTH * 0.42;
   const valueW = CONTENT_WIDTH - labelW - 12;
   const fontSize = 9.5;
   const lineH = 13;
 
+  // Top-level section header (same style as Key Features)
+  sectionHeader(ctx, "Technical Specifications");
+
   for (const [group, rows] of Object.entries(product.specGroups!)) {
-    // Group header
-    ensureSpace(ctx, 32);
-    drawSpacedText(page, safe(group).toUpperCase(), {
+    const rowEntries = Object.entries(rows);
+    if (rowEntries.length === 0) continue;
+
+    // Group header — needs space for header (20px) + at least one row (~22px)
+    ensureSpace(ctx, 44);
+    drawSpacedText(ctx.page, safe(group).toUpperCase(), {
       x: MARGIN_X,
       y: ctx.y,
       size: 8,
@@ -493,9 +499,9 @@ function drawSpecsGrouped(ctx: Ctx, product: Product) {
       characterSpacing: 1.4,
     });
     drawHr(ctx.page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y - 7, 0.5, C.blue600);
-    ctx.y -= 20;
+    ctx.y -= 22;
 
-    for (const [label, value] of Object.entries(rows)) {
+    for (const [label, value] of rowEntries) {
       const labelLines = wrapText(safe(label), fonts.regular, fontSize, labelW);
       const valueLines = wrapText(safe(value), fonts.bold, fontSize, valueW);
       const blockH = Math.max(labelLines.length, valueLines.length) * lineH + 8;
@@ -522,7 +528,7 @@ function drawSpecsGrouped(ctx: Ctx, product: Product) {
       ctx.y -= blockH;
       drawHr(ctx.page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y + 4, 0.4, C.gray100);
     }
-    ctx.y -= 10;
+    ctx.y -= 14;
   }
   ctx.y -= 6;
 }
