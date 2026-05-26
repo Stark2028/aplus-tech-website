@@ -97,7 +97,17 @@ With a 16/7 operation rating and a size range from 43" to 82", the QET Series ad
       screenSizes: ["43", "50", "55", "65", "75", "85"],
       operationTime: "16/7",
     },
-    images: ["/products/digital-signage/samsung-signage-qbc/1.webp", "/products/digital-signage/samsung-signage-qbc/2.webp", "/products/digital-signage/samsung-signage-qbc/3.webp"],
+    images: [
+      "/products/digital-signage/samsung-signage-qbc/1.webp",
+      "/products/digital-signage/samsung-signage-qbc/2.webp",
+      "/products/digital-signage/samsung-signage-qbc/3.webp",
+      "/products/digital-signage/samsung-signage-qbc/4.jpg",
+      "/products/digital-signage/samsung-signage-qbc/5.jpg",
+      "/products/digital-signage/samsung-signage-qbc/6.jpg",
+      "/products/digital-signage/samsung-signage-qbc/7.jpg",
+      "/products/digital-signage/samsung-signage-qbc/8.jpg",
+      "/products/digital-signage/samsung-signage-qbc/9.jpg",
+    ],
 
     longDescription: `The Samsung QBC Series delivers the same unparalleled slim 28.5 mm profile as the premium QMC Series, bringing ultra-slim Crystal UHD signage to a wider range of deployments without compromising on design elegance or picture quality. Available in six sizes from 43" to 85", the QBC fits seamlessly into any business environment — retail, healthcare, hospitality, or corporate — with even bezels on all four sides and centered VESA mounting holes that allow easy landscape-to-portrait adjustment.
 
@@ -146,7 +156,18 @@ With Smart Calibration via the Samsung mobile app, teams can guarantee brand col
       screenSizes: ["43", "50", "55", "65", "75"],
       operationTime: "24/7",
     },
-    images: ["/products/digital-signage/samsung-signage-qhc/1.webp", "/products/digital-signage/samsung-signage-qhc/2.webp", "/products/digital-signage/samsung-signage-qhc/3.webp"],
+    images: [
+      "/products/digital-signage/samsung-signage-qhc/1.webp",
+      "/products/digital-signage/samsung-signage-qhc/2.webp",
+      "/products/digital-signage/samsung-signage-qhc/3.webp",
+      "/products/digital-signage/samsung-signage-qhc/4.png",
+      "/products/digital-signage/samsung-signage-qhc/5.png",
+      "/products/digital-signage/samsung-signage-qhc/6.png",
+      "/products/digital-signage/samsung-signage-qhc/7.png",
+      "/products/digital-signage/samsung-signage-qhc/8.png",
+      "/products/digital-signage/samsung-signage-qhc/9.png",
+      "/products/digital-signage/samsung-signage-qhc/10.png",
+    ],
   
     longDescription: `The Samsung QHC Series transforms high-ambient environments into captivating display canvases with its class-leading 700-nit brightness and non-glare panel technology. Purpose-built for atriums, sun-lit showrooms, and outdoor-adjacent lobbies where daylight competes with screen content, the QHC delivers exceptional visibility without reflecting glare that fatigues viewers or obscures messaging.
 
@@ -189,7 +210,18 @@ The QHC's 4K UHD resolution combined with Samsung's Crystal Display technology p
       screenSizes: ["43", "50", "55", "65", "75", "85"],
       operationTime: "24/7",
     },
-    images: ["/products/digital-signage/samsung-signage-qmc/1.webp", "/products/digital-signage/samsung-signage-qmc/2.webp", "/products/digital-signage/samsung-signage-qmc/3.webp"],
+    images: [
+      "/products/digital-signage/samsung-signage-qmc/1.webp",
+      "/products/digital-signage/samsung-signage-qmc/2.webp",
+      "/products/digital-signage/samsung-signage-qmc/3.webp",
+      "/products/digital-signage/samsung-signage-qmc/4.png",
+      "/products/digital-signage/samsung-signage-qmc/5.png",
+      "/products/digital-signage/samsung-signage-qmc/6.png",
+      "/products/digital-signage/samsung-signage-qmc/7.png",
+      "/products/digital-signage/samsung-signage-qmc/8.png",
+      "/products/digital-signage/samsung-signage-qmc/9.png",
+      "/products/digital-signage/samsung-signage-qmc/10.png",
+    ],
 
     longDescription: `The Samsung QMC Series redefines space efficiency in commercial signage, boasting the thinnest profile in Samsung's UHD signage lineup at just 28.5 mm without sacrificing the 500-nit brightness required for professional environments. Designed for 24/7 operation, the QMC powers menus, corporate communications, retail campaigns, and informational displays in hospitality, healthcare, and retail sectors.
 
@@ -240,7 +272,18 @@ The QMC's integrated MagicInfo S10 with built-in Wi-Fi and LAN connectivity enab
       screenSizes: ["13", "24"],
       operationTime: "16/7",
     },
-    images: ["/products/digital-signage/samsung-signage-qbr-b/1.webp", "/products/digital-signage/samsung-signage-qbr-b/2.webp", "/products/digital-signage/samsung-signage-qbr-b/3.webp"],
+    images: [
+      "/products/digital-signage/samsung-signage-qbr-b/1.webp",
+      "/products/digital-signage/samsung-signage-qbr-b/2.webp",
+      "/products/digital-signage/samsung-signage-qbr-b/3.webp",
+      "/products/digital-signage/samsung-signage-qbr-b/4.png",
+      "/products/digital-signage/samsung-signage-qbr-b/5.png",
+      "/products/digital-signage/samsung-signage-qbr-b/6.png",
+      "/products/digital-signage/samsung-signage-qbr-b/7.png",
+      "/products/digital-signage/samsung-signage-qbr-b/8.png",
+      "/products/digital-signage/samsung-signage-qbr-b/9.png",
+      "/products/digital-signage/samsung-signage-qbr-b/10.png",
+    ],
   
     longDescription: `The Samsung QBR-B Series brings professional digital signage capabilities to compact spaces where traditional large-format displays are impractical or budget-prohibitive. With sizes as small as 13 inches, the QBR-B fits naturally into reception counters, POS terminals, check-out queues, and kiosk installations while delivering full HD clarity that maintains crisp content even at close viewing distances.
 
@@ -282,7 +325,18 @@ The QBR-B's 16/7 operation rating and robust industrial design ensure dependable
       screenSizes: ["32", "43", "55"],
       operationTime: "16/7",
     },
-    images: ["/products/digital-signage/samsung-touch-qmr-t/1.webp", "/products/digital-signage/samsung-touch-qmr-t/2.webp", "/products/digital-signage/samsung-touch-qmr-t/3.webp"],
+    images: [
+      "/products/digital-signage/samsung-touch-qmr-t/1.webp",
+      "/products/digital-signage/samsung-touch-qmr-t/2.webp",
+      "/products/digital-signage/samsung-touch-qmr-t/3.webp",
+      "/products/digital-signage/samsung-touch-qmr-t/4.png",
+      "/products/digital-signage/samsung-touch-qmr-t/5.png",
+      "/products/digital-signage/samsung-touch-qmr-t/6.png",
+      "/products/digital-signage/samsung-touch-qmr-t/7.png",
+      "/products/digital-signage/samsung-touch-qmr-t/8.png",
+      "/products/digital-signage/samsung-touch-qmr-t/9.png",
+      "/products/digital-signage/samsung-touch-qmr-t/10.png",
+    ],
   
     longDescription: `The Samsung QMR-T Series transforms passive signage into interactive gateways, enabling wayfinding kiosks, self-service information points, and customer engagement touchpoints that drive brand loyalty and operational efficiency. The capacitive multi-touch panel recognizes up to 10 simultaneous touch points with sub-100ms response time, creating a responsive, intuitive interaction experience that rivals modern consumer tablets.
 
@@ -324,7 +378,18 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
       screenSizes: ["43", "55"],
       operationTime: "16/7",
     },
-    images: ["/products/digital-signage/samsung-touch-qbc-t/1.jpg", "/products/digital-signage/samsung-touch-qbc-t/2.jpg", "/products/digital-signage/samsung-touch-qbc-t/3.jpg"],
+    images: [
+      "/products/digital-signage/samsung-touch-qbc-t/1.jpg",
+      "/products/digital-signage/samsung-touch-qbc-t/2.jpg",
+      "/products/digital-signage/samsung-touch-qbc-t/3.jpg",
+      "/products/digital-signage/samsung-touch-qbc-t/4.png",
+      "/products/digital-signage/samsung-touch-qbc-t/5.png",
+      "/products/digital-signage/samsung-touch-qbc-t/6.png",
+      "/products/digital-signage/samsung-touch-qbc-t/7.png",
+      "/products/digital-signage/samsung-touch-qbc-t/8.png",
+      "/products/digital-signage/samsung-touch-qbc-t/9.png",
+      "/products/digital-signage/samsung-touch-qbc-t/10.png",
+    ],
   },
   {
     id: "samsung-mp016f",
@@ -347,7 +412,11 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
       screenSizes: ["Custom"],
       operationTime: "24/7",
     },
-    images: ["/products/digital-signage/samsung-mp016f/1.jpg", "/products/digital-signage/samsung-mp016f/2.jpg", "/products/digital-signage/samsung-mp016f/3.jpg"],
+    images: [
+      "/products/digital-signage/samsung-mp016f/1.jpg",
+      "/products/digital-signage/samsung-mp016f/2.jpg",
+      "/products/digital-signage/samsung-mp016f/3.jpg",
+    ],
   
     longDescription: `The Samsung MP016F fine-pitch LED module opens the door to custom large-format displays that command attention in high-traffic venues — corporate atriums, flagship retail spaces, concert stages, and sports arenas. At 1.6 mm pixel pitch, the MP016F delivers cinema-quality resolution from close viewing distances while maintaining impact at distance, allowing viewers to enjoy seamless content whether they're 3 feet away or 30 feet away.
 
@@ -695,7 +764,18 @@ With factory-calibrated color performance and Samsung's daisy chain connectivity
       screenSizes: ["55"],
       operationTime: "24/7",
     },
-    images: ["/products/video-walls/samsung-videowall-vmb-r/1.png", "/products/video-walls/samsung-videowall-vmb-r/2.png", "/products/video-walls/samsung-videowall-vmb-r/3.png"],
+    images: [
+      "/products/video-walls/samsung-videowall-vmb-r/1.png",
+      "/products/video-walls/samsung-videowall-vmb-r/2.png",
+      "/products/video-walls/samsung-videowall-vmb-r/3.png",
+      "/products/video-walls/samsung-videowall-vmb-r/4.png",
+      "/products/video-walls/samsung-videowall-vmb-r/5.png",
+      "/products/video-walls/samsung-videowall-vmb-r/6.png",
+      "/products/video-walls/samsung-videowall-vmb-r/7.png",
+      "/products/video-walls/samsung-videowall-vmb-r/8.png",
+      "/products/video-walls/samsung-videowall-vmb-r/9.png",
+      "/products/video-walls/samsung-videowall-vmb-r/10.png",
+    ],
   
     longDescription: `The Samsung VMB-R brings an intelligent approach to professional video wall installations by combining razor-thin bezel technology with proven Image Enhancement Technology that ensures consistent picture quality across large multi-tile arrays. Designed for organizations that demand seamless visual continuity without the premium pricing of ultra-narrow bezel models, the VMB-R achieves exceptional value through precision engineering and Samsung's advanced panel calibration.
 
@@ -738,7 +818,18 @@ With 24/7 operation certification and wide 178°/178° viewing angles, the VMB-R
       screenSizes: ["55"],
       operationTime: "24/7",
     },
-    images: ["/products/video-walls/samsung-videowall-vmc-r/1.webp", "/products/video-walls/samsung-videowall-vmc-r/2.webp", "/products/video-walls/samsung-videowall-vmc-r/3.webp"],
+    images: [
+      "/products/video-walls/samsung-videowall-vmc-r/1.webp",
+      "/products/video-walls/samsung-videowall-vmc-r/2.webp",
+      "/products/video-walls/samsung-videowall-vmc-r/3.webp",
+      "/products/video-walls/samsung-videowall-vmc-r/4.png",
+      "/products/video-walls/samsung-videowall-vmc-r/5.png",
+      "/products/video-walls/samsung-videowall-vmc-r/6.png",
+      "/products/video-walls/samsung-videowall-vmc-r/7.png",
+      "/products/video-walls/samsung-videowall-vmc-r/8.png",
+      "/products/video-walls/samsung-videowall-vmc-r/9.png",
+      "/products/video-walls/samsung-videowall-vmc-r/10.png",
+    ],
   
     longDescription: `The Samsung VMC-R represents the intelligent evolution of professional video wall displays, combining ultra-narrow bezel performance with modern DisplayPort 1.2 daisy chain support that eliminates external video processors from many installations. Factory-calibrated at the Samsung facility, every VMC-R arrives ready to be tiled without requiring field color matching or brightness equalization — a benefit that translates directly to faster installation and superior color consistency.
 
@@ -801,7 +892,18 @@ The Flip Pro runs on Tizen OS with Samsung Knox security built in, ensuring sess
       "Color Gamut": "99% sRGB",
       "VESA Mount": "600 × 400 mm",
     },
-    images: ["/products/interactive/samsung-flip-pro-wm85b/1.webp", "/products/interactive/samsung-flip-pro-wm85b/2.webp", "/products/interactive/samsung-flip-pro-wm85b/3.webp"],
+    images: [
+      "/products/interactive/samsung-flip-pro-wm85b/1.webp",
+      "/products/interactive/samsung-flip-pro-wm85b/2.webp",
+      "/products/interactive/samsung-flip-pro-wm85b/3.webp",
+      "/products/interactive/samsung-flip-pro-wm85b/4.png",
+      "/products/interactive/samsung-flip-pro-wm85b/5.png",
+      "/products/interactive/samsung-flip-pro-wm85b/6.png",
+      "/products/interactive/samsung-flip-pro-wm85b/7.png",
+      "/products/interactive/samsung-flip-pro-wm85b/8.png",
+      "/products/interactive/samsung-flip-pro-wm85b/9.png",
+      "/products/interactive/samsung-flip-pro-wm85b/10.png",
+    ],
   },
   {
     id: "samsung-interactive-flip-3",
@@ -823,7 +925,18 @@ The Flip Pro runs on Tizen OS with Samsung Knox security built in, ensuring sess
       screenSizes: ["75", "85"],
       operationTime: "16/7",
     },
-    images: ["/products/interactive/samsung-interactive-flip-3/1.webp", "/products/interactive/samsung-interactive-flip-3/2.webp", "/products/interactive/samsung-interactive-flip-3/3.webp"],
+    images: [
+      "/products/interactive/samsung-interactive-flip-3/1.webp",
+      "/products/interactive/samsung-interactive-flip-3/2.webp",
+      "/products/interactive/samsung-interactive-flip-3/3.webp",
+      "/products/interactive/samsung-interactive-flip-3/4.png",
+      "/products/interactive/samsung-interactive-flip-3/5.png",
+      "/products/interactive/samsung-interactive-flip-3/6.png",
+      "/products/interactive/samsung-interactive-flip-3/7.png",
+      "/products/interactive/samsung-interactive-flip-3/8.png",
+      "/products/interactive/samsung-interactive-flip-3/9.png",
+      "/products/interactive/samsung-interactive-flip-3/10.png",
+    ],
   
     longDescription: `The Samsung Flip 3 represents the third-generation evolution of the digital flipchart concept, building on a decade of classroom and boardroom feedback to deliver the most intuitive writing experience in any interactive display. With a surface that feels like pen-on-paper — textured finish, responsive stylus recognition, natural friction — the Flip 3 eliminates the learning curve that typically accompanies interactive displays and instead enables instant, productive collaboration.
 
@@ -866,7 +979,18 @@ With a single USB-C connection delivering power, data, and high-bandwidth conten
       screenSizes: ["65", "75"],
       operationTime: "16/7",
     },
-    images: ["/products/interactive/samsung-interactive-wac/1.jpg", "/products/interactive/samsung-interactive-wac/2.jpg", "/products/interactive/samsung-interactive-wac/3.jpg"],
+    images: [
+      "/products/interactive/samsung-interactive-wac/1.jpg",
+      "/products/interactive/samsung-interactive-wac/2.jpg",
+      "/products/interactive/samsung-interactive-wac/3.jpg",
+      "/products/interactive/samsung-interactive-wac/4.png",
+      "/products/interactive/samsung-interactive-wac/5.png",
+      "/products/interactive/samsung-interactive-wac/6.png",
+      "/products/interactive/samsung-interactive-wac/7.png",
+      "/products/interactive/samsung-interactive-wac/8.png",
+      "/products/interactive/samsung-interactive-wac/9.png",
+      "/products/interactive/samsung-interactive-wac/10.jpg",
+    ],
 
     longDescription: `The Samsung WAC Series brings full Android OS flexibility to large-format interactive displays, enabling educators and trainers to deploy familiar apps and tools directly on the display without requiring external computers. Running Android 11 (AOSP), the WAC offers excellent compatibility with Android-based devices, enabling lively, interactive classes where content flows naturally between student devices and the main screen.
 
@@ -910,7 +1034,18 @@ Powerful screen sharing supports up to nine simultaneous screens so content flow
       screenSizes: ["65", "75", "86"],
       operationTime: "16/7",
     },
-    images: ["/products/interactive/samsung-interactive-wad/1.webp", "/products/interactive/samsung-interactive-wad/2.webp", "/products/interactive/samsung-interactive-wad/3.webp"],
+    images: [
+      "/products/interactive/samsung-interactive-wad/1.webp",
+      "/products/interactive/samsung-interactive-wad/2.webp",
+      "/products/interactive/samsung-interactive-wad/3.webp",
+      "/products/interactive/samsung-interactive-wad/4.png",
+      "/products/interactive/samsung-interactive-wad/5.png",
+      "/products/interactive/samsung-interactive-wad/6.png",
+      "/products/interactive/samsung-interactive-wad/7.png",
+      "/products/interactive/samsung-interactive-wad/8.png",
+      "/products/interactive/samsung-interactive-wad/9.png",
+      "/products/interactive/samsung-interactive-wad/10.png",
+    ],
   
     longDescription: `The Samsung WAD Series takes Android-based interactive displays to the next level with deep integration of the Google ecosystem, making it the ideal choice for schools and organizations already leveraging Google Workspace, Google Classroom, and Google Meet. With native, optimized support for these platforms built directly into the display OS, teachers and instructors can launch lessons, share content, and facilitate collaborative work without navigating through third-party apps.
 
@@ -957,7 +1092,17 @@ The WAD's 4K UHD resolution, wide 178°/178° viewing angles, and 400-nit bright
       screenSizes: ["43", "50", "55", "65", "75"],
       operationTime: "16/7",
     },
-    images: ["/products/commercial-tv/samsung-business-tv-bea-h/1.webp", "/products/commercial-tv/samsung-business-tv-bea-h/2.webp", "/products/commercial-tv/samsung-business-tv-bea-h/3.webp"],
+    images: [
+      "/products/commercial-tv/samsung-business-tv-bea-h/1.webp",
+      "/products/commercial-tv/samsung-business-tv-bea-h/2.webp",
+      "/products/commercial-tv/samsung-business-tv-bea-h/3.webp",
+      "/products/commercial-tv/samsung-business-tv-bea-h/4.png",
+      "/products/commercial-tv/samsung-business-tv-bea-h/5.png",
+      "/products/commercial-tv/samsung-business-tv-bea-h/6.png",
+      "/products/commercial-tv/samsung-business-tv-bea-h/7.png",
+      "/products/commercial-tv/samsung-business-tv-bea-h/8.png",
+      "/products/commercial-tv/samsung-business-tv-bea-h/9.jpg",
+    ],
   
     longDescription: `The Samsung BEA-H Series brings reliable, straightforward 4K UHD displays to business environments where simplicity and dependability outweigh complexity and feature creep. With Crystal Processor 4K that intelligently upscales lower-resolution content to near-4K clarity, the BEA-H excels at displaying mixed-source feeds — PowerPoint presentations, video calls, real-time data feeds, and streaming content.
 
@@ -1000,7 +1145,17 @@ With built-in Business TV app support and a range of sizes from 43" to 75", the 
       screenSizes: ["43", "50", "55", "65", "70", "75", "85"],
       operationTime: "16/7",
     },
-    images: ["/products/commercial-tv/samsung-business-tv-bec-h/1.webp", "/products/commercial-tv/samsung-business-tv-bec-h/2.webp", "/products/commercial-tv/samsung-business-tv-bec-h/3.webp"],
+    images: [
+      "/products/commercial-tv/samsung-business-tv-bec-h/1.webp",
+      "/products/commercial-tv/samsung-business-tv-bec-h/2.webp",
+      "/products/commercial-tv/samsung-business-tv-bec-h/3.webp",
+      "/products/commercial-tv/samsung-business-tv-bec-h/4.png",
+      "/products/commercial-tv/samsung-business-tv-bec-h/5.png",
+      "/products/commercial-tv/samsung-business-tv-bec-h/6.png",
+      "/products/commercial-tv/samsung-business-tv-bec-h/7.png",
+      "/products/commercial-tv/samsung-business-tv-bec-h/8.png",
+      "/products/commercial-tv/samsung-business-tv-bec-h/9.jpg",
+    ],
   
     longDescription: `The Samsung BEC-H Series elevates business television with HDR 10+ support and enhanced picture processing that transforms office environments into engaging digital communication spaces. HDR 10+ delivers exceptional highlight detail and shadow depth, bringing video content, corporate videos, and marketing materials to life with cinematic quality that captures and holds viewer attention.
 
@@ -1044,7 +1199,17 @@ With Business TV App support for content scheduling and a comprehensive size ran
       screenSizes: ["43", "50", "55", "60", "65", "70", "75"],
       operationTime: "16/7",
     },
-    images: ["/products/commercial-tv/samsung-business-tv-bed-h/1.webp", "/products/commercial-tv/samsung-business-tv-bed-h/2.webp", "/products/commercial-tv/samsung-business-tv-bed-h/3.webp"],
+    images: [
+      "/products/commercial-tv/samsung-business-tv-bed-h/1.webp",
+      "/products/commercial-tv/samsung-business-tv-bed-h/2.webp",
+      "/products/commercial-tv/samsung-business-tv-bed-h/3.webp",
+      "/products/commercial-tv/samsung-business-tv-bed-h/4.png",
+      "/products/commercial-tv/samsung-business-tv-bed-h/5.png",
+      "/products/commercial-tv/samsung-business-tv-bed-h/6.png",
+      "/products/commercial-tv/samsung-business-tv-bed-h/7.png",
+      "/products/commercial-tv/samsung-business-tv-bed-h/8.png",
+      "/products/commercial-tv/samsung-business-tv-bed-h/9.jpg",
+    ],
   
     longDescription: `The Samsung BED-H Series represents the premium tier of business television, combining professional-grade features with a comprehensive 3-year manufacturer warranty that reflects Samsung's confidence in long-term reliability. Designed for demanding commercial deployments where display failure disrupts business operations and damages professional reputation, the BED-H delivers the performance consistency required in executive boardrooms, corporate command centers, and high-visibility lobbies.
 
@@ -1088,7 +1253,17 @@ The wide 43" to 75" size range and 16/7 operation rating make the BED-H adaptabl
       screenSizes: ["55", "65", "75"],
       operationTime: "16/7",
     },
-    images: ["/products/commercial-tv/samsung-hotel-tv-hg55au800t/1.jpg", "/products/commercial-tv/samsung-hotel-tv-hg55au800t/2.jpg", "/products/commercial-tv/samsung-hotel-tv-hg55au800t/3.jpg"],
+    images: [
+      "/products/commercial-tv/samsung-hotel-tv-hg55au800t/1.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au800t/2.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au800t/3.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au800t/4.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au800t/5.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au800t/6.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au800t/7.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au800t/8.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au800t/9.png",
+    ],
   
     longDescription: `The Samsung HG55AU800T delivers the ultimate guest room experience by combining Dynamic Crystal Color vibrancy with seamless AirPlay 2 integration that enables guests to instantly mirror their personal devices without technical support or pairing codes. When guests can stream their favorite shows, music, or photos with a single tap, satisfaction scores climb and repeat bookings increase.
 
@@ -1132,7 +1307,17 @@ With a slim form factor optimized for mounting above modern hospitality furnitur
       screenSizes: ["43", "50", "55", "65"],
       operationTime: "16/7",
     },
-    images: ["/products/commercial-tv/samsung-hotel-tv-hgbu800/1.webp", "/products/commercial-tv/samsung-hotel-tv-hgbu800/2.webp", "/products/commercial-tv/samsung-hotel-tv-hgbu800/3.webp"],
+    images: [
+      "/products/commercial-tv/samsung-hotel-tv-hgbu800/1.webp",
+      "/products/commercial-tv/samsung-hotel-tv-hgbu800/2.webp",
+      "/products/commercial-tv/samsung-hotel-tv-hgbu800/3.webp",
+      "/products/commercial-tv/samsung-hotel-tv-hgbu800/4.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgbu800/5.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgbu800/6.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgbu800/7.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgbu800/8.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgbu800/9.png",
+    ],
 
     longDescription: `The Samsung HBU8000 Series delivers the comforts of home to guests worldwide. Modern travellers expect the same entertainment amenities they enjoy at home, and the HBU8000 answers with quick access to leading streaming services — including Netflix — in stunning 4K UHD quality with Dynamic Crystal Colour. The instantly familiar Smart TV UI lets guests sign in and enjoy their favourite content without any setup friction.
 
@@ -1184,7 +1369,18 @@ Dynamic Crystal Colour technology with HDR10+ and a billion shades of colour ele
       screenSizes: ["43", "50", "55", "65", "75"],
       operationTime: "16/7",
     },
-    images: ["/products/commercial-tv/samsung-hotel-tv-hg55au700f/1.webp", "/products/commercial-tv/samsung-hotel-tv-hg55au700f/2.webp", "/products/commercial-tv/samsung-hotel-tv-hg55au700f/3.webp"],
+    images: [
+      "/products/commercial-tv/samsung-hotel-tv-hg55au700f/1.webp",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au700f/2.webp",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au700f/3.webp",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au700f/4.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au700f/5.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au700f/6.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au700f/7.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au700f/8.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au700f/9.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg55au700f/10.png",
+    ],
   
     longDescription: `The Samsung HG55AU700F provides essential hospitality television technology for properties seeking reliable 4K UHD displays without premium pricing or advanced feature complexity. The Crystal Processor 4K intelligently upscales standard-definition cable broadcasts and video content to near-4K clarity, delivering sharper, more vivid images than typical hospitality televisions.
 
@@ -1232,7 +1428,17 @@ Slim Fit Wall Mount support ensures seamless integration with modern hospitality
       screenSizes: ["105"],
       operationTime: "24/7",
     },
-    images: ["/products/digital-signage/samsung-qpdx105/1.jpg", "/products/digital-signage/samsung-qpdx105/2.jpg"],
+    images: [
+      "/products/digital-signage/samsung-qpdx105/1.jpg",
+      "/products/digital-signage/samsung-qpdx105/2.jpg",
+      "/products/digital-signage/samsung-qpdx105/3.png",
+      "/products/digital-signage/samsung-qpdx105/4.png",
+      "/products/digital-signage/samsung-qpdx105/5.png",
+      "/products/digital-signage/samsung-qpdx105/6.png",
+      "/products/digital-signage/samsung-qpdx105/7.png",
+      "/products/digital-signage/samsung-qpdx105/8.png",
+      "/products/digital-signage/samsung-qpdx105/9.png",
+    ],
   
     longDescription: `The Samsung QPDX redefines flagship installations with its monumental 105-inch 5K ultrawide canvas — delivering 5,120 × 2,160 resolution that unlocks cinematic storytelling and data visualization capabilities impossible on conventional 16:9 displays. The 21:9 ultrawide aspect ratio naturally accommodates sports analytics, financial dashboards, architectural renderings, and immersive video content that demands panoramic scope.
 
@@ -1276,7 +1482,18 @@ With 24/7 operation certification and integrated MagicINFO S6 content management
       screenSizes: ["115"],
       operationTime: "24/7",
     },
-    images: ["/products/digital-signage/samsung-qh115fx/1.jpg", "/products/digital-signage/samsung-qh115fx/2.jpg", "/products/digital-signage/samsung-qh115fx/3.jpg"],
+    images: [
+      "/products/digital-signage/samsung-qh115fx/1.jpg",
+      "/products/digital-signage/samsung-qh115fx/2.jpg",
+      "/products/digital-signage/samsung-qh115fx/3.jpg",
+      "/products/digital-signage/samsung-qh115fx/4.png",
+      "/products/digital-signage/samsung-qh115fx/5.png",
+      "/products/digital-signage/samsung-qh115fx/6.png",
+      "/products/digital-signage/samsung-qh115fx/7.png",
+      "/products/digital-signage/samsung-qh115fx/8.png",
+      "/products/digital-signage/samsung-qh115fx/9.png",
+      "/products/digital-signage/samsung-qh115fx/10.png",
+    ],
   
     longDescription: `The Samsung QH115FX represents the ultimate in large-format commercial display technology — a monumental 115-inch direct-lit LED canvas engineered for airports, sports arenas, stadiums, and large-scale digital out-of-home installations where content must command attention from hundreds of feet away. At 1,000 nits peak brightness, the QH115FX punches through daylight and ambient lighting that would overwhelm conventional displays, ensuring messaging remains legible and impactful from any distance.
 
@@ -1320,7 +1537,18 @@ With 24/7 operation certification and MagicINFO compatibility, the QH115FX becom
       screenSizes: ["55"],
       operationTime: "24/7",
     },
-    images: ["/products/video-walls/samsung-vhc-e/1.webp", "/products/video-walls/samsung-vhc-e/2.webp", "/products/video-walls/samsung-vhc-e/3.webp"],
+    images: [
+      "/products/video-walls/samsung-vhc-e/1.webp",
+      "/products/video-walls/samsung-vhc-e/2.webp",
+      "/products/video-walls/samsung-vhc-e/3.webp",
+      "/products/video-walls/samsung-vhc-e/4.png",
+      "/products/video-walls/samsung-vhc-e/5.png",
+      "/products/video-walls/samsung-vhc-e/6.png",
+      "/products/video-walls/samsung-vhc-e/7.png",
+      "/products/video-walls/samsung-vhc-e/8.png",
+      "/products/video-walls/samsung-vhc-e/9.png",
+      "/products/video-walls/samsung-vhc-e/10.png",
+    ],
   
     longDescription: `The Samsung VHC-E represents the entry point into professional video wall deployments, combining standard narrow bezel performance with proven reliability that makes it ideal for organizations taking their first steps into multi-screen installations. With 500-nit brightness and FHD (1,920 × 1,080) resolution per 55" tile, the VHC-E delivers excellent visual impact for retail display walls, reception area installations, and smaller corporate video wall projects.
 
@@ -1363,7 +1591,18 @@ With factory-calibrated color performance and straightforward daisy chain connec
       screenSizes: ["55"],
       operationTime: "24/7",
     },
-    images: ["/products/video-walls/samsung-vmb-e/1.webp", "/products/video-walls/samsung-vmb-e/2.webp", "/products/video-walls/samsung-vmb-e/3.webp"],
+    images: [
+      "/products/video-walls/samsung-vmb-e/1.webp",
+      "/products/video-walls/samsung-vmb-e/2.webp",
+      "/products/video-walls/samsung-vmb-e/3.webp",
+      "/products/video-walls/samsung-vmb-e/4.png",
+      "/products/video-walls/samsung-vmb-e/5.png",
+      "/products/video-walls/samsung-vmb-e/6.png",
+      "/products/video-walls/samsung-vmb-e/7.png",
+      "/products/video-walls/samsung-vmb-e/8.png",
+      "/products/video-walls/samsung-vmb-e/9.png",
+      "/products/video-walls/samsung-vmb-e/10.png",
+    ],
   
     longDescription: `The Samsung VMB-E delivers extreme narrow bezel performance optimized for immersive installations in control rooms, broadcast facilities, and high-end retail environments where visual seamlessness directly impacts user experience. The extreme narrow bezel specification combined with non-glare panel technology and Samsung's Image Enhancement Technology creates video walls that pull audiences into content rather than dividing their attention across visible tile boundaries.
 
@@ -1406,7 +1645,18 @@ With daisy chain support eliminating external video processors from many install
       screenSizes: ["55"],
       operationTime: "24/7",
     },
-    images: ["/products/video-walls/samsung-vhb-e/1.webp", "/products/video-walls/samsung-vhb-e/2.webp", "/products/video-walls/samsung-vhb-e/3.webp"],
+    images: [
+      "/products/video-walls/samsung-vhb-e/1.webp",
+      "/products/video-walls/samsung-vhb-e/2.webp",
+      "/products/video-walls/samsung-vhb-e/3.webp",
+      "/products/video-walls/samsung-vhb-e/4.png",
+      "/products/video-walls/samsung-vhb-e/5.png",
+      "/products/video-walls/samsung-vhb-e/6.png",
+      "/products/video-walls/samsung-vhb-e/7.png",
+      "/products/video-walls/samsung-vhb-e/8.png",
+      "/products/video-walls/samsung-vhb-e/9.png",
+      "/products/video-walls/samsung-vhb-e/10.png",
+    ],
   
     longDescription: `The Samsung VHB-E combines the extreme narrow bezel design favored by immersive video wall creators with class-leading 700-nit brightness that dominates in high-ambient light environments. Designed for challenging installation scenarios — retail spaces near windows, broadcast studios with theatrical lighting, sports arenas with powerful floodlighting — the VHB-E maintains visibility and color accuracy regardless of environmental illumination.
 
@@ -1449,7 +1699,18 @@ With 24/7 operation certification and Samsung's Image Enhancement Technology mai
       screenSizes: ["55"],
       operationTime: "24/7",
     },
-    images: ["/products/video-walls/samsung-vh55r/1.png", "/products/video-walls/samsung-vh55r/2.png", "/products/video-walls/samsung-vh55r/3.png"],
+    images: [
+      "/products/video-walls/samsung-vh55r/1.png",
+      "/products/video-walls/samsung-vh55r/2.png",
+      "/products/video-walls/samsung-vh55r/3.png",
+      "/products/video-walls/samsung-vh55r/4.png",
+      "/products/video-walls/samsung-vh55r/5.png",
+      "/products/video-walls/samsung-vh55r/6.png",
+      "/products/video-walls/samsung-vh55r/7.png",
+      "/products/video-walls/samsung-vh55r/8.png",
+      "/products/video-walls/samsung-vh55r/9.png",
+      "/products/video-walls/samsung-vh55r/10.png",
+    ],
   
     longDescription: `The Samsung VH55R achieves near-zero visible gaps between tiles through razor-thin bezel engineering that creates the impression of a unified, continuous display even when viewing large multi-tile arrays at close range. The 700-nit high brightness combined with the minimal bezel presence creates video walls that dominate premium retail spaces, broadcast facilities, and luxury hospitality installations.
 
@@ -1496,7 +1757,12 @@ With 24/7 operation reliability and wide 178°/178° viewing angles, the VH55R s
       screenSizes: ["55"],
       operationTime: "16/7",
     },
-    images: ["/products/interactive/samsung-flip-2/1.webp", "/products/interactive/samsung-flip-2/2.webp", "/products/interactive/samsung-flip-2/3.webp"],
+    images: [
+      "/products/interactive/samsung-flip-2/1.webp",
+      "/products/interactive/samsung-flip-2/2.webp",
+      "/products/interactive/samsung-flip-2/3.webp",
+      "/products/interactive/samsung-flip-2/4.png",
+    ],
   
     longDescription: `The Samsung Flip 2 represents the second generation of the revolutionary digital flipchart concept, building on the original Flip's success while addressing educator feedback and modern workplace collaboration requirements. The 55-inch form factor fits naturally into meeting rooms and classrooms where space efficiency matters, combining the intimate scale of traditional flipcharts with the collaborative power of a networked digital canvas.
 
@@ -1539,7 +1805,18 @@ Roll-and-view capability enables the Flip 2 to be used in either landscape or po
       screenSizes: ["65", "75", "86"],
       operationTime: "16/7",
     },
-    images: ["/products/interactive/samsung-waf-series/1.webp", "/products/interactive/samsung-waf-series/2.webp", "/products/interactive/samsung-waf-series/3.webp"],
+    images: [
+      "/products/interactive/samsung-waf-series/1.webp",
+      "/products/interactive/samsung-waf-series/2.webp",
+      "/products/interactive/samsung-waf-series/3.webp",
+      "/products/interactive/samsung-waf-series/4.png",
+      "/products/interactive/samsung-waf-series/5.png",
+      "/products/interactive/samsung-waf-series/6.png",
+      "/products/interactive/samsung-waf-series/7.png",
+      "/products/interactive/samsung-waf-series/8.png",
+      "/products/interactive/samsung-waf-series/9.png",
+      "/products/interactive/samsung-waf-series/10.png",
+    ],
   
     longDescription: `The Samsung WAF Series brings robust Android-based interactive display capabilities to large-format auditoriums and training facilities where group participation and remote collaboration are central to the educational mission. Available in sizes up to 86 inches, the WAF can accommodate whole-class participation in large lecture halls or training auditoriums where traditional interactive displays would be too small for back-row visibility.
 
@@ -1581,7 +1858,18 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
       screenSizes: ["24", "43", "55"],
       operationTime: "16/7",
     },
-    images: ["/products/interactive/samsung-qbc-t/1.webp", "/products/interactive/samsung-qbc-t/2.webp", "/products/interactive/samsung-qbc-t/3.webp"],
+    images: [
+      "/products/interactive/samsung-qbc-t/1.webp",
+      "/products/interactive/samsung-qbc-t/2.webp",
+      "/products/interactive/samsung-qbc-t/3.webp",
+      "/products/interactive/samsung-qbc-t/4.png",
+      "/products/interactive/samsung-qbc-t/5.png",
+      "/products/interactive/samsung-qbc-t/6.png",
+      "/products/interactive/samsung-qbc-t/7.png",
+      "/products/interactive/samsung-qbc-t/8.png",
+      "/products/interactive/samsung-qbc-t/9.png",
+      "/products/interactive/samsung-qbc-t/10.png",
+    ],
   
     longDescription: `The Samsung QBC-T represents the convergence of two Samsung display families — combining the ultra-slim 28.5 mm depth and Dynamic Crystal Color technology of the QBC Series with sophisticated capacitive multi-touch recognition. This hybrid design creates a compact interactive display perfect for reception desks, POS counters, information kiosks, and self-service check-in points where physical space is constrained.
 
@@ -1629,7 +1917,17 @@ With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, 
       screenSizes: ["43", "50", "55", "65", "75", "85"],
       operationTime: "16/7",
     },
-    images: ["/products/commercial-tv/samsung-business-tv-befx-h2/1.jpg", "/products/commercial-tv/samsung-business-tv-befx-h2/2.jpg", "/products/commercial-tv/samsung-business-tv-befx-h2/3.jpg"],
+    images: [
+      "/products/commercial-tv/samsung-business-tv-befx-h2/1.jpg",
+      "/products/commercial-tv/samsung-business-tv-befx-h2/2.jpg",
+      "/products/commercial-tv/samsung-business-tv-befx-h2/3.jpg",
+      "/products/commercial-tv/samsung-business-tv-befx-h2/4.png",
+      "/products/commercial-tv/samsung-business-tv-befx-h2/5.png",
+      "/products/commercial-tv/samsung-business-tv-befx-h2/6.png",
+      "/products/commercial-tv/samsung-business-tv-befx-h2/7.png",
+      "/products/commercial-tv/samsung-business-tv-befx-h2/8.png",
+      "/products/commercial-tv/samsung-business-tv-befx-h2/9.jpg",
+    ],
 
     longDescription: `The Samsung BEFX-H2 Series is optimised for a wide range of business environments — from cafés and boutiques to pharmacies, clinics, and retail chains. Built on the trusted performance of Samsung's consumer TV platform, it delivers stunning 4K UHD picture quality that captures attention and elevates your space.
 
@@ -1678,7 +1976,18 @@ Available in six sizes from 43" to 85", the BEFX-H2 adapts to any commercial spa
       screenSizes: ["43", "50", "55"],
       operationTime: "16/7",
     },
-    images: ["/products/commercial-tv/samsung-hotel-tv-hgu701f/1.jpg", "/products/commercial-tv/samsung-hotel-tv-hgu701f/2.jpg", "/products/commercial-tv/samsung-hotel-tv-hgu701f/3.jpg"],
+    images: [
+      "/products/commercial-tv/samsung-hotel-tv-hgu701f/1.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hgu701f/2.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hgu701f/3.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hgu701f/4.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgu701f/5.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgu701f/6.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgu701f/7.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgu701f/8.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgu701f/9.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgu701f/10.png",
+    ],
   
     longDescription: `The Samsung HGU701F provides reliable entry-level hospitality television for small and mid-scale hotel properties seeking to upgrade guest room experiences without premium pricing. With hotel-specific features like locked-down guest settings and simplified remote controls, the HGU701F ensures guests can enjoy entertainment while preventing accidental changes to critical settings.
 
@@ -1722,7 +2031,18 @@ With multiple HDMI and USB ports supporting diverse guest devices — from older
       screenSizes: ["75"],
       operationTime: "16/7",
     },
-    images: ["/products/commercial-tv/samsung-hotel-tv-hg75u700f/1.webp", "/products/commercial-tv/samsung-hotel-tv-hg75u700f/2.webp", "/products/commercial-tv/samsung-hotel-tv-hg75u700f/3.webp"],
+    images: [
+      "/products/commercial-tv/samsung-hotel-tv-hg75u700f/1.webp",
+      "/products/commercial-tv/samsung-hotel-tv-hg75u700f/2.webp",
+      "/products/commercial-tv/samsung-hotel-tv-hg75u700f/3.webp",
+      "/products/commercial-tv/samsung-hotel-tv-hg75u700f/4.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg75u700f/5.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg75u700f/6.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg75u700f/7.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg75u700f/8.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg75u700f/9.png",
+      "/products/commercial-tv/samsung-hotel-tv-hg75u700f/10.png",
+    ],
   
     longDescription: `The Samsung HG75U700F represents the ideal large-screen hospitality television for resort suites, premium hotel rooms, and hospitality properties where guest room size and budget allow for immersive entertainment experiences. The 75-inch form factor commands guest room interiors, transforming relaxation spaces into premium entertainment destinations that justify higher nightly rates and generate positive guest reviews.
 
@@ -1766,7 +2086,18 @@ Hotel Mode restricts guest access to critical settings while enabling easy strea
       screenSizes: ["43", "50", "55", "65", "75", "85"],
       operationTime: "16/7",
     },
-    images: ["/products/commercial-tv/samsung-hotel-tv-hgu800f/1.jpg", "/products/commercial-tv/samsung-hotel-tv-hgu800f/2.jpg", "/products/commercial-tv/samsung-hotel-tv-hgu800f/3.jpg"],
+    images: [
+      "/products/commercial-tv/samsung-hotel-tv-hgu800f/1.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hgu800f/2.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hgu800f/3.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hgu800f/4.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgu800f/5.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgu800f/6.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgu800f/7.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgu800f/8.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgu800f/9.png",
+      "/products/commercial-tv/samsung-hotel-tv-hgu800f/10.png",
+    ],
   
     longDescription: `The Samsung HGU800F represents the premium tier of hospitality television, combining Google Cast seamless guest device mirroring with Dynamic Crystal Color vibrancy and LYNK Cloud centralized room management. Designed for luxury hotel properties and high-end resort destinations where guest expectations are highest and room revenues justify premium equipment investments, the HGU800F transforms guest rooms into premium entertainment sanctuaries.
 
@@ -1815,6 +2146,13 @@ Dynamic Crystal Color technology delivers exceptional color saturation and vibra
       "/products/interactive/samsung-interactive-wafx-p/1.jpg",
       "/products/interactive/samsung-interactive-wafx-p/2.jpg",
       "/products/interactive/samsung-interactive-wafx-p/3.jpg",
+      "/products/interactive/samsung-interactive-wafx-p/4.png",
+      "/products/interactive/samsung-interactive-wafx-p/5.png",
+      "/products/interactive/samsung-interactive-wafx-p/6.png",
+      "/products/interactive/samsung-interactive-wafx-p/7.png",
+      "/products/interactive/samsung-interactive-wafx-p/8.png",
+      "/products/interactive/samsung-interactive-wafx-p/9.png",
+      "/products/interactive/samsung-interactive-wafx-p/10.png",
     ],
 
     longDescription: `The Samsung WAFX-P Series is a next-generation interactive display built for both classrooms and meeting rooms, delivering unlimited learning and collaboration possibilities. Powered by Android 15 and a high-performance Octa-core CPU (A78 × 4 + A55 × 4), it delivers a fast, intuitive experience for accessing essential apps and tools. As an EDLA-certified device, the WAFX-P provides official access to Google apps and services — including Google Play, Chrome, YouTube, and Google Drive — optimised for education and collaboration.

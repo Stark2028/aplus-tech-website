@@ -39,7 +39,7 @@ export function organizationLd() {
       areaServed: "IN",
       availableLanguage: "en",
     },
-    openingHours: "Mo-Sa 09:00-18:00",
+    openingHours: "Mo-Sa 10:00-18:00",
     sameAs: [
       "https://in.linkedin.com/company/aplus-technology-solutions-pvt-ltd",
     ],

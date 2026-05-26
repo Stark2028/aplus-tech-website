@@ -96,7 +96,7 @@ export default function PrivacyPage() {
           </h1>
           <p className="text-gray-500 text-sm">
             <strong>Effective date:</strong> January 1, 2024 &nbsp;·&nbsp;
-            <strong>Last updated:</strong> May 2025
+            <strong>Last updated:</strong> May 2026
           </p>
           <p className="text-gray-600 mt-4 leading-relaxed">
             Aplus Technology Solutions Pvt. Ltd. (&ldquo;Aplus&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is

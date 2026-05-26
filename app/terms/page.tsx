@@ -119,7 +119,7 @@ export default function TermsPage() {
           </h1>
           <p className="text-gray-500 text-sm">
             <strong>Effective date:</strong> January 1, 2025 &nbsp;·&nbsp;
-            <strong>Last updated:</strong> May 2025
+            <strong>Last updated:</strong> May 2026
           </p>
           <p className="text-gray-600 mt-4 leading-relaxed">
             These terms govern your use of aplustechsol.com and any purchase of products or services from Aplus Technology Solutions Pvt. Ltd. Please read them carefully before placing an order or using our services.

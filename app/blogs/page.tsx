@@ -10,6 +10,21 @@ export const metadata: Metadata = {
   description:
     "Read insights, guides, and best practices for deploying Samsung commercial displays across enterprise, retail, and hospitality.",
   alternates: { canonical: "https://www.aplustechsol.com/blogs" },
+  openGraph: {
+    type: "website",
+    url: "https://www.aplustechsol.com/blogs",
+    title: "Blogs & Insights | Aplus Technology Solutions",
+    description:
+      "Read insights, guides, and best practices for deploying Samsung commercial displays across enterprise, retail, and hospitality.",
+    images: [{ url: "/og-default.png", width: 1200, height: 630, alt: "Aplus Technology Solutions Blogs" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blogs & Insights | Aplus Technology Solutions",
+    description:
+      "Read insights, guides, and best practices for deploying Samsung commercial displays across enterprise, retail, and hospitality.",
+    images: ["/og-default.png"],
+  },
 };
 
 export default function BlogListingPage() {

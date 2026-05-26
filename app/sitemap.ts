@@ -17,11 +17,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE}`,                lastModified: CATALOG_LAST_UPDATED, changeFrequency: "weekly",  priority: 1.0 },
     { url: `${SITE}/products`,        lastModified: CATALOG_LAST_UPDATED, changeFrequency: "weekly",  priority: 0.9 },
     { url: `${SITE}/product-finder`,  lastModified: CATALOG_LAST_UPDATED, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${SITE}/about`,           lastModified: new Date("2025-01-01"), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${SITE}/contact`,         lastModified: new Date("2025-01-01"), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${SITE}/blogs`,           lastModified: CATALOG_LAST_UPDATED, changeFrequency: "weekly",  priority: 0.7 },
-    { url: `${SITE}/privacy`,         lastModified: new Date("2025-01-01"), changeFrequency: "yearly",  priority: 0.3 },
-    { url: `${SITE}/terms`,           lastModified: new Date("2025-01-01"), changeFrequency: "yearly",  priority: 0.3 },
+    { url: `${SITE}/about`,           lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE}/contact`,         lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE}/blogs`,           lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "weekly",  priority: 0.7 },
+    { url: `${SITE}/privacy`,         lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "yearly",  priority: 0.3 },
+    { url: `${SITE}/terms`,           lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "yearly",  priority: 0.3 },
   ];
 
   const productUrls: MetadataRoute.Sitemap = products.map((p) => ({

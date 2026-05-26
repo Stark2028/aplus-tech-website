@@ -98,6 +98,7 @@ const MILESTONES = [
   { year: "2023", event: "Launched dedicated hospitality and education verticals." },
   { year: "2024", event: "500+ clients milestone; expanded to 50+ cities pan-India." },
   { year: "2025", event: "Introduced AMC contracts and 24/7 remote support program." },
+  { year: "2026", event: "Expanding into Tier-2 cities with a new national service partner network." },
 ];
 
 const STORY_PILLARS = [
