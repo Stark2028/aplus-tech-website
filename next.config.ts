@@ -16,7 +16,13 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://us-assets.i.posthog.com",
+      // 'unsafe-inline' is retained only for inline JSON-LD <script type="application/ld+json">
+      // blocks, which must be inline for SEO crawlers and cannot be hashed across
+      // statically-generated pages. No executable inline JS is emitted by app code
+      // (gtag init runs from an external bundle), and JSON-LD is "</script>"-escaped,
+      // so the inline XSS vector is minimal. 'unsafe-eval' has been removed — gtag
+      // and PostHog operate without it.
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://us-assets.i.posthog.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https://images.unsplash.com https://plus.unsplash.com https://www.aplustechsol.com https://www.google-analytics.com https://www.googletagmanager.com https://stats.g.doubleclick.net",
