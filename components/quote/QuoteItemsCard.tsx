@@ -18,7 +18,7 @@ import type { QuoteItem } from "@/context/QuoteContext";
 import LeadGateModal from "@/components/LeadGateModal";
 import { hasGated } from "@/lib/leadGate";
 import { trackEvent } from "@/lib/analytics";
-import { downloadPdf } from "@/lib/pdf/helpers";
+import { downloadPdf } from "@/lib/pdf/download";
 
 const TRUST_ITEMS = [
   {

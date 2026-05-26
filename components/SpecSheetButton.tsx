@@ -6,7 +6,7 @@ import type { Product } from "@/data/products";
 import { trackEvent } from "@/lib/analytics";
 import LeadGateModal from "@/components/LeadGateModal";
 import { hasGated } from "@/lib/leadGate";
-import { downloadPdf } from "@/lib/pdf/helpers";
+import { downloadPdf } from "@/lib/pdf/download";
 
 interface Props {
   product: Product;

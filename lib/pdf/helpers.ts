@@ -246,18 +246,7 @@ export async function imageToPngBytes(src: string): Promise<Uint8Array | null> {
   }
 }
 
-/** Trigger a download of a PDF byte array. */
-export function downloadPdf(bytes: Uint8Array, filename: string): void {
-  const ab = new ArrayBuffer(bytes.byteLength);
-  new Uint8Array(ab).set(bytes);
-  const blob = new Blob([ab], { type: "application/pdf" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  // revoke after a tick so the browser has time to start the download
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}
+// `downloadPdf` moved to ./download (pdf-lib-free) so components can trigger a
+// download without statically pulling pdf-lib into their bundle. Re-exported
+// here for backwards compatibility with any existing importer.
+export { downloadPdf } from "./download";
