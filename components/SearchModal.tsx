@@ -25,29 +25,39 @@ export default function SearchModal() {
     setActiveIndex(-1);
   }, []);
 
+  const openSearch = useCallback(() => {
+    setQuery("");
+    setActiveIndex(-1);
+    setOpen(true);
+  }, []);
+
   // Open via keyboard shortcut or custom event
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        setOpen((v) => !v);
+        setOpen((v) => {
+          if (!v) {
+            setQuery("");
+            setActiveIndex(-1);
+          }
+          return !v;
+        });
       }
     };
-    const onEvent = () => setOpen(true);
     window.addEventListener("keydown", onKey);
-    window.addEventListener("aplus:search:open", onEvent);
+    window.addEventListener("aplus:search:open", openSearch);
     return () => {
       window.removeEventListener("keydown", onKey);
-      window.removeEventListener("aplus:search:open", onEvent);
+      window.removeEventListener("aplus:search:open", openSearch);
     };
-  }, []);
+  }, [openSearch]);
 
   // Focus input when opened
   useEffect(() => {
     if (open) {
-      setQuery("");
-      setActiveIndex(-1);
-      setTimeout(() => inputRef.current?.focus(), 40);
+      const t = setTimeout(() => inputRef.current?.focus(), 40);
+      return () => clearTimeout(t);
     }
   }, [open]);
 
@@ -101,7 +111,7 @@ export default function SearchModal() {
   return (
     <>
       <button
-        onClick={() => setOpen(true)}
+        onClick={openSearch}
         className="hidden lg:flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm transition-all w-44 group"
         aria-label="Open search (Ctrl+K)"
       >

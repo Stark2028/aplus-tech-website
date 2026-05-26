@@ -185,7 +185,7 @@ export default function AboutPage() {
 
 
               <div className="grid sm:grid-cols-2 gap-4">
-                {STORY_PILLARS.map((item, i) => (
+                {STORY_PILLARS.map((item) => (
                   <div key={item} className="flex items-center gap-4 bg-slate-50 border border-slate-100 rounded-2xl p-4 hover:bg-blue-50/50 hover:border-blue-100/60 transition-colors">
                     <div className="w-10 h-10 shrink-0 rounded-full bg-blue-100/80 flex items-center justify-center">
                       <CheckCircle2 className="text-blue-600" size={18} strokeWidth={2.5} />

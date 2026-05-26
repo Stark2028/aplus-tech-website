@@ -11,17 +11,17 @@ export default function ProductGallery({
   images: string[];
   productName: string;
 }) {
-  const [activeImage, setActiveImage] = useState(images?.[0] ?? "");
-  const activeIndex = Math.max(images.indexOf(activeImage), 0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeImage = images?.[activeIndex] ?? "";
   const [scale, setScale] = useState(1);
   const controls = useAnimation();
   const thumbStripRef = useRef<HTMLDivElement>(null);
   const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
+  // Reset zoom transform whenever the displayed image changes.
   useEffect(() => {
     controls.start({ scale: 1, x: 0, y: 0 });
-    setScale(1);
-  }, [activeImage, controls]);
+  }, [activeIndex, controls]);
 
   useEffect(() => {
     const strip = thumbStripRef.current;
@@ -58,21 +58,7 @@ export default function ProductGallery({
   return (
     <div className="flex flex-col gap-4 w-full group">
       {/* Main Large Image */}
-      <div
-        className="h-100 flex items-center justify-center overflow-hidden relative rounded-xl bg-gray-50 group-hover:cursor-zoom-in"
-        onWheel={(e) => {
-          // Prevent page scroll when zooming
-          // Note: React's onWheel is passive by default in some versions, but we can try to preventDefault if possible,
-          // or rely on a ref approach if React doesn't support non-passive checks easily.
-          // However, for zoom, usually we WANT to stop propagation.
-          // Let's implement the logic.
-          if (e.ctrlKey || e.metaKey || true) { // Always zoom for this component as requested
-            // Actually, blocking scroll on a large area might be annoying. 
-            // But the user requested "scroll over the images... zoom in and out".
-            // We'll trust the user wants this behavior.
-          }
-        }}
-      >
+      <div className="h-100 flex items-center justify-center overflow-hidden relative rounded-xl bg-gray-50 group-hover:cursor-zoom-in">
         <div
           className="relative w-full h-full cursor-grab active:cursor-grabbing"
           onWheel={(e) => {
@@ -158,9 +144,8 @@ export default function ProductGallery({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                const currentIndex = images.indexOf(activeImage);
-                const prevIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
-                setActiveImage(images[prevIndex]);
+                setActiveIndex((i) => (i === 0 ? images.length - 1 : i - 1));
+                setScale(1);
               }}
               className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-md text-gray-800 hover:text-blue-600 transition-all z-20"
               title="Previous Image"
@@ -171,9 +156,8 @@ export default function ProductGallery({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                const currentIndex = images.indexOf(activeImage);
-                const nextIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
-                setActiveImage(images[nextIndex]);
+                setActiveIndex((i) => (i === images.length - 1 ? 0 : i + 1));
+                setScale(1);
               }}
               className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-md text-gray-800 hover:text-blue-600 transition-all z-20"
               title="Next Image"
@@ -193,10 +177,10 @@ export default function ProductGallery({
             key={index}
             ref={(el) => { thumbRefs.current[index] = el; }}
             onClick={() => {
-              setActiveImage(img);
+              setActiveIndex(index);
               setScale(1);
             }}
-            className={`flex-shrink-0 w-20 h-20 rounded-lg border-2 p-1 ${activeImage === img ? "border-blue-600" : "border-gray-200"
+            className={`flex-shrink-0 w-20 h-20 rounded-lg border-2 p-1 ${activeIndex === index ? "border-blue-600" : "border-gray-200"
               }`}
           >
             <div className="relative w-full h-full">

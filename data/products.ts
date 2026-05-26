@@ -3262,7 +3262,7 @@ Hotel Mode restricts guest access to critical settings while enabling easy strea
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "HDR",
+      brightness: "300 nit",
       screenSizes: ["43", "50", "55", "65", "75", "85"],
       operationTime: "16/7",
     },

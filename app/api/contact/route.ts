@@ -4,18 +4,28 @@ import { createZohoLead } from "@/lib/zoho";
 
 const TO_EMAIL = "iit2023134@iiita.ac.in";
 
+/** Escape user-supplied text before interpolating into the HTML email body. */
+function esc(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function row(label: string, value: string) {
   return `
     <tr>
       <td style="padding:10px 16px;font-size:13px;color:#6b7280;white-space:nowrap;vertical-align:top;width:140px">${label}</td>
-      <td style="padding:10px 16px;font-size:13px;color:#111827;font-weight:600">${value}</td>
+      <td style="padding:10px 16px;font-size:13px;color:#111827;font-weight:600">${esc(value)}</td>
     </tr>`;
 }
 
 function buildQuoteEmail(b: Record<string, string>) {
   const items = (b.items_list ?? "")
     .split("\n")
-    .map((l) => `<div style="font-size:13px;color:#374151;line-height:1.7">${l}</div>`)
+    .map((l) => `<div style="font-size:13px;color:#374151;line-height:1.7">${esc(l)}</div>`)
     .join("");
 
   return `<!DOCTYPE html>
@@ -31,7 +41,7 @@ function buildQuoteEmail(b: Record<string, string>) {
           <td style="background:linear-gradient(135deg,#1e40af,#4338ca);padding:28px 32px">
             <div style="font-size:11px;font-weight:700;color:#93c5fd;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Aplus Technology Solutions</div>
             <div style="font-size:22px;font-weight:700;color:#fff">New Quote Request</div>
-            <div style="font-size:13px;color:#bfdbfe;margin-top:4px">${b.subject ?? ""}</div>
+            <div style="font-size:13px;color:#bfdbfe;margin-top:4px">${esc(b.subject ?? "")}</div>
           </td>
         </tr>
 
@@ -59,7 +69,7 @@ function buildQuoteEmail(b: Record<string, string>) {
         <!-- Footer -->
         <tr>
           <td style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:16px 32px;font-size:11px;color:#9ca3af;text-align:center">
-            Reply directly to this email to respond to ${b.name ?? "the customer"}.
+            Reply directly to this email to respond to ${esc(b.name ?? "the customer")}.
           </td>
         </tr>
 
@@ -84,7 +94,7 @@ function buildContactEmail(b: Record<string, string>) {
           <td style="background:linear-gradient(135deg,#1e40af,#4338ca);padding:28px 32px">
             <div style="font-size:11px;font-weight:700;color:#93c5fd;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Aplus Technology Solutions</div>
             <div style="font-size:22px;font-weight:700;color:#fff">New Contact Inquiry</div>
-            <div style="font-size:13px;color:#bfdbfe;margin-top:4px">${b.inquiry_type ?? "General"}</div>
+            <div style="font-size:13px;color:#bfdbfe;margin-top:4px">${esc(b.inquiry_type ?? "General")}</div>
           </td>
         </tr>
 
@@ -107,13 +117,13 @@ function buildContactEmail(b: Record<string, string>) {
         ${b.message ? `
         <tr><td style="padding:24px 32px">
           <div style="font-size:11px;font-weight:700;color:#6b7280;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Message</div>
-          <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:16px;font-size:13px;color:#374151;line-height:1.7;white-space:pre-wrap">${b.message}</div>
+          <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:16px;font-size:13px;color:#374151;line-height:1.7;white-space:pre-wrap">${esc(b.message)}</div>
         </td></tr>` : ""}
 
         <!-- Footer -->
         <tr>
           <td style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:16px 32px;font-size:11px;color:#9ca3af;text-align:center">
-            Reply directly to this email to respond to ${b.name ?? "the customer"}.
+            Reply directly to this email to respond to ${esc(b.name ?? "the customer")}.
           </td>
         </tr>
 
