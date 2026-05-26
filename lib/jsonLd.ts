@@ -88,7 +88,9 @@ export function productLd(product: Product) {
     ["Available Sizes", product.specs.screenSizes.map((s) => `${s}"`).join(", ")],
     ["Series", product.series],
   ];
-  const extraProps: Array<[string, string]> = product.additionalSpecs
+  const extraProps: Array<[string, string]> = product.specGroups
+    ? Object.values(product.specGroups).flatMap((group) => Object.entries(group))
+    : product.additionalSpecs
     ? Object.entries(product.additionalSpecs)
     : [];
   const additionalProperty = [...baseProps, ...extraProps]

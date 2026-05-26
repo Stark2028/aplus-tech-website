@@ -16,9 +16,11 @@ import { trackEvent } from "@/lib/analytics";
 import LeadGateModal from "@/components/LeadGateModal";
 import { hasGated } from "@/lib/leadGate";
 
-const SPEC_ROWS: { label: string; getValue: (p: Product) => string }[] = [
+const CORE_SPEC_ROWS: { label: string; getValue: (p: Product) => string }[] = [
   { label: "Category", getValue: (p) => p.category },
+  { label: "Sub-category", getValue: (p) => p.subCategory ?? "—" },
   { label: "Series", getValue: (p) => p.series },
+  { label: "Description", getValue: (p) => p.description },
   { label: "Resolution", getValue: (p) => p.specs.resolution },
   { label: "Brightness", getValue: (p) => p.specs.brightness },
   { label: "Operation Hours", getValue: (p) => p.specs.operationTime },
@@ -26,8 +28,32 @@ const SPEC_ROWS: { label: string; getValue: (p: Product) => string }[] = [
     label: "Available Sizes",
     getValue: (p) => p.specs.screenSizes.map((s) => `${s}"`).join(", "),
   },
-  { label: "Sub-category", getValue: (p) => p.subCategory ?? "—" },
 ];
+
+/** Returns all extra spec keys present across the given products, deduplicated.
+ *  Prefers flattening specGroups (ignoring group headers) over additionalSpecs. */
+function getExtraSpecKeys(products: Product[]): string[] {
+  return Array.from(
+    new Set(
+      products.flatMap((p) => {
+        if (p.specGroups) {
+          return Object.values(p.specGroups).flatMap((group) => Object.keys(group));
+        }
+        return p.additionalSpecs ? Object.keys(p.additionalSpecs) : [];
+      })
+    )
+  );
+}
+
+function getExtraSpecValue(p: Product, key: string): string {
+  if (p.specGroups) {
+    for (const group of Object.values(p.specGroups)) {
+      if (key in group) return group[key];
+    }
+    return "—";
+  }
+  return p.additionalSpecs?.[key] ?? "—";
+}
 
 function EmptyState() {
   return (
@@ -319,37 +345,44 @@ function ComparePageInner() {
 
                 {/* Spec rows */}
                 <tbody>
-                  {SPEC_ROWS.map((row, ri) => {
-                    const values = selectedProducts.map((p) => row.getValue(p));
-                    const allSame = values.every((v) => v === values[0]);
-                    return (
-                      <tr
-                        key={row.label}
-                        className={ri % 2 === 0 ? "bg-white" : "bg-gray-50/60"}
-                      >
-                        <td className="px-5 py-4 text-sm font-semibold text-gray-600 border-r border-gray-100">
-                          {row.label}
-                        </td>
-                        {selectedProducts.map((p) => (
-                          <td
-                            key={p.id}
-                            className={`px-5 py-4 text-sm text-center border-r border-gray-100 ${
-                              !allSame && values.length > 1
-                                ? "text-gray-900 font-medium"
-                                : "text-gray-500"
-                            }`}
-                          >
-                            {row.getValue(p)}
+                  {(() => {
+                    const extraKeys = getExtraSpecKeys(selectedProducts);
+                    const allRows = [
+                      ...CORE_SPEC_ROWS,
+                      ...extraKeys.map((key) => ({
+                        label: key,
+                        getValue: (p: Product) => getExtraSpecValue(p, key),
+                      })),
+                    ];
+                    return allRows.map((row, ri) => {
+                      const values = selectedProducts.map((p) => row.getValue(p));
+                      const allSame = values.every((v) => v === values[0]);
+                      return (
+                        <tr key={row.label} className={ri % 2 === 0 ? "bg-white" : "bg-gray-50/60"}>
+                          <td className="px-5 py-4 text-sm font-semibold text-gray-600 border-r border-gray-100 align-top">
+                            {row.label}
                           </td>
-                        ))}
-                        {[...Array(fillerCount)].map((_, i) => (
-                          <td key={`ef-${i}`} className="bg-gray-50/30 border-r border-gray-100" />
-                        ))}
-                      </tr>
-                    );
-                  })}
+                          {selectedProducts.map((p) => (
+                            <td
+                              key={p.id}
+                              className={`px-5 py-4 text-sm text-center border-r border-gray-100 align-top ${
+                                !allSame && values.length > 1
+                                  ? "text-gray-900 font-medium"
+                                  : "text-gray-500"
+                              }`}
+                            >
+                              {row.getValue(p)}
+                            </td>
+                          ))}
+                          {[...Array(fillerCount)].map((_, i) => (
+                            <td key={`ef-${i}`} className="bg-gray-50/30 border-r border-gray-100" />
+                          ))}
+                        </tr>
+                      );
+                    });
+                  })()}
 
-                  {/* Key features row */}
+                  {/* Key features row — all features */}
                   <tr className="bg-white border-t-2 border-gray-100">
                     <td className="px-5 py-4 text-sm font-semibold text-gray-600 border-r border-gray-100 align-top">
                       Key Features
@@ -357,7 +390,7 @@ function ComparePageInner() {
                     {selectedProducts.map((p) => (
                       <td key={p.id} className="px-5 py-4 border-r border-gray-100 align-top">
                         <ul className="space-y-1.5">
-                          {p.features.slice(0, 4).map((f, i) => (
+                          {p.features.map((f, i) => (
                             <li key={i} className="flex items-start gap-2 text-xs text-gray-600">
                               <span className="mt-0.5 w-4 h-4 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
                                 <Check size={9} className="text-blue-600" strokeWidth={3} />
@@ -372,6 +405,23 @@ function ComparePageInner() {
                       <td key={`ef-${i}`} className="bg-gray-50/30 border-r border-gray-100" />
                     ))}
                   </tr>
+
+                  {/* Product overview row — only if any product has longDescription */}
+                  {selectedProducts.some((p) => p.longDescription) && (
+                    <tr className="bg-gray-50/60 border-t border-gray-100">
+                      <td className="px-5 py-4 text-sm font-semibold text-gray-600 border-r border-gray-100 align-top">
+                        Product Overview
+                      </td>
+                      {selectedProducts.map((p) => (
+                        <td key={p.id} className="px-5 py-4 text-xs text-gray-500 border-r border-gray-100 align-top leading-relaxed">
+                          {p.longDescription ?? "—"}
+                        </td>
+                      ))}
+                      {[...Array(fillerCount)].map((_, i) => (
+                        <td key={`ef-${i}`} className="bg-gray-50/30 border-r border-gray-100" />
+                      ))}
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>

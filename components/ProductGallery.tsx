@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, useAnimation } from "framer-motion";
 import { Plus, Minus, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
@@ -15,12 +15,28 @@ export default function ProductGallery({
   const activeIndex = Math.max(images.indexOf(activeImage), 0);
   const [scale, setScale] = useState(1);
   const controls = useAnimation();
+  const thumbStripRef = useRef<HTMLDivElement>(null);
+  const thumbRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
     controls.start({ scale: 1, x: 0, y: 0 });
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setScale(1);
   }, [activeImage, controls]);
+
+  useEffect(() => {
+    const strip = thumbStripRef.current;
+    const thumb = thumbRefs.current[activeIndex];
+    if (!strip || !thumb) return;
+    const stripLeft = strip.scrollLeft;
+    const stripRight = stripLeft + strip.clientWidth;
+    const thumbLeft = thumb.offsetLeft;
+    const thumbRight = thumbLeft + thumb.offsetWidth;
+    if (thumbLeft < stripLeft) {
+      strip.scrollTo({ left: thumbLeft - 8, behavior: "smooth" });
+    } else if (thumbRight > stripRight) {
+      strip.scrollTo({ left: thumbRight - strip.clientWidth + 8, behavior: "smooth" });
+    }
+  }, [activeIndex]);
 
   const handleZoomIn = () => {
     const newScale = Math.min(scale + 0.5, 3);
@@ -171,13 +187,14 @@ export default function ProductGallery({
       </div>
 
       {/* Thumbnails */}
-      <div className="flex gap-4 overflow-x-auto pb-2">
+      <div ref={thumbStripRef} className="flex gap-4 overflow-x-auto pb-2">
         {images.map((img, index) => (
           <button
             key={index}
+            ref={(el) => { thumbRefs.current[index] = el; }}
             onClick={() => {
               setActiveImage(img);
-              setScale(1); // Reset zoom on image change
+              setScale(1);
             }}
             className={`flex-shrink-0 w-20 h-20 rounded-lg border-2 p-1 ${activeImage === img ? "border-blue-600" : "border-gray-200"
               }`}

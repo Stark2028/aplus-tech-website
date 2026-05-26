@@ -17,6 +17,9 @@
   };
   /** Extra specs shown in the detail page table (connectivity, OS, dimensions, etc.) */
   additionalSpecs?: Record<string, string>;
+  /** Grouped specs — each key is a section header (e.g. "Display", "Connectivity").
+   *  When present, takes priority over additionalSpecs on the detail page and PDF. */
+  specGroups?: Record<string, Record<string, string>>;
   images: string[];
   /** Sub-label shown in listings (e.g. "Hotel TV", "Business TV") */
   subCategory?: string;
@@ -62,6 +65,38 @@ With a 16/7 operation rating and a size range from 43" to 82", the QET Series ad
       "Color Gamut": "72% NTSC (typical)",
       "Viewing Angle (H/V)": "178° / 178°",
       "VESA Mount": "400 × 400 mm (55\")",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 70\" / 75\" / 82\"",
+        "Panel Type": "Crystal Display (IPS)",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "300 nit",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RS-232C": "In/Out",
+        "RJ45 In": "Yes",
+        "WiFi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
+        "Bluetooth": "5.0",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "400 × 400 (55\")",
+      },
+      "SoC": {
+        "OS Version": "Tizen 7.0",
+        "Processor": "Quad-core 1.5 GHz",
+        "RAM": "2.5 GB",
+        "Flash Memory Size": "16 GB",
+        "Content Player": "MagicINFO Player S6",
+      },
     },
     images: [
       "/products/smart-signage/samsung-qet-series/1.avif",
@@ -135,6 +170,47 @@ With Smart Calibration via the Samsung mobile app, teams can guarantee brand col
       "Viewing Angle (H/V)": "178° / 178°",
       "VESA Mount": "200 × 200 mm (43\"–55\"), 400 × 300 mm (65\"), 400 × 400 mm (75\"), 600 × 400 mm (85\")",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\" / 85\"",
+        "Panel Type": "VA",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "350 nit",
+        "Contrast Ratio": "4,000:1",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC",
+        "Glass Haze": "2%",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "3 (HDMI 2.0)",
+        "USB": "2 × USB 2.0",
+        "RS-232C": "In/Out",
+        "RJ45 In": "Yes",
+        "WiFi": "2.4 / 5.0 GHz dual-band",
+        "Bluetooth": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "Mechanical Specification": {
+        "Depth": "28.5 mm (ultra-slim)",
+        "VESA Mount (mm)": "200 × 200 (43\"–55\") / 400 × 300 (65\") / 400 × 400 (75\") / 600 × 400 (85\")",
+        "IP Rating": "IP5x",
+      },
+      "SoC": {
+        "OS Version": "Tizen 7.0",
+        "Processor": "CA53 1.3 GHz Quad-Core",
+        "Flash Memory Size": "8 GB (3 GB available)",
+        "Content Player": "MagicInfo S10 (SSSP 10.0)",
+      },
+      "Eco": {
+        "Certifications": "ENERGY STAR 8.0, EPEAT Bronze",
+      },
+      "Certification and Compliance": {
+        "Security": "802.1x WPA2 Enterprise (EAP-TLS, EAP-TTLS, EAP-PEAP)",
+      },
+    },
   },
   {
     id: "samsung-signage-qhc",
@@ -187,6 +263,39 @@ The QHC's 4K UHD resolution combined with Samsung's Crystal Display technology p
       "Viewing Angle (H/V)": "178° / 178°",
       "Anti-Glare": "Yes (Non-glare coating)",
       "VESA Mount": "400 × 400 mm",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\"",
+        "Panel Type": "IPS Crystal Display (non-glare)",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "700 nit",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RS-232C": "In/Out",
+        "RJ45 In": "Yes",
+        "WiFi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
+        "Bluetooth": "5.0",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "400 × 400",
+        "Anti-Glare": "Yes (non-glare coating)",
+      },
+      "SoC": {
+        "OS Version": "Tizen 6.5",
+        "Processor": "Quad-core 1.5 GHz",
+        "RAM": "2.5 GB",
+        "Flash Memory Size": "16 GB",
+        "Content Player": "MagicINFO Player S6",
+      },
     },
   },
   {
@@ -251,6 +360,83 @@ The QMC's integrated MagicInfo S10 with built-in Wi-Fi and LAN connectivity enab
       "Viewing Angle (H/V)": "178° / 178°",
       "VESA Mount": "200 × 200 mm (43\"–55\"), 400 × 300 mm (65\"), 400 × 400 mm (75\"), 600 × 400 mm (85\")",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\" / 85\"",
+        "Panel Type": "IPS (43\", 50\") / VA (55\"–85\")",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Pixel Pitch (HxV, mm)": "0.245 × 0.245 (43\")",
+        "Brightness (Type)": "500 nit",
+        "Contrast Ratio": "1,200:1 (IPS) / 4,000:1 (VA)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Response Time": "8 ms",
+        "Color Gamut": "72% NTSC",
+        "Glass Haze": "25%",
+        "H-Scanning Frequency": "30–81 kHz",
+        "V-Scanning Frequency": "48–75 Hz",
+        "Maximum Pixel Frequency": "594 MHz",
+        "Contrast Ratio (Dynamic)": "Mega",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "3 (HDMI 2.0)",
+        "DP In": "1 (DP 1.2)",
+        "Version of HDMI": "2.0",
+        "Version of DP": "1.2",
+        "Version of HDCP": "2.2",
+        "USB": "2 × USB 2.0",
+        "IR In": "Yes",
+        "Audio In": "No",
+        "Audio Out": "Stereo Mini Jack",
+        "RS232 In": "Yes",
+        "RS232 Out": "Yes",
+        "RJ45 In": "Yes",
+        "WiFi": "Yes (2.4 / 5.0 GHz dual-band)",
+        "Bluetooth": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC100–240 V 50/60 Hz",
+        "Power Consumption (On Mode, W)": "121 W (43\")",
+        "Power Consumption (Off Mode, W)": "—",
+        "Power Consumption (Sleep Mode, W)": "0.5 W",
+      },
+      "Dimension": {
+        "Set Dimension (WxHxD, mm)": "969.5 × 557.8 × 28.5 mm (43\")",
+        "Package Dimension (WxHxD, mm)": "1093 × 667 × 126 mm (43\")",
+      },
+      "Weight": {
+        "Set Weight": "8.8 kg / 11.8 kg with stand (43\")",
+        "Package Weight": "11.3 kg / 14.9 kg with stand (43\")",
+      },
+      "Operation Conditions": {
+        "Temperature": "0°C – 40°C",
+        "Humidity": "10–80%, non-condensing",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "200 × 200 (43\"–55\") / 400 × 300 (65\") / 400 × 400 (75\") / 600 × 400 (85\")",
+        "Bezel Width (mm)": "11.5 mm (even)",
+        "Frame Material": "Non-Glossy",
+      },
+      "Optional Feature": {
+        "Mount": "WMN-B50SC",
+        "Stand": "STN-L4355C",
+      },
+      "SoC": {
+        "OS Version": "Tizen 7.0",
+        "Flash Memory Size": "16 GB",
+        "Processor": "CA73 1.6 GHz Quad-Core",
+        "RAM": "2.5 GB",
+        "Content Player": "MagicInfo S10 (SSSP 10.0)",
+      },
+      "Eco": {
+        "Energy Efficiency Class": "B (A)",
+        "Certifications": "ENERGY STAR 8.0, EPEAT Bronze, TÜV Rheinland Carbon Footprint (50\" model)",
+      },
+      "Certification and Compliance": {
+        "EMC": "Class B",
+        "Safety": "60950-1, 62368-1",
+      },
+    },
   },
   {
     id: "samsung-signage-qbr-b",
@@ -302,6 +488,38 @@ The QBR-B's 16/7 operation rating and robust industrial design ensure dependable
       "Memory / Storage": "1.5 GB / 8 GB",
       "Viewing Angle (H/V)": "178° / 178°",
       "VESA Mount": "100 × 100 mm (13\"), 200 × 200 mm (24\")",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "13\" / 24\"",
+        "Panel Type": "IPS",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "250–300 nit",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RJ45 In": "Yes",
+        "WiFi": "802.11 a/b/g/n (2.4 GHz)",
+        "Bluetooth": "4.2",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "100 × 100 (13\") / 200 × 200 (24\")",
+      },
+      "SoC": {
+        "OS Version": "Tizen 5.5",
+        "RAM": "1.5 GB",
+        "Flash Memory Size": "8 GB",
+        "Content Player": "MagicINFO Player S6",
+      },
+      "Certification and Compliance": {
+        "Security": "Knox enterprise security",
+      },
     },
   },
   {
@@ -356,6 +574,33 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
       "Memory / Storage": "2 GB / 16 GB",
       "VESA Mount": "200 × 200 mm (32\"), 400 × 400 mm (43\"/55\")",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "32\" / 43\" / 55\"",
+        "Resolution": "1,920 × 1,080 FHD (32\") / 3,840 × 2,160 4K UHD (43\", 55\")",
+        "Brightness (Type)": "300 nit",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "3 × USB",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+        "WiFi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "200 × 200 (32\") / 400 × 400 (43\", 55\")",
+        "IP Rating": "IP5x",
+      },
+      "SoC": {
+        "OS Version": "Tizen 6.0",
+        "RAM": "2 GB",
+        "Flash Memory Size": "16 GB",
+        "Touch Technology": "Capacitive multi-touch (10 points)",
+        "Touch Response": "Sub-100ms",
+      },
+    },
   },
   {
     id: "samsung-touch-qbc-t",
@@ -377,6 +622,26 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
       brightness: "300 nit",
       screenSizes: ["43", "55"],
       operationTime: "16/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 55\"",
+        "Panel Type": "IPS (capacitive touch overlay)",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "300 nit",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RJ45 In": "Yes",
+        "WiFi": "Built-in",
+      },
+      "SoC": {
+        "Touch Technology": "Capacitive multi-touch",
+        "Content Player": "Embedded content player",
+      },
     },
     images: [
       "/products/digital-signage/samsung-touch-qbc-t/1.jpg",
@@ -436,6 +701,32 @@ Magnetic service access design allows technicians to swap panels or perform main
       "Operation Rating": "24/7",
       "Power Consumption": "~1,200 W (per 2m² at 100% white)",
     },
+    specGroups: {
+      "Display": {
+        "Pixel Pitch": "1.6 mm",
+        "Resolution": "Custom (modular scalable)",
+        "Brightness (Type)": "1,200 nit",
+        "Contrast Ratio": "5,000:1 (typical)",
+        "Viewing Angle (H/V)": "160° / 160°",
+        "Color Depth": "16.7M colors (8-bit per channel)",
+        "Refresh Rate": "3,840 Hz (typical)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "1 (HDMI 2.0)",
+        "DP In": "1 (DisplayPort 1.2)",
+        "USB": "2 × USB",
+      },
+      "Dimension": {
+        "Module Size (W×H, mm)": "640 × 360 mm per module",
+      },
+      "Power": {
+        "Power Consumption": "~1,200 W per 2 m² at 100% white",
+      },
+      "Mechanical Specification": {
+        "Service Access": "Magnetic front access for maintenance",
+      },
+    },
   },
 
   // ── VIDEO WALLS ──────────────────────────────────────────────────────────────
@@ -477,6 +768,39 @@ UHD Daisy Chain support allows up to a 5×5 (25-tile) array to be driven without
       "Dimensions (W×H×D)": "1,209.6 × 680.4 × 77.6 mm",
       "Weight": "~19.6 kg (without stand)",
       "VESA Mount": "400 × 400 mm",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "S-PVA",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit",
+        "Contrast Ratio": "4,000:1 (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Bezel-to-Bezel": "0.44 mm (all sides)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 (HDMI 1.4)",
+        "DP In": "1 (DisplayPort 1.2)",
+        "DVI-D": "1",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+        "Daisy Chain": "UHD Daisy Chain (up to 5×5)",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~100 W (typical)",
+      },
+      "Dimension": {
+        "Set Dimension (W×H×D, mm)": "1,209.6 × 680.4 × 77.6 mm",
+      },
+      "Weight": {
+        "Set Weight": "~19.6 kg (without stand)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "400 × 400",
+      },
     },
     images: [
       "/products/video-walls/vm55c-r/1.avif",
@@ -540,6 +864,34 @@ Image Enhancement Technology ensures each tile in a multi-screen array maintains
       "Power Consumption": "~120 W (typical)",
       "VESA Mount": "400 × 400 mm",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "S-PVA (non-glare)",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "700 nit",
+        "Contrast Ratio": "4,500:1 (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Response Time": "8 ms (typical)",
+        "Bezel-to-Bezel": "0.88 mm (all sides)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 (HDMI 1.4)",
+        "DP In": "1 (DisplayPort 1.2)",
+        "DVI-D": "1",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+        "Daisy Chain": "Daisy Chain support (5×5 max)",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~120 W (typical)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "400 × 400",
+      },
+    },
   },
   {
     id: "samsung-vh55c-e",
@@ -590,6 +942,34 @@ With 24/7 operation certification and Samsung's Image Enhancement Technology, ea
       "External Control": "RS-232C, RJ-45 (LAN)",
       "Power Consumption": "~115 W (typical)",
       "VESA Mount": "400 × 400 mm",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "S-PVA (non-glare coating)",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "700 nit",
+        "Contrast Ratio": "4,500:1 (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Response Time": "8 ms (typical)",
+        "Bezel-to-Bezel": "1.74 mm (extreme narrow)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 (HDMI 1.4)",
+        "DP In": "1 (DisplayPort 1.2)",
+        "DVI-D": "1",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~115 W (typical)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "400 × 400",
+      },
     },
   },
   {
@@ -644,6 +1024,35 @@ With full daisy chain support and Samsung's Image Enhancement Technology ensurin
       "Power Consumption": "~100 W (typical)",
       "VESA Mount": "400 × 400 mm",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "S-PVA (non-glare)",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit",
+        "Contrast Ratio": "4,000:1 (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Response Time": "8 ms (typical)",
+        "Bezel-to-Bezel": "1.74 mm (extreme narrow)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 (HDMI 1.4)",
+        "DP In": "1 (DisplayPort 1.2)",
+        "DVI-D": "1",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+        "Daisy Chain": "Daisy Chain support (5×5 max)",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~100 W (typical)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "400 × 400",
+      },
+    },
   },
   {
     id: "samsung-vmb-u-46",
@@ -681,6 +1090,38 @@ Built-in daisy chain connectivity simplifies multi-display wiring, allowing sign
       "Dimensions (W×H×D)": "1,041.9 × 587.7 × 74.7 mm",
       "Weight": "~17.0 kg (without stand)",
       "VESA Mount": "400 × 200 mm",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "46\"",
+        "Panel Type": "S-PVA",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit",
+        "Contrast Ratio": "4,000:1 (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Bezel-to-Bezel": "5.3 mm (all sides)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "1 (HDMI 1.3)",
+        "DP In": "1 (DisplayPort 1.1)",
+        "DVI-D": "1",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~95 W (typical)",
+      },
+      "Dimension": {
+        "Set Dimension (W×H×D, mm)": "1,041.9 × 587.7 × 74.7 mm",
+      },
+      "Weight": {
+        "Set Weight": "~17.0 kg (without stand)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "400 × 200",
+      },
     },
     images: [
       "/products/video-walls/vmb-u-46/1.avif",
@@ -743,6 +1184,32 @@ With factory-calibrated color performance and Samsung's daisy chain connectivity
       "External Control": "RS-232C, RJ-45 (LAN)",
       "Power Consumption": "~95 W (typical)",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "S-PVA (non-glare)",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit",
+        "Contrast Ratio": "4,000:1 (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Response Time": "8 ms (typical)",
+        "Bezel-to-Bezel": "3.5 mm (ultra-narrow)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "1 (HDMI 1.3)",
+        "DP In": "1 (DisplayPort 1.1)",
+        "DVI-D": "1",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+        "Daisy Chain": "Daisy Chain support",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~95 W (typical)",
+      },
+    },
   },
   {
     id: "samsung-videowall-vmb-r",
@@ -796,6 +1263,35 @@ With 24/7 operation certification and wide 178°/178° viewing angles, the VMB-R
       "External Control": "RS-232C, RJ-45 (LAN)",
       "Power Consumption": "~90 W (typical)",
       "VESA Mount": "400 × 400 mm",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "S-PVA",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit",
+        "Contrast Ratio": "4,000:1 (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Response Time": "8 ms",
+        "Bezel-to-Bezel": "5.5 mm (razor-narrow)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "1 (HDMI 1.3)",
+        "DP In": "1 (DisplayPort 1.1)",
+        "DVI-D": "1",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~90 W (typical)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "400 × 400",
+        "Image Enhancement": "Yes (automatic tile calibration)",
+      },
     },
   },
   {
@@ -851,6 +1347,35 @@ DP 1.2 daisy chain support allows up to 4K content to be driven through a single
       "External Control": "RS-232C, RJ-45 (LAN)",
       "Power Consumption": "~92 W (typical)",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "S-PVA",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit",
+        "Contrast Ratio": "4,000:1 (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Response Time": "8 ms",
+        "Bezel-to-Bezel": "5.5 mm (ultra-narrow)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "1 (HDMI 1.3)",
+        "DP In": "1 (DisplayPort 1.2)",
+        "DVI-D": "1",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+        "Daisy Chain": "DP 1.2 Daisy Chain support",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~92 W (typical)",
+      },
+      "Mechanical Specification": {
+        "Factory Calibration": "Yes (color factory-matched)",
+      },
+    },
   },
 
   // ── INTERACTIVE DISPLAYS ─────────────────────────────────────────────────────
@@ -891,6 +1416,34 @@ The Flip Pro runs on Tizen OS with Samsung Knox security built in, ensuring sess
       "Memory / Storage": "4 GB / 64 GB",
       "Color Gamut": "99% sRGB",
       "VESA Mount": "600 × 400 mm",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "75\" / 85\"",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "350 nit",
+        "Color Gamut": "99% sRGB",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI 2.0",
+        "USB-C": "USB-C 3.1 Gen1 × 1 (65 W PD + display)",
+        "USB": "USB 3.0 × 2, USB 2.0 × 2",
+        "WiFi": "802.11 a/b/g/n/ac",
+        "Bluetooth": "4.2",
+        "Screen Share": "AirPlay, Miracast, Screen Mirroring",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "600 × 400",
+      },
+      "SoC": {
+        "OS Version": "Tizen 6.5 (Samsung Knox)",
+        "Processor": "Quad-core 1.4 GHz",
+        "RAM": "4 GB",
+        "Flash Memory Size": "64 GB",
+        "Touch Technology": "Capacitive multi-touch (20 points)",
+      },
     },
     images: [
       "/products/interactive/samsung-flip-pro-wm85b/1.webp",
@@ -957,6 +1510,32 @@ With a single USB-C connection delivering power, data, and high-bandwidth conten
       "Viewing Angle (H/V)": "178° / 178°",
       "VESA Mount": "400 × 400 mm (75\"), 600 × 400 mm (85\")",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "75\" / 85\"",
+        "Panel Type": "IPS with antimicrobial coating",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "350 nit",
+        "Color Gamut": "99% sRGB",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "USB-C": "USB-C 3.1 Gen1 × 1 (65 W Power Delivery)",
+        "WiFi": "802.11 a/b/g/n/ac",
+        "Bluetooth": "5.0",
+        "Screen Share": "AirPlay, Miracast, Screen Mirroring",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "400 × 400 (75\") / 600 × 400 (85\")",
+      },
+      "SoC": {
+        "OS Version": "Tizen 6.0 (Samsung Knox)",
+        "RAM": "3 GB",
+        "Flash Memory Size": "32 GB",
+        "Touch Technology": "Electromagnetic stylus + 10-point multi-touch",
+      },
+    },
   },
   {
     id: "samsung-interactive-wac",
@@ -1013,6 +1592,43 @@ Powerful screen sharing supports up to nine simultaneous screens so content flow
       "Security": "802.1x WPA2 Enterprise (EAP-TLS, EAP-TTLS, EAP-PEAP)",
       "VESA Mount": "600 × 400 mm (65\"), 800 × 400 mm (75\")",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "65\" / 75\"",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "390 cd/m²",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Glass": "25% haze, 3.2T, ≥8H hardness",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "3 (Rear 2, Front 1)",
+        "USB-C": "1 (Front)",
+        "USB": "5 ports (USB 2.0 × 1, USB 3.0 × 4)",
+        "Output": "HDMI Out (Rear), Touch Out × 2",
+        "RS-232C": "In/Out",
+        "RJ45 In/Out": "Yes",
+        "Speaker": "Built-in 12W × 2CH",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "600 × 400 (65\") / 800 × 400 (75\")",
+      },
+      "SoC": {
+        "OS Version": "Android 11 (AOSP)",
+        "Processor": "A55 × 4 (Quad-core)",
+        "RAM": "4 GB",
+        "Flash Memory Size": "32 GB",
+        "Touch Technology": "IR multi-touch (20 points)",
+        "Touch Response Time": "≤10ms",
+        "Drawing Speed": "≤45ms",
+      },
+      "Certification and Compliance": {
+        "Security": "802.1x WPA2 Enterprise (EAP-TLS, EAP-TTLS, EAP-PEAP)",
+      },
+    },
   },
   {
     id: "samsung-interactive-wad",
@@ -1066,6 +1682,33 @@ The WAD's 4K UHD resolution, wide 178°/178° viewing angles, and 400-nit bright
       "Wi-Fi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
       "Bluetooth": "5.0",
       "Color Gamut": "99% sRGB",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "65\" / 75\" / 86\"",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "400 nit",
+        "Color Gamut": "99% sRGB",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI 2.0",
+        "USB": "USB 3.0 × 2, USB 2.0 × 2",
+        "RJ45 In": "Yes",
+        "WiFi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
+        "Bluetooth": "5.0",
+      },
+      "SoC": {
+        "OS Version": "Android 11 (Google EDLA certified)",
+        "Processor": "Octa-core 2.0 GHz",
+        "RAM": "4 GB",
+        "Flash Memory Size": "32 GB",
+        "Touch Technology": "Infrared multi-touch (20 points)",
+        "Google Workspace": "Native integration",
+        "Google Classroom": "Native integration",
+        "Google Meet": "Native integration",
+      },
     },
   },
 
@@ -1123,6 +1766,37 @@ With built-in Business TV app support and a range of sizes from 43" to 75", the 
       "VESA Mount": "300 × 300 mm (43\"-65\"), 400 × 400 mm (75\")",
       "Power Consumption": "~80 W (typical)",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\"",
+        "Panel Type": "IPS Crystal",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "250 nit",
+        "Color Gamut": "72% NTSC (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RJ45 In": "Yes",
+        "RS-232C": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~80 W (typical)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "300 × 300 (43\"–65\") / 400 × 400 (75\")",
+      },
+      "SoC": {
+        "OS Version": "Tizen 5.5",
+        "Processor": "Crystal Processor 4K",
+        "RAM": "1.5 GB",
+        "Flash Memory Size": "8 GB",
+        "Content Management": "USB stick or Business TV App",
+      },
+    },
   },
   {
     id: "samsung-business-tv-bec-h",
@@ -1176,6 +1850,38 @@ With Business TV App support for content scheduling and a comprehensive size ran
       "Color Gamut": "72% NTSC (typical)",
       "Viewing Angle (H/V)": "178° / 178°",
       "VESA Mount": "300 × 300 mm (43\"-65\"), 400 × 400 mm (70\"-85\")",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 70\" / 75\" / 85\"",
+        "Panel Type": "IPS Crystal",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "250 nit",
+        "HDR": "HDR 10+",
+        "Color Gamut": "72% NTSC (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RJ45 In": "Yes",
+        "RS-232C": "Yes",
+        "Clean Cable": "Yes (single conduit routing)",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "300 × 300 (43\"–65\") / 400 × 400 (70\"–85\")",
+      },
+      "SoC": {
+        "OS Version": "Tizen 6.0",
+        "Processor": "Quad-core 1.5 GHz",
+        "RAM": "2 GB",
+        "Flash Memory Size": "8 GB",
+        "Content Management": "Business TV App",
+      },
     },
   },
   {
@@ -1231,6 +1937,40 @@ The wide 43" to 75" size range and 16/7 operation rating make the BED-H adaptabl
       "VESA Mount": "300 × 300 mm (43\"-60\"), 400 × 400 mm (65\"-75\")",
       "Power Consumption": "~100 W (typical)",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 60\" / 65\" / 70\" / 75\"",
+        "Panel Type": "IPS Crystal",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "300 nit",
+        "Color Gamut": "72% NTSC (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RJ45 In": "Yes",
+        "RS-232C": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~100 W (typical)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "300 × 300 (43\"–60\") / 400 × 400 (65\"–75\")",
+      },
+      "SoC": {
+        "OS Version": "Tizen 6.0",
+        "Processor": "Crystal Processor 4K",
+        "RAM": "2 GB",
+        "Flash Memory Size": "8 GB",
+        "Content Management": "Business TV App",
+      },
+      "Certification and Compliance": {
+        "Warranty": "3 years manufacturer",
+      },
+    },
   },
   {
     id: "samsung-hotel-tv-hg55au800t",
@@ -1283,6 +2023,34 @@ With a slim form factor optimized for mounting above modern hospitality furnitur
       "Slim Design": "Yes (optimized for modern mounting)",
       "Viewing Angle (H/V)": "178° / 178°",
       "Color Gamut": "99% BT.709",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\" / 65\" / 75\"",
+        "Panel Type": "IPS Dynamic Crystal Color",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "HDR": "HDR standard",
+        "Color Gamut": "99% BT.709",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RJ45 In": "Yes",
+        "RS-232C": "Yes",
+        "AirPlay": "AirPlay 2 built-in",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "SoC": {
+        "OS Version": "Tizen 6.5 (Hotel Edition)",
+        "Processor": "Quad-core 1.5 GHz",
+        "RAM": "2 GB",
+        "Flash Memory Size": "8 GB",
+        "LYNK Cloud": "Compatible with central management",
+      },
     },
   },
   {
@@ -1347,6 +2115,40 @@ Dynamic Crystal Colour technology with HDR10+ and a billion shades of colour ele
       "Viewing Angle (H/V)": "178° / 178°",
       "VESA Mount": "200 × 200 mm (43\"–55\"), 400 × 300 mm (65\")",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\"",
+        "Panel Type": "Dynamic Crystal Colour",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "HDR": "HDR, HDR10+, HLG",
+        "Micro Dimming": "UHD Dimming",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+        "Design": "AirSlim, 3 Bezel-less",
+      },
+      "Connectivity": {
+        "HDMI In": "3 × HDMI",
+        "USB": "2 × USB",
+        "Ethernet (LAN)": "1",
+        "Digital Audio Out": "Optical (SPDIF) × 1",
+        "WiFi": "Wi-Fi 5",
+        "Bluetooth": "5.2",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "200 × 200 (43\"–55\") / 400 × 300 (65\")",
+      },
+      "SoC": {
+        "OS Version": "Tizen Smart TV",
+        "Picture Engine": "Quantum Processor Lite 4K",
+        "LYNK Cloud": "Yes",
+      },
+      "Eco": {
+        "Eco Sensor": "Yes",
+      },
+    },
   },
   {
     id: "samsung-hotel-tv-hg55au700f",
@@ -1401,6 +2203,38 @@ Slim Fit Wall Mount support ensures seamless integration with modern hospitality
       "Viewing Angle (H/V)": "178° / 178°",
       "VESA Mount": "300 × 300 mm (43\"-55\"), 400 × 400 mm (65\"-75\")",
       "Power Consumption": "~80 W (typical)",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\"",
+        "Panel Type": "IPS Crystal",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "250 nit",
+        "Color Gamut": "72% NTSC (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RJ45 In": "Yes",
+        "RS-232C": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~80 W (typical)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "300 × 300 (43\"–55\") / 400 × 400 (65\"–75\")",
+        "Slim Fit Mount": "Compatible",
+      },
+      "SoC": {
+        "OS Version": "Tizen 5.5",
+        "Processor": "Crystal Processor 4K",
+        "RAM": "1.5 GB",
+        "Flash Memory Size": "8 GB",
+        "Universal Guide": "Yes (content discovery)",
+      },
     },
   },
 
@@ -1459,6 +2293,34 @@ With 24/7 operation certification and integrated MagicINFO S6 content management
       "Viewing Angle (H/V)": "178° / 178°",
       "Operation Rating": "24/7",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "105\"",
+        "Panel Type": "IPS Mega Dynamic Contrast",
+        "Resolution": "5,120 × 2,160 (5K UHD)",
+        "Aspect Ratio": "21:9 ultrawide",
+        "Brightness (Type)": "500 nit",
+        "Color Gamut": "79% NTSC (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "DP In": "1 (DisplayPort 1.2)",
+        "USB": "2 × USB",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+        "WiFi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
+        "Bluetooth": "5.0",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "SoC": {
+        "OS Version": "Tizen 7.0",
+        "Content Player": "MagicINFO Player S6",
+      },
+    },
   },
   {
     id: "samsung-qh115fx",
@@ -1512,6 +2374,30 @@ With 24/7 operation certification and MagicINFO compatibility, the QH115FX becom
       "Viewing Angle (H/V)": "176° / 176°",
       "Operation Rating": "24/7",
       "Power Consumption": "~3,500 W (typical at 75% brightness)",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "115\"",
+        "Panel Type": "Direct-lit LED",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "1,000 nit (peak)",
+        "Contrast Ratio": "3,000:1 (typical)",
+        "Color Gamut": "95% DCI-P3 (typical)",
+        "Viewing Angle (H/V)": "176° / 176°",
+        "Refresh Rate": "240 Hz (typical)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 (HDMI 2.0)",
+        "DP In": "1 (DisplayPort 1.4)",
+        "USB": "2 × USB",
+        "RS-232C": "Yes",
+        "Daisy Chain": "Yes (Daisy Chain compatible)",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~3,500 W (at 75% brightness)",
+      },
     },
   },
 
@@ -1570,6 +2456,34 @@ With factory-calibrated color performance and straightforward daisy chain connec
       "Power Consumption": "~85 W (typical)",
       "VESA Mount": "400 × 400 mm",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "S-PVA",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit",
+        "Contrast Ratio": "4,000:1 (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Response Time": "8 ms",
+        "Bezel-to-Bezel": "8.5 mm (standard narrow)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "1 (HDMI 1.3)",
+        "DVI-D": "1",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+        "Daisy Chain": "Daisy Chain support",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~85 W (typical)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "400 × 400",
+      },
+    },
   },
   {
     id: "samsung-vmb-e",
@@ -1624,6 +2538,35 @@ With daisy chain support eliminating external video processors from many install
       "External Control": "RS-232C, RJ-45 (LAN)",
       "Power Consumption": "~90 W (typical)",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "S-PVA (non-glare)",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit",
+        "Contrast Ratio": "4,000:1 (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Response Time": "8 ms",
+        "Bezel-to-Bezel": "3.5 mm (extreme narrow)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "1 (HDMI 1.3)",
+        "DP In": "1 (DisplayPort 1.1)",
+        "DVI-D": "1",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+        "Daisy Chain": "Daisy Chain support",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~90 W (typical)",
+      },
+      "Mechanical Specification": {
+        "Image Enhancement": "Yes (automatic tile calibration)",
+      },
+    },
   },
   {
     id: "samsung-vhb-e",
@@ -1677,6 +2620,35 @@ With 24/7 operation certification and Samsung's Image Enhancement Technology mai
       "Color Gamut": "72% NTSC (typical)",
       "External Control": "RS-232C, RJ-45 (LAN)",
       "Power Consumption": "~115 W (typical)",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "S-PVA (non-glare coating)",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "700 nit",
+        "Contrast Ratio": "4,500:1 (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Response Time": "8 ms",
+        "Bezel-to-Bezel": "3.5 mm (extreme narrow)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 (HDMI 1.4)",
+        "DP In": "1 (DisplayPort 1.2)",
+        "DVI-D": "1",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+        "Daisy Chain": "Daisy Chain support (5×5 max)",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~115 W (typical)",
+      },
+      "Mechanical Specification": {
+        "Image Enhancement": "Yes (automatic calibration)",
+      },
     },
   },
   {
@@ -1733,6 +2705,36 @@ With 24/7 operation reliability and wide 178°/178° viewing angles, the VH55R s
       "Power Consumption": "~115 W (typical)",
       "VESA Mount": "400 × 400 mm",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "S-PVA",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "700 nit",
+        "Contrast Ratio": "4,500:1 (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Response Time": "8 ms",
+        "Bezel-to-Bezel": "3.5 mm (razor-thin)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 (HDMI 1.4)",
+        "DP In": "1 (DisplayPort 1.2)",
+        "DVI-D": "1",
+        "RS-232C": "Yes",
+        "RJ45 In": "Yes",
+        "Daisy Chain": "Daisy Chain support",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~115 W (typical)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "400 × 400",
+        "Image Enhancement": "Yes (automatic calibration)",
+      },
+    },
   },
 
   // ── ADDITIONAL INTERACTIVE DISPLAYS ────────────────────────────────────────
@@ -1783,6 +2785,33 @@ Roll-and-view capability enables the Flip 2 to be used in either landscape or po
       "Roll and View": "Yes (portrait/landscape)",
       "Color Gamut": "72% NTSC",
       "VESA Mount": "200 × 200 mm",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "IPS",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "300 nit",
+        "Color Gamut": "72% NTSC",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "WiFi": "802.11 a/b/g/n/ac",
+        "Bluetooth": "4.2",
+        "Screen Share": "Miracast, AirPlay, Screen Mirroring",
+        "NFC": "Yes (tap to export content)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "200 × 200",
+      },
+      "SoC": {
+        "OS Version": "Tizen 5.5",
+        "RAM": "2 GB",
+        "Flash Memory Size": "16 GB",
+        "Touch Technology": "Infrared multi-touch (10 points)",
+        "Stylus": "Electromagnetic stylus",
+      },
     },
   },
   {
@@ -1837,6 +2866,31 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
       "MDM/EMM": "Supported",
       "Color Gamut": "99% sRGB",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "65\" / 75\" / 86\"",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "400 nit",
+        "Color Gamut": "99% sRGB",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI 2.0",
+        "USB": "USB 3.0 × 2, USB 2.0 × 2",
+        "WiFi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
+        "Bluetooth": "5.0",
+      },
+      "SoC": {
+        "OS Version": "Android 10+",
+        "Processor": "Octa-core 2.0 GHz",
+        "RAM": "4 GB",
+        "Flash Memory Size": "32 GB",
+        "Touch Technology": "Infrared multi-touch (20 points)",
+        "Built-in Audio": "Yes (speakers + microphone array)",
+        "MDM/EMM": "Supported",
+      },
+    },
   },
   {
     id: "samsung-qbc-t",
@@ -1890,6 +2944,34 @@ With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, 
       "Color Gamut": "72% NTSC",
       "Viewing Angle (H/V)": "178° / 178°",
       "VESA Mount": "200 × 200 mm (24\"), 400 × 400 mm (43\"/55\")",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "24\" / 43\" / 55\"",
+        "Panel Type": "IPS Dynamic Crystal Color",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "300 nit",
+        "Color Gamut": "72% NTSC",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RS-232C": "In/Out",
+        "RJ45 In": "Yes",
+        "WiFi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
+        "Bluetooth": "5.0",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "200 × 200 (24\") / 400 × 400 (43\", 55\")",
+        "Depth": "28.5 mm (ultra-slim)",
+      },
+      "SoC": {
+        "OS Version": "Tizen 6.5",
+        "Content Player": "MagicINFO Player S6",
+        "Touch Technology": "Capacitive multi-touch (10 points)",
+      },
     },
   },
 
@@ -1954,6 +3036,40 @@ Available in six sizes from 43" to 85", the BEFX-H2 adapts to any commercial spa
       "Digital Art (Niio)": "Yes (subscription required)",
       "VESA Mount": "200 × 200 mm (43\"–55\"), 400 × 300 mm (65\"–85\")",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\" / 85\"",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "400 nit",
+        "HDR": "HDR10+",
+        "Color Gamut": "98% sRGB",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "3 × HDMI",
+        "USB": "1 × USB",
+        "RF": "1 Terrestrial / 1 Cable / 1 Satellite",
+        "RJ45 In": "Yes",
+        "WiFi": "Wi-Fi 5",
+        "Bluetooth": "5.2",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Audio Output": "20W, 2CH (10W + 10W)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "200 × 200 (43\"–55\") / 400 × 300 (65\"–85\")",
+      },
+      "SoC": {
+        "OS Version": "Tizen Smart TV",
+        "Picture Engine": "Crystal Processor 4K",
+        "Business TV App": "Yes (Android / iOS)",
+        "VXT CMS": "Yes (S Series plan)",
+        "PlayLock": "Yes",
+        "SmartThings Pro": "Yes",
+      },
+    },
   },
   {
     id: "samsung-hotel-tv-hgu701f",
@@ -2008,6 +3124,38 @@ With multiple HDMI and USB ports supporting diverse guest devices — from older
       "Color Gamut": "72% NTSC (typical)",
       "Viewing Angle (H/V)": "178° / 178°",
       "VESA Mount": "200 × 200 mm (43\"-50\"), 300 × 300 mm (55\")",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\"",
+        "Panel Type": "IPS",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "300 nit",
+        "Color Gamut": "72% NTSC (typical)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RJ45 In": "Yes",
+        "RS-232C": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "200 × 200 (43\"–50\") / 300 × 300 (55\")",
+        "Slim Design": "Yes",
+      },
+      "SoC": {
+        "OS Version": "Tizen 5.5 (Hotel Edition)",
+        "Processor": "Quad-core 1.5 GHz",
+        "RAM": "1.5 GB",
+        "Flash Memory Size": "8 GB",
+        "Hotel Mode": "Yes",
+        "LYNK Cloud": "Compatible",
+      },
     },
   },
   {
@@ -2064,6 +3212,38 @@ Hotel Mode restricts guest access to critical settings while enabling easy strea
       "Viewing Angle (H/V)": "178° / 178°",
       "Power Consumption": "~120 W (typical)",
     },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "75\"",
+        "Panel Type": "IPS PurColor",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "300 nit",
+        "Color Gamut": "99% BT.709",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RJ45 In": "Yes",
+        "RS-232C": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~120 W (typical)",
+      },
+      "Mechanical Specification": {
+        "Slim Fit Mount": "Compatible",
+      },
+      "SoC": {
+        "OS Version": "Tizen 5.5 (Hotel Edition)",
+        "Processor": "Quad-core 1.5 GHz",
+        "RAM": "1.5 GB",
+        "Flash Memory Size": "8 GB",
+        "Hotel Mode": "Yes",
+        "LYNK Cloud": "Compatible",
+      },
+    },
   },
   {
     id: "samsung-hotel-tv-hgu800f",
@@ -2118,6 +3298,39 @@ Dynamic Crystal Color technology delivers exceptional color saturation and vibra
       "Color Gamut": "99% BT.709",
       "Viewing Angle (H/V)": "178° / 178°",
       "VESA Mount": "300 × 300 mm (43\"-65\"), 400 × 400 mm (75\"-85\")",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\" / 85\"",
+        "Panel Type": "IPS Dynamic Crystal Color",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "300 nit",
+        "HDR": "HDR standard",
+        "Color Gamut": "99% BT.709",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 × HDMI",
+        "USB": "2 × USB",
+        "RJ45 In": "Yes",
+        "RS-232C": "Yes",
+        "Google Cast": "Yes (built-in)",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "300 × 300 (43\"–65\") / 400 × 400 (75\"–85\")",
+        "Slim Fit": "Yes",
+      },
+      "SoC": {
+        "OS Version": "Tizen 6.5 (Hotel Edition)",
+        "Processor": "Quad-core 1.5 GHz",
+        "RAM": "2 GB",
+        "Flash Memory Size": "8 GB",
+        "LYNK Cloud": "Compatible with centralized management",
+      },
     },
   },
   {
@@ -2191,6 +3404,58 @@ Embedded AI functions unlock AI Write & Search: simply circle handwritten notes 
       "Environment": "ENERGY STAR",
       "Security": "WFA/WPA/WPA2/WPA3 Personal, WPS 2.0",
       "VESA Mount": "600 × 400 mm (65\"), 800 × 400 mm (75\"), 800 × 600 mm (86\")",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "65\" / 75\" / 86\"",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "450 cd/m²",
+        "Contrast Ratio": "1,200:1 (typical) / 4,000:1 (dynamic)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Response Time (G-to-G)": "8 ms",
+        "Glass Haze": "25%",
+        "Backlight Life": "50,000 hrs",
+        "Operation Time Support": "16/7",
+      },
+      "Connectivity": {
+        "HDMI In": "3 (Rear 2, Front 1)",
+        "DP In": "1 (DisplayPort)",
+        "USB-C": "1 (Front)",
+        "USB": "5 ports (USB 2.0 × 3, USB 3.0 × 2)",
+        "Output": "HDMI Out (Rear), Touch Out × 2, Audio Out (Stereo Mini Jack)",
+        "RS-232C In": "Yes",
+        "RJ45 In/Out": "Yes",
+        "WiFi": "Wi-Fi 6 (802.11ax), dual-band",
+        "Bluetooth": "5.0",
+        "Ethernet": "1 Gbps",
+        "NFC": "ISO/IEC 14443 A/B, MIFARE/FeliCa",
+        "Screen Share": "Yes (up to 9 simultaneous screens)",
+        "WebRTC": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Speaker Output": "20W × 2CH + Woofer (4Ω 20W)",
+      },
+      "Mechanical Specification": {
+        "VESA Mount (mm)": "600 × 400 (65\") / 800 × 400 (75\") / 800 × 600 (86\")",
+      },
+      "SoC": {
+        "OS Version": "Android 15 (EDLA certified)",
+        "Processor": "Octa-core (A78 × 4 + A55 × 4)",
+        "RAM": "16 GB",
+        "Flash Memory Size": "128 GB",
+        "Touch Technology": "IR multi-touch (50 points)",
+        "Touch Response Time": "≤3ms",
+        "Drawing Speed": "35ms",
+        "Camera": "48MP, 114.9° diagonal FOV",
+        "Microphone": "8-mic array, 10 m pickup range (180°)",
+      },
+      "Eco": {
+        "Certifications": "ENERGY STAR",
+      },
+      "Certification and Compliance": {
+        "Security": "WPA/WPA2/WPA3 Personal, WPS 2.0",
+      },
     },
   },
 ];

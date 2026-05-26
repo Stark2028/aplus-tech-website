@@ -76,13 +76,22 @@ export async function buildSpecSheetPdf(product: Product): Promise<Uint8Array> {
   // ── STATS STRIP ───────────────────────────────────────────────────────
   drawStats(ctx, product);
 
+  // ── PRODUCT OVERVIEW (longDescription) ────────────────────────────────
+  if (product.longDescription) {
+    drawOverview(ctx, product);
+  }
+
   // ── KEY FEATURES ──────────────────────────────────────────────────────
   if (product.features.length > 0) {
     drawFeatures(ctx, product);
   }
 
   // ── TECHNICAL SPECIFICATIONS ──────────────────────────────────────────
-  drawSpecsTable(ctx, product);
+  if (product.specGroups) {
+    drawSpecsGrouped(ctx, product);
+  } else {
+    drawSpecsTable(ctx, product);
+  }
 
   // ── CONTACT STRIP + FOOTER (always at bottom of last page) ────────────
   drawContactAndFooter(ctx);
@@ -297,6 +306,30 @@ function drawStats(ctx: Ctx, product: Product) {
   ctx.y = top - stripH - 22;
 }
 
+function drawOverview(ctx: Ctx, product: Product) {
+  sectionHeader(ctx, "Product Overview");
+  const { page, fonts } = ctx;
+  const fontSize = 9.5;
+  const lineH = 14;
+  const paragraphs = (product.longDescription ?? "").split("\n\n").filter(Boolean);
+  for (const para of paragraphs) {
+    const lines = wrapText(safe(para), fonts.regular, fontSize, CONTENT_WIDTH);
+    ensureSpace(ctx, lines.length * lineH + 10);
+    for (const line of lines) {
+      page.drawText(line, {
+        x: MARGIN_X,
+        y: ctx.y,
+        size: fontSize,
+        font: fonts.regular,
+        color: C.gray700,
+      });
+      ctx.y -= lineH;
+    }
+    ctx.y -= 8;
+  }
+  ctx.y -= 6;
+}
+
 function ensureSpace(ctx: Ctx, needed: number) {
   if (ctx.y - needed < MARGIN_BOTTOM + 70) {
     addNewPage(ctx);
@@ -439,6 +472,59 @@ function drawSpecsTable(ctx: Ctx, product: Product) {
   }
 
   ctx.y -= 14;
+}
+
+function drawSpecsGrouped(ctx: Ctx, product: Product) {
+  const { page, fonts } = ctx;
+  const labelW = CONTENT_WIDTH * 0.42;
+  const valueW = CONTENT_WIDTH - labelW - 12;
+  const fontSize = 9.5;
+  const lineH = 13;
+
+  for (const [group, rows] of Object.entries(product.specGroups!)) {
+    // Group header
+    ensureSpace(ctx, 32);
+    drawSpacedText(page, safe(group).toUpperCase(), {
+      x: MARGIN_X,
+      y: ctx.y,
+      size: 8,
+      font: fonts.bold,
+      color: C.blue600,
+      characterSpacing: 1.4,
+    });
+    drawHr(ctx.page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y - 7, 0.5, C.blue600);
+    ctx.y -= 20;
+
+    for (const [label, value] of Object.entries(rows)) {
+      const labelLines = wrapText(safe(label), fonts.regular, fontSize, labelW);
+      const valueLines = wrapText(safe(value), fonts.bold, fontSize, valueW);
+      const blockH = Math.max(labelLines.length, valueLines.length) * lineH + 8;
+      ensureSpace(ctx, blockH + 4);
+
+      labelLines.forEach((line, i) => {
+        ctx.page.drawText(line, {
+          x: MARGIN_X,
+          y: ctx.y - i * lineH,
+          size: fontSize,
+          font: fonts.regular,
+          color: C.gray500,
+        });
+      });
+      valueLines.forEach((line, i) => {
+        ctx.page.drawText(line, {
+          x: MARGIN_X + labelW + 12,
+          y: ctx.y - i * lineH,
+          size: fontSize,
+          font: fonts.bold,
+          color: C.black,
+        });
+      });
+      ctx.y -= blockH;
+      drawHr(ctx.page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y + 4, 0.4, C.gray100);
+    }
+    ctx.y -= 10;
+  }
+  ctx.y -= 6;
 }
 
 function drawContactAndFooter(ctx: Ctx) {

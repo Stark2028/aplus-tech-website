@@ -197,36 +197,59 @@ export default async function ProductPage({
                 <span className="w-1 h-5 bg-blue-600 rounded-full" />
                 <h3 className="text-lg font-bold text-gray-900">Technical Specifications</h3>
               </div>
-              <div className="divide-y divide-gray-50">
-                {(() => {
-                  const hardcoded = [
-                    { label: "Resolution", value: product.specs.resolution },
-                    { label: "Brightness", value: product.specs.brightness },
-                    {
-                      label: "Available Sizes",
-                      value: product.specs.screenSizes.map((s) => `${s}"`).join(" · "),
-                    },
-                    { label: "Operation Hours", value: product.specs.operationTime },
-                    { label: "Series", value: product.series },
-                    { label: "Category", value: product.category },
-                    ...(product.subCategory
-                      ? [{ label: "Sub-category", value: product.subCategory }]
-                      : []),
-                  ];
-                  const hardcodedKeys = new Set(hardcoded.map((r) => r.label.toLowerCase()));
-                  const additional = product.additionalSpecs
-                    ? Object.entries(product.additionalSpecs)
-                        .filter(([key]) => !hardcodedKeys.has(key.toLowerCase()))
-                        .map(([label, value]) => ({ label, value }))
-                    : [];
-                  return [...hardcoded, ...additional];
-                })().map(({ label, value }) => (
-                  <div key={label} className="flex px-7 py-3.5 hover:bg-gray-50 transition-colors">
-                    <dt className="w-44 text-sm font-medium text-gray-500 shrink-0">{label}</dt>
-                    <dd className="text-sm text-gray-900 font-semibold">{value}</dd>
-                  </div>
-                ))}
-              </div>
+
+              {product.specGroups ? (
+                /* ── Grouped specs (Samsung-style) ── */
+                <div>
+                  {Object.entries(product.specGroups).map(([group, rows]) => (
+                    <div key={group}>
+                      <div className="px-7 py-3 bg-gray-50 border-y border-gray-100">
+                        <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">{group}</span>
+                      </div>
+                      <div className="divide-y divide-gray-50">
+                        {Object.entries(rows).map(([label, value]) => (
+                          <div key={label} className="grid grid-cols-2 hover:bg-gray-50 transition-colors">
+                            <dt className="px-7 py-3 text-sm text-gray-500 border-r border-gray-50">{label}</dt>
+                            <dd className="px-7 py-3 text-sm font-semibold text-gray-900 text-right">{value}</dd>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                /* ── Flat specs (all other products) ── */
+                <div className="divide-y divide-gray-50">
+                  {(() => {
+                    const hardcoded = [
+                      { label: "Resolution", value: product.specs.resolution },
+                      { label: "Brightness", value: product.specs.brightness },
+                      {
+                        label: "Available Sizes",
+                        value: product.specs.screenSizes.map((s) => `${s}"`).join(" · "),
+                      },
+                      { label: "Operation Hours", value: product.specs.operationTime },
+                      { label: "Series", value: product.series },
+                      { label: "Category", value: product.category },
+                      ...(product.subCategory
+                        ? [{ label: "Sub-category", value: product.subCategory }]
+                        : []),
+                    ];
+                    const hardcodedKeys = new Set(hardcoded.map((r) => r.label.toLowerCase()));
+                    const additional = product.additionalSpecs
+                      ? Object.entries(product.additionalSpecs)
+                          .filter(([key]) => !hardcodedKeys.has(key.toLowerCase()))
+                          .map(([label, value]) => ({ label, value }))
+                      : [];
+                    return [...hardcoded, ...additional];
+                  })().map(({ label, value }) => (
+                    <div key={label} className="flex px-7 py-3.5 hover:bg-gray-50 transition-colors">
+                      <dt className="w-44 text-sm font-medium text-gray-500 shrink-0">{label}</dt>
+                      <dd className="text-sm text-gray-900 font-semibold">{value}</dd>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Trust badges */}
