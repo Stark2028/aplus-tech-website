@@ -52,5 +52,11 @@ next-env.d.ts
 # Local-only analysis artifacts (not part of the website)
 /Website_Comparison_Report.*
 /gen_comparison.py
+/parse_lh.py
+/diagnose_lcp.py
+/diagnose2.py
+/lh-*.json
+/lh-*.html
+/build-out.txt
 # Office temp/lock files
 ~$*

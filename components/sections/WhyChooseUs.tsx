@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ShieldCheck, Headphones, Truck, Award } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
 
@@ -36,22 +37,35 @@ export default function WhyChooseUs() {
             The Aplus Advantage
           </h2>
         </AnimatedSection>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {ADVANTAGES.map(({ icon: Icon, title, desc }) => (
-            <div
-              key={title}
-              className="bg-white border border-gray-100 rounded-2xl p-7 hover:border-blue-100 hover:shadow-lg transition-all group"
-            >
-              <div className="w-12 h-12 bg-blue-50 group-hover:bg-blue-600 rounded-xl flex items-center justify-center mb-5 transition-colors">
-                <Icon
-                  className="text-blue-600 group-hover:text-white transition-colors"
-                  size={24}
-                />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Accent image: real teams collaborating around a display we supply. */}
+          <AnimatedSection className="relative aspect-3/2 rounded-2xl overflow-hidden shadow-lg">
+            <Image
+              src="/images/collaboration.webp"
+              alt="A team collaborating around a Samsung display in a meeting room"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
+          </AnimatedSection>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {ADVANTAGES.map(({ icon: Icon, title, desc }) => (
+              <div
+                key={title}
+                className="bg-white border border-gray-100 rounded-2xl p-7 hover:border-blue-100 hover:shadow-lg transition-all group"
+              >
+                <div className="w-12 h-12 bg-blue-50 group-hover:bg-blue-600 rounded-xl flex items-center justify-center mb-5 transition-colors">
+                  <Icon
+                    className="text-blue-600 group-hover:text-white transition-colors"
+                    size={24}
+                  />
+                </div>
+                <h4 className="text-base font-bold text-gray-900 mb-2">{title}</h4>
+                <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
               </div>
-              <h4 className="text-base font-bold text-gray-900 mb-2">{title}</h4>
-              <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

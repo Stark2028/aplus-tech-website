@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useInView } from "framer-motion";
 
 interface Props {
   value: string;
@@ -17,7 +16,26 @@ export default function AnimatedCounter({ value }: Props) {
   const { num, suffix } = parseValue(value);
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [isInView, setIsInView] = useState(false);
+
+  // Native IntersectionObserver — equivalent to framer-motion's useInView
+  // ({ once: true, margin: "-80px" }) but without pulling framer-motion into
+  // the hero's initial bundle. Fires a single time when the element scrolls in.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "-80px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!isInView) return;

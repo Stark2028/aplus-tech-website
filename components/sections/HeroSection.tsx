@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import AnimatedCounter from "@/components/AnimatedCounter";
@@ -12,32 +13,36 @@ const STATS = [
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex flex-col overflow-hidden bg-[#050b15]">
-      {/* Preload the video poster — it's the LCP element until the video
-          paints its first frame. Without this, browsers fetch posters at
-          low priority. */}
-      <link
-        rel="preload"
-        as="image"
-        href="/images/hero-poster.webp"
-        fetchPriority="high"
-      />
-      <video
-        src="/videos/hero.mp4"
-        poster="/images/hero-poster.webp"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        className="absolute inset-0 w-full h-full object-cover"
+    <section className="relative min-h-[88vh] flex flex-col overflow-hidden bg-[#050b15]">
+      {/* Background image of real digital signage. `priority` makes Next.js
+          preload it at high fetch priority — it's behind the dark gradient,
+          so a moderate WebP quality keeps it light without visible loss. */}
+      <Image
+        src="/images/hero-signage.webp"
+        alt="Digital signage displays in a modern commercial space"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
       />
 
+      {/* Primary left-to-right gradient anchors the white headline on the
+          dark left side; kept darker on the right (0.55) so the busy kiosk /
+          wayfinding signage recedes instead of competing with the CTAs. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(110deg, rgba(5,11,21,0.97) 0%, rgba(5,11,21,0.92) 40%, rgba(5,11,21,0.65) 70%, rgba(5,11,21,0.30) 100%)",
+            "linear-gradient(110deg, rgba(5,11,21,0.97) 0%, rgba(5,11,21,0.93) 40%, rgba(5,11,21,0.78) 70%, rgba(5,11,21,0.55) 100%)",
+        }}
+      />
+      {/* Bottom-right vignette to settle the bright "automated check-in"
+          kiosk that was pulling the eye in the corner. */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(120% 120% at 100% 100%, rgba(5,11,21,0.6) 0%, rgba(5,11,21,0) 55%)",
         }}
       />
       <div className="absolute inset-0 bg-blue-950/20" />
@@ -46,7 +51,7 @@ export default function HeroSection() {
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
       <div className="absolute bottom-1/4 right-0 md:right-1/4 w-125 h-125 bg-indigo-500/20 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
 
-      <div className="relative flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center py-28 md:py-36">
+      <div className="relative flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center py-20 md:py-24">
         <div className="max-w-2xl">
           <div className="flex items-center gap-3 mb-8">
             <span className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse shrink-0" />
@@ -74,7 +79,7 @@ export default function HeroSection() {
               className="text-transparent bg-clip-text"
               style={{
                 backgroundImage:
-                  "linear-gradient(90deg, #60a5fa 0%, #a5b4fc 100%)",
+                  "linear-gradient(90deg, #3b82f6 0%, #60a5fa 45%, #c4b5fd 100%)",
                 whiteSpace: "nowrap",
               }}
             >
