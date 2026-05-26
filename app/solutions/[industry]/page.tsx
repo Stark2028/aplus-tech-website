@@ -7,7 +7,7 @@ import { getCategoryById } from "@/data/categories";
 import { useCaseCombos } from "@/data/useCaseCombos";
 import ProductCard from "@/components/ProductCard";
 import type { Metadata } from "next";
-import { SITE, breadcrumbLd, solutionServiceLd } from "@/lib/jsonLd";
+import { SITE, breadcrumbLd, solutionServiceLd, jsonLdString } from "@/lib/jsonLd";
 
 export const revalidate = 3600;
 
@@ -88,7 +88,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
         <main className="bg-white">
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
             />
             <section className={`relative overflow-hidden bg-linear-to-br ${accentGradient}`}>
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.25),transparent_50%)]" />

@@ -3,7 +3,9 @@ import type { NextConfig } from 'next';
 const securityHeaders = [
   { key: 'X-Frame-Options',           value: 'SAMEORIGIN' },
   { key: 'X-Content-Type-Options',    value: 'nosniff' },
-  { key: 'X-XSS-Protection',          value: '1; mode=block' },
+  // 0 = disable the legacy XSS auditor (it could be abused to *introduce*
+  // XSS in old browsers); modern browsers rely on CSP instead.
+  { key: 'X-XSS-Protection',          value: '0' },
   { key: 'Referrer-Policy',           value: 'strict-origin-when-cross-origin' },
   { key: 'Permissions-Policy',        value: 'camera=(), microphone=(), geolocation=()' },
   {

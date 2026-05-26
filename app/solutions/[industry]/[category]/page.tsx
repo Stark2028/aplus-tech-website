@@ -12,6 +12,7 @@ import {
   breadcrumbLd,
   industryCategoryServiceLd,
   faqPageLd,
+  jsonLdString,
 } from "@/lib/jsonLd";
 
 export const revalidate = 3600;
@@ -115,7 +116,7 @@ export default async function IndustryCategoryPage({
     <main className="bg-white">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
       />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}

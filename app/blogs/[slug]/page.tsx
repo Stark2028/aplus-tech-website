@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import ReadingProgress from "@/components/ReadingProgress";
 import ShareButtons from "@/components/ShareButtons";
 import { Calendar, Clock, ArrowRight, Tag } from "lucide-react";
-import { SITE, breadcrumbLd } from "@/lib/jsonLd";
+import { SITE, breadcrumbLd, jsonLdString } from "@/lib/jsonLd";
 
 const ORG_REF = { "@id": `${SITE}/#organization` };
 
@@ -112,7 +112,7 @@ export default async function BlogDetailPage({
   return (
     <>
       <ReadingProgress />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }} />
 
       <div className="bg-gray-50 min-h-screen">
         {/* Hero band */}

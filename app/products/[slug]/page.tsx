@@ -20,7 +20,7 @@ import CompareButton from "@/components/CompareButton";
 import Image from "next/image";
 import { Metadata } from "next";
 import RecentlyViewed from "@/components/RecentlyViewed";
-import { breadcrumbLd, productLd } from "@/lib/jsonLd";
+import { breadcrumbLd, productLd, jsonLdString } from "@/lib/jsonLd";
 
 export const revalidate = 3600;
 
@@ -103,7 +103,7 @@ export default async function ProductPage({
     <main className="min-h-screen bg-gray-50 pb-20">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
       />
 
       {/* ── TOP CTA BAR ───────────────────────────────────────────── */}

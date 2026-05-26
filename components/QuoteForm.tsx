@@ -73,6 +73,16 @@ export default function QuoteForm({ productName }: { productName: string }) {
         <input type="hidden" name="subject" value={`New Quote Request: ${productName}`} />
         <input type="hidden" name="from_name" value="Aplus Tech Website" />
 
+        {/* Honeypot — hidden from users; bots that fill it are silently dropped */}
+        <input
+          type="text"
+          name="company_website"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="absolute left-[-9999px] h-0 w-0 opacity-0"
+        />
+
         {/* Visible Fields */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>

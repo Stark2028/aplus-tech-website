@@ -26,7 +26,11 @@ async function getAccessToken(): Promise<string> {
     }),
   });
   const data = await res.json();
-  if (!data.access_token) throw new Error(`Zoho token refresh failed: ${JSON.stringify(data)}`);
+  if (!data.access_token) {
+    // Only surface the OAuth error code — never the full response, which can
+    // echo back client_id / client_secret and other sensitive identifiers.
+    throw new Error(`Zoho token refresh failed: ${data.error ?? "unknown_error"}`);
+  }
   return data.access_token;
 }
 

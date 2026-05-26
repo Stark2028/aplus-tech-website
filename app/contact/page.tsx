@@ -234,6 +234,15 @@ export default function ContactPage() {
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                     onSubmit={handleSubmit} className="px-8 py-8 space-y-6"
                   >
+                    {/* Honeypot — hidden from users; bots that fill it are silently dropped */}
+                    <input
+                      type="text"
+                      name="company_website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                    />
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div className="relative group">
                         <label className="block text-sm font-semibold text-gray-700 mb-1.5 transition-colors group-focus-within:text-blue-600">

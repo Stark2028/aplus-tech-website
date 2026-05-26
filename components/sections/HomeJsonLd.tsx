@@ -1,5 +1,5 @@
 import { FAQS } from "@/data/faqs";
-import { SITE, organizationLd, faqPageLd } from "@/lib/jsonLd";
+import { SITE, organizationLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
 
 const websiteLd = {
   "@context": "https://schema.org",
@@ -24,7 +24,7 @@ export default function HomeJsonLd() {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
     />
   );
 }

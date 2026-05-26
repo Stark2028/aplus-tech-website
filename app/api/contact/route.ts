@@ -1,8 +1,22 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
 import { createZohoLead } from "@/lib/zoho";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
 
 const TO_EMAIL = "iit2023134@iiita.ac.in";
+
+// Abuse throttle: 5 submissions per IP per 10 minutes.
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+
+// Defensive caps so a single request can't carry an unbounded payload.
+const MAX_FIELD_LEN = 5000;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Single-line, length-capped value safe to place in an email header. */
+function headerSafe(value: string, max = 200): string {
+  return value.replace(/[\r\n]+/g, " ").trim().slice(0, max);
+}
 
 /** Escape user-supplied text before interpolating into the HTML email body. */
 function esc(value: string): string {
@@ -136,10 +150,40 @@ function buildContactEmail(b: Record<string, string>) {
 
 export async function POST(req: Request) {
   try {
+    // Reject anything that isn't a JSON submission.
+    if (!req.headers.get("content-type")?.includes("application/json")) {
+      return NextResponse.json({ success: false, message: "Unsupported content type." }, { status: 415 });
+    }
+
+    // Per-IP rate limit to throttle spam / quota abuse.
+    const limit = rateLimit(`contact:${clientIp(req)}`, RATE_LIMIT, RATE_WINDOW_MS);
+    if (!limit.ok) {
+      return NextResponse.json(
+        { success: false, message: "Too many requests. Please try again later." },
+        { status: 429, headers: { "Retry-After": String(limit.retryAfter) } }
+      );
+    }
+
     const body: Record<string, string> = await req.json();
+
+    // Honeypot: bots fill hidden fields; humans leave them empty.
+    // Silently accept (200) so bots don't learn the field is a trap.
+    if (body.company_website || body.fax) {
+      return NextResponse.json({ success: true });
+    }
 
     if (!body.name || !body.email || !body.phone) {
       return NextResponse.json({ success: false, message: "Missing required fields." }, { status: 400 });
+    }
+
+    // Validate email shape and cap field lengths.
+    if (!EMAIL_RE.test(body.email) || body.email.length > 320) {
+      return NextResponse.json({ success: false, message: "Invalid email address." }, { status: 400 });
+    }
+    for (const value of Object.values(body)) {
+      if (typeof value === "string" && value.length > MAX_FIELD_LEN) {
+        return NextResponse.json({ success: false, message: "Submission too large." }, { status: 413 });
+      }
     }
 
     const resend = new Resend(process.env.RESEND_API_KEY);
@@ -150,8 +194,8 @@ export async function POST(req: Request) {
     const { error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: TO_EMAIL,
-      replyTo: body.email,
-      subject: body.subject ?? "New Inquiry — Aplus Technology Solutions",
+      replyTo: headerSafe(body.email, 320),
+      subject: headerSafe(body.subject ?? "New Inquiry — Aplus Technology Solutions"),
       html,
     });
 

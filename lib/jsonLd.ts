@@ -12,6 +12,16 @@ function abs(url: string): string {
   return /^https?:\/\//i.test(url) ? url : `${SITE}${url.startsWith("/") ? "" : "/"}${url}`;
 }
 
+/**
+ * Serialize a JSON-LD object for injection via dangerouslySetInnerHTML.
+ * Escapes `<` so a `</script>` substring in any (future, dynamic) field
+ * cannot break out of the surrounding <script> tag. Inert for today's
+ * static data, but removes the latent XSS sink permanently.
+ */
+export function jsonLdString(obj: unknown): string {
+  return JSON.stringify(obj).replace(/</g, "\\u003c");
+}
+
 /** Canonical Organization / LocalBusiness node. Referenced by @id from other nodes. */
 export function organizationLd() {
   return {

@@ -7,7 +7,7 @@ import { useCaseCombos } from "@/data/useCaseCombos";
 import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
-import { SITE, breadcrumbLd, categoryCollectionLd } from "@/lib/jsonLd";
+import { SITE, breadcrumbLd, categoryCollectionLd, jsonLdString } from "@/lib/jsonLd";
 
 export const revalidate = 3600;
 
@@ -74,7 +74,7 @@ export default async function CategoryPage({
     <main className="min-h-screen bg-gray-50">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
       />
 
       {/* Hero banner */}
