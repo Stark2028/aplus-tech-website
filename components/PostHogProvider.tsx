@@ -6,7 +6,10 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 
 const PH_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY ?? "";
-const PH_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://app.posthog.com";
+// Fallback must stay in sync with the CSP connect-src allowlist in
+// next.config.ts. Defaulting to the US ingestion host (already allowlisted)
+// prevents analytics from being silently CSP-blocked if the env var is unset.
+const PH_HOST = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
 
 function PostHogPageView() {
   const pathname = usePathname();

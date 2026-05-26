@@ -14,16 +14,31 @@ export interface GatedLead {
   company?: string;
 }
 
+interface StoredLead extends GatedLead {
+  /** Epoch ms when this lead was captured — used to expire stale PII. */
+  capturedAt: number;
+}
+
 const STORAGE_KEY = "aplus_lead_gate";
+
+// Data-minimisation: don't retain visitor PII indefinitely. Expire the
+// cached lead after 30 days so it isn't held longer than the prefill UX needs.
+const TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
 export function getCachedLead(): GatedLead | null {
   if (typeof window === "undefined") return null;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    const parsed = JSON.parse(raw);
+    const parsed = JSON.parse(raw) as Partial<StoredLead>;
     if (!parsed?.email || !parsed?.name) return null;
-    return parsed as GatedLead;
+    // Expire stale entries (and legacy entries written before capturedAt existed).
+    if (typeof parsed.capturedAt !== "number" || Date.now() - parsed.capturedAt > TTL_MS) {
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+    const { name, email, phone, company } = parsed;
+    return { name, email, phone: phone ?? "", company };
   } catch {
     return null;
   }
@@ -32,7 +47,8 @@ export function getCachedLead(): GatedLead | null {
 export function setCachedLead(lead: GatedLead): void {
   if (typeof window === "undefined") return;
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(lead));
+    const stored: StoredLead = { ...lead, capturedAt: Date.now() };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
   } catch {}
 }
 
