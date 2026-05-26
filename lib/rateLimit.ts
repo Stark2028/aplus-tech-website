@@ -61,11 +61,18 @@ export function rateLimit(
  * (all anonymous callers then share one bucket — fail-safe, not fail-open).
  */
 export function clientIp(req: Request): string {
+  // Prefer headers set by the edge/CDN itself — these are overwritten by the
+  // platform on each request and cannot be spoofed by the client. Only fall
+  // back to x-forwarded-for (client-appendable) last, taking the LAST entry,
+  // which is the one the nearest trusted proxy added.
+  const trusted =
+    req.headers.get("cf-connecting-ip") ?? req.headers.get("x-real-ip");
+  if (trusted) return trusted.trim();
+
   const xff = req.headers.get("x-forwarded-for");
-  if (xff) return xff.split(",")[0].trim();
-  return (
-    req.headers.get("x-real-ip") ??
-    req.headers.get("cf-connecting-ip") ??
-    "unknown"
-  );
+  if (xff) {
+    const parts = xff.split(",").map((s) => s.trim()).filter(Boolean);
+    if (parts.length > 0) return parts[parts.length - 1];
+  }
+  return "unknown";
 }

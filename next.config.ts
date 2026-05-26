@@ -26,9 +26,12 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https://images.unsplash.com https://plus.unsplash.com https://www.aplustechsol.com https://www.google-analytics.com https://www.googletagmanager.com https://stats.g.doubleclick.net",
-      "connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://stats.g.doubleclick.net https://us.i.posthog.com https://us-assets.i.posthog.com",
+      "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://stats.g.doubleclick.net https://us.i.posthog.com https://us-assets.i.posthog.com",
       "worker-src 'self' blob:",
       "frame-src https://www.google.com https://maps.google.com",
+      // Clickjacking defense (modern equivalent of X-Frame-Options, honored by
+      // browsers that ignore the legacy header).
+      "frame-ancestors 'self'",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
