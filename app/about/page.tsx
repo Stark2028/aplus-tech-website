@@ -296,7 +296,7 @@ export default function AboutPage() {
           <div className="hidden md:block">
             <div className="relative">
               <div className="absolute left-0 right-0 top-6.5 h-px bg-gray-200" />
-              <div className="grid grid-cols-6 gap-6 relative">
+              <div className="grid grid-cols-7 gap-x-3 relative">
                 {MILESTONES.map((m) => (
                   <div key={m.year} className="relative">
                     <div className="flex justify-center mb-6">
@@ -306,7 +306,7 @@ export default function AboutPage() {
                       </div>
                     </div>
                     <p className="text-center text-sm font-bold text-blue-600 mb-2">{m.year}</p>
-                    <p className="text-center text-xs text-gray-500 leading-relaxed">{m.event}</p>
+                    <p className="text-center text-[11px] text-gray-500 leading-relaxed">{m.event}</p>
                   </div>
                 ))}
               </div>

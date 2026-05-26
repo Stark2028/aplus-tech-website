@@ -3,7 +3,10 @@ import { NextResponse } from "next/server";
 import { createZohoLead } from "@/lib/zoho";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
 
-const TO_EMAIL = "iit2023134@iiita.ac.in";
+// Delivery address for all form submissions.
+// Set CONTACT_TO_EMAIL in .env.local (or your hosting platform's env vars).
+// Never hard-code a personal or dev address here.
+const TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? "info@aplustechsol.com";
 
 // Abuse throttle: 5 submissions per IP per 10 minutes.
 const RATE_LIMIT = 5;

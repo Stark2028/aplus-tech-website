@@ -20,6 +20,20 @@ interface QuoteContextType {
 
 const QuoteContext = createContext<QuoteContextType | undefined>(undefined);
 
+/** Runtime shape guard — ensures localStorage data matches QuoteItem[] before use. */
+function isValidQuoteItems(data: unknown): data is QuoteItem[] {
+    return (
+        Array.isArray(data) &&
+        data.every(
+            (item) =>
+                item !== null &&
+                typeof item === "object" &&
+                typeof (item as QuoteItem).product?.id === "string" &&
+                typeof (item as QuoteItem).quantity === "number"
+        )
+    );
+}
+
 export function QuoteProvider({ children }: { children: React.ReactNode }) {
     const [quoteItems, setQuoteItems] = useState<QuoteItem[]>([]);
     const [isQuoteOpen, setIsQuoteOpen] = useState(false);
@@ -28,10 +42,17 @@ export function QuoteProvider({ children }: { children: React.ReactNode }) {
         const savedQuote = localStorage.getItem("b2b_quote_cart");
         if (savedQuote) {
             try {
-                // eslint-disable-next-line react-hooks/set-state-in-effect
-                setQuoteItems(JSON.parse(savedQuote));
+                const parsed: unknown = JSON.parse(savedQuote);
+                // Defence-in-depth: validate shape before trusting localStorage data.
+                if (isValidQuoteItems(parsed)) {
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    setQuoteItems(parsed);
+                } else {
+                    localStorage.removeItem("b2b_quote_cart");
+                }
             } catch (e) {
                 console.error("Failed to parse quote cart", e);
+                localStorage.removeItem("b2b_quote_cart");
             }
         }
     }, []);
