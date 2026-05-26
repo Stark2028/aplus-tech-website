@@ -72,18 +72,18 @@ export async function buildSpecSheetPdf(product: Product): Promise<Uint8Array> {
   drawTitleBlock(ctx, product);
   drawStatsStrip(ctx, product);
 
-  if (product.longDescription) {
-    drawOverview(ctx, product);
+  if (product.specGroups) {
+    drawSpecsGrouped(ctx, product);
+  } else {
+    drawSpecsFlat(ctx, product);
   }
 
   if (product.features.length > 0) {
     drawFeatures(ctx, product);
   }
 
-  if (product.specGroups) {
-    drawSpecsGrouped(ctx, product);
-  } else {
-    drawSpecsFlat(ctx, product);
+  if (product.longDescription) {
+    drawOverview(ctx, product);
   }
 
   drawContactAndFooter(ctx);
