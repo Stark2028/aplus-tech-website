@@ -12,6 +12,16 @@ const TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? "info@aplustechsol.com";
 const RATE_LIMIT = 5;
 const RATE_WINDOW_MS = 10 * 60 * 1000;
 
+// Anti-CSRF: browsers stamp a non-forgeable Origin on cross-site requests.
+// We reject a *present-but-wrong* Origin (blocks browser-driven cross-site
+// abuse) while allowing a missing Origin through, since non-browser clients
+// (and some same-origin contexts) legitimately omit it — those are still
+// covered by the per-IP rate limit and honeypot.
+const ALLOWED_ORIGINS = new Set([
+  "https://www.aplustechsol.com",
+  "https://aplustechsol.com",
+]);
+
 // Defensive caps so a single request can't carry an unbounded payload.
 const MAX_FIELD_LEN = 5000;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -156,6 +166,12 @@ export async function POST(req: Request) {
     // Reject anything that isn't a JSON submission.
     if (!req.headers.get("content-type")?.includes("application/json")) {
       return NextResponse.json({ success: false, message: "Unsupported content type." }, { status: 415 });
+    }
+
+    // Reject cross-site browser requests (present-but-disallowed Origin).
+    const origin = req.headers.get("origin");
+    if (origin && !ALLOWED_ORIGINS.has(origin)) {
+      return NextResponse.json({ success: false, message: "Forbidden." }, { status: 403 });
     }
 
     // Per-IP rate limit to throttle spam / quota abuse.
