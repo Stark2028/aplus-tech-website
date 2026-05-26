@@ -180,13 +180,13 @@ function drawTitleBlock(ctx: Ctx, product: Product) {
 function drawStatsStrip(ctx: Ctx, product: Product) {
   const { page, fonts } = ctx;
   const top = ctx.y;
-  const stripH = 38;
+  const stripH = 42;
 
   const stats = [
     { label: "RESOLUTION", value: safe(product.specs.resolution.split("(")[0].trim()) },
     { label: "BRIGHTNESS", value: safe(product.specs.brightness) },
     { label: "OPERATION", value: safe(product.specs.operationTime) },
-    { label: "SIZES", value: safe(product.specs.screenSizes.map((s) => `${s}"`).join(" · ")) },
+    { label: "SIZES", value: safe(product.specs.screenSizes.map((s) => `${s}"`).join(" • ")) },
   ];
 
   // Background fill
@@ -198,17 +198,30 @@ function drawStatsStrip(ctx: Ctx, product: Product) {
   });
 
   const colW = CONTENT_WIDTH / 4;
+  const colPadX = 10;
+  const innerW = colW - colPadX * 2;
+
   stats.forEach((stat, i) => {
-    const colX = MARGIN_X + i * colW + 10;
+    const colX = MARGIN_X + i * colW + colPadX;
     drawSpacedText(page, stat.label, {
       x: colX, y: top - 14,
       size: 7, font: fonts.bold, color: C.gray400, characterSpacing: 1.2,
     });
-    const valueLines = wrapText(stat.value, fonts.bold, 10, colW - 16);
-    page.drawText(valueLines[0] ?? "", {
-      x: colX, y: top - 28,
-      size: 10, font: fonts.bold, color: C.black,
+
+    // Auto-fit value: shrink font size until it fits the column
+    let valueSize = 10;
+    while (
+      valueSize > 6.5 &&
+      fonts.bold.widthOfTextAtSize(stat.value, valueSize) > innerW
+    ) {
+      valueSize -= 0.5;
+    }
+
+    page.drawText(stat.value, {
+      x: colX, y: top - 30,
+      size: valueSize, font: fonts.bold, color: C.black,
     });
+
     if (i > 0) {
       page.drawLine({
         start: { x: MARGIN_X + i * colW, y: top - 6 },
@@ -218,7 +231,7 @@ function drawStatsStrip(ctx: Ctx, product: Product) {
     }
   });
 
-  ctx.y = top - stripH - 20;
+  ctx.y = top - stripH - 22;
 }
 
 // ── Product overview ──────────────────────────────────────────────────────
