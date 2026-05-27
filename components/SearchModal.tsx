@@ -112,7 +112,7 @@ export default function SearchModal() {
     <>
       <button
         onClick={openSearch}
-        className="hidden lg:flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm transition-all w-44 group"
+        className="hidden xl:flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm transition-all w-44 group"
         aria-label="Open search (Ctrl+K)"
       >
         <Search size={14} className="shrink-0" />

@@ -11,7 +11,7 @@ interface Props {
 export default function NavbarDesktop({ cartCount }: Props) {
   return (
     <>
-      <nav className="hidden lg:flex items-center gap-1" aria-label="Primary">
+      <nav className="hidden xl:flex items-center gap-1" aria-label="Primary">
         <Link
           href="/"
           className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
@@ -109,7 +109,7 @@ export default function NavbarDesktop({ cartCount }: Props) {
         </Link>
       </nav>
 
-      <div className="hidden lg:flex items-center gap-3">
+      <div className="hidden xl:flex items-center gap-3">
         <SearchModal />
 
         <a

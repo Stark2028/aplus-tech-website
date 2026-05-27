@@ -19,7 +19,7 @@ export default function NavbarMobile({ cartCount }: Props) {
 
   return (
     <>
-      <div className="flex items-center gap-2 lg:hidden">
+      <div className="flex items-center gap-2 xl:hidden">
         <button
           type="button"
           onClick={() => window.dispatchEvent(new CustomEvent("aplus:search:open"))}
@@ -55,7 +55,7 @@ export default function NavbarMobile({ cartCount }: Props) {
       {isOpen && (
         <div
           id="mobile-menu"
-          className="lg:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-100 shadow-lg max-h-[calc(100vh-4.5rem)] overflow-y-auto"
+          className="xl:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-100 shadow-lg max-h-[calc(100vh-4.5rem)] overflow-y-auto"
         >
           <div className="max-w-7xl mx-auto px-4 py-4 space-y-1">
             <Link
