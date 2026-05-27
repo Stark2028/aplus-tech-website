@@ -29,13 +29,13 @@ export async function generateMetadata({
       url,
       title: `${category.navLabel} | Aplus Technology Solutions`,
       description: category.description,
-      images: [{ url: "/og-default.png", width: 1200, height: 630, alt: category.navLabel }],
+      images: [{ url: `/categories/${slug}/opengraph-image`, width: 1200, height: 630, alt: category.navLabel }],
     },
     twitter: {
       card: "summary_large_image",
       title: `${category.navLabel} | Aplus Technology Solutions`,
       description: category.description,
-      images: ["/og-default.png"],
+      images: [`/categories/${slug}/opengraph-image`],
     },
   };
 }

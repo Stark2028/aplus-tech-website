@@ -51,24 +51,21 @@ export default function HeroSection() {
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
       <div className="absolute bottom-1/4 right-0 md:right-1/4 w-125 h-125 bg-indigo-500/20 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
 
-      <div className="relative flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center py-14 md:py-24">
+      <div className="relative flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center py-10 md:py-24">
         <div className="max-w-2xl">
-          <div className="flex items-center gap-3 mb-8">
-            <span className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse shrink-0" />
-            <span className="text-gray-300 text-sm font-semibold tracking-[0.2em] uppercase">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 mb-5 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0" />
+            <span className="text-gray-300 text-xs font-semibold tracking-[0.18em] uppercase">
               Authorized Samsung Business Partner
             </span>
-            <span
-              className="h-px flex-1 max-w-13"
-              style={{ backgroundColor: "rgba(255,255,255,0.15)" }}
-            />
           </div>
 
           <h1
-            className="font-black text-white tracking-tight mb-8"
+            className="font-black text-white tracking-tight mb-6"
             style={{
-              fontSize: "clamp(38px, 4.8vw, 72px)",
-              lineHeight: "1.0",
+              fontSize: "clamp(36px, 4.8vw, 72px)",
+              lineHeight: "1.05",
               textShadow:
                 "0 0 80px rgba(0,0,0,0.9), 0 4px 24px rgba(0,0,0,0.7)",
             }}
@@ -87,13 +84,29 @@ export default function HeroSection() {
             </span>
             <br />
             Partner
+            {/* Keyword-rich context for crawlers without altering the visual headline. */}
+            <span className="sr-only">
+              {" "}— Authorized Samsung distributor for digital signage, video walls,
+              interactive displays, and hospitality TVs across India.
+            </span>
           </h1>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          {/* Visible supporting paragraph: gives the hero indexable body copy
+              with the primary keywords search engines rank this page on. */}
+          <p className="text-base md:text-lg text-gray-300 mb-7 max-w-xl leading-relaxed">
+            Authorized Samsung distributor for{" "}
+            <strong className="font-semibold text-white">Smart Signage</strong>,{" "}
+            <strong className="font-semibold text-white">Video Walls</strong>,{" "}
+            <strong className="font-semibold text-white">Interactive Displays</strong>, and{" "}
+            <strong className="font-semibold text-white">Hospitality TVs</strong> —
+            with certified installation and support across India.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3">
             <MagneticButton>
               <Link
                 href="/quote"
-                className="inline-flex items-center justify-center gap-2.5 bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-xl font-bold text-base transition-colors"
+                className="inline-flex items-center justify-center gap-2.5 bg-blue-600 hover:bg-blue-500 text-white px-7 py-3.5 rounded-xl font-bold text-base transition-colors"
                 style={{ boxShadow: "0 8px 32px rgba(37,99,235,0.45)" }}
               >
                 Request a Free Quote
@@ -103,7 +116,7 @@ export default function HeroSection() {
             <MagneticButton>
               <Link
                 href="/products"
-                className="inline-flex items-center justify-center gap-2.5 text-white px-8 py-4 rounded-xl font-bold text-base transition-all hover:bg-white/10"
+                className="inline-flex items-center justify-center gap-2.5 text-white px-7 py-3.5 rounded-xl font-bold text-base transition-all hover:bg-white/10"
                 style={{ border: "1px solid rgba(255,255,255,0.15)" }}
               >
                 Browse Products
@@ -114,37 +127,30 @@ export default function HeroSection() {
         </div>
       </div>
 
+      {/* Stats bar — horizontal scroll pill strip on mobile, even 4-col row on desktop */}
       <div
         className="relative"
         style={{
           borderTop: "1px solid rgba(255,255,255,0.07)",
-          backgroundColor: "rgba(5,11,21,0.6)",
-          backdropFilter: "blur(12px)",
+          backgroundColor: "rgba(5,11,21,0.65)",
+          backdropFilter: "blur(14px)",
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:flex md:flex-row">
-            {STATS.map((s, i) => {
-              let borderClass = "border-white/[0.08]";
-              if (i === 0) borderClass += " border-r border-b md:border-b-0";
-              if (i === 1) borderClass += " border-b md:border-r md:border-b-0";
-              if (i === 2) borderClass += " border-r";
-              if (i === 3) borderClass += "";
-
-              return (
-                <div
-                  key={s.label}
-                  className={`flex-1 py-5 text-center ${borderClass}`}
-                >
-                  <div className="text-2xl md:text-3xl font-black text-white">
-                    <AnimatedCounter value={s.value} />
-                  </div>
-                  <div className="text-xs font-medium text-gray-500 mt-1 px-2">
-                    {s.label}
-                  </div>
+          <div className="flex">
+            {STATS.map((s, i) => (
+              <div
+                key={s.label}
+                className={`flex-1 py-4 md:py-5 text-center ${i < STATS.length - 1 ? "border-r border-white/8" : ""}`}
+              >
+                <div className="text-xl md:text-3xl font-black text-white leading-none">
+                  <AnimatedCounter value={s.value} />
                 </div>
-              );
-            })}
+                <div className="text-[10px] md:text-xs font-medium text-gray-500 mt-1 px-1 leading-tight">
+                  {s.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { products } from "@/data/products";
 import { getCategoryById } from "@/data/categories";
 import { useCaseCombos } from "@/data/useCaseCombos";
 import ProductCard from "@/components/ProductCard";
+import MobileProductScroller from "@/components/MobileProductScroller";
 import type { Metadata } from "next";
 import { SITE, breadcrumbLd, solutionServiceLd, jsonLdString } from "@/lib/jsonLd";
 
@@ -35,12 +36,13 @@ export async function generateMetadata({
             url,
             title: `${solution.title} — Samsung B2B Display Solutions`,
             description,
-            images: [{ url: "/og-default.png", width: 1200, height: 630, alt: solution.title }],
+            images: [{ url: `/solutions/${industry}/opengraph-image`, width: 1200, height: 630, alt: solution.title }],
         },
         twitter: {
             card: "summary_large_image",
             title: `${solution.title} — Samsung B2B Display Solutions`,
             description,
+            images: [`/solutions/${industry}/opengraph-image`],
         },
     };
 }
@@ -94,7 +96,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(59,130,246,0.25),transparent_50%)]" />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.35)_100%)]" />
 
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20">
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-0">
                     <nav className="flex items-center justify-end gap-1.5 text-xs text-blue-100/70 mb-12" aria-label="Breadcrumb">
                         <Link href="/" className="hover:text-white transition-colors">Home</Link>
                         <ChevronRight size={12} aria-hidden="true" />
@@ -104,22 +106,26 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
                     <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-300 mb-4">
                         Samsung B2B Industry Solution
                     </p>
-                    <h1 className="text-4xl md:text-6xl font-bold text-white leading-[1.05] tracking-tight">
+                    <h1 className="text-4xl md:text-6xl font-bold text-white leading-[1.05] tracking-tight mb-12">
                         {solution.title}
                     </h1>
                 </div>
-            </section>
 
-            <section className="bg-white border-b border-gray-100">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {/* Stats bar — inside the hero, above the fold edge */}
+                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="border-t border-white/10 grid grid-cols-2 sm:flex">
                         {STATS.map((s, i) => (
                             <div
                                 key={s.label}
-                                className={`px-2 md:px-6 ${i > 0 ? "md:border-l md:border-gray-100" : ""}`}
+                                className={`py-6 md:py-7 text-center sm:flex-1
+                                    ${i % 2 === 0 ? "sm:border-r-0" : ""}
+                                    ${i < 2 ? "border-b border-white/10 sm:border-b-0" : ""}
+                                    ${i % 2 === 0 ? "border-r border-white/10" : ""}
+                                    ${i < STATS.length - 1 ? "sm:border-r sm:border-white/10" : ""}
+                                `}
                             >
-                                <p className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">{s.value}</p>
-                                <p className="text-[11px] text-gray-500 uppercase tracking-wider mt-1.5 font-medium">{s.label}</p>
+                                <p className="text-2xl md:text-3xl font-black text-white leading-none tracking-tight">{s.value}</p>
+                                <p className="text-[11px] md:text-xs font-medium text-blue-200/70 uppercase tracking-wider mt-2 px-2 leading-tight">{s.label}</p>
                             </div>
                         ))}
                     </div>
@@ -157,7 +163,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
                                 Samsung displays used in {solution.title.toLowerCase()}
                             </h2>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <MobileProductScroller gridCols="md:grid-cols-2 lg:grid-cols-4" autoPlay={true} autoPlayInterval={3800} initialDelay={900}>
                             {combosForIndustry.map((combo) => {
                                 const cat = getCategoryById(combo.category);
                                 if (!cat) return null;
@@ -165,7 +171,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
                                     <Link
                                         key={combo.category}
                                         href={`/solutions/${combo.industry}/${combo.category}`}
-                                        className="group bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-md hover:border-blue-100 transition-all"
+                                        className="group bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-md hover:border-blue-100 transition-all h-full flex flex-col"
                                     >
                                         <p className="text-[10px] font-bold uppercase tracking-widest text-blue-600 mb-2">
                                             {cat.navLabel}
@@ -174,13 +180,13 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
                                             {combo.title}
                                         </h3>
                                         <p className="text-sm text-gray-500 line-clamp-3">{combo.subtitle}</p>
-                                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 mt-4 group-hover:gap-2 transition-all">
+                                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 mt-auto pt-4 group-hover:gap-2 transition-all">
                                             Explore <ArrowRight size={12} />
                                         </span>
                                     </Link>
                                 );
                             })}
-                        </div>
+                        </MobileProductScroller>
                     </div>
                 </section>
             )}

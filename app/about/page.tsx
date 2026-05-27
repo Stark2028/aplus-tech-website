@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
+import { aboutPageLd, breadcrumbLd, organizationLd, jsonLdString } from "@/lib/jsonLd";
 
 const ABOUT_URL = "https://www.aplustechsol.com/about";
 
@@ -110,8 +111,21 @@ const STORY_PILLARS = [
 ];
 
 export default function AboutPage() {
+  const jsonLd = [
+    organizationLd(),
+    aboutPageLd(),
+    breadcrumbLd([
+      { name: "Home", url: "/" },
+      { name: "About", url: "/about" },
+    ]),
+  ];
+
   return (
     <main className="bg-white bg-waves">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
+      />
 
       {/* ───────────────── Hero ───────────────── */}
       <section className="relative overflow-hidden bg-linear-to-br from-slate-900 via-blue-950 to-gray-900">
@@ -184,7 +198,7 @@ export default function AboutPage() {
 
 
 
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {STORY_PILLARS.map((item) => (
                   <div key={item} className="flex items-center gap-4 bg-slate-50 border border-slate-100 rounded-2xl p-4 hover:bg-blue-50/50 hover:border-blue-100/60 transition-colors">
                     <div className="w-10 h-10 shrink-0 rounded-full bg-blue-100/80 flex items-center justify-center">
@@ -193,9 +207,7 @@ export default function AboutPage() {
                     <span className="text-slate-800 text-[14px] font-bold leading-snug block">{item}</span>
                   </div>
                 ))}
-
-                {/* Award badge moved to grid */}
-                <div className="flex items-center gap-4 bg-gradient-to-br from-blue-50/50 to-white border border-blue-100/60 rounded-2xl p-4 hover:shadow-sm hover:border-blue-200 transition-all group relative overflow-hidden">
+                <div className="flex items-center gap-4 bg-linear-to-br from-blue-50/50 to-white border border-blue-100/60 rounded-2xl p-4 hover:shadow-sm hover:border-blue-200 transition-all group relative overflow-hidden">
                   <div className="absolute right-0 top-0 w-24 h-24 bg-blue-100/50 rounded-full blur-2xl -mr-8 -mt-8 group-hover:bg-blue-200/60 transition-colors duration-500" />
                   <div className="w-10 h-10 shrink-0 rounded-full bg-blue-100/80 flex items-center justify-center relative z-10 group-hover:scale-105 transition-transform duration-500">
                     <Award className="text-blue-600" size={18} strokeWidth={2.5} />

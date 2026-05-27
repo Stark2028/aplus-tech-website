@@ -234,6 +234,26 @@ export function industryCategoryServiceLd(
   };
 }
 
+/**
+ * AboutPage JSON-LD. References the canonical Organization node by @id so the
+ * page reinforces the entity Google associates with the brand, rather than
+ * declaring a second, competing organization.
+ */
+export function aboutPageLd() {
+  const url = `${SITE}/about`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "@id": `${url}#about`,
+    url,
+    name: "About Aplus Technology Solutions",
+    description:
+      "Authorized Samsung Business Display distributor serving enterprises across India — supply, certified installation, and AMC support.",
+    mainEntity: { "@id": ORG_ID },
+    isPartOf: { "@id": ORG_ID },
+  };
+}
+
 /** FAQPage JSON-LD. Pass {question, answer} pairs. */
 export function faqPageLd(items: Array<{ question: string; answer: string }>) {
   return {
