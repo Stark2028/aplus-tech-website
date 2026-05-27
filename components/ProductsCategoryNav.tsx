@@ -38,7 +38,7 @@ export default function ProductsCategoryNav() {
   return (
     <div className="sticky top-18 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-center gap-2 overflow-x-auto scrollbar-hide py-3">
+        <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto scrollbar-hide no-scrollbar py-3">
           {productCategories.map((cat) => (
             <button
               key={cat.id}

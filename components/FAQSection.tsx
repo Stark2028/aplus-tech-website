@@ -11,9 +11,9 @@ import { FAQS } from "@/data/faqs";
  */
 export default function FAQSection() {
   return (
-    <section className="py-12 md:py-16 bg-gray-50">
+    <section className="py-8 md:py-16 bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
+        <div className="text-center mb-8 md:mb-14">
           <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full mb-4">
             FAQ
           </span>
@@ -22,22 +22,22 @@ export default function FAQSection() {
           </h2>
         </div>
 
-        <div className="space-y-3">
+        <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden divide-y divide-gray-100">
           {FAQS.map((faq, i) => (
             <details
               key={i}
               open={i === 0}
-              className="group bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow open:shadow-md"
+              className="group transition-colors duration-200 open:bg-slate-50/40"
             >
-              <summary className="flex items-center justify-between w-full px-6 py-5 text-left gap-4 cursor-pointer list-none focus-visible:outline-none">
-                <span className="font-semibold text-gray-900 text-base">{faq.q}</span>
+              <summary className="flex items-center justify-between w-full px-5 py-4 sm:px-6 sm:py-5 text-left gap-4 cursor-pointer list-none focus-visible:outline-none [&::-webkit-details-marker]:hidden">
+                <span className="font-semibold text-gray-900 text-sm sm:text-base leading-snug">{faq.q}</span>
                 <ChevronDown
-                  size={20}
+                  size={18}
                   aria-hidden="true"
                   className="shrink-0 text-blue-600 transition-transform duration-300 group-open:rotate-180"
                 />
               </summary>
-              <div className="px-6 pb-5 text-gray-600 leading-relaxed text-sm border-t border-gray-100 pt-4">
+              <div className="px-5 pb-4 sm:px-6 sm:pb-5 text-gray-600 leading-relaxed text-xs sm:text-sm pt-2">
                 {faq.a}
               </div>
             </details>

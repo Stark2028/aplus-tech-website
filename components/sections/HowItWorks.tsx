@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MessageSquare, Package, Wrench, LifeBuoy, Phone } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
+import MobileProductScroller from "@/components/MobileProductScroller";
 
 const PROCESS_STEPS = [
   {
@@ -31,9 +32,9 @@ const PROCESS_STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-10 md:py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-10">
+        <AnimatedSection className="text-center mb-6 md:mb-10">
           <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full mb-4">
             Our Process
           </span>
@@ -42,9 +43,9 @@ export default function HowItWorks() {
           </h2>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-4" autoPlay={true}>
           {PROCESS_STEPS.map((step, i) => (
-            <div key={i} className="relative group">
+            <div key={i} className="relative group h-full">
               {i < PROCESS_STEPS.length - 1 && (
                 <div className="hidden lg:block absolute top-10 left-full w-full h-px bg-linear-to-r from-blue-200 to-transparent z-10" />
               )}
@@ -62,9 +63,9 @@ export default function HowItWorks() {
               </div>
             </div>
           ))}
-        </div>
+        </MobileProductScroller>
 
-        <div className="mt-12 text-center">
+        <div className="mt-6 md:mt-12 text-center">
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-8 py-4 rounded-xl font-semibold transition-all hover:scale-105"

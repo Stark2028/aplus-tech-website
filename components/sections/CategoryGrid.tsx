@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { products } from "@/data/products";
 import AnimatedSection from "@/components/AnimatedSection";
+import MobileProductScroller from "@/components/MobileProductScroller";
 
 const CATEGORY_CARDS = [
   {
@@ -54,36 +55,38 @@ const CATEGORY_CARDS = [
 
 export default function CategoryGrid() {
   return (
-    <section className="pt-14 pb-4 bg-gray-50">
+    <section className="pt-8 pb-3 md:pt-14 md:pb-4 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-10">
+        <AnimatedSection className="text-center mb-6 md:mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
             Shop by Category
           </h2>
         </AnimatedSection>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-4" autoPlay={true}>
           {CATEGORY_CARDS.map((cat) => (
             <Link
               key={cat.id}
               href={cat.href}
-              className="group relative bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+              className="group relative bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 block h-full"
             >
               <div className="h-1" style={{ backgroundColor: cat.iconColor }} />
 
-              <div className="p-7">
-                <div className="flex items-start justify-between mb-6">
-                  <div
-                    className="w-14 h-14 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                    style={{ backgroundColor: cat.iconColorLight }}
-                  >
-                    <cat.Icon size={26} style={{ color: cat.iconColor }} />
+              <div className="p-7 flex flex-col h-full justify-between">
+                <div>
+                  <div className="flex items-start justify-between mb-6">
+                    <div
+                      className="w-14 h-14 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                      style={{ backgroundColor: cat.iconColorLight }}
+                    >
+                      <cat.Icon size={26} style={{ color: cat.iconColor }} />
+                    </div>
                   </div>
+
+                  <h3 className="text-xl font-bold text-gray-900 mb-6">{cat.title}</h3>
                 </div>
 
-                <h3 className="text-xl font-bold text-gray-900 mb-6">{cat.title}</h3>
-
-                <div className="flex items-center justify-end pt-4 border-t border-gray-100">
+                <div className="flex items-center justify-end pt-4 border-t border-gray-100 mt-auto">
                   <span
                     className="flex items-center gap-1 text-sm font-semibold group-hover:gap-2 transition-all"
                     style={{ color: cat.iconColor }}
@@ -94,7 +97,7 @@ export default function CategoryGrid() {
               </div>
             </Link>
           ))}
-        </div>
+        </MobileProductScroller>
       </div>
     </section>
   );

@@ -9,6 +9,7 @@ import { productCategories } from "@/data/categories";
 import { useQuote } from "@/context/QuoteContext";
 import { useComparison } from "@/context/ComparisonContext";
 import { trackEvent } from "@/lib/analytics";
+import MobileProductScroller from "@/components/MobileProductScroller";
 
 export default function ProductCatalogSection() {
   const [activeTab, setActiveTab] = useState(productCategories[0].name);
@@ -47,11 +48,11 @@ export default function ProductCatalogSection() {
   };
 
   return (
-    <section className="pt-6 pb-20 bg-gray-50">
+    <section className="pt-4 pb-12 md:pt-6 md:pb-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
-        <div className="relative text-center mb-10">
+        <div className="relative text-center mb-6 md:mb-10">
           <h2 className="text-4xl font-bold text-gray-900">
             Browse Our Full Range
           </h2>
@@ -68,7 +69,7 @@ export default function ProductCatalogSection() {
         </div>
 
         {/* Category tabs */}
-        <div className="flex justify-center gap-2 overflow-x-auto pb-1 snap-x">
+        <div className="flex justify-start md:justify-center gap-2 overflow-x-auto pb-2.5 snap-x no-scrollbar">
           {productCategories.map((cat) => (
             <button
               key={cat.id}
@@ -87,11 +88,11 @@ export default function ProductCatalogSection() {
         <div className="mt-4 mb-8" />
 
         {/* Product grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" autoPlay={true}>
           {filtered.map((product) => (
             <div
               key={product.id}
-              className="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group flex flex-col"
+              className="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group flex flex-col h-full"
             >
               {/* Image */}
               <div className="h-48 bg-linear-to-br from-gray-50 to-gray-100 relative overflow-hidden">
@@ -100,7 +101,7 @@ export default function ProductCatalogSection() {
                     src={product.images[0]}
                     alt={product.name}
                     fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                    sizes="(max-width: 640px) 72vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                     className="object-contain p-6 group-hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
@@ -196,10 +197,10 @@ export default function ProductCatalogSection() {
               </div>
             </div>
           ))}
-        </div>
+        </MobileProductScroller>
 
         {/* Bottom CTA */}
-        <div className="mt-10 text-center">
+        <div className="mt-6 md:mt-10 text-center">
           <Link
             href="/products"
             className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-8 py-3.5 rounded-xl font-semibold transition-all hover:scale-105 shadow-lg"

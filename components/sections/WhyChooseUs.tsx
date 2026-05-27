@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ShieldCheck, Headphones, Truck, Award } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
+import MobileProductScroller from "@/components/MobileProductScroller";
 
 const ADVANTAGES = [
   {
@@ -27,9 +28,9 @@ const ADVANTAGES = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="py-14 bg-white">
+    <section className="py-10 md:py-14 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-10">
+        <AnimatedSection className="text-center mb-6 md:mb-10">
           <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full mb-4">
             Why Aplus
           </span>
@@ -49,7 +50,29 @@ export default function WhyChooseUs() {
             />
           </AnimatedSection>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {/* MOBILE: Infinite slow scrolling marquee */}
+          <div className="sm:hidden relative overflow-hidden w-full pb-4">
+            <div className="flex gap-4 animate-marquee-slow whitespace-nowrap">
+              {[...ADVANTAGES, ...ADVANTAGES].map(({ icon: Icon, title, desc }, index) => (
+                <div
+                  key={`${title}-${index}`}
+                  className="inline-flex flex-col bg-white border border-gray-200/80 rounded-2xl p-6 w-[250px] shrink-0 shadow-sm whitespace-normal group"
+                >
+                  <div className="w-10 h-10 bg-blue-50 group-hover:bg-blue-600 rounded-xl flex items-center justify-center mb-4 transition-colors">
+                    <Icon
+                      className="text-blue-600 group-hover:text-white transition-colors"
+                      size={20}
+                    />
+                  </div>
+                  <h4 className="text-sm font-bold text-gray-900 mb-1.5">{title}</h4>
+                  <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* DESKTOP/TABLET: Standard static 2x2 grid */}
+          <div className="hidden sm:grid grid-cols-2 gap-6">
             {ADVANTAGES.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}

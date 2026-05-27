@@ -11,9 +11,9 @@ const PROMISES = [
 
 export default function FinalCTA() {
   return (
-    <section className="relative py-12 md:py-16 overflow-hidden bg-[#0d1526] text-center px-4">
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600 rounded-full filter blur-[120px] opacity-15 animate-pulse" />
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-cyan-500 rounded-full filter blur-[120px] opacity-10 animate-pulse delay-1000" />
+    <section className="relative py-10 md:py-16 overflow-hidden bg-[#0d1526] text-center px-4">
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600 rounded-full filter blur-[120px] animate-slow-glow pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-cyan-500 rounded-full filter blur-[120px] animate-slow-glow-delayed pointer-events-none" />
       <div className="relative max-w-3xl mx-auto z-10">
         <div className="flex items-center justify-center gap-2 mb-6">
           {ICONS.map((Icon, i) => (

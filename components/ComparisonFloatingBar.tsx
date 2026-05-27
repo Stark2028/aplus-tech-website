@@ -32,9 +32,10 @@ export default function ComparisonFloatingBar() {
                     )}
                 </AnimatePresence>
 
-                <div className="bg-white border border-gray-200 shadow-2xl rounded-full p-4 flex items-center gap-6 max-w-2xl w-full mx-auto ring-1 ring-black/5">
+                <div className="bg-white border border-gray-200 shadow-2xl rounded-3xl md:rounded-full p-4 flex flex-col md:flex-row md:items-center gap-3 md:gap-6 max-w-2xl w-full mx-auto ring-1 ring-black/5">
 
-                    <div className="flex items-center gap-3">
+                    {/* Label */}
+                    <div className="flex items-center gap-3 flex-shrink-0">
                         <div className="bg-blue-100 p-2 rounded-full text-blue-600">
                             <Scale size={20} />
                         </div>
@@ -48,13 +49,14 @@ export default function ComparisonFloatingBar() {
                         </div>
                     </div>
 
-                    <div className="flex-1 flex gap-2 overflow-x-auto no-scrollbar">
+                    {/* Product chips — hidden on mobile to save space */}
+                    <div className="hidden md:flex flex-1 gap-2 overflow-x-auto no-scrollbar">
                         {selectedProducts.map((p) => (
                             <div
                                 key={p.id}
                                 className="flex items-center gap-2 bg-gray-50 border border-gray-100 rounded-full pl-3 pr-2 py-1"
                             >
-                                <span className="text-xs font-medium text-gray-700 truncate max-w-25">
+                                <span className="text-xs font-medium text-gray-700 truncate max-w-[6rem]">
                                     {p.name}
                                 </span>
                                 <button
@@ -67,7 +69,8 @@ export default function ComparisonFloatingBar() {
                         ))}
                     </div>
 
-                    <div className="flex items-center gap-3 border-l border-gray-100 pl-4">
+                    {/* Actions */}
+                    <div className="flex items-center gap-3 md:border-l md:border-gray-100 md:pl-4">
                         <button
                             onClick={clearCompare}
                             className="text-xs font-medium text-gray-500 hover:text-red-600 transition-colors"
@@ -76,7 +79,7 @@ export default function ComparisonFloatingBar() {
                         </button>
                         <Link
                             href="/compare"
-                            className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 py-2 text-sm font-semibold flex items-center gap-2 transition"
+                            className="flex-1 md:flex-none text-center bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 py-2 text-sm font-semibold flex items-center justify-center gap-2 transition"
                         >
                             Compare
                             <ArrowRight size={14} />

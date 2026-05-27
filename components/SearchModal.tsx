@@ -158,12 +158,18 @@ export default function SearchModal() {
                 {query ? (
                   <button
                     onClick={() => setQuery("")}
-                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                    className="text-gray-400 hover:text-gray-600 transition-colors p-1"
                     aria-label="Clear"
                   >
                     <X size={16} />
                   </button>
                 ) : null}
+                <button
+                  onClick={close}
+                  className="sm:hidden text-sm font-semibold text-blue-600 active:text-blue-700 px-1 py-0.5 whitespace-nowrap shrink-0"
+                >
+                  Cancel
+                </button>
                 <kbd className="hidden sm:flex text-[11px] bg-gray-100 border border-gray-200 rounded px-1.5 py-0.5 font-mono text-gray-400">
                   ESC
                 </kbd>
@@ -190,7 +196,7 @@ export default function SearchModal() {
                 )}
               </div>
 
-              <div className="px-4 py-2.5 border-t border-gray-100 flex items-center gap-4 text-[11px] text-gray-400">
+              <div className="hidden sm:flex px-4 py-2.5 border-t border-gray-100 items-center gap-4 text-[11px] text-gray-400">
                 <span className="flex items-center gap-1">
                   <kbd className="bg-gray-100 border border-gray-200 rounded px-1 font-mono">↑↓</kbd>
                   navigate

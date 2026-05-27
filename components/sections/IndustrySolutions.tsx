@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Building2, Monitor, GraduationCap, Store } from "lucide-react";
+import MobileProductScroller from "@/components/MobileProductScroller";
 
 const SOLUTIONS = [
   {
@@ -34,23 +35,23 @@ const SOLUTIONS = [
 
 export default function IndustrySolutions() {
   return (
-    <section className="py-16 relative overflow-hidden">
+    <section className="py-10 md:py-16 relative overflow-hidden">
       <div className="absolute inset-0 bg-[#0d1526]">
         <div className="absolute inset-0 bg-linear-to-b from-[#0d1526] via-[#0d1526] to-blue-950/60" />
       </div>
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
+        <div className="text-center mb-6 md:mb-10">
           <h2 className="text-3xl md:text-5xl font-bold text-white">
             Built for Your Industry
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-4" autoPlay={true}>
           {SOLUTIONS.map((s) => (
             <Link
               key={s.title}
               href={s.link}
-              className="group bg-white/5 backdrop-blur-md border border-white/10 p-7 rounded-2xl hover:bg-white/10 transition-all duration-300 hover:-translate-y-1"
+              className="group bg-white/5 backdrop-blur-md border border-white/10 p-7 rounded-2xl hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 block h-full"
             >
               <div
                 className={`w-12 h-12 bg-linear-to-br ${s.color} rounded-xl flex items-center justify-center mb-5 shadow-lg`}
@@ -64,7 +65,7 @@ export default function IndustrySolutions() {
               </span>
             </Link>
           ))}
-        </div>
+        </MobileProductScroller>
       </div>
     </section>
   );

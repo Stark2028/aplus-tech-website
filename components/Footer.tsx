@@ -80,18 +80,20 @@ export default function Footer() {
 
           {/* Brand column */}
           <div className="col-span-2 lg:col-span-3 pr-4">
-            <Link href="/" className="inline-flex items-center justify-center bg-white p-2 rounded-lg mb-6 shadow-sm">
-              <Image
-                src="/logo.png"
-                alt="Aplus Technology Solutions"
-                width={150}
-                height={100}
-                className="h-12 w-auto object-contain"
-              />
-            </Link>
-            <p className="text-sm leading-relaxed text-slate-400 mb-6">
-              Authorized Samsung Display distributor providing end-to-end commercial solutions across India.
-            </p>
+            <div className="flex items-center gap-4 mb-6">
+              <Link href="/" className="inline-flex items-center justify-center bg-white p-2 rounded-lg shadow-sm shrink-0">
+                <Image
+                  src="/logo.png"
+                  alt="Aplus Technology Solutions"
+                  width={48}
+                  height={48}
+                  className="h-12 w-auto object-contain"
+                />
+              </Link>
+              <p className="text-xs sm:text-sm leading-relaxed text-slate-400">
+                Authorized Samsung Display distributor providing end-to-end commercial solutions across India.
+              </p>
+            </div>
 
             {/* Authorized badge */}
             <div className="inline-flex items-center gap-3 bg-slate-800/40 border border-slate-700/50 rounded-xl px-4 py-3">
@@ -219,7 +221,7 @@ export default function Footer() {
       </div>
 
       {/* ───────────────── Bottom bar ───────────────── */}
-      <div className="relative border-t border-slate-800">
+      <div className="relative border-t border-slate-800 pb-20 md:pb-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
           <div className="flex flex-col gap-1 text-center sm:text-left">
             <p>

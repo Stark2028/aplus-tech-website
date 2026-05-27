@@ -51,7 +51,7 @@ export default function HeroSection() {
       <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
       <div className="absolute bottom-1/4 right-0 md:right-1/4 w-125 h-125 bg-indigo-500/20 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
 
-      <div className="relative flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center py-20 md:py-24">
+      <div className="relative flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center py-14 md:py-24">
         <div className="max-w-2xl">
           <div className="flex items-center gap-3 mb-8">
             <span className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse shrink-0" />
@@ -123,27 +123,28 @@ export default function HeroSection() {
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex overflow-x-auto">
-            {STATS.map((s, i) => (
-              <div
-                key={s.label}
-                className="flex-1 py-5 text-center"
-                style={{
-                  minWidth: "110px",
-                  borderRight:
-                    i < STATS.length - 1
-                      ? "1px solid rgba(255,255,255,0.07)"
-                      : "none",
-                }}
-              >
-                <div className="text-2xl md:text-3xl font-black text-white">
-                  <AnimatedCounter value={s.value} />
+          <div className="grid grid-cols-2 md:flex md:flex-row">
+            {STATS.map((s, i) => {
+              let borderClass = "border-white/[0.08]";
+              if (i === 0) borderClass += " border-r border-b md:border-b-0";
+              if (i === 1) borderClass += " border-b md:border-r md:border-b-0";
+              if (i === 2) borderClass += " border-r";
+              if (i === 3) borderClass += "";
+
+              return (
+                <div
+                  key={s.label}
+                  className={`flex-1 py-5 text-center ${borderClass}`}
+                >
+                  <div className="text-2xl md:text-3xl font-black text-white">
+                    <AnimatedCounter value={s.value} />
+                  </div>
+                  <div className="text-xs font-medium text-gray-500 mt-1 px-2">
+                    {s.label}
+                  </div>
                 </div>
-                <div className="text-xs font-medium text-gray-500 mt-1">
-                  {s.label}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

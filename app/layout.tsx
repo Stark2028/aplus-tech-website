@@ -112,7 +112,7 @@ export default function RootLayout({
                 <Navbar />
                 <main
                   id="main-content"
-                  className="flex-1 bg-white pb-18 md:pb-0 print:pb-0"
+                  className="flex-1 bg-white"
                 >
                   <PageTransition>{children}</PageTransition>
                 </main>

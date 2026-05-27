@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Monitor, Clock, Scale } from "lucide-react";
 import { products } from "@/data/products";
 import { useComparison } from "@/context/ComparisonContext";
+import MobileProductScroller from "@/components/MobileProductScroller";
 
 const STORAGE_KEY = "aplus_recently_viewed";
 const MAX_STORED = 8;
@@ -62,11 +63,11 @@ export default function RecentlyViewed({ currentProductId }: RecentlyViewedProps
         <Clock size={16} className="text-gray-400" />
         <h2 className="text-lg font-bold text-gray-900">Recently Viewed</h2>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <MobileProductScroller gridCols="sm:grid-cols-4">
         {recentProducts.map((product) => (
           <div
             key={product.id}
-            className="group bg-white rounded-xl border border-gray-100 overflow-hidden hover:border-blue-200 hover:shadow-md transition-all relative block"
+            className="group bg-white rounded-xl border border-gray-100 overflow-hidden hover:border-blue-200 hover:shadow-md transition-all relative block h-full"
           >
             {/* Compare Checkbox */}
             <button
@@ -90,7 +91,7 @@ export default function RecentlyViewed({ currentProductId }: RecentlyViewedProps
                   alt={product.name}
                   fill
                   className="object-contain p-3 group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 640px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 72vw, 25vw"
                 />
               ) : (
                 <div className="h-full flex items-center justify-center">
@@ -113,7 +114,7 @@ export default function RecentlyViewed({ currentProductId }: RecentlyViewedProps
             </div>
           </div>
         ))}
-      </div>
+      </MobileProductScroller>
     </section>
   );
 }

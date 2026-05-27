@@ -79,12 +79,49 @@ h1, h2 {
   animation-play-state: paused;
 }
 
+/* Custom slow marquee for Aplus Advantage */
+@keyframes marquee-slow {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee-slow {
+  display: inline-flex;
+  animation: marquee-slow 48s linear infinite;
+}
+.animate-marquee-slow:hover {
+  animation-play-state: paused;
+}
+
+
+/* Custom extremely slow breathing glow for background highlights */
+@keyframes slow-glow {
+  0%, 100% { opacity: 0.12; transform: scale(1) translate(0px, 0px); }
+  50% { opacity: 0.28; transform: scale(1.08); }
+}
+.animate-slow-glow {
+  animation: slow-glow 9s ease-in-out infinite;
+}
+.animate-slow-glow-delayed {
+  animation: slow-glow 12s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+
 /* Hide scrollbar cross-browser */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 .scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Alias used by carousel components */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
