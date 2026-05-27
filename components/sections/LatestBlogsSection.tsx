@@ -13,12 +13,12 @@ export default function LatestBlogsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="max-w-2xl">
-            <h2 className="text-sm font-bold tracking-widest text-blue-600 uppercase mb-3">
+            <p className="text-sm font-bold tracking-widest text-blue-600 uppercase mb-3">
               Knowledge Base
-            </h2>
-            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4">
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4">
               Latest Articles & Insights
-            </h3>
+            </h2>
             <p className="text-lg text-gray-600">
               Discover industry trends, setup guides, and best practices for your Samsung display solutions.
             </p>
@@ -51,9 +51,9 @@ export default function LatestBlogsSection() {
                   ))}
                 </div>
 
-                <h4 className="text-xl font-bold text-gray-900 mb-3 leading-snug group-hover:text-blue-700 transition-colors line-clamp-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 leading-snug group-hover:text-blue-700 transition-colors line-clamp-2">
                   {post.title}
-                </h4>
+                </h3>
                 <p className="text-gray-500 mb-6 leading-relaxed line-clamp-3 flex-1 text-sm">
                   {post.excerpt}
                 </p>

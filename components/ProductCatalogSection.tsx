@@ -167,7 +167,7 @@ export default function ProductCatalogSection() {
                     type="button"
                     onClick={(e) => handleAddToQuote(e, product)}
                     disabled={addedId === product.id}
-                    aria-label={`Add ${product.name} to quote`}
+                    aria-label={`Add to Quote — ${product.name}`}
                     className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-2.5 px-3 rounded-lg transition-colors ${
                       addedId === product.id
                         ? "bg-green-600 text-white cursor-default"

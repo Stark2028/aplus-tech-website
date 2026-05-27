@@ -213,7 +213,7 @@ export default function ProductFinderSection() {
               type="button"
               onClick={(e) => handleAddToQuote(e, product)}
               disabled={isAdded}
-              aria-label={`Add ${product.name} to quote`}
+              aria-label={`Add to Quote — ${product.name}`}
               className={`flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-semibold py-2 rounded-lg transition-colors ${
                 isAdded
                   ? "bg-green-600 text-white cursor-default"

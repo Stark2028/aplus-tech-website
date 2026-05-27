@@ -152,7 +152,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             type="button"
             onClick={handleQuoteAdd}
             disabled={added}
-            aria-label={`Add ${product.name} to quote cart`}
+            aria-label={`Add to Quote — ${product.name}`}
             className={`w-[55%] flex items-center justify-center gap-1.5 font-semibold py-2.5 px-2 rounded-xl transition-all duration-300 text-[13px] whitespace-nowrap shadow-sm ${
               added
                 ? "bg-emerald-500 text-white cursor-default shadow-emerald-500/20"

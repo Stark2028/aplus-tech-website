@@ -40,7 +40,7 @@ function StepCard({ step, i }: { step: typeof PROCESS_STEPS[0]; i: number }) {
           <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
             <step.icon className="text-white" size={22} />
           </div>
-          <span className="text-4xl font-bold text-gray-100 group-hover:text-blue-100 transition-colors">
+          <span className="text-4xl font-bold text-gray-300 group-hover:text-blue-200 transition-colors" aria-hidden="true">
             {step.step}
           </span>
         </div>

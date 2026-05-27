@@ -59,7 +59,7 @@ export default function IndustrySolutions() {
                 <s.icon className="text-white" size={24} />
               </div>
               <h3 className="text-lg font-bold text-white mb-2">{s.title}</h3>
-              <p className="text-sm text-gray-400 mb-5 leading-relaxed">{s.desc}</p>
+              <p className="text-sm text-gray-300 mb-5 leading-relaxed">{s.desc}</p>
               <span className="inline-flex items-center gap-1 text-blue-400 group-hover:text-blue-300 text-sm font-semibold transition">
                 Learn more <ArrowRight size={14} />
               </span>

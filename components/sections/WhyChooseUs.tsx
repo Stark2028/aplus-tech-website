@@ -64,7 +64,7 @@ export default function WhyChooseUs() {
                       size={20}
                     />
                   </div>
-                  <h4 className="text-sm font-bold text-gray-900 mb-1.5">{title}</h4>
+                  <h3 className="text-sm font-bold text-gray-900 mb-1.5">{title}</h3>
                   <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
                 </div>
               ))}
@@ -84,7 +84,7 @@ export default function WhyChooseUs() {
                     size={24}
                   />
                 </div>
-                <h4 className="text-base font-bold text-gray-900 mb-2">{title}</h4>
+                <h3 className="text-base font-bold text-gray-900 mb-2">{title}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
               </div>
             ))}
