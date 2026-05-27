@@ -93,8 +93,7 @@ const TEAM = [
 ];
 
 const MILESTONES = [
-  { year: "2019", event: "Founded in Noida with a focus on Samsung commercial displays." },
-  { year: "2020", event: "Became an Authorized Samsung Business Display Distributor." },
+  { year: "2020", event: "Founded in Noida and became an Authorized Samsung Business Display Distributor." },
   { year: "2022", event: "Crossed 100+ enterprise clients; opened Mumbai service center." },
   { year: "2023", event: "Launched dedicated hospitality and education verticals." },
   { year: "2024", event: "500+ clients milestone; expanded to 50+ cities pan-India." },
@@ -240,7 +239,7 @@ export default function AboutPage() {
                       { k: "Certification", v: "Authorized Samsung B2B Partner" },
                       { k: "Coverage", v: "Pan-India · 50+ cities" },
                       { k: "Support", v: "24 / 7 Technical Response" },
-                      { k: "Founded", v: "2019 · Noida, India" },
+                      { k: "Founded", v: "2020 · Noida, India" },
                       { k: "CIN", v: "U72900DL2020PTC374888" },
                       { k: "GSTIN", v: "07AAUCA5631L1Z6" },
                     ].map((row, i, arr) => (

@@ -456,7 +456,7 @@ function drawContactAndFooter(ctx: Ctx) {
 
   const rightX = A4_WIDTH - MARGIN_X;
   drawRightAlignedLink(doc, page, fonts.bold, "+91 93105 09909", rightX, ctx.y, 10.5, C.black, "tel:+919310509909");
-  drawRightAlignedLink(doc, page, fonts.regular, "sales@aplustechsol.com", rightX, ctx.y - 14, 9, C.blue600, "mailto:sales@aplustechsol.com");
+  drawRightAlignedLink(doc, page, fonts.regular, "info@aplustechsol.com", rightX, ctx.y - 14, 9, C.blue600, "mailto:info@aplustechsol.com");
   drawRightAlignedLink(doc, page, fonts.regular, "aplustechsol.com", rightX, ctx.y - 27, 9, C.blue600, "https://www.aplustechsol.com");
 
   ctx.y -= 50;

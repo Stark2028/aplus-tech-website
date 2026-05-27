@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
 import {
   Phone, Mail, MapPin, Clock, Send, CheckCircle,
   ChevronDown, ChevronUp,
@@ -26,6 +25,20 @@ const FAQS = [
 
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (!el) return;
+    if (open) {
+      el.style.maxHeight = el.scrollHeight + "px";
+      el.style.opacity = "1";
+    } else {
+      el.style.maxHeight = "0";
+      el.style.opacity = "0";
+    }
+  }, [open]);
+
   return (
     <div className="border-b border-slate-200/70 last:border-0">
       <button
@@ -38,18 +51,12 @@ function FAQItem({ q, a }: { q: string; a: string }) {
           ? <ChevronUp size={14} className="shrink-0 text-blue-500" />
           : <ChevronDown size={14} className="shrink-0 text-slate-400" />}
       </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
-          >
-            <p className="text-sm text-slate-500 pb-3.5 leading-relaxed">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div
+        ref={bodyRef}
+        style={{ maxHeight: 0, opacity: 0, overflow: "hidden", transition: "max-height 0.25s ease, opacity 0.2s ease" }}
+      >
+        <p className="text-sm text-slate-500 pb-3.5 leading-relaxed">{a}</p>
+      </div>
     </div>
   );
 }
@@ -84,16 +91,6 @@ export default function ContactPage() {
     else setError(data.message || "Something went wrong. Please try again.");
   }
 
-  // Animation variants
-  const fadeUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-  };
-
   return (
     <main className="min-h-screen bg-gray-50">
 
@@ -107,18 +104,15 @@ export default function ContactPage() {
         <div className="absolute top-1/2 right-0 w-48 h-48 rounded-full bg-cyan-400/10 blur-[60px] pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div 
-            initial="hidden" animate="visible" variants={staggerContainer}
-            className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10"
-          >
-            <motion.div variants={fadeUp} className="max-w-xl">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 animate-page-enter">
+            <div className="max-w-xl">
               <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-blue-300 mb-4">Get in touch</p>
               <h1 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-4 leading-[1.1]">Let&apos;s build your display solution.</h1>
               <p className="text-blue-200/80 text-base md:text-lg leading-relaxed">From consultation to installation — our team is ready to help you find the perfect Samsung display for your business.</p>
-            </motion.div>
-            
+            </div>
+
             {/* Quick stats */}
-            <motion.div variants={fadeUp} className="flex gap-6 sm:gap-10 bg-white/[0.07] p-6 rounded-2xl backdrop-blur-sm border border-white/10">
+            <div className="flex gap-6 sm:gap-10 bg-white/[0.07] p-6 rounded-2xl backdrop-blur-sm border border-white/10">
               {[
                 { icon: Timer,      value: "4 hrs",  label: "Response Time" },
                 { icon: BadgeCheck, value: "Samsung",label: "Certified Partner" },
@@ -132,18 +126,15 @@ export default function ContactPage() {
                   <p className="text-blue-300/70 text-[10px] uppercase tracking-wider mt-0.5">{label}</p>
                 </div>
               ))}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* ── INFO STRIP ───────────────────────────────────────────────── */}
       <div className="bg-white border-b border-gray-100 shadow-lg shadow-gray-100/50 relative z-20 -mt-6 mx-4 sm:mx-6 lg:mx-auto max-w-6xl rounded-2xl">
         <div className="px-2">
-          <motion.div 
-            initial="hidden" animate="visible" variants={staggerContainer}
-            className="grid grid-cols-2 lg:grid-cols-4"
-          >
+          <div className="grid grid-cols-2 lg:grid-cols-4">
             {[
               { icon: Phone,  label: "Call Us",      value: "+91 93105 09909",       sub: "Mon – Sat, 10 AM – 6 PM",      href: "tel:+919310509909",         iconColor: "#2563eb", iconBg: "#eff6ff", accent: "#3b82f6" },
               { icon: Mail,   label: "Email",         value: "info@aplustechsol.com", sub: "Reply within 24 hours",        href: "mailto:info@aplustechsol.com",iconColor: "#7c3aed", iconBg: "#f5f3ff", accent: "#8b5cf6" },
@@ -164,12 +155,12 @@ export default function ContactPage() {
                 </div>
               );
               return href ? (
-                <motion.a variants={fadeUp} key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined}
+                <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined}
                   rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="block">{inner}</motion.a>
-              ) : <motion.div variants={fadeUp} key={label}>{inner}</motion.div>;
+                  className="block">{inner}</a>
+              ) : <div key={label}>{inner}</div>;
             })}
-          </motion.div>
+          </div>
         </div>
       </div>
 
@@ -178,10 +169,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
 
           {/* ── FORM (col-span-2) ──────────────────────────────────── */}
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
-            className="lg:col-span-2"
-          >
+          <div className="lg:col-span-2 animate-page-enter">
             <div className="bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden relative">
               {/* Decorative corner accent */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-50 to-transparent pointer-events-none" />
@@ -199,41 +187,26 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <AnimatePresence mode="wait">
+              <>
                 {submitted ? (
-                  <motion.div 
-                    key="success"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="px-8 py-24 text-center flex flex-col items-center justify-center"
-                  >
-                    <motion.div 
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1, rotate: 360 }}
-                      transition={{ type: "spring", damping: 15, delay: 0.1 }}
-                      className="w-20 h-20 rounded-full flex items-center justify-center mb-6 bg-green-50 shadow-inner"
-                    >
+                  <div className="px-8 py-24 text-center flex flex-col items-center justify-center animate-page-enter">
+                    <div className="w-20 h-20 rounded-full flex items-center justify-center mb-6 bg-green-50 shadow-inner">
                       <CheckCircle size={40} className="text-green-500" />
-                    </motion.div>
+                    </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-3">Message Received!</h3>
                     <p className="text-gray-500 text-base max-w-sm mx-auto mb-8">
                       Thank you for reaching out. Our team has received your message and will contact you shortly.
                     </p>
-                    <button 
-                      onClick={() => { setSubmitted(false); setMessageLength(0); }} 
+                    <button
+                      onClick={() => { setSubmitted(false); setMessageLength(0); }}
                       type="button"
                       className="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-colors"
                     >
                       Send another message
                     </button>
-                  </motion.div>
+                  </div>
                 ) : (
-                  <motion.form 
-                    key="form"
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    onSubmit={handleSubmit} className="px-8 py-8 space-y-6"
-                  >
+                  <form onSubmit={handleSubmit} className="px-8 py-8 space-y-6">
                     {/* Honeypot — hidden from users; bots that fill it are silently dropped */}
                     <input
                       type="text"
@@ -311,11 +284,10 @@ export default function ContactPage() {
                     </div>
 
                     {error && (
-                      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-                        className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3.5 flex items-center gap-2">
+                      <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3.5 flex items-center gap-2 animate-page-enter">
                         <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
                         {error}
-                      </motion.div>
+                      </div>
                     )}
 
                     <div className="flex flex-col sm:flex-row sm:items-center gap-5 pt-4">
@@ -334,17 +306,14 @@ export default function ContactPage() {
                         By submitting this form, you agree to our privacy policy.<br />Your details are secure.
                       </p>
                     </div>
-                  </motion.form>
+                  </form>
                 )}
-              </AnimatePresence>
+              </>
             </div>
-          </motion.div>
+          </div>
 
           {/* ── SIDEBAR (col-span-1) ───────────────────────────────── */}
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col gap-6"
-          >
+          <div className="flex flex-col gap-6">
             {/* Contact info + Map */}
             <div className="bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden group">
               <div className="px-6 pt-6 pb-5 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 border-b border-gray-100/60 relative">
@@ -441,26 +410,25 @@ export default function ContactPage() {
               </div>
             </div>
 
-          </motion.div>
+          </div>
         </div>
       </div>
-      
+
       {/* ── TRUST SIGNALS BANNER ─────────────────────────────────────── */}
-      <div className="border-t border-gray-100 bg-gradient-to-b from-gray-50 to-white">
+      <div className="border-t border-gray-100 bg-linear-to-b from-gray-50 to-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+          <div className="text-center mb-14">
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-3">Why choose us</p>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Your trusted display partner</h2>
-          </motion.div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: BadgeCheck, color: "blue",  bg: "bg-blue-50",  text: "text-blue-600",  shadow: "shadow-blue-100/60",  title: "Certified Expertise",   desc: "Authorized Samsung partners — authentic products with official warranties." },
-              { icon: MapPin,     color: "green", bg: "bg-green-50", text: "text-green-600", shadow: "shadow-green-100/60", title: "Pan-India Support",     desc: "Nationwide logistics & installation network covering 50+ cities." },
-              { icon: Timer,      color: "amber", bg: "bg-amber-50", text: "text-amber-600", shadow: "shadow-amber-100/60", title: "End-to-End Service",    desc: "Consultation, supply, installation & 24/7 AMC — one expert team." },
-            ].map(({ icon: Icon, bg, text, shadow, title, desc }, i) => (
-              <motion.div
+              { icon: BadgeCheck, bg: "bg-blue-50",  text: "text-blue-600",  shadow: "shadow-blue-100/60",  title: "Certified Expertise",   desc: "Authorized Samsung partners — authentic products with official warranties." },
+              { icon: MapPin,     bg: "bg-green-50", text: "text-green-600", shadow: "shadow-green-100/60", title: "Pan-India Support",     desc: "Nationwide logistics & installation network covering 50+ cities." },
+              { icon: Timer,      bg: "bg-amber-50", text: "text-amber-600", shadow: "shadow-amber-100/60", title: "End-to-End Service",    desc: "Consultation, supply, installation & 24/7 AMC — one expert team." },
+            ].map(({ icon: Icon, bg, text, shadow, title, desc }) => (
+              <div
                 key={title}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
                 className={`relative bg-white rounded-2xl border border-gray-100 p-7 text-center shadow-lg ${shadow} hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group`}
               >
                 <div className={`w-14 h-14 rounded-2xl ${bg} ${text} flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform`}>
@@ -468,7 +436,7 @@ export default function ContactPage() {
                 </div>
                 <h3 className="text-base font-bold text-gray-900 mb-2">{title}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
