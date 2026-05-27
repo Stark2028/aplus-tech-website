@@ -92,6 +92,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://us.i.posthog.com" />
+        <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
+      </head>
       <body className={`${inter.className} ${jakartaSans.variable} bg-background text-foreground`}>
         <ScrollProgress />
         <Toaster richColors position="bottom-right" />

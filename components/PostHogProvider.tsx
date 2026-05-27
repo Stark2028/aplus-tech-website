@@ -41,19 +41,27 @@ function PostHogInit() {
   useEffect(() => {
     if (!PH_KEY || !consented || posthog.__loaded) return;
 
-    posthog.init(PH_KEY, {
+    const init = () => posthog.init(PH_KEY, {
       api_host: PH_HOST,
-      capture_pageview: false, // manual via PostHogPageView
+      capture_pageview: false,
       capture_pageleave: true,
       session_recording: {
-        maskAllInputs: true,      // hides typed text (GDPR safe)
-        maskTextSelector: "[data-ph-mask]", // opt-in masking for sensitive elements
+        maskAllInputs: true,
+        maskTextSelector: "[data-ph-mask]",
       },
       persistence: "localStorage+cookie",
       loaded: (ph) => {
         if (process.env.NODE_ENV === "development") ph.debug();
       },
     });
+
+    if ("requestIdleCallback" in window) {
+      const id = requestIdleCallback(init, { timeout: 4000 });
+      return () => cancelIdleCallback(id);
+    } else {
+      const id = setTimeout(init, 2000);
+      return () => clearTimeout(id);
+    }
   }, [consented]);
 
   if (!consented) return null;
