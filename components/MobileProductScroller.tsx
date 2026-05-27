@@ -11,6 +11,8 @@ interface MobileProductScrollerProps {
   autoPlay?: boolean;
   /** Time in ms between transitions */
   autoPlayInterval?: number;
+  /** Initial delay in ms before the first auto-scroll fires */
+  initialDelay?: number;
 }
 
 /**
@@ -22,6 +24,7 @@ export default function MobileProductScroller({
   gridCols = "sm:grid-cols-2 lg:grid-cols-4",
   autoPlay = false,
   autoPlayInterval = 4000,
+  initialDelay = 0,
 }: MobileProductScrollerProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -36,23 +39,28 @@ export default function MobileProductScroller({
   useEffect(() => {
     if (!autoPlay) return;
 
-    const interval = setInterval(() => {
-      if (isPaused) return;
+    let interval: ReturnType<typeof setInterval>;
 
-      const el = scrollRef.current;
-      if (!el) return;
+    const start = () => {
+      interval = setInterval(() => {
+        if (isPaused) return;
+        const el = scrollRef.current;
+        if (!el || el.clientWidth === 0) return;
+        const maxScroll = el.scrollWidth - el.clientWidth;
+        if (el.scrollLeft >= maxScroll - 25) {
+          el.scrollTo({ left: 0 });
+        } else {
+          scroll("right");
+        }
+      }, autoPlayInterval);
+    };
 
-      const maxScroll = el.scrollWidth - el.clientWidth;
-      // If we are close to or at the end of scroll range, wrap back to the start instantly
-      if (el.scrollLeft >= maxScroll - 25) {
-        el.scrollTo({ left: 0 }); // instant jump to start, keeping motion forward
-      } else {
-        scroll("right");
-      }
-    }, autoPlayInterval);
-
-    return () => clearInterval(interval);
-  }, [autoPlay, autoPlayInterval, isPaused]);
+    const timeout = setTimeout(start, initialDelay);
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
+  }, [autoPlay, autoPlayInterval, initialDelay, isPaused]);
 
   return (
     <>

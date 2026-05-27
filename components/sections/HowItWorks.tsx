@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { MessageSquare, Package, Wrench, LifeBuoy, Phone } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
-import MobileProductScroller from "@/components/MobileProductScroller";
 
 const PROCESS_STEPS = [
   {
@@ -30,6 +29,28 @@ const PROCESS_STEPS = [
   },
 ];
 
+function StepCard({ step, i }: { step: typeof PROCESS_STEPS[0]; i: number }) {
+  return (
+    <div className="relative group h-full">
+      {i < PROCESS_STEPS.length - 1 && (
+        <div className="hidden lg:block absolute top-10 left-full w-full h-px bg-linear-to-r from-blue-200 to-transparent z-10" />
+      )}
+      <div className="bg-gray-50 border border-gray-100 rounded-2xl p-7 h-full group-hover:border-blue-200 group-hover:bg-blue-50/30 transition-all duration-300">
+        <div className="flex items-center justify-between mb-5">
+          <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
+            <step.icon className="text-white" size={22} />
+          </div>
+          <span className="text-4xl font-bold text-gray-100 group-hover:text-blue-100 transition-colors">
+            {step.step}
+          </span>
+        </div>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">{step.title}</h3>
+        <p className="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function HowItWorks() {
   return (
     <section className="py-10 md:py-16 bg-white">
@@ -43,27 +64,25 @@ export default function HowItWorks() {
           </h2>
         </AnimatedSection>
 
-        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-4" autoPlay={true}>
-          {PROCESS_STEPS.map((step, i) => (
-            <div key={i} className="relative group h-full">
-              {i < PROCESS_STEPS.length - 1 && (
-                <div className="hidden lg:block absolute top-10 left-full w-full h-px bg-linear-to-r from-blue-200 to-transparent z-10" />
-              )}
-              <div className="bg-gray-50 border border-gray-100 rounded-2xl p-7 h-full group-hover:border-blue-200 group-hover:bg-blue-50/30 transition-all duration-300">
-                <div className="flex items-center justify-between mb-5">
-                  <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
-                    <step.icon className="text-white" size={22} />
-                  </div>
-                  <span className="text-4xl font-bold text-gray-100 group-hover:text-blue-100 transition-colors">
-                    {step.step}
-                  </span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{step.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
+        {/* Mobile: continuous marquee (same speed as trusted brands) */}
+        <div className="sm:hidden overflow-hidden relative">
+          <div className="absolute left-0 top-0 h-full w-8 bg-linear-to-r from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 h-full w-8 bg-linear-to-l from-white to-transparent z-10 pointer-events-none" />
+          <div className="animate-marquee-steps gap-4 py-1">
+            {[...PROCESS_STEPS, ...PROCESS_STEPS].map((step, i) => (
+              <div key={i} className="shrink-0 w-[72vw] max-w-[260px]">
+                <StepCard step={step} i={i % PROCESS_STEPS.length} />
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: static grid */}
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {PROCESS_STEPS.map((step, i) => (
+            <StepCard key={i} step={step} i={i} />
           ))}
-        </MobileProductScroller>
+        </div>
 
         <div className="mt-6 md:mt-12 text-center">
           <Link

@@ -92,6 +92,19 @@ h1, h2 {
   animation-play-state: paused;
 }
 
+/* Steps marquee — same speed as trusted brands (35s) */
+@keyframes marquee-steps {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee-steps {
+  display: inline-flex;
+  animation: marquee-steps 35s linear infinite;
+}
+.animate-marquee-steps:hover {
+  animation-play-state: paused;
+}
+
 
 /* Custom extremely slow breathing glow for background highlights */
 @keyframes slow-glow {

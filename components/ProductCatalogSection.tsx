@@ -88,7 +88,7 @@ export default function ProductCatalogSection() {
         <div className="mt-4 mb-8" />
 
         {/* Product grid */}
-        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" autoPlay={true}>
+        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" autoPlay={true} autoPlayInterval={3900} initialDelay={3300}>
           {filtered.map((product) => (
             <div
               key={product.id}

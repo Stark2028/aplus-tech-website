@@ -22,6 +22,7 @@ import { Metadata } from "next";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import MobileProductScroller from "@/components/MobileProductScroller";
 import { breadcrumbLd, productLd, jsonLdString } from "@/lib/jsonLd";
+import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 
 export const revalidate = 3600;
 
@@ -223,7 +224,7 @@ export default async function ProductPage({
               {/* Direct contact */}
               <div className="flex gap-3">
                 <a
-                  href={`https://wa.me/919310509909?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(product.name)}.%20Please%20share%20pricing.`}
+                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(product.name)}.%20Please%20share%20pricing.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-400 text-white py-3.5 rounded-xl font-semibold text-sm shadow-sm"
@@ -234,7 +235,7 @@ export default async function ProductPage({
                   WhatsApp
                 </a>
                 <a
-                  href="tel:+919310509909"
+                  href={`tel:+${WHATSAPP_NUMBER}`}
                   className="flex-1 flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-semibold text-sm shadow-sm"
                 >
                   <Phone size={15} />

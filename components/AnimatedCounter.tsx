@@ -31,7 +31,7 @@ export default function AnimatedCounter({ value }: Props) {
           observer.disconnect();
         }
       },
-      { rootMargin: "-80px" }
+      { rootMargin: "0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();

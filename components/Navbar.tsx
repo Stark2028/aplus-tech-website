@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useQuote } from "@/context/QuoteContext";
 import NavbarDesktop from "@/components/navbar/NavbarDesktop";
 import NavbarMobile from "@/components/navbar/NavbarMobile";
+import SearchModal from "@/components/SearchModal";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -20,6 +21,7 @@ export default function Navbar() {
   }, []);
 
   return (
+    <>
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 print:hidden ${
         scrolled 
@@ -50,5 +52,8 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
+    {/* SearchModal is rendered globally here so it works on ALL breakpoints (mobile + desktop) */}
+    <SearchModal />
+    </>
   );
 }

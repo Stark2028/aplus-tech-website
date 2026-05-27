@@ -53,24 +53,33 @@ export default function SearchModal() {
     };
   }, [openSearch]);
 
-  // Focus input when opened
+  // Focus input when opened — try immediately and with a small delay for mobile browsers
   useEffect(() => {
     if (open) {
-      const t = setTimeout(() => inputRef.current?.focus(), 40);
-      return () => clearTimeout(t);
+      // Try immediately (works on desktop)
+      inputRef.current?.focus();
+      // Also schedule retries for mobile browsers that need a tick after mount
+      const t1 = setTimeout(() => inputRef.current?.focus(), 50);
+      const t2 = setTimeout(() => inputRef.current?.focus(), 150);
+      return () => { clearTimeout(t1); clearTimeout(t2); };
     }
   }, [open]);
 
-  // Close on outside click — document-level mousedown so it works regardless of DOM nesting / stacking contexts
+  // Close on outside click/tap — handles both mouse and touch events
   useEffect(() => {
     if (!open) return;
-    const handler = (e: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+    const handler = (e: MouseEvent | TouchEvent) => {
+      const target = e instanceof TouchEvent ? e.touches[0]?.target : (e.target as Node);
+      if (modalRef.current && target && !modalRef.current.contains(target as Node)) {
         close();
       }
     };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
+    document.addEventListener("mousedown", handler as EventListener);
+    document.addEventListener("touchstart", handler as EventListener, { passive: true });
+    return () => {
+      document.removeEventListener("mousedown", handler as EventListener);
+      document.removeEventListener("touchstart", handler as EventListener);
+    };
   }, [open, close]);
 
   const deferredQuery = useDeferredValue(query);
@@ -110,18 +119,6 @@ export default function SearchModal() {
 
   return (
     <>
-      <button
-        onClick={openSearch}
-        className="hidden xl:flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm transition-all w-44 group"
-        aria-label="Open search (Ctrl+K)"
-      >
-        <Search size={14} className="shrink-0" />
-        <span className="flex-1 text-left text-gray-400 text-[13px]">Search…</span>
-        <kbd className="flex items-center gap-0.5 text-[10px] bg-white border border-gray-200 rounded px-1 py-0.5 font-mono text-gray-400 leading-none">
-          ⌘K
-        </kbd>
-      </button>
-
       <AnimatePresence>
         {open && (
           <motion.div
@@ -131,8 +128,12 @@ export default function SearchModal() {
             transition={{ duration: 0.15 }}
             className="fixed inset-0 z-[200] flex items-start justify-center pt-[10vh] px-4"
           >
-            {/* Dark background overlay */}
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm pointer-events-none" />
+            {/* Dark background overlay — tappable so users can dismiss by tapping outside on mobile */}
+            <div
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={close}
+              onTouchEnd={(e) => { e.preventDefault(); close(); }}
+            />
 
             <motion.div
               ref={modalRef}
@@ -154,6 +155,14 @@ export default function SearchModal() {
                   placeholder="Search products, categories, guides…"
                   className="flex-1 text-gray-900 placeholder-gray-400 text-[15px] outline-none bg-transparent"
                   aria-label="Search"
+                  inputMode="search"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
+                  // autoFocus triggers the mobile keyboard reliably when the modal mounts
+                  // eslint-disable-next-line jsx-a11y/no-autofocus
+                  autoFocus
                 />
                 {query ? (
                   <button

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ChevronDown, Phone, ShoppingBag } from "lucide-react";
 import { productCategories } from "@/data/categories";
-import SearchModal from "@/components/SearchModal";
 import { PHONE_NUMBER, PHONE_TEL, SOLUTIONS } from "./navConfig";
 
 interface Props {
@@ -110,7 +109,19 @@ export default function NavbarDesktop({ cartCount }: Props) {
       </nav>
 
       <div className="hidden xl:flex items-center gap-3">
-        <SearchModal />
+        {/* Search trigger — actual modal is rendered globally in Navbar.tsx */}
+        <button
+          type="button"
+          onClick={() => window.dispatchEvent(new CustomEvent("aplus:search:open"))}
+          className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm transition-all w-44 group"
+          aria-label="Open search (Ctrl+K)"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <span className="flex-1 text-left text-gray-400 text-[13px]">Search…</span>
+          <kbd className="flex items-center gap-0.5 text-[10px] bg-white border border-gray-200 rounded px-1 py-0.5 font-mono text-gray-400 leading-none">
+            ⌘K
+          </kbd>
+        </button>
 
         <a
           href={PHONE_TEL}

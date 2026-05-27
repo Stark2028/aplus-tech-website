@@ -63,7 +63,7 @@ export default function CategoryGrid() {
           </h2>
         </AnimatedSection>
 
-        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-4" autoPlay={true}>
+        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-4" autoPlay={true} autoPlayInterval={3200} initialDelay={1800}>
           {CATEGORY_CARDS.map((cat) => (
             <Link
               key={cat.id}
