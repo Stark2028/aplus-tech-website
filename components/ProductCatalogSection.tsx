@@ -105,17 +105,13 @@ export default function ProductCatalogSection() {
                     className="object-contain p-6 group-hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Monitor className="text-gray-300" size={56} />
-                  </div>
+                  <Monitor className="text-gray-300 absolute inset-0 m-auto" size={56} />
                 )}
-                
+
                 {product.subCategory && (
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-gray-900/70 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-1 rounded-md">
-                      {product.subCategory}
-                    </span>
-                  </div>
+                  <span className="absolute top-3 left-3 bg-gray-900/70 backdrop-blur-sm text-white text-[10px] font-medium px-2 py-1 rounded-md">
+                    {product.subCategory}
+                  </span>
                 )}
 
                 {/* Compare Checkbox */}

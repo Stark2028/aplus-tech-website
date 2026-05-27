@@ -73,7 +73,6 @@ export default function CategoryGrid() {
               <div className="h-1" style={{ backgroundColor: cat.iconColor }} />
 
               <div className="p-7 flex flex-col h-full justify-between">
-                <div>
                   <div className="flex items-start justify-between mb-6">
                     <div
                       className="w-14 h-14 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
@@ -84,7 +83,6 @@ export default function CategoryGrid() {
                   </div>
 
                   <h3 className="text-xl font-bold text-gray-900 mb-6">{cat.title}</h3>
-                </div>
 
                 <div className="flex items-center justify-end pt-4 border-t border-gray-100 mt-auto">
                   <span

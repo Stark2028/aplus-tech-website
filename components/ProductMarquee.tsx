@@ -1,14 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { Scale } from "lucide-react";
 import { products } from "@/data/products";
 import { useComparison } from "@/context/ComparisonContext";
 
 export default function ProductMarquee() {
-    // Double the products list to ensure smooth seamless looping
     const marqueeProducts = [...products, ...products];
     const { addToCompare, isInCompare, removeFromCompare } = useComparison();
 
@@ -30,34 +28,21 @@ export default function ProductMarquee() {
                 </h2>
             </div>
 
-            {/* Gradient Masks for Fading edges */}
+            {/* Gradient masks for fading edges */}
             <div className="absolute top-0 left-0 w-32 h-full z-10 bg-linear-to-r from-white to-transparent pointer-events-none" />
             <div className="absolute top-0 right-0 w-32 h-full z-10 bg-linear-to-l from-white to-transparent pointer-events-none" />
 
             <div className="flex relative overflow-hidden group">
-                <motion.div
-                    className="flex gap-8 px-4"
-                    animate={{
-                        x: ["0%", "-50%"],
-                    }}
-                    transition={{
-                        x: {
-                            repeat: Infinity,
-                            repeatType: "loop",
-                            duration: 40,
-                            ease: "linear",
-                        },
-                    }}
+                <div
+                    className="flex gap-8 px-4 animate-marquee group-hover:[animation-play-state:paused]"
                     style={{ willChange: "transform" }}
-                    // Pause on hover
-                    whileHover={{ animationPlayState: "paused" }}
                 >
                     {marqueeProducts.map((product, index) => (
                         <div
                             key={`${product.id}-${index}`}
-                            className="relative flex-shrink-0 w-64 md:w-80 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow group/card block"
+                            className="relative shrink-0 w-64 md:w-80 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow group/card block"
                         >
-                            {/* Compare Checkbox */}
+                            {/* Compare button */}
                             <button
                               type="button"
                               onClick={(e) => handleCompareToggle(e, product)}
@@ -99,7 +84,7 @@ export default function ProductMarquee() {
                             </div>
                         </div>
                     ))}
-                </motion.div>
+                </div>
             </div>
         </section>
     );
