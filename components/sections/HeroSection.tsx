@@ -48,8 +48,8 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-blue-950/20" />
 
       {/* Cinematic mesh gradients */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/30 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
-      <div className="absolute bottom-1/4 right-0 md:right-1/4 w-125 h-125 bg-indigo-500/20 rounded-full blur-[150px] pointer-events-none mix-blend-screen" />
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/50 rounded-full blur-[120px] pointer-events-none mix-blend-screen animate-slow-glow" />
+      <div className="absolute bottom-1/4 right-0 md:right-1/4 w-[32rem] h-[32rem] bg-indigo-500/40 rounded-full blur-[150px] pointer-events-none mix-blend-screen animate-slow-glow-delayed" />
 
       <div className="relative flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center py-10 md:py-24">
         <div className="max-w-2xl">

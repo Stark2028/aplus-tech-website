@@ -13,7 +13,7 @@ export default function FAQSection() {
   return (
     <section className="py-8 md:py-16 bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8 md:mb-14">
+        <div className="text-center mb-5 md:mb-14">
           <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full mb-4">
             FAQ
           </span>
@@ -29,7 +29,7 @@ export default function FAQSection() {
               open={i === 0}
               className="group transition-colors duration-200 open:bg-slate-50/40"
             >
-              <summary className="flex items-center justify-between w-full px-5 py-4 sm:px-6 sm:py-5 text-left gap-4 cursor-pointer list-none focus-visible:outline-none [&::-webkit-details-marker]:hidden">
+              <summary className="flex items-center justify-between w-full px-4 py-3 sm:px-6 sm:py-5 text-left gap-4 cursor-pointer list-none focus-visible:outline-none [&::-webkit-details-marker]:hidden">
                 <span className="font-semibold text-gray-900 text-sm sm:text-base leading-snug">{faq.q}</span>
                 <ChevronDown
                   size={18}
@@ -37,7 +37,7 @@ export default function FAQSection() {
                   className="shrink-0 text-blue-600 transition-transform duration-300 group-open:rotate-180"
                 />
               </summary>
-              <div className="px-5 pb-4 sm:px-6 sm:pb-5 text-gray-600 leading-relaxed text-xs sm:text-sm pt-2">
+              <div className="px-4 pb-3 sm:px-6 sm:pb-5 text-gray-600 leading-relaxed text-xs sm:text-sm pt-1">
                 {faq.a}
               </div>
             </details>

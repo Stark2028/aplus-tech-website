@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useMemo, useCallback, useDeferredValue } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { trackEvent } from "@/lib/analytics";
 import { computeSearchResults, type SearchResult } from "@/lib/searchResults";
 import { useRecentSearches } from "@/hooks/useRecentSearches";
@@ -130,15 +129,8 @@ export default function SearchModal() {
 
   return (
     <>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-[200] flex items-start justify-center pt-[10vh] px-4"
-          >
+      {open && (
+        <div className="fixed inset-0 z-[200] flex items-start justify-center pt-[10vh] px-4 animate-in fade-in duration-150">
             {/* Dark background overlay — tappable so users can dismiss by tapping outside on mobile */}
             <div
               className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -146,13 +138,9 @@ export default function SearchModal() {
               onTouchEnd={(e) => { e.preventDefault(); close(); }}
             />
 
-            <motion.div
+            <div
               ref={modalRef}
-              initial={{ opacity: 0, scale: 0.97, y: -8 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.97, y: -8 }}
-              transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl overflow-hidden"
+              className="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
             >
               <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-100">
                 <Search size={18} className="text-gray-400 shrink-0" />
@@ -230,10 +218,9 @@ export default function SearchModal() {
                   close
                 </span>
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+        </div>
+      )}
     </>
   );
 }

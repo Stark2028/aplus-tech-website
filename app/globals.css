@@ -123,8 +123,8 @@ h1, h2 {
 
 /* Custom extremely slow breathing glow for background highlights */
 @keyframes slow-glow {
-  0%, 100% { opacity: 0.12; transform: scale(1) translate(0px, 0px); }
-  50% { opacity: 0.28; transform: scale(1.08); }
+  0%, 100% { opacity: 0.3; transform: scale(1) translate(0px, 0px); }
+  50% { opacity: 0.7; transform: scale(1.08); }
 }
 .animate-slow-glow {
   animation: slow-glow 9s ease-in-out infinite;
