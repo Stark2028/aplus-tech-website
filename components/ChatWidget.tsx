@@ -125,7 +125,7 @@ export default function ChatWidget() {
           <>
             <MessageCircle className="text-white" size={24} />
             {unread > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-[10px] font-bold flex items-center justify-center">
+              <span aria-hidden="true" className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-[10px] font-bold flex items-center justify-center">
                 {unread}
               </span>
             )}

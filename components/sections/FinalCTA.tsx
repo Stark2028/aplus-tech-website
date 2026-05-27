@@ -44,7 +44,7 @@ export default function FinalCTA() {
           </Link>
         </div>
 
-        <div className="mt-10 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
+        <div className="mt-10 flex flex-wrap justify-center gap-6 text-sm text-gray-300">
           {PROMISES.map((item) => (
             <span key={item} className="flex items-center gap-1.5">
               <CheckCircle2 size={14} className="text-green-400" />

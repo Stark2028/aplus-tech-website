@@ -104,7 +104,7 @@ export default function Footer() {
                 <p className="text-xs font-semibold text-slate-200 leading-tight">
                   Samsung Authorized
                 </p>
-                <p className="text-[11px] text-slate-500 leading-tight mt-0.5">
+                <p className="text-[11px] text-slate-400 leading-tight mt-0.5">
                   Business Display Partner
                 </p>
               </div>
@@ -222,23 +222,23 @@ export default function Footer() {
 
       {/* ───────────────── Bottom bar ───────────────── */}
       <div className="relative border-t border-slate-800 pb-20 md:pb-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
           <div className="flex flex-col gap-1 text-center sm:text-left">
             <p>
               &copy; {new Date().getFullYear()} Aplus Technology Solutions Pvt. Ltd. All rights reserved.
             </p>
-            <p className="text-xs text-slate-500">
-              CIN: U72900DL2020PTC374888 <span className="mx-2 text-slate-700">|</span> GSTIN: 07AAUCA5631L1Z6
+            <p className="text-xs text-slate-400">
+              CIN: U72900DL2020PTC374888 <span className="mx-2 text-slate-600">|</span> GSTIN: 07AAUCA5631L1Z6
             </p>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center">
-            <Link href="/privacy" className="hover:text-slate-300 transition-colors">
+            <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-slate-300 transition-colors">
+            <Link href="/terms" className="hover:text-white transition-colors">
               Terms &amp; Conditions
             </Link>
-            <Link href="/contact" className="hover:text-slate-300 transition-colors">
+            <Link href="/contact" className="hover:text-white transition-colors">
               Support
             </Link>
           </div>

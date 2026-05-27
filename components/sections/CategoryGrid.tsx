@@ -47,8 +47,8 @@ const CATEGORY_CARDS = [
     title: "Commercial & Hotel TV",
     tagline: "Hotel rooms, offices & lobbies",
     href: "/products?category=commercial-tv",
-    iconColor: "#0891b2",
-    iconColorLight: "rgba(8, 145, 178, 0.1)",
+    iconColor: "#0e7490",
+    iconColorLight: "rgba(14, 116, 144, 0.1)",
     count: products.filter((p) => p.category === "Commercial TV").length,
   },
 ];
