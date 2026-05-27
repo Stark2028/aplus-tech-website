@@ -112,7 +112,10 @@ export default function NavbarDesktop({ cartCount }: Props) {
         {/* Search trigger — actual modal is rendered globally in Navbar.tsx */}
         <button
           type="button"
-          onClick={() => window.dispatchEvent(new CustomEvent("aplus:search:open"))}
+          onClick={(e) => {
+            e.stopPropagation();
+            window.dispatchEvent(new CustomEvent("aplus:search:open"));
+          }}
           className="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-500 text-sm transition-all w-44 group"
           aria-label="Open search (Ctrl+K)"
         >

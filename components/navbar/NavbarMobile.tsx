@@ -22,7 +22,10 @@ export default function NavbarMobile({ cartCount }: Props) {
       <div className="flex items-center gap-2 xl:hidden">
         <button
           type="button"
-          onClick={() => window.dispatchEvent(new CustomEvent("aplus:search:open"))}
+          onClick={(e) => {
+            e.stopPropagation();
+            window.dispatchEvent(new CustomEvent("aplus:search:open"));
+          }}
           className="p-2 text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all"
           aria-label="Search"
         >

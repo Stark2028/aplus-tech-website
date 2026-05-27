@@ -74,9 +74,20 @@ export default function SearchModal() {
         close();
       }
     };
-    document.addEventListener("mousedown", handler as EventListener);
-    document.addEventListener("touchstart", handler as EventListener, { passive: true });
+
+    let active = true;
+    const registerListeners = () => {
+      if (!active) return;
+      document.addEventListener("mousedown", handler as EventListener);
+      document.addEventListener("touchstart", handler as EventListener, { passive: true });
+    };
+
+    // Defer registration to the next tick to prevent the opening click from immediately closing the modal
+    const timer = setTimeout(registerListeners, 0);
+
     return () => {
+      active = false;
+      clearTimeout(timer);
       document.removeEventListener("mousedown", handler as EventListener);
       document.removeEventListener("touchstart", handler as EventListener);
     };
