@@ -17,39 +17,53 @@ export default function HeroSection() {
       {/* Background image of real digital signage. `priority` makes Next.js
           preload it at high fetch priority — it's behind the dark gradient,
           so a moderate WebP quality keeps it light without visible loss. */}
-      <Image
-        src="/images/hero-signage.webp"
-        alt="Digital signage displays in a modern commercial space"
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover"
-      />
+      {/* Desktop Background Image (Hidden on mobile for LCP optimization) */}
+      <div className="hidden md:block absolute inset-0">
+        <Image
+          src="/images/hero-signage.webp"
+          alt="Digital signage displays in a modern commercial space"
+          fill
+          priority
+          fetchPriority="high"
+          sizes="100vw"
+          className="object-cover"
+        />
+      </div>
+
+      {/* Premium Mobile Background — orbs mirror the headline's blue→violet gradient */}
+      <div className="md:hidden absolute inset-0 overflow-hidden bg-[#080d1a]">
+        {/* Primary orb: deep royal blue — matches headline blue start */}
+        <div className="absolute top-[-8%] left-[5%] w-96 h-96 bg-blue-700 rounded-full filter blur-[110px] animate-slow-glow pointer-events-none" />
+        {/* Secondary orb: rich violet — matches headline gradient end (#c4b5fd) */}
+        <div className="absolute bottom-[5%] right-[2%] w-80 h-80 bg-violet-600 rounded-full filter blur-[110px] animate-slow-glow-delayed pointer-events-none" />
+        {/* Faint indigo mid-layer for depth */}
+        <div className="absolute top-[40%] right-[20%] w-64 h-64 bg-indigo-700 rounded-full filter blur-[130px] opacity-50 pointer-events-none" />
+      </div>
 
       {/* Primary left-to-right gradient anchors the white headline on the
           dark left side; kept darker on the right (0.55) so the busy kiosk /
           wayfinding signage recedes instead of competing with the CTAs. */}
+      {/* Desktop-only: dark gradient overlay to anchor text over the photo */}
       <div
-        className="absolute inset-0"
+        className="hidden md:block absolute inset-0"
         style={{
           background:
             "linear-gradient(110deg, rgba(5,11,21,0.97) 0%, rgba(5,11,21,0.93) 40%, rgba(5,11,21,0.78) 70%, rgba(5,11,21,0.55) 100%)",
         }}
       />
-      {/* Bottom-right vignette to settle the bright "automated check-in"
-          kiosk that was pulling the eye in the corner. */}
+      {/* Desktop-only: bottom-right vignette */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="hidden md:block absolute inset-0 pointer-events-none"
         style={{
           background:
             "radial-gradient(120% 120% at 100% 100%, rgba(5,11,21,0.6) 0%, rgba(5,11,21,0) 55%)",
         }}
       />
-      <div className="absolute inset-0 bg-blue-950/20" />
+      <div className="hidden md:block absolute inset-0 bg-blue-950/20" />
 
-      {/* Cinematic mesh gradients */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/50 rounded-full blur-[120px] pointer-events-none mix-blend-screen animate-slow-glow" />
-      <div className="absolute bottom-1/4 right-0 md:right-1/4 w-[32rem] h-[32rem] bg-indigo-500/40 rounded-full blur-[150px] pointer-events-none mix-blend-screen animate-slow-glow-delayed" />
+      {/* Cinematic mesh gradients (disabled on mobile for performance) */}
+      <div className="hidden md:block absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/50 rounded-full blur-[120px] pointer-events-none mix-blend-screen animate-slow-glow" />
+      <div className="hidden md:block absolute bottom-1/4 right-0 md:right-1/4 w-[32rem] h-[32rem] bg-indigo-500/40 rounded-full blur-[150px] pointer-events-none mix-blend-screen animate-slow-glow-delayed" />
 
       <div className="relative flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center py-10 md:py-24">
         <div className="max-w-2xl">
@@ -66,24 +80,25 @@ export default function HeroSection() {
             style={{
               fontSize: "clamp(36px, 4.8vw, 72px)",
               lineHeight: "1.05",
-              textShadow:
-                "0 0 80px rgba(0,0,0,0.9), 0 4px 24px rgba(0,0,0,0.7)",
             }}
           >
-            India&apos;s Premier
-            <br />
-            <span
-              className="text-transparent bg-clip-text"
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, #3b82f6 0%, #60a5fa 45%, #c4b5fd 100%)",
-                whiteSpace: "nowrap",
-              }}
-            >
-              Display Technology
+            {/* Added a text-shadow drop for desktop only to improve mobile LCP */}
+            <span className="md:drop-shadow-[0_0_80px_rgba(0,0,0,0.9)] drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]">
+              India&apos;s Premier
+              <br />
+              <span
+                className="text-transparent bg-clip-text"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(90deg, #3b82f6 0%, #60a5fa 45%, #c4b5fd 100%)",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Display Technology
+              </span>
+              <br />
+              Partner
             </span>
-            <br />
-            Partner
             {/* Keyword-rich context for crawlers without altering the visual headline. */}
             <span className="sr-only">
               {" "}— Authorized Samsung distributor for digital signage, video walls,
@@ -129,12 +144,7 @@ export default function HeroSection() {
 
       {/* Stats bar — horizontal scroll pill strip on mobile, even 4-col row on desktop */}
       <div
-        className="relative"
-        style={{
-          borderTop: "1px solid rgba(255,255,255,0.07)",
-          backgroundColor: "rgba(5,11,21,0.65)",
-          backdropFilter: "blur(14px)",
-        }}
+        className="relative bg-[#050b15]/90 md:bg-[#050b15]/65 md:backdrop-blur-md border-t border-white/5"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex">

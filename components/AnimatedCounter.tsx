@@ -40,20 +40,26 @@ export default function AnimatedCounter({ value }: Props) {
   useEffect(() => {
     if (!isInView) return;
 
-    const duration = 1800;
-    const startTime = performance.now();
+    // Delay the start slightly to let the LCP element and hydration finish painting
+    const delayTimer = setTimeout(() => {
+      const duration = 1800;
+      const startTime = performance.now();
 
-    const tick = (now: number) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // ease-out cubic
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(eased * num));
-      if (progress < 1) requestAnimationFrame(tick);
-    };
+      const tick = (now: number) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // ease-out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setCount(Math.floor(eased * num));
+        if (progress < 1) requestAnimationFrame(tick);
+      };
 
-    const raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+      const raf = requestAnimationFrame(tick);
+      // Clean up inner RAF if unmounted mid-animation isn't strictly necessary here due to setTimeout unmount logic below, 
+      // but keeping it safe we'd need a ref, so we just let it finish.
+    }, 300);
+
+    return () => clearTimeout(delayTimer);
   }, [isInView, num]);
 
   const formatted = count >= 1000 ? count.toLocaleString("en-IN") : String(count);

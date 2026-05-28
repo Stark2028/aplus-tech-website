@@ -135,6 +135,49 @@ h1, h2 {
 }
 
 
+/* ─── Mobile hero: animated aurora gradient ───────────────────────────────
+   Four stop positions shift slowly, creating a living aurora-borealis effect
+   that looks premium without any blur, image, or mix-blend-mode cost.
+   Uses `background-position` shift on an oversized gradient so the colour
+   transition is smooth and GPU-composited (no layout or paint on each frame).
+*/
+@keyframes aurora-shift {
+  0%   { background-position: 0% 50%; }
+  25%  { background-position: 60% 80%; }
+  50%  { background-position: 100% 50%; }
+  75%  { background-position: 40% 20%; }
+  100% { background-position: 0% 50%; }
+}
+
+.mobile-aurora-bg {
+  background: linear-gradient(
+    135deg,
+    #060d1f 0%,
+    #0d1b3e 15%,
+    #0a2050 25%,
+    #112266 35%,
+    #1a1060 45%,
+    #210b5e 55%,
+    #12165a 65%,
+    #0e2560 75%,
+    #091b40 88%,
+    #060d1f 100%
+  );
+  background-size: 300% 300%;
+  animation: aurora-shift 12s ease-in-out infinite;
+}
+
+/* Subtle noise texture overlay (base64 SVG, 0 network cost) */
+.mobile-aurora-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  pointer-events: none;
+}
+
 /* Hide scrollbar cross-browser */
 .scrollbar-hide {
   -ms-overflow-style: none;
