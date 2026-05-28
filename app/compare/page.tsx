@@ -268,18 +268,18 @@ function ComparePageInner() {
                       <th
                         key={product.id}
                         scope="col"
-                        className="p-6 border-b border-r border-gray-100 relative group align-top"
+                        className="p-4 sm:p-6 border-b border-r border-gray-100 relative group align-top"
                       >
-                        <button
-                          onClick={() => removeFromCompare(product.id)}
-                          aria-label={`Remove ${product.name} from comparison`}
-                          className="no-print absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-100 transition-all"
-                        >
-                          <X size={12} aria-hidden="true" />
-                          Remove
-                        </button>
                         <div className="flex flex-col items-center text-center">
-                          <div className="relative w-28 h-28 mb-4 bg-gray-50 rounded-xl overflow-hidden">
+                          <button
+                            onClick={() => removeFromCompare(product.id)}
+                            aria-label={`Remove ${product.name} from comparison`}
+                            className="no-print flex items-center gap-1 px-2 py-1 mb-3 rounded-lg text-[11px] sm:text-xs font-medium text-gray-400 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-100 transition-all"
+                          >
+                            <X size={12} aria-hidden="true" />
+                            Remove
+                          </button>
+                          <div className="relative w-24 h-24 sm:w-28 sm:h-28 mb-4 bg-gray-50 rounded-xl overflow-hidden shrink-0">
                             {product.images?.[0] ? (
                               <Image
                                 src={product.images[0]}
