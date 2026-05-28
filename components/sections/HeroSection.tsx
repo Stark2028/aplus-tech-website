@@ -43,27 +43,39 @@ export default function HeroSection() {
       {/* Primary left-to-right gradient anchors the white headline on the
           dark left side; kept darker on the right (0.55) so the busy kiosk /
           wayfinding signage recedes instead of competing with the CTAs. */}
-      {/* Desktop-only: dark gradient overlay to anchor text over the photo */}
+      {/* Desktop-only: dark gradient overlay — cranked up for a darker, moodier look */}
       <div
         className="hidden md:block absolute inset-0"
         style={{
           background:
-            "linear-gradient(110deg, rgba(5,11,21,0.97) 0%, rgba(5,11,21,0.93) 40%, rgba(5,11,21,0.78) 70%, rgba(5,11,21,0.55) 100%)",
+            "linear-gradient(110deg, rgba(5,11,21,0.98) 0%, rgba(5,11,21,0.97) 40%, rgba(5,11,21,0.92) 65%, rgba(5,11,21,0.82) 100%)",
         }}
       />
-      {/* Desktop-only: bottom-right vignette */}
+      {/* Desktop-only: bottom-right vignette — heavier to darken the image corner */}
       <div
         className="hidden md:block absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(120% 120% at 100% 100%, rgba(5,11,21,0.6) 0%, rgba(5,11,21,0) 55%)",
+            "radial-gradient(120% 120% at 100% 100%, rgba(5,11,21,0.88) 0%, rgba(5,11,21,0) 60%)",
         }}
       />
-      <div className="hidden md:block absolute inset-0 bg-blue-950/20" />
+      <div className="hidden md:block absolute inset-0 bg-blue-950/40" />
 
-      {/* Cinematic mesh gradients (disabled on mobile for performance) */}
-      <div className="hidden md:block absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/50 rounded-full blur-[120px] pointer-events-none mix-blend-screen animate-slow-glow" />
-      <div className="hidden md:block absolute bottom-1/4 right-0 md:right-1/4 w-[32rem] h-[32rem] bg-indigo-500/40 rounded-full blur-[150px] pointer-events-none mix-blend-screen animate-slow-glow-delayed" />
+      {/* ── Desktop premium gradient effects ────────────────────────────── */}
+      {/* Top-edge aurora sweep: a wide band of colour along the very top */}
+      <div
+        className="hidden md:block absolute top-0 left-0 right-0 h-[420px] pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(37,99,235,0.18) 0%, rgba(79,70,229,0.10) 40%, transparent 100%)",
+        }}
+      />
+      {/* Primary blue orb — behind the text, acts like a key light */}
+      <div className="hidden md:block absolute top-[-5%] left-[-4%] w-[36rem] h-[36rem] bg-blue-600 rounded-full blur-[160px] opacity-30 animate-slow-glow pointer-events-none" />
+      {/* Violet accent — bottom-centre creates depth under the CTA buttons */}
+      <div className="hidden md:block absolute bottom-[-10%] left-[25%] w-[28rem] h-[28rem] bg-violet-600 rounded-full blur-[180px] opacity-20 animate-slow-glow-delayed pointer-events-none" />
+      {/* Cyan glint — top-right edge, subtle highlight that catches the eye */}
+      <div className="hidden md:block absolute top-[10%] right-[8%] w-72 h-72 bg-cyan-500 rounded-full blur-[140px] opacity-15 animate-slow-glow pointer-events-none" />
 
       <div className="relative flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center py-10 md:py-24">
         <div className="max-w-2xl">

@@ -94,9 +94,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Analytics / tracking */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://us.i.posthog.com" />
         <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
+        {/* Font CDNs — preconnect to both domains used by next/font/google:
+            googleapis.com = CSS resolver, gstatic.com = actual woff2 files.
+            Missing gstatic preconnect is a common cause of font-swap LCP delay. */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={`${inter.className} ${jakartaSans.variable} bg-background text-foreground`}>
         <ScrollProgress />

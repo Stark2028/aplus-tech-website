@@ -43,8 +43,13 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
+    // Cache optimised images for 7 days on the CDN edge —
+    // avoids re-optimisation on every cold start and reduces TTFB for images.
+    minimumCacheTTL: 60 * 60 * 24 * 7,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384, 512],
+    // Trimmed to only sizes we actually request via `sizes` props —
+    // fewer size entries = less work for the image optimizer on first hit.
+    imageSizes: [48, 96, 256, 384, 512],
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com',   pathname: '/**' },
       { protocol: 'https', hostname: 'plus.unsplash.com',     pathname: '/**' },
