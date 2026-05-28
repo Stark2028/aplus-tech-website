@@ -56,6 +56,12 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'www.aplustechsol.com',  pathname: '/**' },
     ],
   },
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
   async headers() {
     return [
       {

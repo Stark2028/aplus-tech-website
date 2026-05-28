@@ -3,10 +3,14 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useQuote } from "@/context/QuoteContext";
 import NavbarDesktop from "@/components/navbar/NavbarDesktop";
 import NavbarMobile from "@/components/navbar/NavbarMobile";
-import SearchModal from "@/components/SearchModal";
+
+// SearchModal is only needed when the user clicks the search icon.
+// Lazy-loading it cuts it out of the critical bundle entirely.
+const SearchModal = dynamic(() => import("@/components/SearchModal"), { ssr: false });
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);

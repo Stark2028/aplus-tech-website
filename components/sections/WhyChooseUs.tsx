@@ -45,7 +45,7 @@ export default function WhyChooseUs() {
               src="/images/collaboration.webp"
               alt="A team collaborating around a Samsung display in a meeting room"
               fill
-              priority
+              loading="lazy"
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
             />
