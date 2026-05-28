@@ -55,12 +55,38 @@ export default function ProductGallery({
     controls.start({ scale: 1, x: 0, y: 0 });
   };
 
+  const goPrev = () => {
+    setActiveIndex((i) => (i === 0 ? images.length - 1 : i - 1));
+    setScale(1);
+  };
+  const goNext = () => {
+    setActiveIndex((i) => (i === images.length - 1 ? 0 : i + 1));
+    setScale(1);
+  };
+
+  // Touch swipe to change image — only when not zoomed (zoom uses drag-to-pan).
+  const touchStartX = useRef<number | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    if (scale > 1) return;
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (scale > 1 || touchStartX.current === null || images.length <= 1) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(dx) < 50) return;
+    if (dx < 0) goNext();
+    else goPrev();
+  };
+
   return (
     <div className="flex flex-col gap-4 w-full group">
       {/* Main Large Image */}
       <div className="h-100 flex items-center justify-center overflow-hidden relative rounded-xl bg-gray-50 group-hover:cursor-zoom-in">
         <div
           className="relative w-full h-full cursor-grab active:cursor-grabbing"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
           onWheel={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -144,26 +170,26 @@ export default function ProductGallery({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                setActiveIndex((i) => (i === 0 ? images.length - 1 : i - 1));
-                setScale(1);
+                goPrev();
               }}
               className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-md text-gray-800 hover:text-blue-600 transition-all z-20"
               title="Previous Image"
+              aria-label="Previous image"
               type="button"
             >
-              <ChevronLeft size={24} />
+              <ChevronLeft size={24} aria-hidden="true" />
             </button>
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                setActiveIndex((i) => (i === images.length - 1 ? 0 : i + 1));
-                setScale(1);
+                goNext();
               }}
               className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-md text-gray-800 hover:text-blue-600 transition-all z-20"
               title="Next Image"
+              aria-label="Next image"
               type="button"
             >
-              <ChevronRight size={24} />
+              <ChevronRight size={24} aria-hidden="true" />
             </button>
           </>
         )}

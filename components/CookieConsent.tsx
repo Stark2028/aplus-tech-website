@@ -33,6 +33,7 @@ export default function CookieConsent() {
         transform: visible ? "translateY(0)" : "translateY(120%)",
         opacity: visible ? 1 : 0,
         pointerEvents: visible ? "auto" : "none",
+        paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom, 0px))",
       }}
       role="dialog"
       aria-label="Cookie consent"

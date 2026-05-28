@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CheckCircle2,
   FileDown,
@@ -15,6 +17,12 @@ import {
 } from "@/lib/leadGate";
 import { trackEvent } from "@/lib/analytics";
 import { toast } from "sonner";
+import { leadGateSchema, type LeadGateValues } from "@/lib/formSchemas";
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return <p role="alert" className="mt-1 text-xs text-red-500">{message}</p>;
+}
 
 interface Props {
   isOpen: boolean;
@@ -51,14 +59,19 @@ export default function LeadGateModal({
   privacyNote = "We'll only use this to follow up with pricing. No spam, ever.",
   analyticsKey = "lead_gate",
 }: Props) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [company, setCompany] = useState("");
   const [status, setStatus] = useState<
     "idle" | "submitting" | "success" | "error"
   >("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    getValues,
+    formState: { errors },
+  } = useForm<LeadGateValues>({ resolver: zodResolver(leadGateSchema) });
 
   // Lock scroll while modal is open
   useEffect(() => {
@@ -74,16 +87,16 @@ export default function LeadGateModal({
   useEffect(() => {
     if (!isOpen) return;
     const cached = getCachedLead();
-    if (cached) {
-      setName(cached.name);
-      setEmail(cached.email);
-      setPhone(cached.phone);
-      setCompany(cached.company ?? "");
-    }
+    reset({
+      name: cached?.name ?? "",
+      email: cached?.email ?? "",
+      phone: cached?.phone ?? "",
+      company: cached?.company ?? "",
+    });
     setStatus("idle");
     setErrorMsg("");
     trackEvent(`${analyticsKey}_opened`, {});
-  }, [isOpen, analyticsKey]);
+  }, [isOpen, analyticsKey, reset]);
 
   // Close on Escape (ignored while submitting)
   useEffect(() => {
@@ -95,24 +108,55 @@ export default function LeadGateModal({
     return () => window.removeEventListener("keydown", handler);
   }, [isOpen, status, onClose]);
 
+  // Focus trap — keep keyboard focus inside the dialog
+  useEffect(() => {
+    if (!isOpen || !dialogRef.current) return;
+    const el = dialogRef.current;
+    // Move focus into the dialog on open
+    const firstFocusable = el.querySelector<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    firstFocusable?.focus();
+
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const focusable = Array.from(
+        el.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    };
+    document.addEventListener("keydown", handleTab);
+    return () => document.removeEventListener("keydown", handleTab);
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (values: LeadGateValues) => {
     setStatus("submitting");
     setErrorMsg("");
 
-    const lead: GatedLead = { name, email, phone, company };
+    const lead: GatedLead = {
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      company: values.company ?? "",
+    };
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name,
-          email,
-          phone,
-          company,
+          ...values,
           subject,
           inquiry_type: "Lead Gate Download",
           message: itemDescription,
@@ -146,13 +190,15 @@ export default function LeadGateModal({
       aria-modal="true"
       aria-labelledby="lead-gate-title"
     >
-      <button
-        aria-label="Close"
+      {/* Backdrop — click to close, hidden from AT (visible close button handles keyboard) */}
+      <div
+        aria-hidden="true"
         onClick={() => status !== "submitting" && onClose()}
         className="absolute inset-0 bg-gray-900/40 backdrop-blur-md transition-opacity"
       />
 
       <div
+        ref={dialogRef}
         className="relative w-full max-w-md rounded-3xl bg-white/80 backdrop-blur-2xl border border-white/60 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200"
         style={{
           boxShadow:
@@ -187,7 +233,7 @@ export default function LeadGateModal({
 
         <div className="relative p-7 sm:p-8">
           {status === "success" ? (
-            <div className="text-center py-4">
+            <div role="alert" className="text-center py-4">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-green-100 mb-4">
                 <CheckCircle2 className="text-green-600" size={28} />
               </div>
@@ -199,7 +245,7 @@ export default function LeadGateModal({
                 with pricing within 24 hours.
               </p>
               <button
-                onClick={() => onUnlock({ name, email, phone, company })}
+                onClick={() => onUnlock({ name: getValues("name"), email: getValues("email"), phone: getValues("phone"), company: getValues("company") ?? "" })}
                 className="mt-5 text-sm font-semibold text-blue-600 hover:text-blue-700"
               >
                 Didn&apos;t download? Click here →
@@ -220,32 +266,34 @@ export default function LeadGateModal({
                 {subtitle}
               </p>
 
-              <form onSubmit={handleSubmit} className="space-y-3">
+              <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-3">
                 <div>
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1">
                     Full Name
                   </label>
                   <input
-                    required
                     type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/70 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-sm"
+                    autoComplete="name"
                     placeholder="John Doe"
+                    aria-invalid={!!errors.name}
+                    className={`w-full px-4 py-2.5 bg-white/70 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-sm ${errors.name ? "border-red-400" : "border-gray-200"}`}
+                    {...register("name")}
                   />
+                  <FieldError message={errors.name?.message} />
                 </div>
                 <div>
                   <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1">
                     Work Email
                   </label>
                   <input
-                    required
                     type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/70 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-sm"
+                    autoComplete="email"
                     placeholder="john@company.com"
+                    aria-invalid={!!errors.email}
+                    className={`w-full px-4 py-2.5 bg-white/70 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-sm ${errors.email ? "border-red-400" : "border-gray-200"}`}
+                    {...register("email")}
                   />
+                  <FieldError message={errors.email?.message} />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
@@ -253,13 +301,14 @@ export default function LeadGateModal({
                       Phone
                     </label>
                     <input
-                      required
                       type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-4 py-2.5 bg-white/70 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-sm"
+                      autoComplete="tel"
                       placeholder="+91 98765 43210"
+                      aria-invalid={!!errors.phone}
+                      className={`w-full px-4 py-2.5 bg-white/70 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-sm ${errors.phone ? "border-red-400" : "border-gray-200"}`}
+                      {...register("phone")}
                     />
+                    <FieldError message={errors.phone?.message} />
                   </div>
                   <div>
                     <label className="block text-[11px] font-bold uppercase tracking-wider text-gray-600 mb-1">
@@ -267,16 +316,16 @@ export default function LeadGateModal({
                     </label>
                     <input
                       type="text"
-                      value={company}
-                      onChange={(e) => setCompany(e.target.value)}
-                      className="w-full px-4 py-2.5 bg-white/70 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-sm"
+                      autoComplete="organization"
                       placeholder="Optional"
+                      className="w-full px-4 py-2.5 bg-white/70 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-sm"
+                      {...register("company")}
                     />
                   </div>
                 </div>
 
                 {status === "error" && errorMsg && (
-                  <p className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
+                  <p role="alert" className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
                     {errorMsg}
                   </p>
                 )}
@@ -284,16 +333,16 @@ export default function LeadGateModal({
                 <button
                   type="submit"
                   disabled={status === "submitting"}
+                  aria-label={status === "submitting" ? "Preparing your download…" : ctaLabel}
                   className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm py-3 rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {status === "submitting" ? (
                     <>
-                      <Loader2 className="animate-spin" size={16} /> Preparing your
-                      download…
+                      <Loader2 className="animate-spin" size={16} aria-hidden="true" /> Preparing your download…
                     </>
                   ) : (
                     <>
-                      <FileDown size={16} /> {ctaLabel}
+                      <FileDown size={16} aria-hidden="true" /> {ctaLabel}
                     </>
                   )}
                 </button>

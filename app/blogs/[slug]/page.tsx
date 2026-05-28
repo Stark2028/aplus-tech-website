@@ -6,6 +6,8 @@ import ReadingProgress from "@/components/ReadingProgress";
 import ShareButtons from "@/components/ShareButtons";
 import { Calendar, Clock, ArrowRight, Tag } from "lucide-react";
 import { SITE, breadcrumbLd, jsonLdString } from "@/lib/jsonLd";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const ORG_REF = { "@id": `${SITE}/#organization` };
 
@@ -40,7 +42,8 @@ export async function generateMetadata({
       description: post.excerpt,
       publishedTime: post.date,
       tags: post.tags,
-      images: [{ url: "/og-default.png", width: 1200, height: 630, alt: post.title }],
+      // og:image intentionally omitted — Next.js auto-detects the dynamic
+      // opengraph-image.tsx in this segment and generates a per-post image.
     },
     twitter: {
       card: "summary_large_image",
@@ -91,7 +94,7 @@ export default async function BlogDetailPage({
     dateModified: post.date,
     image: {
       "@type": "ImageObject",
-      url: `${SITE}/og-default.png`,
+      url: `${pageUrl}/opengraph-image`,
       width: 1200,
       height: 630,
     },
@@ -174,14 +177,10 @@ export default async function BlogDetailPage({
 
         {/* Article content */}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <article className="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 sm:px-10 py-10 prose prose-blue max-w-none prose-p:text-gray-700 prose-p:leading-relaxed">
-            {post.body.split("\n").map((paragraph, index) =>
-              paragraph.trim().length === 0 ? (
-                <div key={index} className="h-4" />
-              ) : (
-                <p key={index}>{paragraph}</p>
-              )
-            )}
+          <article className="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 sm:px-10 py-10 prose prose-blue max-w-none prose-p:text-gray-700 prose-p:leading-relaxed prose-headings:text-gray-900 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-code:text-blue-700 prose-code:bg-blue-50 prose-code:px-1 prose-code:rounded">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {post.body}
+            </ReactMarkdown>
           </article>
 
           {/* Share row */}

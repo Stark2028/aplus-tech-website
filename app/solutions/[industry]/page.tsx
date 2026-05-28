@@ -111,21 +111,16 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
                     </h1>
                 </div>
 
-                {/* Stats bar — inside the hero, above the fold edge */}
+                {/* Stats bar — inside the hero, 1x4 format */}
                 <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="border-t border-white/10 grid grid-cols-2 sm:flex">
+                    <div className="border-t border-white/10 flex">
                         {STATS.map((s, i) => (
                             <div
                                 key={s.label}
-                                className={`py-6 md:py-7 text-center sm:flex-1
-                                    ${i % 2 === 0 ? "sm:border-r-0" : ""}
-                                    ${i < 2 ? "border-b border-white/10 sm:border-b-0" : ""}
-                                    ${i % 2 === 0 ? "border-r border-white/10" : ""}
-                                    ${i < STATS.length - 1 ? "sm:border-r sm:border-white/10" : ""}
-                                `}
+                                className={`py-6 md:py-7 text-center flex-1 ${i < STATS.length - 1 ? "border-r border-white/10" : ""}`}
                             >
-                                <p className="text-2xl md:text-3xl font-black text-white leading-none tracking-tight">{s.value}</p>
-                                <p className="text-[11px] md:text-xs font-medium text-blue-200/70 uppercase tracking-wider mt-2 px-2 leading-tight">{s.label}</p>
+                                <p className="text-xl md:text-3xl font-black text-white leading-none tracking-tight">{s.value}</p>
+                                <p className="text-[9px] sm:text-[11px] md:text-xs font-medium text-blue-200/70 uppercase tracking-wider mt-2 px-1 sm:px-2 leading-tight">{s.label}</p>
                             </div>
                         ))}
                     </div>

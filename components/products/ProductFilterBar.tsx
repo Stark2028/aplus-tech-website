@@ -23,6 +23,7 @@ function FilterChip({
   return (
     <button
       onClick={onClick}
+      aria-pressed={active}
       className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all whitespace-nowrap ${
         active
           ? "bg-slate-900 text-white border-slate-900 shadow-sm shadow-slate-900/10"
@@ -42,12 +43,12 @@ function FilterGroup({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-3">
-      <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">
+    <fieldset className="flex flex-col gap-3 border-0 p-0 m-0">
+      <legend className="text-[11px] font-bold uppercase tracking-widest text-slate-400">
         {title}
-      </span>
+      </legend>
       <div className="flex flex-wrap gap-2">{children}</div>
-    </div>
+    </fieldset>
   );
 }
 
@@ -55,8 +56,12 @@ function ActivePill({ label, onRemove }: { label: string; onRemove: () => void }
   return (
     <span className="flex items-center gap-1.5 text-xs bg-slate-100 text-slate-700 border border-slate-200 px-3 py-1.5 rounded-full font-bold shadow-sm">
       {label}
-      <button onClick={onRemove} className="hover:text-red-500 transition-colors bg-white rounded-full p-0.5 shadow-sm ml-0.5">
-        <X size={12} strokeWidth={3} />
+      <button
+        onClick={onRemove}
+        aria-label={`Remove filter: ${label}`}
+        className="hover:text-red-500 transition-colors bg-white rounded-full p-0.5 shadow-sm ml-0.5"
+      >
+        <X size={12} strokeWidth={3} aria-hidden="true" />
       </button>
     </span>
   );
@@ -153,6 +158,7 @@ export default function ProductFilterBar({
             )}
             <button
               onClick={onClearAll}
+              aria-label="Clear all active filters"
               className="text-xs text-slate-400 hover:text-red-500 font-bold transition-colors px-2 underline decoration-transparent hover:decoration-red-500 underline-offset-4"
             >
               Clear all

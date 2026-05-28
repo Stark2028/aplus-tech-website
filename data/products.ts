@@ -54,18 +54,6 @@ With a 16/7 operation rating and a size range from 43" to 82", the QET Series ad
       screenSizes: ["43", "50", "55", "65", "70", "75", "82"],
       operationTime: "16/7",
     },
-    additionalSpecs: {
-      "Operating System": "Tizen 7.0",
-      "Content Player": "MagicINFO Player S6",
-      "Input Ports": "HDMI × 2, USB × 2, RS-232C (In/Out), RJ-45 (LAN)",
-      "Wi-Fi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
-      "Bluetooth": "5.0",
-      "Processor": "Quad-core 1.5 GHz",
-      "Memory / Storage": "2.5 GB / 16 GB",
-      "Color Gamut": "72% NTSC (typical)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "400 × 400 mm (55\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 70\" / 75\" / 82\"",
@@ -149,27 +137,6 @@ With a 16/7 operation rating and a size range from 43" to 82", the QET Series ad
 Dynamic Crystal Color with one billion shades delivers lifelike color variations and consistent imagery across the display, while the Quantum Processor Lite 4K upscales any source content for polished, professional results. Tizen 7.0 with built-in MagicInfo S10 content management means signage deployments require no external media players — content updates, schedules, and device monitoring are all managed from a single secure platform.
 
 With Smart Calibration via the Samsung mobile app, teams can guarantee brand color consistency across every display in a multi-site chain. ENERGY STAR 8.0 and EPEAT Bronze certification demonstrate a commitment to energy efficiency, while the Slim Fit Wall Mount makes installation neat and straightforward in any environment.`,
-    additionalSpecs: {
-      "Operating System": "Tizen 7.0",
-      "Content Player": "Built-in MagicInfo S10 (SSSP 10.0)",
-      "Panel Type": "VA",
-      "Processor": "CA53 1.3GHz Quad-Core",
-      "Storage": "8GB (3GB available)",
-      "Depth": "28.5 mm (ultra-slim)",
-      "Contrast Ratio": "4,000:1",
-      "Haze": "2%",
-      "Color Gamut": "72% NTSC",
-      "Input Ports": "HDMI 2.0 × 3, USB 2.0 × 2",
-      "External Control": "RS-232C (In/Out), RJ-45 (LAN)",
-      "Wi-Fi": "2.4 / 5.0 GHz dual-band",
-      "Bluetooth": "Yes",
-      "IP Rating": "IP5x",
-      "Environment": "ENERGY STAR 8.0, EPEAT Bronze",
-      "Security": "802.1x WPA2 Enterprise (EAP-TLS, EAP-TTLS, EAP-PEAP)",
-      "Smart Calibration": "Yes",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "200 × 200 mm (43\"–55\"), 400 × 300 mm (65\"), 400 × 400 mm (75\"), 600 × 400 mm (85\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\" / 85\"",
@@ -250,20 +217,6 @@ With Smart Calibration via the Samsung mobile app, teams can guarantee brand col
 With its ultra-slim 28.5 mm frame depth and bezel-less design, the QHC fits seamlessly behind modern architectural elements while maintaining professional aesthetics. The display's 24/7 operation certification ensures uninterrupted service in facilities that never close, and integrated MagicINFO Player S6 eliminates external media players from your AV rack.
 
 The QHC's 4K UHD resolution combined with Samsung's Crystal Display technology produces vibrant, detailed content that scales beautifully across the 43" to 75" size range. Whether showcasing automotive displays in dealer showrooms, real estate listings in bright offices, or hospitality information in lobbies, the QHC maintains consistent picture quality and color accuracy from any viewing angle.`,
-    additionalSpecs: {
-      "Operating System": "Tizen 6.5",
-      "Content Player": "MagicINFO Player S6",
-      "Panel Type": "IPS Crystal Display",
-      "Input Ports": "HDMI × 2, USB × 2, RS-232C (In/Out), RJ-45 (LAN)",
-      "Wi-Fi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
-      "Bluetooth": "5.0",
-      "Processor": "Quad-core 1.5 GHz",
-      "Memory / Storage": "2.5 GB / 16 GB",
-      "Color Gamut": "72% NTSC (typical)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Anti-Glare": "Yes (Non-glare coating)",
-      "VESA Mount": "400 × 400 mm",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\"",
@@ -337,29 +290,6 @@ The QHC's 4K UHD resolution combined with Samsung's Crystal Display technology p
 Even bezels on all four sides and centered VESA mounting holes ensure a consistent look and easy adjustability to portrait mode. SmartView+ enables wireless screen sharing and quick screen switching with a single click, making the QMC ideal for collaboration as well as pure signage. Dynamic Crystal Color and Quantum Processor Lite 4K deliver consistent, lifelike colors to any content regardless of source resolution.
 
 The QMC's integrated MagicInfo S10 with built-in Wi-Fi and LAN connectivity enables rapid content deployment and remote management across multiple locations. Smart Calibration via the Samsung mobile app guarantees brand color consistency across every display in a chain. ENERGY STAR 8.0, EPEAT Bronze, and TÜV Rheinland Carbon Footprint certification (50" model) reflect a commitment to environmental responsibility.`,
-    additionalSpecs: {
-      "Operating System": "Tizen 7.0",
-      "Content Player": "Built-in MagicInfo S10 (SSSP 10.0)",
-      "Panel Type": "VA (55\"–85\"), VA/IPS (43\"–50\")",
-      "Processor": "CA73 1.6GHz Quad-Core",
-      "Storage": "16GB (10GB available)",
-      "Depth": "28.5 mm (ultra-slim)",
-      "Contrast Ratio": "4,000:1 (VA); 1,200:1 (IPS)",
-      "Haze": "25%",
-      "Color Gamut": "72% NTSC",
-      "Input Ports": "DP 1.2 × 1, HDMI 2.0 × 3, USB 2.0 × 2",
-      "External Control": "RS-232C (In/Out), RJ-45 (LAN)",
-      "Wi-Fi": "2.4 / 5.0 GHz dual-band",
-      "Bluetooth": "Yes",
-      "Operation Hour": "24/7",
-      "IP Rating": "IP5x",
-      "Environment": "ENERGY STAR 8.0, EPEAT Bronze, TÜV Rheinland Carbon Footprint (50\" model)",
-      "Security": "802.1x WPA2 Enterprise (EAP-TLS, EAP-TTLS, EAP-PEAP)",
-      "SmartView+": "Yes (wireless screen sharing)",
-      "Smart Calibration": "Yes",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "200 × 200 mm (43\"–55\"), 400 × 300 mm (65\"), 400 × 400 mm (75\"), 600 × 400 mm (85\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\" / 85\"",
@@ -476,19 +406,6 @@ The QMC's integrated MagicInfo S10 with built-in Wi-Fi and LAN connectivity enab
 Built with enterprise-grade Knox security from the ground up, the QBR-B protects sensitive content and prevents unauthorized access or modification. Integration with MagicINFO content management allows these compact displays to operate as part of a larger signage ecosystem, with centralized scheduling and remote monitoring from your main command center.
 
 The QBR-B's 16/7 operation rating and robust industrial design ensure dependable service in high-traffic retail and hospitality environments where durability and reliability are non-negotiable. The 24-inch variant bridges the gap between pure information kiosks and full-scale displays, making the QBR-B lineup remarkably versatile for businesses transitioning to digital-first customer communication strategies.`,
-    additionalSpecs: {
-      "Operating System": "Tizen 5.5",
-      "Content Player": "MagicINFO Player S6",
-      "Panel Type": "IPS",
-      "Resolution": "1,920 × 1,080 (FHD)",
-      "Input Ports": "HDMI × 2, USB × 2, RJ-45 (LAN)",
-      "Wi-Fi": "802.11 a/b/g/n (2.4 GHz)",
-      "Bluetooth": "4.2",
-      "Security": "Knox enterprise security",
-      "Memory / Storage": "1.5 GB / 8 GB",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "100 × 100 mm (13\"), 200 × 200 mm (24\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "13\" / 24\"",
@@ -561,19 +478,6 @@ The QBR-B's 16/7 operation rating and robust industrial design ensure dependable
 IP5x dust protection shields the QMR-T from debris and contamination in retail environments, food courts, and busy public spaces, eliminating the need for protective glass overlays that diminish touch responsiveness. The glare-free display ensures content remains readable and engaging whether mounted horizontally, vertically, or in custom orientations.
 
 With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy self-contained applications for restaurant ordering, hotel check-in, store directories, and real estate walkthroughs without requiring external PCs or servers. Available in FHD (32") for budget-conscious deployments and 4K UHD (43", 55") for premium experiences, the QMR-T scales to match venue ambitions and visitor expectations.`,
-    additionalSpecs: {
-      "Operating System": "Tizen 6.0",
-      "Touch Technology": "Capacitive multi-touch (10 points)",
-      "Touch Response": "Sub-100ms",
-      "Resolution (32\")": "1,920 × 1,080 (FHD)",
-      "Resolution (43\"/55\")": "3,840 × 2,160 (4K UHD)",
-      "Input Ports": "HDMI × 2, USB × 3, RS-232C, RJ-45 (LAN)",
-      "Wi-Fi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
-      "Dust Protection": "IP5x rated",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Memory / Storage": "2 GB / 16 GB",
-      "VESA Mount": "200 × 200 mm (32\"), 400 × 400 mm (43\"/55\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "32\" / 43\" / 55\"",
@@ -688,19 +592,6 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
 The modular MP016F architecture enables virtually unlimited scaling, from intimate 2×2 arrays to massive installation walls covering entire building facades. HDR support ensures content retains highlight detail and shadow depth even in extreme brightness environments, while the 1,200-nit brightness dominates interior spaces without requiring specialized dark rooms or controlled lighting.
 
 Magnetic service access design allows technicians to swap panels or perform maintenance without disassembling the entire installation, dramatically reducing downtime and maintenance costs. 24/7 operation rating makes the MP016F ideal for command centers, entertainment venues, and 24-hour retail environments where reliability and visual impact are equally critical to business success.`,
-    additionalSpecs: {
-      "Pixel Pitch": "1.6 mm",
-      "Resolution": "Custom (modular)",
-      "Brightness": "1,200 nit (interior-grade)",
-      "Color Depth": "16.7M colors (8-bit per channel)",
-      "Refresh Rate": "3,840 Hz (typical)",
-      "Contrast Ratio": "5,000:1 (typical)",
-      "Viewing Angle (H/V)": "160° / 160°",
-      "Input": "HDMI 2.0 × 1, DisplayPort 1.2 × 1, USB × 2",
-      "Panel Size (Module)": "640 × 360 mm (640H × 360V pixels per module)",
-      "Operation Rating": "24/7",
-      "Power Consumption": "~1,200 W (per 2m² at 100% white)",
-    },
     specGroups: {
       "Display": {
         "Pixel Pitch": "1.6 mm",
@@ -755,19 +646,6 @@ UHD Daisy Chain support allows up to a 5×5 (25-tile) array to be driven without
       brightness: "500 nit",
       screenSizes: ["55"],
       operationTime: "24/7",
-    },
-    additionalSpecs: {
-      "Panel Type": "S-PVA",
-      "Bezel-to-Bezel": "0.44 mm (all sides)",
-      "Contrast Ratio": "4,000:1 (typical)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Input Ports": "HDMI 1.4 × 2, DisplayPort 1.2 × 1, DVI-D × 1",
-      "Daisy Chain": "UHD Daisy Chain (up to 5×5)",
-      "External Control": "RS-232C, RJ-45 (LAN)",
-      "Power Consumption": "~100 W (typical)",
-      "Dimensions (W×H×D)": "1,209.6 × 680.4 × 77.6 mm",
-      "Weight": "~19.6 kg (without stand)",
-      "VESA Mount": "400 × 400 mm",
     },
     specGroups: {
       "Display": {
@@ -850,20 +728,6 @@ UHD Daisy Chain support allows up to a 5×5 (25-tile) array to be driven without
 The non-glare panel eliminates reflections that would otherwise create hot spots across the video wall surface, ensuring content remains readable from any position within the control room. The 178°/178° wide viewing angles mean operators and observers positioned to the side of the installation see the same accurate colors and brightness as those viewing head-on, a critical requirement in emergency response and surveillance operations.
 
 Image Enhancement Technology ensures each tile in a multi-screen array maintains identical brightness, color saturation, and contrast — eliminating the visual "seams" that occur when tiles age at different rates or experience uneven ambient lighting exposure. With daisy chain support, up to 25 tiles (5×5) can operate as a unified canvas without an external video processor, simplifying installation and reducing overall system cost.`,
-    additionalSpecs: {
-      "Panel Type": "S-PVA (non-glare)",
-      "Bezel-to-Bezel": "0.88 mm (all sides)",
-      "Brightness": "700 nit",
-      "Contrast Ratio": "4,500:1 (typical)",
-      "Resolution": "1,920 × 1,080 (FHD)",
-      "Input Ports": "HDMI 1.4 × 2, DisplayPort 1.2 × 1, DVI-D × 1",
-      "Daisy Chain": "Daisy Chain support (5×5 max)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Response Time": "8 ms (typical)",
-      "External Control": "RS-232C, RJ-45 (LAN)",
-      "Power Consumption": "~120 W (typical)",
-      "VESA Mount": "400 × 400 mm",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "55\"",
@@ -929,20 +793,6 @@ Image Enhancement Technology ensures each tile in a multi-screen array maintains
 The non-glare panel coating reduces reflections and ambient light washout, ensuring vibrant, detailed imagery remains visible even when video walls are positioned near windows or bright architectural lighting. The exceptional picture quality and minimal bezel presence combine to create installations where viewers forget they're watching tiled displays and instead experience unified, continuous storytelling.
 
 With 24/7 operation certification and Samsung's Image Enhancement Technology, each tile in a multi-screen VH55C-E array maintains pixel-perfect alignment and color uniformity — critical for applications like weather radar displays, sports statistics walls, and immersive retail brand experiences where content continuity drives customer engagement.`,
-    additionalSpecs: {
-      "Panel Type": "S-PVA (non-glare coating)",
-      "Bezel-to-Bezel": "1.74 mm (all sides, extreme narrow)",
-      "Brightness": "700 nit",
-      "Resolution": "1,920 × 1,080 (FHD)",
-      "Contrast Ratio": "4,500:1 (typical)",
-      "Input Ports": "HDMI 1.4 × 2, DisplayPort 1.2 × 1, DVI-D × 1",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Color Gamut": "72% NTSC (typical)",
-      "Response Time": "8 ms (typical)",
-      "External Control": "RS-232C, RJ-45 (LAN)",
-      "Power Consumption": "~115 W (typical)",
-      "VESA Mount": "400 × 400 mm",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "55\"",
@@ -1009,21 +859,6 @@ With 24/7 operation certification and Samsung's Image Enhancement Technology, ea
 The non-glare panel technology prevents light reflections from sources like fluorescent ceiling fixtures and monitor backlighting that would otherwise create visual distractions across the video wall canvas. The result is a seamless, immersive viewing experience where content appears to float on an invisible panel rather than being divided into distinct LCD tiles.
 
 With full daisy chain support and Samsung's Image Enhancement Technology ensuring color uniformity across all tiles, the VM55C-E scales seamlessly from compact 2×2 arrays to massive installations spanning entire control room walls. MagicINFO S6 integration enables centralized content scheduling, monitoring, and management across fleets of video walls, making the VM55C-E a scalable solution for organizations with multiple facilities.`,
-    additionalSpecs: {
-      "Panel Type": "S-PVA (non-glare)",
-      "Bezel-to-Bezel": "1.74 mm (all sides, extreme narrow)",
-      "Brightness": "500 nit",
-      "Resolution": "1,920 × 1,080 (FHD)",
-      "Contrast Ratio": "4,000:1 (typical)",
-      "Input Ports": "HDMI 1.4 × 2, DisplayPort 1.2 × 1, DVI-D × 1",
-      "Daisy Chain": "Daisy Chain support (5×5 max)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Color Gamut": "72% NTSC (typical)",
-      "Response Time": "8 ms (typical)",
-      "External Control": "RS-232C, RJ-45 (LAN)",
-      "Power Consumption": "~100 W (typical)",
-      "VESA Mount": "400 × 400 mm",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "55\"",
@@ -1078,18 +913,6 @@ Built-in daisy chain connectivity simplifies multi-display wiring, allowing sign
       brightness: "500 nit",
       screenSizes: ["46"],
       operationTime: "24/7",
-    },
-    additionalSpecs: {
-      "Panel Type": "S-PVA",
-      "Bezel-to-Bezel": "5.3 mm (all sides)",
-      "Contrast Ratio": "4,000:1 (typical)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Input Ports": "HDMI 1.3 × 1, DVI-D × 1, DisplayPort 1.1 × 1",
-      "External Control": "RS-232C, RJ-45 (LAN)",
-      "Power Consumption": "~95 W (typical)",
-      "Dimensions (W×H×D)": "1,041.9 × 587.7 × 74.7 mm",
-      "Weight": "~17.0 kg (without stand)",
-      "VESA Mount": "400 × 200 mm",
     },
     specGroups: {
       "Display": {
@@ -1170,20 +993,6 @@ Built-in daisy chain connectivity simplifies multi-display wiring, allowing sign
 The non-glare panel combined with 178°/178° viewing angles enables installations where observers positioned throughout a space all see consistent, vibrant content without color shift or brightness fade. This makes the VMB-U 55" ideal for retail display walls, hotel lobby installations, restaurant menu boards, and corporate reception areas where diverse viewing angles must be accommodated.
 
 With factory-calibrated color performance and Samsung's daisy chain connectivity, deploying VMB-U 55" arrays dramatically reduces installation complexity and cost compared to traditional video processor-based systems. The display integrates seamlessly with MagicINFO content management, enabling retail chains and hospitality groups to synchronize messaging across hundreds of locations from a centralized dashboard.`,
-    additionalSpecs: {
-      "Panel Type": "S-PVA (non-glare)",
-      "Bezel-to-Bezel": "3.5 mm (all sides, ultra-narrow)",
-      "Brightness": "500 nit",
-      "Resolution": "1,920 × 1,080 (FHD)",
-      "Contrast Ratio": "4,000:1 (typical)",
-      "Input Ports": "HDMI 1.3 × 1, DVI-D × 1, DisplayPort 1.1 × 1",
-      "Daisy Chain": "Daisy Chain support",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Color Gamut": "72% NTSC (typical)",
-      "Response Time": "8 ms (typical)",
-      "External Control": "RS-232C, RJ-45 (LAN)",
-      "Power Consumption": "~95 W (typical)",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "55\"",
@@ -1249,21 +1058,6 @@ With factory-calibrated color performance and Samsung's daisy chain connectivity
 Image Enhancement Technology embedded in the VMB-R automatically compensates for common video wall challenges — tile-to-tile brightness variations, color drift over time, and luminance changes that occur at different screen temperatures. The result is a video wall that looks better year after year, with minimal maintenance intervention required.
 
 With 24/7 operation certification and wide 178°/178° viewing angles, the VMB-R scales from intimate 2×2 arrays in small conference rooms to massive 5×5 installations in command centers and broadcast facilities. The 500-nit brightness performs excellently in professional environments while remaining power-efficient compared to high-brightness competitor models.`,
-    additionalSpecs: {
-      "Panel Type": "S-PVA",
-      "Bezel-to-Bezel": "5.5 mm (razor-narrow)",
-      "Brightness": "500 nit",
-      "Resolution": "1,920 × 1,080 (FHD)",
-      "Contrast Ratio": "4,000:1 (typical)",
-      "Input Ports": "HDMI 1.3 × 1, DVI-D × 1, DisplayPort 1.1 × 1",
-      "Image Enhancement": "Yes (automatic tile calibration)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Color Gamut": "72% NTSC (typical)",
-      "Response Time": "8 ms",
-      "External Control": "RS-232C, RJ-45 (LAN)",
-      "Power Consumption": "~90 W (typical)",
-      "VESA Mount": "400 × 400 mm",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "55\"",
@@ -1332,21 +1126,6 @@ With 24/7 operation certification and wide 178°/178° viewing angles, the VMB-R
 With 500-nit brightness and a slim form factor, the VMC-R performs exceptionally well in professional environments ranging from security operations centers to broadcast control rooms to retail flagship installations. The display's S-PVA panel technology and 178°/178° wide viewing angles ensure content remains vibrant and accurate whether viewed head-on or from the side of a large array.
 
 DP 1.2 daisy chain support allows up to 4K content to be driven through a single DisplayPort cable from a host computer, dramatically simplifying the AV infrastructure behind video wall installations. Combined with Samsung's MagicINFO S6 platform, the VMC-R enables organizations to build scalable, centrally managed video wall systems that grow with their needs.`,
-    additionalSpecs: {
-      "Panel Type": "S-PVA",
-      "Bezel-to-Bezel": "5.5 mm (ultra-narrow)",
-      "Brightness": "500 nit",
-      "Resolution": "1,920 × 1,080 (FHD)",
-      "Contrast Ratio": "4,000:1 (typical)",
-      "Input Ports": "HDMI 1.3 × 1, DVI-D × 1, DisplayPort 1.2 × 1",
-      "Daisy Chain": "DP 1.2 Daisy Chain support",
-      "Factory Calibration": "Yes (color factory-matched)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Color Gamut": "72% NTSC (typical)",
-      "Response Time": "8 ms",
-      "External Control": "RS-232C, RJ-45 (LAN)",
-      "Power Consumption": "~92 W (typical)",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "55\"",
@@ -1404,18 +1183,6 @@ The Flip Pro runs on Tizen OS with Samsung Knox security built in, ensuring sess
       brightness: "350 nit",
       screenSizes: ["75", "85"],
       operationTime: "16/7",
-    },
-    additionalSpecs: {
-      "Operating System": "Tizen 6.5 (Samsung Knox)",
-      "Touch Points": "Up to 20 simultaneous",
-      "USB-C": "USB-C 3.1 Gen1 × 1 (65 W Power Delivery + display)",
-      "Other Inputs": "HDMI 2.0 × 2, USB 3.0 × 2, USB 2.0 × 2",
-      "Wireless": "802.11 a/b/g/n/ac, Bluetooth 4.2",
-      "Screen Share": "AirPlay, Miracast, Screen Mirroring",
-      "Processor": "Quad-core 1.4 GHz",
-      "Memory / Storage": "4 GB / 64 GB",
-      "Color Gamut": "99% sRGB",
-      "VESA Mount": "600 × 400 mm",
     },
     specGroups: {
       "Display": {
@@ -1496,20 +1263,6 @@ The Flip Pro runs on Tizen OS with Samsung Knox security built in, ensuring sess
 Built with antimicrobial coating that inhibits bacterial growth on the touchscreen surface, the Flip 3 addresses hygiene concerns in educational settings while maintaining superior touch responsiveness. Embedded safety and privacy features ensure user content is protected, meeting GDPR and COPPA compliance requirements for global deployments.
 
 With a single USB-C connection delivering power, data, and high-bandwidth content streaming, the Flip 3 simplifies installation and eliminates cable clutter in modern meeting rooms. Dual-stack resolution support (portrait and landscape) and intuitive gesture controls enable natural interaction patterns that match how humans naturally communicate — drawing, writing, gesturing, pointing.`,
-    additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "350 nit",
-      "Panel Type": "IPS with antimicrobial coating",
-      "Touch Technology": "Electromagnetic stylus + 10-point multi-touch",
-      "USB-C": "USB-C 3.1 Gen1 × 1 (65 W Power Delivery)",
-      "Operating System": "Tizen 6.0 (Samsung Knox)",
-      "Wireless": "802.11 a/b/g/n/ac, Bluetooth 5.0",
-      "Screen Share": "AirPlay, Miracast, Screen Mirroring",
-      "Memory / Storage": "3 GB / 32 GB",
-      "Color Gamut": "99% sRGB",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "400 × 400 mm (75\"), 600 × 400 mm (85\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "75\" / 85\"",
@@ -1576,22 +1329,6 @@ With a single USB-C connection delivering power, data, and high-bandwidth conten
 Multi-touch capability supporting up to 20 simultaneous touch points enables whole-class participation where every student can contribute ideas, solve problems, and collaborate in real-time. The Dual Pen design — with a front nib and a back highlighter — lets teachers switch writing modes effortlessly without interrupting the lesson flow. Split screen and multi-window modes make it easy to display and work with multiple applications simultaneously.
 
 Powerful screen sharing supports up to nine simultaneous screens so content flows bidirectionally between the large display and individual student devices. Intelligent classroom apps such as timers and stopwatches, easily pinned to the home screen bar, help teachers keep lessons structured and engaging.`,
-    additionalSpecs: {
-      "Operating System": "Android 11 (AOSP)",
-      "Processor": "A55 × 4 (Quad-core)",
-      "Memory / Storage": "4 GB / 32 GB",
-      "Touch Technology": "IR multi-touch (20 points)",
-      "Touch Response Time": "≤10ms",
-      "Drawing Speed": "≤45ms",
-      "Input Ports": "HDMI × 3 (Rear 2, Front 1), USB-C (Front), OPS",
-      "USB": "5 ports (USB 2.0 × 1, USB 3.0 × 4)",
-      "Output": "HDMI Out (Rear), Touch Out × 2 (Front 1, Rear 1)",
-      "External Control": "RS-232C (In/Out), RJ-45 (In/Out)",
-      "Speaker": "Built-in 12W × 2CH",
-      "Glass": "25% haze, 3.2T, ≥8H hardness",
-      "Security": "802.1x WPA2 Enterprise (EAP-TLS, EAP-TTLS, EAP-PEAP)",
-      "VESA Mount": "600 × 400 mm (65\"), 800 × 400 mm (75\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "65\" / 75\"",
@@ -1668,21 +1405,6 @@ Powerful screen sharing supports up to nine simultaneous screens so content flow
 Google Play Store access enables deployment of thousands of educational apps, assessment tools, and productivity applications without requiring device rooting or modification. Central device management through Google Admin Console allows IT teams to enforce security policies, manage app deployments, and monitor device status across entire school districts from a single dashboard.
 
 The WAD's 4K UHD resolution, wide 178°/178° viewing angles, and 400-nit brightness ensure content remains crystal-clear and visible from every seat in the classroom. Multi-touch capability with support for up to 20 simultaneous touch points means students across the room can collaborate on digital assignments simultaneously.`,
-    additionalSpecs: {
-      "Operating System": "Android 11 (Google EDLA certified)",
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "400 nit",
-      "Touch Technology": "Infrared multi-touch (20 points)",
-      "Google Workspace": "Native integration",
-      "Google Classroom": "Native integration",
-      "Google Meet": "Native integration",
-      "Processor": "Octa-core 2.0 GHz",
-      "Memory / Storage": "4 GB / 32 GB",
-      "Input Ports": "HDMI 2.0 × 2, USB 3.0 × 2, USB 2.0 × 2, RJ-45",
-      "Wi-Fi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
-      "Bluetooth": "5.0",
-      "Color Gamut": "99% sRGB",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "65\" / 75\" / 86\"",
@@ -1752,20 +1474,6 @@ The WAD's 4K UHD resolution, wide 178°/178° viewing angles, and 400-nit bright
 Simple content management via USB stick eliminates the need for external media players or cloud subscriptions, making the BEA-H ideal for small businesses, professional offices, and waiting rooms where IT resources are limited. The 16/7 operation rating ensures displays running throughout business hours maintain reliability without overheating or premature component failure.
 
 With built-in Business TV app support and a range of sizes from 43" to 75", the BEA-H adapts to any corporate environment — from intimate board rooms to expansive office lobbies to dental clinic waiting areas. The 250-nit brightness provides professional picture quality in typical office lighting while maintaining eye comfort for extended viewing.`,
-    additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "250 nit",
-      "Panel Type": "IPS Crystal",
-      "Processor": "Crystal Processor 4K",
-      "Input Ports": "HDMI × 2, USB × 2, RJ-45 (LAN), RS-232C",
-      "Content Management": "USB stick or Business TV App",
-      "Operating System": "Tizen 5.5",
-      "Color Gamut": "72% NTSC (typical)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Memory / Storage": "1.5 GB / 8 GB",
-      "VESA Mount": "300 × 300 mm (43\"-65\"), 400 × 400 mm (75\")",
-      "Power Consumption": "~80 W (typical)",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\"",
@@ -1836,21 +1544,6 @@ With built-in Business TV app support and a range of sizes from 43" to 75", the 
 Clean Cable Solution technology routes all connectivity — power, HDMI, LAN, and control signals — through a single elegant conduit system, dramatically improving aesthetics while reducing cable clutter behind display mounts. This design thoughtfulness particularly benefits modern office environments where visual cleanliness and professional appearance are paramount.
 
 With Business TV App support for content scheduling and a comprehensive size range from 43" to 85", the BEC-H serves diverse business deployments — from boardrooms to lobby installations to training facilities. The 16/7 operation rating and robust thermal design ensure dependability in professional settings where display reliability directly impacts business operations.`,
-    additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "250 nit",
-      "Panel Type": "IPS Crystal",
-      "HDR": "HDR 10+",
-      "Input Ports": "HDMI × 2, USB × 2, RJ-45 (LAN), RS-232C",
-      "Clean Cable": "Yes (single conduit)",
-      "Content Management": "Business TV App",
-      "Operating System": "Tizen 6.0",
-      "Processor": "Quad-core 1.5 GHz",
-      "Memory / Storage": "2 GB / 8 GB",
-      "Color Gamut": "72% NTSC (typical)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "300 × 300 mm (43\"-65\"), 400 × 400 mm (70\"-85\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 70\" / 75\" / 85\"",
@@ -1922,21 +1615,6 @@ With Business TV App support for content scheduling and a comprehensive size ran
 With 300-nit brightness and 4K UHD resolution paired with Samsung's Crystal Processor technology, the BED-H displays corporate presentations, financial dashboards, video calls, and streaming content with exceptional clarity and color accuracy. Business TV App integration enables content scheduling and remote management across large corporate deployments, reducing IT overhead.
 
 The wide 43" to 75" size range and 16/7 operation rating make the BED-H adaptable to any business environment — from intimate executive suites to large corporate atriums. The extended warranty provides peace-of-mind for organizations that view these displays as critical infrastructure worthy of long-term protection.`,
-    additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "300 nit",
-      "Panel Type": "IPS Crystal",
-      "Processor": "Crystal Processor 4K",
-      "Input Ports": "HDMI × 2, USB × 2, RJ-45 (LAN), RS-232C",
-      "Operating System": "Tizen 6.0",
-      "Business TV App": "Yes",
-      "Warranty": "3 years manufacturer",
-      "Memory / Storage": "2 GB / 8 GB",
-      "Color Gamut": "72% NTSC (typical)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "300 × 300 mm (43\"-60\"), 400 × 400 mm (65\"-75\")",
-      "Power Consumption": "~100 W (typical)",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 50\" / 55\" / 60\" / 65\" / 70\" / 75\"",
@@ -2010,20 +1688,6 @@ The wide 43" to 75" size range and 16/7 operation rating make the BED-H adaptabl
 LYNK Cloud central management transforms hotel operations by enabling revenue teams to push targeted content to guest rooms — promotional messages, pay-per-view options, hotel services, and emergency communications — all from a centralized dashboard. Room managers can monitor display status, manage content scheduling, and troubleshoot issues remotely, reducing on-site engineering overhead.
 
 With a slim form factor optimized for mounting above modern hospitality furniture, the HG55AU800T fits naturally into contemporary hotel room designs. The 4K UHD resolution ensures streaming content — Netflix, YouTube, Disney+ — displays with the clarity and color saturation that premium guests expect, delivering a streaming experience that rivals what they enjoy at home.`,
-    additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "HDR standard",
-      "Panel Type": "IPS Dynamic Crystal Color",
-      "Operating System": "Tizen 6.5 (Hotel Edition)",
-      "AirPlay": "AirPlay 2 built-in",
-      "LYNK Cloud": "Compatible with central management",
-      "Input Ports": "HDMI × 2, USB × 2, RJ-45 (LAN), RS-232C",
-      "Processor": "Quad-core 1.5 GHz",
-      "Memory / Storage": "2 GB / 8 GB",
-      "Slim Design": "Yes (optimized for modern mounting)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Color Gamut": "99% BT.709",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "55\" / 65\" / 75\"",
@@ -2092,29 +1756,6 @@ With a slim form factor optimized for mounting above modern hospitality furnitur
 Safe credentials management via Samsung LYNK Cloud ensures guest logins are retained during their stay and automatically wiped upon check-out through the hotel's Property Management System. Hotel managers can curate the in-room experience remotely — creating and deploying web-based content, updating channel maps, and controlling basic display functions from a centralised LYNK Cloud dashboard across all properties worldwide.
 
 Dynamic Crystal Colour technology with HDR10+ and a billion shades of colour elevates every viewing experience. The AirSlim ultra-slim design with a 3 Bezel-less finish complements any interior and saves space, while the Quantum Processor Lite 4K upscales all content for crisp, vibrant imagery.`,
-    additionalSpecs: {
-      "Picture Engine": "Quantum Processor Lite 4K",
-      "PQI": "2200",
-      "HDR": "HDR, HDR10+, HLG",
-      "Colour": "Dynamic Crystal Colour",
-      "Micro Dimming": "UHD Dimming",
-      "Operating System": "Tizen Smart TV",
-      "Samsung LYNK Cloud": "Yes",
-      "Sound Output": "20W, 2CH",
-      "Dolby Decoder": "MS12 2ch",
-      "Object Tracking Sound": "OTS Lite",
-      "Q-Symphony": "Yes",
-      "Bluetooth Audio": "Yes",
-      "Input HDMI": "HDMI × 3",
-      "Input USB": "USB × 2",
-      "Ethernet (LAN)": "1",
-      "Digital Audio Out": "Optical (SPDIF) × 1",
-      "Wireless": "Wi-Fi 5, Bluetooth 5.2",
-      "Design": "AirSlim, 3 Bezel-less, Slim look",
-      "Eco Sensor": "Yes",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "200 × 200 mm (43\"–55\"), 400 × 300 mm (65\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 50\" / 55\" / 65\"",
@@ -2189,21 +1830,6 @@ Dynamic Crystal Colour technology with HDR10+ and a billion shades of colour ele
 Universal Guide integration enables guests to discover content across multiple streaming services, cable channels, and local information without navigating between different apps or interfaces. This unified discovery experience increases guest engagement and satisfaction while reducing support calls from confused guests.
 
 Slim Fit Wall Mount support ensures seamless integration with modern hospitality interior designs where displays are recessed, hung above contemporary furniture, or positioned in minimalist arrangements. The comprehensive 43" to 75" size range adapts to any guest room configuration — from compact business hotel rooms to sprawling resort suites.`,
-    additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "Standard (250 nit)",
-      "Panel Type": "IPS Crystal",
-      "Processor": "Crystal Processor 4K",
-      "Operating System": "Tizen 5.5",
-      "Universal Guide": "Yes (content discovery)",
-      "Input Ports": "HDMI × 2, USB × 2, RJ-45 (LAN), RS-232C",
-      "Slim Fit": "Compatible with Slim Fit Wall Mounts",
-      "Memory / Storage": "1.5 GB / 8 GB",
-      "Color Gamut": "72% NTSC (typical)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "300 × 300 mm (43\"-55\"), 400 × 400 mm (65\"-75\")",
-      "Power Consumption": "~80 W (typical)",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\"",
@@ -2279,20 +1905,6 @@ Slim Fit Wall Mount support ensures seamless integration with modern hospitality
 Mega Dynamic Contrast technology ensures shadow detail in night scenes remains visible while whites maintain their luminosity, creating dramatic visual depth that captures and holds audience attention even in high-ambient environments. The 500-nit brightness paired with the expansive screen real estate creates an immersive installation that commands the center of corporate lobbies, museum atriums, and event venues.
 
 With 24/7 operation certification and integrated MagicINFO S6 content management, the QPDX enables synchronized multi-screen campaigns, real-time data display, and interactive brand experiences. The stunning 5K clarity makes the QPDX ideal for environments where visual excellence defines the customer experience — luxury hospitality lobbies, automotive dealer showrooms, premium retail flagships, and corporate headquarters where first impressions are everything.`,
-    additionalSpecs: {
-      "Resolution": "5,120 × 2,160 (5K UHD)",
-      "Aspect Ratio": "21:9 ultrawide",
-      "Panel Type": "IPS Mega Dynamic Contrast",
-      "Brightness": "500 nit",
-      "Operating System": "Tizen 7.0",
-      "Content Player": "MagicINFO Player S6",
-      "Input Ports": "HDMI × 2, DisplayPort 1.2 × 1, USB × 2, RS-232C, RJ-45",
-      "Wi-Fi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
-      "Bluetooth": "5.0",
-      "Color Gamut": "79% NTSC (typical)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Operation Rating": "24/7",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "105\"",
@@ -2362,19 +1974,6 @@ With 24/7 operation certification and integrated MagicINFO S6 content management
 The ultra-high brightness combined with Samsung's HDR processing creates vivid, pop-off-the-screen visuals that define modern experiential retail and entertainment. Seamless tiling capability allows multiple QH115FX units to be networked into multi-unit walls, creating even larger canvases for mega-venues, corporate campuses, and public spaces.
 
 With 24/7 operation certification and MagicINFO compatibility, the QH115FX becomes the centerpiece of integrated digital signage ecosystems spanning entire venues. The exceptional brightness and massive scale combine to create irreplaceable brand experiences — from sports fans' first impressions at stadium entrances to travelers' welcome moments at airport terminals.`,
-    additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Panel Type": "Direct-lit LED",
-      "Brightness": "1,000 nit (peak)",
-      "Contrast Ratio": "3,000:1 (typical)",
-      "Refresh Rate": "240 Hz (typical)",
-      "Input Ports": "HDMI 2.0 × 2, DisplayPort 1.4 × 1, USB × 2, RS-232C",
-      "Daisy Chain": "Yes (Daisy Chain compatible)",
-      "Color Gamut": "95% DCI-P3 (typical)",
-      "Viewing Angle (H/V)": "176° / 176°",
-      "Operation Rating": "24/7",
-      "Power Consumption": "~3,500 W (typical at 75% brightness)",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "115\"",
@@ -2441,21 +2040,6 @@ With 24/7 operation certification and MagicINFO compatibility, the QH115FX becom
 The 178°/178° wide viewing angles ensure content remains visible and accurately colored whether viewed head-on or from the side of the installation, a critical requirement for public-facing retail and hospitality environments. 24/7 operation certification confirms the VHC-E is engineered for installations that never power down — retail display walls that run during all business hours, casino gaming areas, and 24-hour information displays.
 
 With factory-calibrated color performance and straightforward daisy chain connectivity, the VHC-E enables organizations to build professional video walls without the complexity and cost of dedicated video processing hardware. As business needs evolve and organizations require more advanced video wall capabilities, the VHC-E provides a proven foundation for future expansion.`,
-    additionalSpecs: {
-      "Panel Type": "S-PVA",
-      "Bezel-to-Bezel": "8.5 mm (standard narrow)",
-      "Brightness": "500 nit",
-      "Resolution": "1,920 × 1,080 (FHD)",
-      "Contrast Ratio": "4,000:1 (typical)",
-      "Input Ports": "HDMI 1.3 × 1, DVI-D × 1",
-      "Daisy Chain": "Daisy Chain support",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Response Time": "8 ms",
-      "Color Gamut": "72% NTSC (typical)",
-      "External Control": "RS-232C, RJ-45 (LAN)",
-      "Power Consumption": "~85 W (typical)",
-      "VESA Mount": "400 × 400 mm",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "55\"",
@@ -2523,21 +2107,6 @@ With factory-calibrated color performance and straightforward daisy chain connec
 The 500-nit brightness ensures content remains visible and vibrant in professional environments with controlled lighting — security operations centers, broadcast studios, and executive command centers. The S-PVA panel technology and 178°/178° wide viewing angles mean content appears correctly colored and bright from any position in the room, even when observers are positioned to the extreme sides of large multi-tile arrays.
 
 With daisy chain support eliminating external video processors from many installations, the VMB-E provides professional video wall performance that scales efficiently as operations expand and require larger installation footprints. The proven reliability of the VMB-E platform makes it a trusted choice for mission-critical installations where display failure is simply not an option.`,
-    additionalSpecs: {
-      "Panel Type": "S-PVA (non-glare)",
-      "Bezel-to-Bezel": "3.5 mm (extreme narrow)",
-      "Brightness": "500 nit",
-      "Resolution": "1,920 × 1,080 (FHD)",
-      "Contrast Ratio": "4,000:1 (typical)",
-      "Input Ports": "HDMI 1.3 × 1, DVI-D × 1, DisplayPort 1.1 × 1",
-      "Daisy Chain": "Daisy Chain support",
-      "Image Enhancement": "Yes (automatic tile calibration)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Response Time": "8 ms",
-      "Color Gamut": "72% NTSC (typical)",
-      "External Control": "RS-232C, RJ-45 (LAN)",
-      "Power Consumption": "~90 W (typical)",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "55\"",
@@ -2606,21 +2175,6 @@ With daisy chain support eliminating external video processors from many install
 The non-glare coating reduces reflections and ambient light washout, ensuring video wall content remains the focal point rather than competing with reflected ceiling lights, window glare, or architectural lighting fixtures. This combination of extreme narrow bezel and high brightness creates video walls that appear nearly seamless while remaining visible in even the brightest professional environments.
 
 With 24/7 operation certification and Samsung's Image Enhancement Technology maintaining tile-to-tile color and brightness uniformity over months and years of continuous operation, the VHB-E provides investment protection for organizations deploying large-scale video wall installations in demanding environments.`,
-    additionalSpecs: {
-      "Panel Type": "S-PVA (non-glare coating)",
-      "Bezel-to-Bezel": "3.5 mm (extreme narrow)",
-      "Brightness": "700 nit",
-      "Resolution": "1,920 × 1,080 (FHD)",
-      "Contrast Ratio": "4,500:1 (typical)",
-      "Input Ports": "HDMI 1.4 × 2, DisplayPort 1.2 × 1, DVI-D × 1",
-      "Daisy Chain": "Daisy Chain support (5×5 max)",
-      "Image Enhancement": "Yes",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Response Time": "8 ms",
-      "Color Gamut": "72% NTSC (typical)",
-      "External Control": "RS-232C, RJ-45 (LAN)",
-      "Power Consumption": "~115 W (typical)",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "55\"",
@@ -2689,22 +2243,6 @@ With 24/7 operation certification and Samsung's Image Enhancement Technology mai
 Image Enhancement Technology embedded in the VH55R ensures each tile maintains perfect color and brightness alignment with its neighbors throughout the lifespan of the installation. This intelligent technology automatically compensates for the minor variations in brightness and color that naturally occur as LCD panels age at different rates, maintaining the visual seamlessness that premium installations demand.
 
 With 24/7 operation reliability and wide 178°/178° viewing angles, the VH55R serves as the premium choice for organizations where the video wall is itself a brand statement — luxury boutique retail, high-end automotive showrooms, and corporate headquarters where the quality of the visual environment communicates corporate values to visitors.`,
-    additionalSpecs: {
-      "Panel Type": "S-PVA",
-      "Bezel-to-Bezel": "3.5 mm (razor-thin)",
-      "Brightness": "700 nit",
-      "Resolution": "1,920 × 1,080 (FHD)",
-      "Contrast Ratio": "4,500:1 (typical)",
-      "Input Ports": "HDMI 1.4 × 2, DisplayPort 1.2 × 1, DVI-D × 1",
-      "Image Enhancement": "Yes (automatic calibration)",
-      "Daisy Chain": "Daisy Chain support",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Response Time": "8 ms",
-      "Color Gamut": "72% NTSC (typical)",
-      "External Control": "RS-232C, RJ-45 (LAN)",
-      "Power Consumption": "~115 W (typical)",
-      "VESA Mount": "400 × 400 mm",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "55\"",
@@ -2771,21 +2309,6 @@ With 24/7 operation reliability and wide 178°/178° viewing angles, the VH55R s
 The writing experience on the Flip 2 replicates the natural feedback and responsiveness of pen-on-paper, eliminating friction that typically occurs when transitioning from physical whiteboards to digital interactive displays. Wireless screen sharing from multiple devices simultaneously enables dynamic collaboration where one participant can present a deck while another pulls up reference materials, and a third captures notes.
 
 Roll-and-view capability enables the Flip 2 to be used in either landscape or portrait orientation, adapting to diverse collaboration scenarios — wide landscape for presentations, tall portrait for brainstorming sessions. Content export via simple NFC tap allows participants to save collaborative work directly to their devices, and auto-erase ensures the canvas is ready for the next meeting.`,
-    additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "300 nit",
-      "Panel Type": "IPS",
-      "Touch Technology": "Infrared multi-touch (10 points)",
-      "Stylus Support": "Electromagnetic stylus",
-      "Operating System": "Tizen 5.5",
-      "Wireless": "802.11 a/b/g/n/ac, Bluetooth 4.2",
-      "Screen Share": "Miracast, AirPlay (1st gen), Screen Mirroring",
-      "Memory / Storage": "2 GB / 16 GB",
-      "Content Export": "NFC tap export",
-      "Roll and View": "Yes (portrait/landscape)",
-      "Color Gamut": "72% NTSC",
-      "VESA Mount": "200 × 200 mm",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "55\"",
@@ -2852,20 +2375,6 @@ Roll-and-view capability enables the Flip 2 to be used in either landscape or po
 Android-based OS provides full app flexibility — educators can deploy specialized learning applications, assessment tools, video conferencing platforms, and productivity software directly on the display without requiring external computers. Built-in speakers and microphone array enable two-way audio for hybrid learning scenarios where remote participants engage alongside in-person attendees.
 
 Centralized remote device management through MDM/EMM platforms enables IT teams to monitor all WAF displays across a school district, deploy app updates, enforce security policies, and collect usage analytics. The multi-touch capability supporting up to 20 simultaneous touch points means large classrooms can function as fully collaborative spaces where every student has equal opportunity to participate.`,
-    additionalSpecs: {
-      "Operating System": "Android 10+",
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "400 nit",
-      "Touch Technology": "Infrared multi-touch (20 points)",
-      "Built-in Audio": "Yes (speakers + microphone array)",
-      "Processor": "Octa-core 2.0 GHz",
-      "Memory / Storage": "4 GB / 32 GB",
-      "Input Ports": "HDMI 2.0 × 2, USB 3.0 × 2, USB 2.0 × 2",
-      "Wi-Fi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
-      "Bluetooth": "5.0",
-      "MDM/EMM": "Supported",
-      "Color Gamut": "99% sRGB",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "65\" / 75\" / 86\"",
@@ -2930,21 +2439,6 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
 Capacitive touch technology eliminates the need for protective glass overlays or external touch frame systems, maintaining the sleek aesthetic that professional environments demand. The 10-point multi-touch recognition enables complex gesture controls and simultaneous multi-user interaction, transforming mundane information displays into engaging interactive experiences.
 
 With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, reception desk counters, and modern interior designs where bulky displays would disrupt visual harmony. Integrated MagicINFO Player S6 enables content management without external computers, while the comprehensive 24" to 55" size range adapts to any installation scenario — from compact tabletop displays to wall-mounted larger formats.`,
-    additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "300 nit",
-      "Panel Type": "IPS Dynamic Crystal Color",
-      "Touch Technology": "Capacitive multi-touch (10 points)",
-      "Depth": "28.5 mm (ultra-slim)",
-      "Operating System": "Tizen 6.5",
-      "Content Player": "MagicINFO Player S6",
-      "Input Ports": "HDMI × 2, USB × 2, RS-232C (In/Out), RJ-45 (LAN)",
-      "Wi-Fi": "802.11 a/b/g/n/ac (2.4 / 5 GHz)",
-      "Bluetooth": "5.0",
-      "Color Gamut": "72% NTSC",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "200 × 200 mm (24\"), 400 × 400 mm (43\"/55\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "24\" / 43\" / 55\"",
@@ -3016,26 +2510,6 @@ With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, 
 Combined with practical tools like the Samsung Business TV App and VXT cloud content management, you can easily create, schedule, and manage promotional content without extra hardware or complex systems. PlayLock prevents unauthorised users from tampering with the screen using a pin-code system, ensuring only your selected content is displayed. SmartThings Pro connectivity enhances convenience, safety, and energy efficiency across varied business settings.
 
 Available in six sizes from 43" to 85", the BEFX-H2 adapts to any commercial space. HDR10+ support and Crystal Processor 4K deliver vibrant upscaled imagery, while the 16/7 operation rating ensures the display holds up reliably throughout extended business hours.`,
-    additionalSpecs: {
-      "Picture Engine": "Crystal Processor 4K",
-      "HDR10+": "Yes",
-      "Operating System": "Tizen Smart TV",
-      "Colour Gamut": "98% sRGB",
-      "Operation Hour": "16/7",
-      "Input Video": "HDMI × 3",
-      "Input USB": "USB × 1",
-      "Input RF": "1 Terrestrial / 1 Cable / 1 Satellite",
-      "External Control": "RJ-45 (LAN)",
-      "Wireless": "Wi-Fi 5, Bluetooth 5.2",
-      "Audio": "20W, 2CH (10W + 10W), Bluetooth Audio",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Business TV App": "Yes (Android / iOS)",
-      "VXT CMS": "Yes (S Series plan)",
-      "PlayLock": "Yes",
-      "SmartThings Pro": "Yes",
-      "Digital Art (Niio)": "Yes (subscription required)",
-      "VESA Mount": "200 × 200 mm (43\"–55\"), 400 × 300 mm (65\"–85\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\" / 85\"",
@@ -3110,21 +2584,6 @@ Available in six sizes from 43" to 85", the BEFX-H2 adapts to any commercial spa
 LYNK Cloud remote management compatibility enables hoteliers to monitor display status, manage firmware updates, and troubleshoot issues from a central operations dashboard — dramatically reducing on-site engineering overhead. The ability to push promotional content to guest rooms enables revenue optimization through targeted VOD suggestions, restaurant reservation options, and spa service promotions.
 
 With multiple HDMI and USB ports supporting diverse guest devices — from older set-top boxes to modern streaming appliances to personal USB media — the HGU701F accommodates the full spectrum of guest technology expectations. The slim wall-mount design adapts to modern hospitality room layouts where space efficiency and aesthetic integration are paramount.`,
-    additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "300 nit",
-      "Panel Type": "IPS",
-      "Operating System": "Tizen 5.5 (Hotel Edition)",
-      "Hotel Mode": "Yes (locked-down guest settings)",
-      "LYNK Cloud": "Compatible",
-      "Input Ports": "HDMI × 2, USB × 2, RJ-45 (LAN), RS-232C",
-      "Processor": "Quad-core 1.5 GHz",
-      "Memory / Storage": "1.5 GB / 8 GB",
-      "Slim Design": "Yes",
-      "Color Gamut": "72% NTSC (typical)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "200 × 200 mm (43\"-50\"), 300 × 300 mm (55\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 50\" / 55\"",
@@ -3197,21 +2656,6 @@ With multiple HDMI and USB ports supporting diverse guest devices — from older
 Crystal 4K UHD resolution ensures streaming services, premium cable channels, and hotel-provided content all display with stunning clarity. PurColor technology delivers vibrant, lifelike colors that enhance both entertainment consumption and guest perception of room quality. The Slim Fit Wall Mount compatibility enables seamless integration into modern hospitality interior designs without compromising aesthetics.
 
 Hotel Mode restricts guest access to critical settings while enabling easy streaming app access, and LYNK Cloud integration allows revenue teams to push targeted promotions, room service options, and check-out reminders. The 16/7 operation rating ensures displays remain available and reliable throughout the day and evening guest cycles.`,
-    additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "300 nit",
-      "Panel Type": "IPS PurColor",
-      "Operating System": "Tizen 5.5 (Hotel Edition)",
-      "Processor": "Quad-core 1.5 GHz",
-      "Hotel Mode": "Yes",
-      "LYNK Cloud": "Compatible",
-      "Input Ports": "HDMI × 2, USB × 2, RJ-45 (LAN), RS-232C",
-      "Slim Fit": "Compatible with Slim Fit Wall Mounts",
-      "Memory / Storage": "1.5 GB / 8 GB",
-      "Color Gamut": "99% BT.709",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Power Consumption": "~120 W (typical)",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "75\"",
@@ -3284,21 +2728,6 @@ Hotel Mode restricts guest access to critical settings while enabling easy strea
 Google Cast integration enables guests to instantly stream content from their personal devices without pairing codes, authentication screens, or technical complexity. Whether guests want to mirror YouTube videos, share Netflix screens, or play personal music libraries, Google Cast makes it seamless.
 
 Dynamic Crystal Color technology delivers exceptional color saturation and vibrancy that makes standard cable broadcasts look stunning and transforms streaming content into cinema-quality experiences. The comprehensive 43" to 85" size range adapts to any property segment — from compact business hotel rooms to sprawling resort penthouse suites. LYNK Cloud enables centralized management of hundreds of displays across multiple properties from a single operations dashboard.`,
-    additionalSpecs: {
-      "Resolution": "3,840 × 2,160 (4K UHD)",
-      "Brightness": "HDR standard (300 nit typical)",
-      "Panel Type": "IPS Dynamic Crystal Color",
-      "Google Cast": "Yes (built-in)",
-      "Operating System": "Tizen 6.5 (Hotel Edition)",
-      "LYNK Cloud": "Compatible with centralized management",
-      "Input Ports": "HDMI × 2, USB × 2, RJ-45 (LAN), RS-232C",
-      "Processor": "Quad-core 1.5 GHz",
-      "Memory / Storage": "2 GB / 8 GB",
-      "Slim Fit": "Yes (modern interiors optimized)",
-      "Color Gamut": "99% BT.709",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "VESA Mount": "300 × 300 mm (43\"-65\"), 400 × 400 mm (75\"-85\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\" / 85\"",
@@ -3373,38 +2802,6 @@ Dynamic Crystal Color technology delivers exceptional color saturation and vibra
 The built-in 48MP camera with 114.9° diagonal field of view and an 8-mic far-field array with 10-metre 180° pickup range make the WAFX-P a true all-in-one video call system — no extra equipment required. Dual 20W speakers with a dedicated woofer deliver clear, room-filling audio for presentations, lessons, and calls. NFC support enables tap-to-connect and tap-to-authenticate workflows.
 
 Embedded AI functions unlock AI Write & Search: simply circle handwritten notes on screen and tap the search icon to instantly surface web results, images, and resources without typing. A dedicated Annotation button lets users annotate over any content — videos, documents, live feeds — without switching apps. An on-premise Device Management Solution supports local network environments, enabling IT teams to remotely manage whiteboard settings and apps across multiple rooms.`,
-    additionalSpecs: {
-      "Operating System": "Android 15 (EDLA certified)",
-      "Processor": "Octa-core (A78 × 4 + A55 × 4)",
-      "RAM": "16GB",
-      "Storage": "128GB",
-      "Contrast Ratio": "1,200:1 (typical) / 4,000:1 (dynamic)",
-      "Viewing Angle (H/V)": "178° / 178°",
-      "Response Time (G-to-G)": "8ms",
-      "Backlight Life": "50,000 hrs",
-      "Glass": "25% haze, 3.2T, ≥8H hardness",
-      "Touch Technology": "IR multi-touch (50 points)",
-      "Touch Response Time": "≤3ms",
-      "Drawing Speed": "35ms (Android 15)",
-      "Touch Pen": "Passive Pen (Front 3mm / Back 8mm recognition)",
-      "Camera": "48MP, UVC, 114.9° diagonal FOV",
-      "Camera Formats": "MJPEG 3840×2160@30fps / 1920×1080@30fps / 1280×720@30fps",
-      "Microphone": "8-mic array, 10m pickup (180°), AEC, AGC, Speech Enhancement",
-      "Speaker": "Built-in 20W × 2CH + Woofer (4Ω 20W)",
-      "NFC": "ISO/IEC 14443 A/B, MIFARE/FeliCa, <30mm range",
-      "Input Ports": "HDMI × 3 (Rear 2, Front 1), USB-C (Front), OPS, DisplayPort",
-      "USB": "5 ports (USB 2.0 × 3, USB 3.0 × 2)",
-      "Output": "HDMI Out (Rear), Touch Out × 2, Audio Out (Stereo Mini Jack)",
-      "External Control": "RS-232C In, RJ-45 In/Out",
-      "Wi-Fi": "Wi-Fi 6 (802.11ax), dual-band",
-      "Bluetooth": "BT 5.0",
-      "Ethernet": "1 Gbps",
-      "Screen Share": "Yes (up to 9 simultaneous screens)",
-      "WebRTC": "Yes",
-      "Environment": "ENERGY STAR",
-      "Security": "WFA/WPA/WPA2/WPA3 Personal, WPS 2.0",
-      "VESA Mount": "600 × 400 mm (65\"), 800 × 400 mm (75\"), 800 × 600 mm (86\")",
-    },
     specGroups: {
       "Display": {
         "Diagonal Size": "65\" / 75\" / 86\"",

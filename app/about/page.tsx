@@ -162,19 +162,17 @@ export default function AboutPage() {
             </Link>
           </div>
         </div>
-      </section>
 
-      {/* ───────────────── Trust Strip ───────────────── */}
-      <section className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {/* Stats bar — inside the hero, 1x4 format */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-t border-white/10 flex">
             {STATS.map((s, i) => (
               <div
                 key={s.label}
-                className={`px-2 md:px-6 ${i > 0 ? "md:border-l md:border-gray-100" : ""}`}
+                className={`py-6 md:py-7 text-center flex-1 ${i < STATS.length - 1 ? "border-r border-white/10" : ""}`}
               >
-                <p className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">{s.value}</p>
-                <p className="text-[11px] text-gray-500 uppercase tracking-wider mt-1.5 font-medium">
+                <p className="text-xl md:text-3xl font-black text-white leading-none tracking-tight">{s.value}</p>
+                <p className="text-[9px] sm:text-[11px] md:text-xs font-medium text-blue-200/70 uppercase tracking-wider mt-2 px-1 sm:px-2 leading-tight">
                   {s.label}
                 </p>
               </div>
@@ -306,8 +304,8 @@ export default function AboutPage() {
           {/* Desktop: horizontal timeline */}
           <div className="hidden md:block">
             <div className="relative">
-              <div className="absolute left-0 right-0 top-6.5 h-px bg-gray-200" />
-              <div className="grid grid-cols-7 gap-x-3 relative">
+              <div className="absolute left-[calc(100%/12)] right-[calc(100%/12)] top-6.5 h-px bg-gray-200" />
+              <div className="grid grid-cols-6 gap-x-3 relative">
                 {MILESTONES.map((m) => (
                   <div key={m.year} className="relative">
                     <div className="flex justify-center mb-6">

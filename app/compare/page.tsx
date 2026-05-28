@@ -88,14 +88,7 @@ function ComparePageInner() {
     const ExcelJS = await import("exceljs");
     const headers = ["Specification", ...selectedProducts.map((p) => p.name)];
 
-    // Collect all additionalSpecs keys present across any selected product
-    const extraSpecKeys = Array.from(
-      new Set(
-        selectedProducts.flatMap((p) =>
-          p.additionalSpecs ? Object.keys(p.additionalSpecs) : []
-        )
-      )
-    );
+    const extraSpecKeys = getExtraSpecKeys(selectedProducts);
 
     const rows: string[][] = [
       // Core specs
@@ -108,10 +101,10 @@ function ComparePageInner() {
       ["Brightness", ...selectedProducts.map((p) => p.specs.brightness)],
       ["Operation Hours", ...selectedProducts.map((p) => p.specs.operationTime)],
       ["Available Sizes", ...selectedProducts.map((p) => p.specs.screenSizes.map((s) => `${s}"`).join(", "))],
-      // Extended specs — all keys from any product
+      // Extended specs — uses specGroups when present, falls back to additionalSpecs
       ...extraSpecKeys.map((key) => [
         key,
-        ...selectedProducts.map((p) => p.additionalSpecs?.[key] ?? "—"),
+        ...selectedProducts.map((p) => getExtraSpecValue(p, key)),
       ]),
       // Features — all of them
       ["Key Features", ...selectedProducts.map((p) => p.features.join("; "))],
@@ -268,20 +261,21 @@ function ComparePageInner() {
                 {/* Product header row */}
                 <thead>
                   <tr>
-                    <th className="w-44 bg-gray-50 p-5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-r border-gray-100 align-bottom">
+                    <th scope="col" className="w-44 bg-gray-50 p-5 text-left text-xs font-bold text-gray-400 uppercase tracking-widest border-b border-r border-gray-100 align-bottom">
                       Specification
                     </th>
                     {selectedProducts.map((product) => (
                       <th
                         key={product.id}
+                        scope="col"
                         className="p-6 border-b border-r border-gray-100 relative group align-top"
                       >
                         <button
                           onClick={() => removeFromCompare(product.id)}
+                          aria-label={`Remove ${product.name} from comparison`}
                           className="no-print absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium text-gray-400 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-100 transition-all"
-                          title="Remove from comparison"
                         >
-                          <X size={12} />
+                          <X size={12} aria-hidden="true" />
                           Remove
                         </button>
                         <div className="flex flex-col items-center text-center">
@@ -324,12 +318,13 @@ function ComparePageInner() {
                     {[...Array(fillerCount)].map((_, i) => (
                       <th
                         key={`empty-${i}`}
+                        scope="col"
                         className="border-b border-r border-gray-100 bg-gray-50/30"
                       >
                         <Link
                           href="/products"
+                          aria-label="Browse products to add to this comparison"
                           className="group h-full min-h-55 flex flex-col items-center justify-center gap-3 p-4"
-                          title="Add a product to compare"
                         >
                           <div className="w-12 h-12 rounded-full border-2 border-dashed border-gray-300 group-hover:border-blue-400 group-hover:bg-blue-50 flex items-center justify-center transition-all">
                             <Plus size={22} className="text-gray-300 group-hover:text-blue-500 transition-colors" />
@@ -359,9 +354,9 @@ function ComparePageInner() {
                       const allSame = values.every((v) => v === values[0]);
                       return (
                         <tr key={row.label} className={ri % 2 === 0 ? "bg-white" : "bg-gray-50/60"}>
-                          <td className="px-5 py-4 text-sm font-semibold text-gray-600 border-r border-gray-100 align-top">
+                          <th scope="row" className="px-5 py-4 text-sm font-semibold text-gray-600 border-r border-gray-100 align-top text-left">
                             {row.label}
-                          </td>
+                          </th>
                           {selectedProducts.map((p) => (
                             <td
                               key={p.id}
@@ -384,9 +379,9 @@ function ComparePageInner() {
 
                   {/* Key features row — all features */}
                   <tr className="bg-white border-t-2 border-gray-100">
-                    <td className="px-5 py-4 text-sm font-semibold text-gray-600 border-r border-gray-100 align-top">
+                    <th scope="row" className="px-5 py-4 text-sm font-semibold text-gray-600 border-r border-gray-100 align-top text-left">
                       Key Features
-                    </td>
+                    </th>
                     {selectedProducts.map((p) => (
                       <td key={p.id} className="px-5 py-4 border-r border-gray-100 align-top">
                         <ul className="space-y-1.5">
@@ -409,9 +404,9 @@ function ComparePageInner() {
                   {/* Product overview row — only if any product has longDescription */}
                   {selectedProducts.some((p) => p.longDescription) && (
                     <tr className="bg-gray-50/60 border-t border-gray-100">
-                      <td className="px-5 py-4 text-sm font-semibold text-gray-600 border-r border-gray-100 align-top">
+                      <th scope="row" className="px-5 py-4 text-sm font-semibold text-gray-600 border-r border-gray-100 align-top text-left">
                         Product Overview
-                      </td>
+                      </th>
                       {selectedProducts.map((p) => (
                         <td key={p.id} className="px-5 py-4 text-xs text-gray-500 border-r border-gray-100 align-top leading-relaxed">
                           {p.longDescription ?? "—"}

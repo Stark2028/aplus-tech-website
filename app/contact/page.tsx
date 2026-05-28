@@ -1,11 +1,19 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Phone, Mail, MapPin, Clock, Send, CheckCircle,
   ChevronDown, ChevronUp,
   Building2, Timer, BadgeCheck, Linkedin, ChevronRight
 } from "lucide-react";
+import { contactFormSchema, type ContactFormValues } from "@/lib/formSchemas";
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return <p role="alert" className="mt-1 text-xs text-red-500">{message}</p>;
+}
 
 const INQUIRY_TYPES = [
   "Product Inquiry",
@@ -66,30 +74,43 @@ const MAX_MESSAGE_LENGTH = 500;
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState("");
-  const [messageLength, setMessageLength] = useState(0);
+  const [serverError, setServerError] = useState("");
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setSending(true);
-    setError("");
-    const fd = new FormData(e.currentTarget);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ContactFormValues>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: { message: "" },
+  });
+
+  const messageValue = watch("message") ?? "";
+  const messageLength = messageValue.length;
+
+  const onSubmit = async (values: ContactFormValues) => {
+    setServerError("");
     const payload: Record<string, string> = {
       subject: "New Contact Form Submission — Aplus Tech",
       from_name: "Aplus Tech Website",
+      ...values,
+      message: values.message ?? "",
+      company: values.company ?? "",
     };
-    fd.forEach((value, key) => { payload[key] = value as string; });
     const res = await fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
     const data = await res.json();
-    setSending(false);
-    if (data.success) setSubmitted(true);
-    else setError(data.message || "Something went wrong. Please try again.");
-  }
+    if (data.success) {
+      setSubmitted(true);
+    } else {
+      setServerError(data.message || "Something went wrong. Please try again.");
+    }
+  };
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -198,7 +219,7 @@ export default function ContactPage() {
                       Thank you for reaching out. Our team has received your message and will contact you shortly.
                     </p>
                     <button
-                      onClick={() => { setSubmitted(false); setMessageLength(0); }}
+                      onClick={() => { setSubmitted(false); reset(); }}
                       type="button"
                       className="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-colors"
                     >
@@ -206,11 +227,10 @@ export default function ContactPage() {
                     </button>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="px-8 py-8 space-y-6">
+                  <form onSubmit={handleSubmit(onSubmit)} noValidate className="px-8 py-8 space-y-6">
                     {/* Honeypot — hidden from users; bots that fill it are silently dropped */}
                     <input
                       type="text"
-                      name="company_website"
                       tabIndex={-1}
                       autoComplete="off"
                       aria-hidden="true"
@@ -221,16 +241,20 @@ export default function ContactPage() {
                         <label className="block text-sm font-semibold text-gray-700 mb-1.5 transition-colors group-focus-within:text-blue-600">
                           Full Name <span className="text-red-500">*</span>
                         </label>
-                        <input required name="name" type="text" placeholder="Rahul Sharma"
-                          className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm bg-gray-50/50 hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all placeholder:text-gray-400"
+                        <input type="text" autoComplete="name" placeholder="Rahul Sharma"
+                          aria-invalid={!!errors.name}
+                          className={`w-full px-4 py-3.5 border rounded-xl text-sm bg-gray-50/50 hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all placeholder:text-gray-400 ${errors.name ? "border-red-400" : "border-gray-200"}`}
+                          {...register("name")}
                         />
+                        <FieldError message={errors.name?.message} />
                       </div>
                       <div className="relative group">
                         <label className="block text-sm font-semibold text-gray-700 mb-1.5 transition-colors group-focus-within:text-blue-600">
                           Company Name <span className="text-xs font-normal text-gray-400 ml-1">(optional)</span>
                         </label>
-                        <input name="company" type="text" placeholder="Acme Hotels Pvt. Ltd."
+                        <input type="text" autoComplete="organization" placeholder="Acme Hotels Pvt. Ltd."
                           className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm bg-gray-50/50 hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all placeholder:text-gray-400"
+                          {...register("company")}
                         />
                       </div>
                     </div>
@@ -240,17 +264,23 @@ export default function ContactPage() {
                         <label className="block text-sm font-semibold text-gray-700 mb-1.5 transition-colors group-focus-within:text-blue-600">
                           Work Email <span className="text-red-500">*</span>
                         </label>
-                        <input required name="email" type="email" placeholder="rahul@company.com"
-                          className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm bg-gray-50/50 hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all placeholder:text-gray-400"
+                        <input type="email" autoComplete="email" placeholder="rahul@company.com"
+                          aria-invalid={!!errors.email}
+                          className={`w-full px-4 py-3.5 border rounded-xl text-sm bg-gray-50/50 hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all placeholder:text-gray-400 ${errors.email ? "border-red-400" : "border-gray-200"}`}
+                          {...register("email")}
                         />
+                        <FieldError message={errors.email?.message} />
                       </div>
                       <div className="relative group">
                         <label className="block text-sm font-semibold text-gray-700 mb-1.5 transition-colors group-focus-within:text-blue-600">
                           Phone Number <span className="text-red-500">*</span>
                         </label>
-                        <input required name="phone" type="tel" placeholder="+91 98765 43210"
-                          className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm bg-gray-50/50 hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all placeholder:text-gray-400"
+                        <input type="tel" autoComplete="tel" placeholder="+91 98765 43210"
+                          aria-invalid={!!errors.phone}
+                          className={`w-full px-4 py-3.5 border rounded-xl text-sm bg-gray-50/50 hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all placeholder:text-gray-400 ${errors.phone ? "border-red-400" : "border-gray-200"}`}
+                          {...register("phone")}
                         />
+                        <FieldError message={errors.phone?.message} />
                       </div>
                     </div>
 
@@ -258,13 +288,17 @@ export default function ContactPage() {
                       <label className="block text-sm font-semibold text-gray-700 mb-1.5 transition-colors group-focus-within:text-blue-600">
                         Inquiry Type <span className="text-red-500">*</span>
                       </label>
-                      <select required name="inquiry_type" defaultValue=""
-                        className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm bg-gray-50/50 hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-gray-700 appearance-none cursor-pointer"
+                      <select
+                        aria-invalid={!!errors.inquiry_type}
+                        className={`w-full px-4 py-3.5 border rounded-xl text-sm bg-gray-50/50 hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all text-gray-700 appearance-none cursor-pointer ${errors.inquiry_type ? "border-red-400" : "border-gray-200"}`}
+                        defaultValue=""
+                        {...register("inquiry_type")}
                       >
                         <option value="" disabled>Select a topic…</option>
                         {INQUIRY_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
                       </select>
                       <ChevronDown size={16} className="absolute right-4 top-[38px] text-gray-400 pointer-events-none" />
+                      <FieldError message={errors.inquiry_type?.message} />
                     </div>
 
                     <div className="relative group">
@@ -276,24 +310,24 @@ export default function ContactPage() {
                           {messageLength}/{MAX_MESSAGE_LENGTH}
                         </span>
                       </div>
-                      <textarea name="message" rows={5} maxLength={MAX_MESSAGE_LENGTH}
-                        onChange={(e) => setMessageLength(e.target.value.length)}
+                      <textarea rows={5} maxLength={MAX_MESSAGE_LENGTH}
                         placeholder="Please describe your requirements such as product type, quantity, installation site, timeline…"
                         className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm bg-gray-50/50 hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all resize-none placeholder:text-gray-400"
+                        {...register("message")}
                       />
                     </div>
 
-                    {error && (
+                    {serverError && (
                       <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl px-4 py-3.5 flex items-center gap-2 animate-page-enter">
                         <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
-                        {error}
+                        {serverError}
                       </div>
                     )}
 
                     <div className="flex flex-col sm:flex-row sm:items-center gap-5 pt-4">
-                      <button type="submit" disabled={sending}
+                      <button type="submit" disabled={isSubmitting}
                         className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/40 text-white font-semibold px-10 py-4 rounded-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 w-full sm:w-auto">
-                        {sending ? (
+                        {isSubmitting ? (
                           <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                         ) : (
                           <>

@@ -310,6 +310,34 @@ function drawItemsHeader(ctx: Ctx) {
   ctx.y -= 22;
 }
 
+function buildSpecLines(item: QuoteItem): string[] {
+  const p = item.product;
+  const lines: string[] = [
+    safe(p.specs.resolution),
+    safe(p.specs.brightness),
+    safe(`Sizes: ${p.specs.screenSizes.map((s) => `${s}"`).join(" · ")}`),
+  ];
+
+  // Append up to 3 extra specs from specGroups (flattened) or additionalSpecs
+  const extras: string[] = [];
+  if (p.specGroups) {
+    for (const group of Object.values(p.specGroups)) {
+      for (const [k, v] of Object.entries(group)) {
+        extras.push(safe(`${k}: ${v}`));
+        if (extras.length === 3) break;
+      }
+      if (extras.length === 3) break;
+    }
+  } else if (p.additionalSpecs) {
+    for (const [k, v] of Object.entries(p.additionalSpecs)) {
+      extras.push(safe(`${k}: ${v}`));
+      if (extras.length === 3) break;
+    }
+  }
+
+  return [...lines, ...extras];
+}
+
 function drawItemRow(ctx: Ctx, item: QuoteItem, idx: number) {
   const { page, fonts } = ctx;
   const fontSize = 9;
@@ -326,13 +354,7 @@ function drawItemRow(ctx: Ctx, item: QuoteItem, idx: number) {
   const metaText = safe(
     `${item.product.series} · ${item.product.category}`
   );
-  const specLines = [
-    safe(item.product.specs.resolution),
-    safe(item.product.specs.brightness),
-    safe(
-      `Sizes: ${item.product.specs.screenSizes.map((s) => `${s}"`).join(" · ")}`
-    ),
-  ];
+  const specLines = buildSpecLines(item);
 
   const productHeight = nameLines.length * lineH + 4 + metaSize;
   const specHeight = specLines.length * (metaSize + 4);

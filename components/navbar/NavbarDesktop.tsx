@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { ChevronDown, Phone, ShoppingBag } from "lucide-react";
 import { productCategories } from "@/data/categories";
@@ -7,7 +10,32 @@ interface Props {
   cartCount: number;
 }
 
+function useDropdown() {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    function onClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onClickOutside);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onClickOutside);
+    };
+  }, []);
+
+  return { open, setOpen, ref };
+}
+
 export default function NavbarDesktop({ cartCount }: Props) {
+  const products = useDropdown();
+  const solutions = useDropdown();
+
   return (
     <>
       <nav className="hidden xl:flex items-center gap-1" aria-label="Primary">
@@ -18,80 +46,112 @@ export default function NavbarDesktop({ cartCount }: Props) {
           Home
         </Link>
 
-        <div className="relative group">
+        {/* Products dropdown */}
+        <div 
+          className="relative" 
+          ref={products.ref}
+          onMouseEnter={() => products.setOpen(true)}
+          onMouseLeave={() => products.setOpen(false)}
+        >
           <button
             type="button"
+            onClick={() => products.setOpen((v) => !v)}
             className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
             aria-haspopup="menu"
+            aria-expanded={products.open}
           >
             Products
             <ChevronDown
               size={14}
               aria-hidden="true"
-              className="transition-transform duration-200 group-hover:rotate-180"
+              className={`transition-transform duration-200 ${products.open ? "rotate-180" : ""}`}
             />
           </button>
-          <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 hidden group-hover:block">
-            <div className="bg-white border border-gray-100 shadow-xl rounded-2xl py-2 px-2 w-60 animate-in fade-in slide-in-from-top-2 duration-200">
-              <div className="px-3 py-1.5 mb-1">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500" aria-hidden="true">
-                  Categories
-                </span>
-              </div>
-              {productCategories.map((cat) => (
-                <Link
-                  key={cat.id}
-                  href={`/categories/${cat.id}`}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-xl transition-colors"
-                >
-                  <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" aria-hidden="true" />
-                  {cat.navLabel}
-                </Link>
-              ))}
-              <div className="border-t border-gray-100 mt-2 pt-2 px-2">
-                <Link
-                  href="/products"
-                  className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-50 rounded-xl transition-colors"
-                >
-                  View All Products →
-                </Link>
+          {products.open && (
+            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2">
+              <div
+                role="menu"
+                className="bg-white border border-gray-100 shadow-xl rounded-2xl py-2 px-2 w-60 animate-in fade-in slide-in-from-top-2 duration-200"
+              >
+                <div className="px-3 py-1.5 mb-1">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500" aria-hidden="true">
+                    Categories
+                  </span>
+                </div>
+                {productCategories.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={`/categories/${cat.id}`}
+                    role="menuitem"
+                    onClick={() => products.setOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-xl transition-colors"
+                  >
+                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" aria-hidden="true" />
+                    {cat.navLabel}
+                  </Link>
+                ))}
+                <div className="border-t border-gray-100 mt-2 pt-2 px-2">
+                  <Link
+                    href="/products"
+                    role="menuitem"
+                    onClick={() => products.setOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-50 rounded-xl transition-colors"
+                  >
+                    View All Products →
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
 
-        <div className="relative group">
+        {/* Solutions dropdown */}
+        <div 
+          className="relative" 
+          ref={solutions.ref}
+          onMouseEnter={() => solutions.setOpen(true)}
+          onMouseLeave={() => solutions.setOpen(false)}
+        >
           <button
             type="button"
+            onClick={() => solutions.setOpen((v) => !v)}
             className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
             aria-haspopup="menu"
+            aria-expanded={solutions.open}
           >
             Solutions
             <ChevronDown
               size={14}
               aria-hidden="true"
-              className="transition-transform duration-200 group-hover:rotate-180"
+              className={`transition-transform duration-200 ${solutions.open ? "rotate-180" : ""}`}
             />
           </button>
-          <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 hidden group-hover:block">
-            <div className="bg-white border border-gray-100 shadow-xl rounded-2xl py-2 px-2 w-56 animate-in fade-in slide-in-from-top-2 duration-200">
-              <div className="px-3 py-1.5 mb-1">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500" aria-hidden="true">
-                  Industries
-                </span>
+          {solutions.open && (
+            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2">
+              <div
+                role="menu"
+                className="bg-white border border-gray-100 shadow-xl rounded-2xl py-2 px-2 w-56 animate-in fade-in slide-in-from-top-2 duration-200"
+              >
+                <div className="px-3 py-1.5 mb-1">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500" aria-hidden="true">
+                    Industries
+                  </span>
+                </div>
+                {SOLUTIONS.map((s) => (
+                  <Link
+                    key={s.href}
+                    href={s.href}
+                    role="menuitem"
+                    onClick={() => solutions.setOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-xl transition-colors"
+                  >
+                    <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full" aria-hidden="true" />
+                    {s.label}
+                  </Link>
+                ))}
               </div>
-              {SOLUTIONS.map((s) => (
-                <Link
-                  key={s.href}
-                  href={s.href}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-xl transition-colors"
-                >
-                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full" aria-hidden="true" />
-                  {s.label}
-                </Link>
-              ))}
             </div>
-          </div>
+          )}
         </div>
 
         <Link
@@ -109,7 +169,6 @@ export default function NavbarDesktop({ cartCount }: Props) {
       </nav>
 
       <div className="hidden xl:flex items-center gap-3">
-        {/* Search trigger — actual modal is rendered globally in Navbar.tsx */}
         <button
           type="button"
           onClick={(e) => {
@@ -121,7 +180,7 @@ export default function NavbarDesktop({ cartCount }: Props) {
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <span className="flex-1 text-left text-gray-600 text-[13px]" aria-hidden="true">Search…</span>
-          <kbd className="flex items-center gap-0.5 text-[10px] bg-white border border-gray-200 rounded px-1 py-0.5 font-mono text-gray-600 leading-none">
+          <kbd className="flex items-center gap-0.5 text-[10px] bg-white border border-gray-200 rounded px-1 py-0.5 font-mono text-gray-600 leading-none" aria-hidden="true">
             ⌘K
           </kbd>
         </button>
@@ -141,7 +200,7 @@ export default function NavbarDesktop({ cartCount }: Props) {
         >
           <ShoppingBag size={18} strokeWidth={1.8} aria-hidden="true" />
           {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+            <span aria-hidden="true" className="absolute -top-1 -right-1 bg-blue-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
               {cartCount}
             </span>
           )}

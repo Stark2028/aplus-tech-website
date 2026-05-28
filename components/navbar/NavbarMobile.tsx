@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronDown, Menu, Phone, Search, ShoppingBag, X } from "lucide-react";
 import { productCategories } from "@/data/categories";
 import { PHONE_NUMBER, PHONE_TEL, SOLUTIONS } from "./navConfig";
@@ -14,8 +14,42 @@ export default function NavbarMobile({ cartCount }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [solutionsOpen, setSolutionsOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
-  const close = () => setIsOpen(false);
+  const close = () => {
+    setIsOpen(false);
+    // Return focus to the hamburger button when menu closes
+    toggleRef.current?.focus();
+  };
+
+  // Close on Escape + trap focus within the open menu (Tab / Shift+Tab cycle)
+  useEffect(() => {
+    if (!isOpen) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        close();
+        return;
+      }
+      if (e.key !== "Tab" || !menuRef.current) return;
+      const focusable = menuRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   return (
     <>
@@ -44,6 +78,7 @@ export default function NavbarMobile({ cartCount }: Props) {
           )}
         </Link>
         <button
+          ref={toggleRef}
           type="button"
           onClick={() => setIsOpen((v) => !v)}
           className="p-2 text-gray-700 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition-all"
@@ -56,10 +91,19 @@ export default function NavbarMobile({ cartCount }: Props) {
       </div>
 
       {isOpen && (
-        <div
-          id="mobile-menu"
-          className="xl:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-100 shadow-lg max-h-[calc(100vh-4.5rem)] overflow-y-auto"
-        >
+        <>
+          <div
+            className="xl:hidden fixed inset-0 top-full z-40"
+            onClick={close}
+            aria-hidden="true"
+          />
+          <div
+            ref={menuRef}
+            id="mobile-menu"
+            role="navigation"
+            aria-label="Mobile menu"
+            className="xl:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-100 shadow-lg max-h-[calc(100dvh-4.5rem)] overflow-y-auto z-50"
+          >
           <div className="max-w-7xl mx-auto px-4 py-4 space-y-1">
             <Link
               href="/"
@@ -171,6 +215,7 @@ export default function NavbarMobile({ cartCount }: Props) {
             </div>
           </div>
         </div>
+        </>
       )}
     </>
   );

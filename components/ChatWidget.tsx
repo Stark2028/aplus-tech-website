@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
@@ -10,7 +10,6 @@ import {
   Mail,
   Send,
   ChevronRight,
-  CheckCheck,
   Clock,
 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
@@ -23,41 +22,17 @@ const QUICK_ACTIONS = [
   { label: "Schedule a demo", msg: "Hi, I'd like to schedule a product demo at your Noida center." },
 ];
 
-interface Message {
-  id: number;
-  from: "user" | "bot";
-  text: string;
-  time: string;
-}
-
-function now() {
-  return new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
-}
-
-const BOT_GREETING: Message = {
-  id: 0,
-  from: "bot",
-  text: "Hello! 👋 Welcome to Aplus Technology Solutions. I'm here to help you with Samsung display solutions.\n\nYou can chat directly with our team on WhatsApp, or send us a message and we'll get back to you shortly.",
-  time: now(),
-};
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [tab, setTab] = useState<"chat" | "whatsapp">("whatsapp");
-  const [messages, setMessages] = useState<Message[]>([BOT_GREETING]);
   const [input, setInput] = useState("");
-  const [sent, setSent] = useState(false);
   const [unread, setUnread] = useState(1);
-  const bottomRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    if (isOpen) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setUnread(0);
-      setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
-    }
-  }, [isOpen, messages]);
+    if (isOpen) setUnread(0);
+  }, [isOpen]);
 
   const openWhatsApp = (msg?: string) => {
     const text = encodeURIComponent(msg ?? getWhatsAppMessage(pathname));
@@ -67,23 +42,10 @@ export default function ChatWidget() {
 
   const sendMessage = () => {
     if (!input.trim()) return;
-    const userMsg: Message = { id: Date.now(), from: "user", text: input.trim(), time: now() };
-    setMessages((prev) => [...prev, userMsg]);
+    const text = input.trim();
     setInput("");
-    setSent(true);
-
-    // Auto-reply after 1.5 s
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now() + 1,
-          from: "bot",
-          text: "Thank you for reaching out! Our team will respond within a few hours during business hours (Mon–Sat, 9 AM – 6 PM). For immediate assistance, please WhatsApp us using the button above.",
-          time: now(),
-        },
-      ]);
-    }, 1500);
+    trackEvent("chat_widget_message_sent", { page: pathname });
+    openWhatsApp(text);
   };
 
   const isOnline = () => {
@@ -229,43 +191,19 @@ export default function ChatWidget() {
           {/* Message tab */}
           {tab === "chat" && (
             <>
-              {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-white/40" style={{ minHeight: 0 }}>
-                {messages.map((msg) => (
-                  <div key={msg.id} className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
-                    <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
-                      msg.from === "user"
-                        ? "bg-blue-600 text-white rounded-br-sm"
-                        : "bg-white text-gray-800 border border-gray-100 shadow-sm rounded-bl-sm"
-                    }`}>
-                      <p className="leading-relaxed whitespace-pre-line">{msg.text}</p>
-                      <div className={`flex items-center gap-1 mt-1 justify-end ${msg.from === "user" ? "text-blue-200" : "text-gray-400"}`}>
-                        <span className="text-[10px]">{msg.time}</span>
-                        {msg.from === "user" && <CheckCheck size={11} />}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                {sent && messages[messages.length - 1]?.from === "user" && (
-                  <div className="flex justify-start">
-                    <div className="bg-white border border-gray-100 shadow-sm rounded-2xl rounded-bl-sm px-4 py-2.5">
-                      <div className="flex gap-1 items-center">
-                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" />
-                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-75" />
-                        <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-150" />
-                      </div>
-                    </div>
-                  </div>
-                )}
-                <div ref={bottomRef} />
-              </div>
-
-              {/* Response time note */}
-              <div className="flex items-center gap-2 px-4 py-2 bg-amber-50 border-t border-amber-100">
-                <Clock size={13} className="text-amber-500 shrink-0" />
-                <p className="text-[11px] text-amber-700">
-                  Replies within a few hours · For faster response, use WhatsApp
+              {/* Info */}
+              <div className="flex-1 p-4 flex flex-col gap-4">
+                <p className="text-xs text-gray-500 text-center">
+                  Type your message below — it will open in WhatsApp so our team receives it instantly.
                 </p>
+
+                {/* Response time note */}
+                <div className="flex items-center gap-2 px-3 py-2.5 bg-amber-50 border border-amber-100 rounded-xl">
+                  <Clock size={13} className="text-amber-500 shrink-0" />
+                  <p className="text-[11px] text-amber-700">
+                    Mon–Sat, 9 AM – 6 PM · replies within minutes on WhatsApp
+                  </p>
+                </div>
               </div>
 
               {/* Input */}
@@ -282,6 +220,7 @@ export default function ChatWidget() {
                   onClick={sendMessage}
                   disabled={!input.trim()}
                   className="w-10 h-10 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-200 text-white rounded-xl flex items-center justify-center transition-all"
+                  aria-label="Send via WhatsApp"
                 >
                   <Send size={16} />
                 </button>

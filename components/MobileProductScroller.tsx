@@ -48,7 +48,7 @@ export default function MobileProductScroller({
         if (!el || el.clientWidth === 0) return;
         const maxScroll = el.scrollWidth - el.clientWidth;
         if (el.scrollLeft >= maxScroll - 25) {
-          el.scrollTo({ left: 0 });
+          el.scrollTo({ left: 0, behavior: "smooth" });
         } else {
           scroll("right");
         }
@@ -75,23 +75,27 @@ export default function MobileProductScroller({
         {/* Prev arrow */}
         <button
           aria-label="Scroll left"
+          aria-controls="mobile-scroller-track"
           onClick={() => scroll("left")}
           className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-10 bg-white border border-gray-200 shadow-md rounded-full p-1.5 text-gray-500 hover:text-blue-600 transition-colors"
         >
-          <ChevronLeft size={16} />
+          <ChevronLeft size={16} aria-hidden="true" />
         </button>
 
         <div
+          id="mobile-scroller-track"
           ref={scrollRef}
+          role="region"
+          aria-label="Product carousel"
           className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 px-1 no-scrollbar"
           style={{ scrollPaddingLeft: "0px" }}
         >
           {/* Wrap each direct child in a snap-aligned slide */}
           {Array.isArray(children)
-            ? (children as React.ReactNode[]).map((child, i) => (
+            ? (children as React.ReactNode[]).map((child, i, arr) => (
                 <div
                   key={i}
-                  className="snap-start shrink-0 w-[72vw] max-w-[260px]"
+                  className={`snap-start shrink-0 w-[72vw] max-w-[260px]${i === arr.length - 1 ? " mr-[28vw]" : ""}`}
                 >
                   {child}
                 </div>

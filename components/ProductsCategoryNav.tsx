@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { productCategories } from "@/data/categories";
 
 const NAV_OFFSET = 120;
 
-export default function ProductsCategoryNav() {
+function ProductsCategoryNavContent() {
   const [activeId, setActiveId] = useState<string>(productCategories[0]?.id ?? "");
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams?.get("category");
 
   const onScroll = useCallback(() => {
     const sections = productCategories
@@ -27,6 +30,26 @@ export default function ProductsCategoryNav() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [onScroll]);
+
+  // Handle URL category parameter changes (e.g. from homepage cards)
+  useEffect(() => {
+    if (categoryParam) {
+      const matched = productCategories.find((cat) => cat.id === categoryParam);
+      if (matched) {
+        setActiveId(matched.id);
+        
+        // Wait slightly for DOM structure & cards to be ready
+        const timer = setTimeout(() => {
+          const el = document.getElementById(matched.id);
+          if (el) {
+            const top = el.getBoundingClientRect().top + window.scrollY - 96;
+            window.scrollTo({ top, behavior: "smooth" });
+          }
+        }, 150);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [categoryParam]);
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -55,5 +78,15 @@ export default function ProductsCategoryNav() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProductsCategoryNav() {
+  return (
+    <Suspense fallback={
+      <div className="sticky top-18 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm h-[60px]" />
+    }>
+      <ProductsCategoryNavContent />
+    </Suspense>
   );
 }

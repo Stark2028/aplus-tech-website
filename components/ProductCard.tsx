@@ -152,7 +152,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             type="button"
             onClick={handleQuoteAdd}
             disabled={added}
-            aria-label={`Add to Quote — ${product.name}`}
+            aria-label={added ? `Added to quote — ${product.name}` : `Add to quote — ${product.name}`}
             className={`w-[55%] flex items-center justify-center gap-1.5 font-semibold py-2.5 px-2 rounded-xl transition-all duration-300 text-[13px] whitespace-nowrap shadow-sm ${
               added
                 ? "bg-emerald-500 text-white cursor-default shadow-emerald-500/20"
@@ -165,10 +165,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           <Link
             href={`/products/${product.id}`}
+            aria-label={`View details for ${product.name}`}
             className="w-[45%] flex items-center justify-center gap-1.5 border border-slate-200 bg-white text-slate-700 font-semibold py-2.5 px-2 rounded-xl hover:border-slate-300 hover:bg-slate-50 transition-all duration-300 text-[13px] whitespace-nowrap"
           >
             Details
-            <ArrowRight size={15} />
+            <ArrowRight size={15} aria-hidden="true" />
           </Link>
         </div>
       </div>

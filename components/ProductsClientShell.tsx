@@ -47,9 +47,21 @@ export default function ProductsClientShell({ products, productCategories }: Pro
         onClearAll={clearAll}
       />
 
+      {/* Live region: announces result count changes to screen readers */}
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      >
+        {activeCount > 0
+          ? `${filtered.length} product${filtered.length !== 1 ? "s" : ""} match your filters`
+          : ""}
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
         {grouped.length === 0 ? (
-          <div className="text-center py-24">
+          <div role="status" className="text-center py-24">
             <p className="text-2xl font-bold text-gray-900 mb-3">No products match your filters</p>
             <p className="text-gray-500 mb-6">Try removing one or more filters to see more results.</p>
             <button
@@ -61,13 +73,19 @@ export default function ProductsClientShell({ products, productCategories }: Pro
           </div>
         ) : (
           grouped.map(({ category, items }) => (
-            <section key={category.id} id={category.id} className="scroll-mt-40">
+            <section
+              key={category.id}
+              id={category.id}
+              aria-label={`${category.name}, ${items.length} product${items.length !== 1 ? "s" : ""}`}
+              className="scroll-mt-40"
+            >
               <div className="flex items-start justify-between gap-4 mb-6">
                 <div>
                   <h2 className="text-3xl font-bold text-gray-900 mb-1">{category.name}</h2>
                 </div>
                 <a
                   href={`/categories/${category.id}`}
+                  aria-label={`View all ${category.name}`}
                   className="shrink-0 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors mt-1"
                 >
                   View all →
