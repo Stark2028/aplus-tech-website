@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getCategoryById } from "@/data/categories";
+import { getCategoryById, type CategorySlug } from "@/data/categories";
 import { products } from "@/data/products";
 
 export const alt = "Samsung Commercial Display Category — Aplus Technology Solutions";
@@ -12,7 +12,7 @@ export default async function Image({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const category = getCategoryById(slug as any);
+  const category = getCategoryById(slug as CategorySlug);
 
   if (!category) {
     return new ImageResponse(
