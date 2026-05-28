@@ -226,26 +226,26 @@ function ComparePageInner() {
               </h1>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="grid grid-cols-3 gap-2 w-full sm:w-auto sm:flex sm:items-center">
               <button
                 onClick={handleShare}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:text-blue-700 transition-all"
+                className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 p-2.5 sm:px-4 sm:py-2 rounded-xl border border-gray-200 bg-white text-[11px] sm:text-sm font-medium text-gray-600 hover:border-blue-300 hover:text-blue-700 transition-all text-center leading-tight"
               >
-                {copied ? <Check size={14} className="text-green-500" /> : <Share2 size={14} />}
+                {copied ? <Check size={16} className="text-green-500 sm:w-3.5 sm:h-3.5" /> : <Share2 size={16} className="sm:w-3.5 sm:h-3.5" />}
                 {copied ? "Copied!" : "Share"}
               </button>
               <button
                 onClick={handlePrint}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:text-blue-700 transition-all"
+                className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 p-2.5 sm:px-4 sm:py-2 rounded-xl border border-gray-200 bg-white text-[11px] sm:text-sm font-medium text-gray-600 hover:border-blue-300 hover:text-blue-700 transition-all text-center leading-tight whitespace-nowrap"
               >
-                <Printer size={14} />
+                <Printer size={16} className="sm:w-3.5 sm:h-3.5" />
                 Print / PDF
               </button>
               <button
                 onClick={handleExportExcel}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-green-400 hover:text-green-700 transition-all"
+                className="flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 p-2.5 sm:px-4 sm:py-2 rounded-xl border border-gray-200 bg-white text-[11px] sm:text-sm font-medium text-gray-600 hover:border-green-400 hover:text-green-700 transition-all text-center leading-tight whitespace-nowrap"
               >
-                <FileSpreadsheet size={14} />
+                <FileSpreadsheet size={16} className="sm:w-3.5 sm:h-3.5" />
                 Export Excel
               </button>
             </div>

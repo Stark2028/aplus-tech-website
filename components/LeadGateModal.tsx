@@ -1,5 +1,6 @@
 "use client";
 
+import { createPortal } from "react-dom";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -138,7 +139,10 @@ export default function LeadGateModal({
     return () => document.removeEventListener("keydown", handleTab);
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted || !isOpen) return null;
 
   const onSubmit = async (values: LeadGateValues) => {
     setStatus("submitting");
@@ -183,7 +187,7 @@ export default function LeadGateModal({
     }
   };
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6"
       role="dialog"
@@ -356,6 +360,7 @@ export default function LeadGateModal({
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

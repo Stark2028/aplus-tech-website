@@ -190,7 +190,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
 
           {/* ── FORM (col-span-2) ──────────────────────────────────── */}
-          <div className="lg:col-span-2 animate-page-enter">
+          <div className="lg:col-span-2 animate-page-enter flex flex-col gap-12 lg:gap-16">
             <div className="bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden relative">
               {/* Decorative corner accent */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-50 to-transparent pointer-events-none" />
@@ -344,6 +344,34 @@ export default function ContactPage() {
                 )}
               </>
             </div>
+
+            {/* ── TRUST SIGNALS BANNER ─────────────────────────────────────── */}
+            <div className="px-2">
+              <div className="text-center md:text-left mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-2">Why choose us</p>
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Your trusted display partner</h2>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {[
+                  { icon: BadgeCheck, bg: "bg-blue-50",  text: "text-blue-600",  shadow: "shadow-blue-100/60",  title: "Certified Expertise",   desc: "Authorized Samsung partners — authentic products with official warranties." },
+                  { icon: MapPin,     bg: "bg-green-50", text: "text-green-600", shadow: "shadow-green-100/60", title: "Pan-India Support",     desc: "Nationwide logistics & installation network covering 50+ cities." },
+                  { icon: Timer,      bg: "bg-amber-50", text: "text-amber-600", shadow: "shadow-amber-100/60", title: "End-to-End Service",    desc: "Consultation, supply, installation & 24/7 AMC — one expert team." },
+                ].map(({ icon: Icon, bg, text, shadow, title, desc }) => (
+                  <div
+                    key={title}
+                    className={`relative bg-white rounded-2xl border border-gray-100 p-6 text-center sm:text-left shadow-lg ${shadow} hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group`}
+                  >
+                    <div className={`w-12 h-12 rounded-xl ${bg} ${text} flex items-center justify-center mx-auto sm:mx-0 mb-4 group-hover:scale-110 transition-transform`}>
+                      <Icon size={22} />
+                    </div>
+                    <h3 className="text-sm font-bold text-gray-900 mb-1.5">{title}</h3>
+                    <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* ── SIDEBAR (col-span-1) ───────────────────────────────── */}
@@ -448,33 +476,6 @@ export default function ContactPage() {
         </div>
       </div>
 
-      {/* ── TRUST SIGNALS BANNER ─────────────────────────────────────── */}
-      <div className="border-t border-gray-100 bg-linear-to-b from-gray-50 to-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center mb-14">
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-3">Why choose us</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Your trusted display partner</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { icon: BadgeCheck, bg: "bg-blue-50",  text: "text-blue-600",  shadow: "shadow-blue-100/60",  title: "Certified Expertise",   desc: "Authorized Samsung partners — authentic products with official warranties." },
-              { icon: MapPin,     bg: "bg-green-50", text: "text-green-600", shadow: "shadow-green-100/60", title: "Pan-India Support",     desc: "Nationwide logistics & installation network covering 50+ cities." },
-              { icon: Timer,      bg: "bg-amber-50", text: "text-amber-600", shadow: "shadow-amber-100/60", title: "End-to-End Service",    desc: "Consultation, supply, installation & 24/7 AMC — one expert team." },
-            ].map(({ icon: Icon, bg, text, shadow, title, desc }) => (
-              <div
-                key={title}
-                className={`relative bg-white rounded-2xl border border-gray-100 p-7 text-center shadow-lg ${shadow} hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group`}
-              >
-                <div className={`w-14 h-14 rounded-2xl ${bg} ${text} flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform`}>
-                  <Icon size={26} />
-                </div>
-                <h3 className="text-base font-bold text-gray-900 mb-2">{title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
     </main>
   );

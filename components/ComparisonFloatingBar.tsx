@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { X, ArrowRight, Scale, AlertCircle } from "lucide-react";
 import { useComparison } from "@/context/ComparisonContext";
 
 export default function ComparisonFloatingBar() {
     const { selectedProducts, removeFromCompare, clearCompare, limitReached } = useComparison();
+    const pathname = usePathname();
 
-    const visible = selectedProducts.length > 0;
+    const visible = selectedProducts.length > 0 && pathname !== "/compare";
 
     return (
         <div
