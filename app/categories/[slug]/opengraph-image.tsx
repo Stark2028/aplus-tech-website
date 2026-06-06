@@ -37,7 +37,6 @@ export default async function Image({
 
   const categoryProducts = products.filter((p) => p.category === category.name);
   const productCount = categoryProducts.length;
-  const topProducts = categoryProducts.slice(0, 3).map((p) => p.name);
 
   return new ImageResponse(
     <div

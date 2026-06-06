@@ -72,6 +72,12 @@ export function clientIp(req: Request): string {
   const xff = req.headers.get("x-forwarded-for");
   if (xff) {
     const parts = xff.split(",").map((s) => s.trim()).filter(Boolean);
+    // Take the LAST (rightmost) entry, not the first. X-Forwarded-For is
+    // client-appendable, so the leftmost value is attacker-controlled (a forged
+    // leftmost IP would mint a fresh bucket per request and defeat the limiter).
+    // The rightmost entry is the one our nearest trusted proxy appended. This
+    // branch is only a fallback anyway — real hosts hit cf-connecting-ip /
+    // x-real-ip above and never reach here. Do not "fix" this to parts[0].
     if (parts.length > 0) return parts[parts.length - 1];
   }
   return "unknown";

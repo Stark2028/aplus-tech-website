@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { ShieldCheck, Headphones, Truck, Award } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
-import MobileProductScroller from "@/components/MobileProductScroller";
 
 const ADVANTAGES = [
   {

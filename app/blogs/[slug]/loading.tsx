@@ -30,10 +30,10 @@ export default function BlogPostLoading() {
         {/* Hero image */}
         <div className="h-64 sm:h-80 bg-gray-100 rounded-2xl mb-10" />
 
-        {/* Body paragraphs */}
+        {/* Body paragraphs — deterministic widths (85–99%) keep render pure */}
         <div className="space-y-4">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-4 bg-gray-100 rounded" style={{ width: `${85 + Math.random() * 15}%` }} />
+            <div key={i} className="h-4 bg-gray-100 rounded" style={{ width: `${85 + ((i * 13) % 15)}%` }} />
           ))}
         </div>
 
@@ -41,7 +41,7 @@ export default function BlogPostLoading() {
         <div className="h-6 w-48 bg-gray-200 rounded mt-10 mb-4" />
         <div className="space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="h-4 bg-gray-100 rounded" style={{ width: `${70 + Math.random() * 25}%` }} />
+            <div key={i} className="h-4 bg-gray-100 rounded" style={{ width: `${70 + ((i * 17) % 25)}%` }} />
           ))}
         </div>
       </div>

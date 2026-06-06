@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
@@ -30,9 +30,14 @@ export default function ChatWidget() {
   const [unread, setUnread] = useState(1);
   const pathname = usePathname();
 
-  useEffect(() => {
-    if (isOpen) setUnread(0);
-  }, [isOpen]);
+  // Clear the unread badge when the panel is opened (in the handler rather than
+  // an effect, to avoid a cascading render on every isOpen change).
+  const toggleOpen = () => {
+    setIsOpen((prev) => {
+      if (!prev) setUnread(0);
+      return !prev;
+    });
+  };
 
   const openWhatsApp = (msg?: string) => {
     const text = encodeURIComponent(msg ?? getWhatsAppMessage(pathname));
@@ -77,7 +82,7 @@ export default function ChatWidget() {
 
       {/* Main chat toggle button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleOpen}
         className="fixed bottom-5 right-5 z-50 w-14 h-14 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center shadow-xl shadow-blue-600/40 transition-all hover:scale-110"
         aria-label="Open chat"
       >

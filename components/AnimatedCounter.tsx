@@ -54,9 +54,10 @@ export default function AnimatedCounter({ value }: Props) {
         if (progress < 1) requestAnimationFrame(tick);
       };
 
-      const raf = requestAnimationFrame(tick);
-      // Clean up inner RAF if unmounted mid-animation isn't strictly necessary here due to setTimeout unmount logic below, 
-      // but keeping it safe we'd need a ref, so we just let it finish.
+      // Inner RAF is intentionally not captured for cleanup: the loop self-
+      // terminates when progress reaches 1, and the outer setTimeout is the
+      // unmount guard. A mid-flight frame after unmount is harmless here.
+      requestAnimationFrame(tick);
     }, 300);
 
     return () => clearTimeout(delayTimer);

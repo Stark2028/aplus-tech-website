@@ -11,6 +11,18 @@ function ProductsCategoryNavContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams?.get("category");
 
+  // Sync the active tab to the ?category= param *during render* (React's
+  // documented "adjust state on prop change" pattern) instead of in an effect,
+  // which would trigger a cascading re-render. The smooth-scroll side-effect
+  // that this used to share an effect with stays in useEffect below.
+  const [prevCategoryParam, setPrevCategoryParam] = useState(categoryParam);
+  if (categoryParam !== prevCategoryParam) {
+    setPrevCategoryParam(categoryParam);
+    if (categoryParam && productCategories.some((cat) => cat.id === categoryParam)) {
+      setActiveId(categoryParam);
+    }
+  }
+
   const onScroll = useCallback(() => {
     const sections = productCategories
       .map((cat) => ({
@@ -31,24 +43,23 @@ function ProductsCategoryNavContent() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [onScroll]);
 
-  // Handle URL category parameter changes (e.g. from homepage cards)
+  // Smooth-scroll to the section when arriving via a ?category= link (e.g. from
+  // homepage cards). The active-tab highlight is handled in the render-phase
+  // sync above; this effect only performs the DOM scroll side-effect.
   useEffect(() => {
-    if (categoryParam) {
-      const matched = productCategories.find((cat) => cat.id === categoryParam);
-      if (matched) {
-        setActiveId(matched.id);
-        
-        // Wait slightly for DOM structure & cards to be ready
-        const timer = setTimeout(() => {
-          const el = document.getElementById(matched.id);
-          if (el) {
-            const top = el.getBoundingClientRect().top + window.scrollY - 96;
-            window.scrollTo({ top, behavior: "smooth" });
-          }
-        }, 150);
-        return () => clearTimeout(timer);
+    if (!categoryParam) return;
+    const matched = productCategories.find((cat) => cat.id === categoryParam);
+    if (!matched) return;
+
+    // Wait slightly for DOM structure & cards to be ready
+    const timer = setTimeout(() => {
+      const el = document.getElementById(matched.id);
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY - 96;
+        window.scrollTo({ top, behavior: "smooth" });
       }
-    }
+    }, 150);
+    return () => clearTimeout(timer);
   }, [categoryParam]);
 
   const scrollTo = (id: string) => {

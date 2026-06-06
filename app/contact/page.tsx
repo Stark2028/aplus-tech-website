@@ -76,19 +76,24 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState("");
 
+  const [messageLength, setMessageLength] = useState(0);
+
   const {
     register,
     handleSubmit,
-    watch,
     reset,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: { message: "" },
   });
 
-  const messageValue = watch("message") ?? "";
-  const messageLength = messageValue.length;
+  // Register the message field once so the textarea can compose RHF's onChange
+  // with the local character-count update (instead of re-calling register() per
+  // keystroke). messageLength is kept as state — not derived via watch() — so
+  // the React Compiler can still optimize this component.
+  const messageField = register("message");
 
   const onSubmit = async (values: ContactFormValues) => {
     setServerError("");
@@ -98,6 +103,9 @@ export default function ContactPage() {
       ...values,
       message: values.message ?? "",
       company: values.company ?? "",
+      // Honeypot: not in the Zod schema, read directly from the form. Humans
+      // leave it empty; bots that fill it are silently dropped server-side.
+      company_website: (getValues() as Record<string, string>).company_website ?? "",
     };
     const res = await fetch("/api/contact", {
       method: "POST",
@@ -219,7 +227,7 @@ export default function ContactPage() {
                       Thank you for reaching out. Our team has received your message and will contact you shortly.
                     </p>
                     <button
-                      onClick={() => { setSubmitted(false); reset(); }}
+                      onClick={() => { setSubmitted(false); reset(); setMessageLength(0); }}
                       type="button"
                       className="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl transition-colors"
                     >
@@ -235,6 +243,7 @@ export default function ContactPage() {
                       autoComplete="off"
                       aria-hidden="true"
                       className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                      {...register("company_website" as keyof ContactFormValues)}
                     />
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div className="relative group">
@@ -313,7 +322,11 @@ export default function ContactPage() {
                       <textarea rows={5} maxLength={MAX_MESSAGE_LENGTH}
                         placeholder="Please describe your requirements such as product type, quantity, installation site, timeline…"
                         className="w-full px-4 py-3.5 border border-gray-200 rounded-xl text-sm bg-gray-50/50 hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all resize-none placeholder:text-gray-400"
-                        {...register("message")}
+                        {...messageField}
+                        onChange={(e) => {
+                          messageField.onChange(e);
+                          setMessageLength(e.target.value.length);
+                        }}
                       />
                     </div>
 

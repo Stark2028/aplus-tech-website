@@ -48,7 +48,6 @@ export default function NavbarMobile({ cartCount }: Props) {
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   return (

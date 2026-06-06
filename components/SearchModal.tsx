@@ -160,7 +160,6 @@ export default function SearchModal() {
                   autoCapitalize="off"
                   spellCheck={false}
                   // autoFocus triggers the mobile keyboard reliably when the modal mounts
-                  // eslint-disable-next-line jsx-a11y/no-autofocus
                   autoFocus
                 />
                 {query ? (

@@ -24,6 +24,7 @@ export default function QuoteForm({ productName }: { productName: string }) {
     register,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<QuoteFormValues>({ resolver: zodResolver(quoteFormSchema) });
 
@@ -36,6 +37,9 @@ export default function QuoteForm({ productName }: { productName: string }) {
       email: values.email,
       phone: values.phone,
       message: values.message ?? "",
+      // Honeypot: not in the Zod schema, read directly from the form. Humans
+      // leave it empty; bots that fill it are silently dropped server-side.
+      company_website: (getValues() as Record<string, string>).company_website ?? "",
     };
 
     try {
@@ -94,6 +98,7 @@ export default function QuoteForm({ productName }: { productName: string }) {
           autoComplete="off"
           aria-hidden="true"
           className="absolute left-[-9999px] h-0 w-0 opacity-0"
+          {...register("company_website" as keyof QuoteFormValues)}
         />
 
         {/* Full Name */}

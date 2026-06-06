@@ -33,8 +33,8 @@ function useDropdown() {
 }
 
 export default function NavbarDesktop({ cartCount }: Props) {
-  const products = useDropdown();
-  const solutions = useDropdown();
+  const { open: productsOpen, setOpen: setProductsOpen, ref: productsRef } = useDropdown();
+  const { open: solutionsOpen, setOpen: setSolutionsOpen, ref: solutionsRef } = useDropdown();
 
   return (
     <>
@@ -47,27 +47,27 @@ export default function NavbarDesktop({ cartCount }: Props) {
         </Link>
 
         {/* Products dropdown */}
-        <div 
-          className="relative" 
-          ref={products.ref}
-          onMouseEnter={() => products.setOpen(true)}
-          onMouseLeave={() => products.setOpen(false)}
+        <div
+          className="relative"
+          ref={productsRef}
+          onMouseEnter={() => setProductsOpen(true)}
+          onMouseLeave={() => setProductsOpen(false)}
         >
           <button
             type="button"
-            onClick={() => products.setOpen((v) => !v)}
+            onClick={() => setProductsOpen((v) => !v)}
             className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
             aria-haspopup="menu"
-            aria-expanded={products.open}
+            aria-expanded={productsOpen}
           >
             Products
             <ChevronDown
               size={14}
               aria-hidden="true"
-              className={`transition-transform duration-200 ${products.open ? "rotate-180" : ""}`}
+              className={`transition-transform duration-200 ${productsOpen ? "rotate-180" : ""}`}
             />
           </button>
-          {products.open && (
+          {productsOpen && (
             <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2">
               <div
                 role="menu"
@@ -83,7 +83,7 @@ export default function NavbarDesktop({ cartCount }: Props) {
                     key={cat.id}
                     href={`/categories/${cat.id}`}
                     role="menuitem"
-                    onClick={() => products.setOpen(false)}
+                    onClick={() => setProductsOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-xl transition-colors"
                   >
                     <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" aria-hidden="true" />
@@ -94,7 +94,7 @@ export default function NavbarDesktop({ cartCount }: Props) {
                   <Link
                     href="/products"
                     role="menuitem"
-                    onClick={() => products.setOpen(false)}
+                    onClick={() => setProductsOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-blue-600 hover:bg-blue-50 rounded-xl transition-colors"
                   >
                     View All Products →
@@ -106,27 +106,27 @@ export default function NavbarDesktop({ cartCount }: Props) {
         </div>
 
         {/* Solutions dropdown */}
-        <div 
-          className="relative" 
-          ref={solutions.ref}
-          onMouseEnter={() => solutions.setOpen(true)}
-          onMouseLeave={() => solutions.setOpen(false)}
+        <div
+          className="relative"
+          ref={solutionsRef}
+          onMouseEnter={() => setSolutionsOpen(true)}
+          onMouseLeave={() => setSolutionsOpen(false)}
         >
           <button
             type="button"
-            onClick={() => solutions.setOpen((v) => !v)}
+            onClick={() => setSolutionsOpen((v) => !v)}
             className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
             aria-haspopup="menu"
-            aria-expanded={solutions.open}
+            aria-expanded={solutionsOpen}
           >
             Solutions
             <ChevronDown
               size={14}
               aria-hidden="true"
-              className={`transition-transform duration-200 ${solutions.open ? "rotate-180" : ""}`}
+              className={`transition-transform duration-200 ${solutionsOpen ? "rotate-180" : ""}`}
             />
           </button>
-          {solutions.open && (
+          {solutionsOpen && (
             <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2">
               <div
                 role="menu"
@@ -142,7 +142,7 @@ export default function NavbarDesktop({ cartCount }: Props) {
                     key={s.href}
                     href={s.href}
                     role="menuitem"
-                    onClick={() => solutions.setOpen(false)}
+                    onClick={() => setSolutionsOpen(false)}
                     className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:bg-blue-50 hover:text-blue-700 rounded-xl transition-colors"
                   >
                     <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full" aria-hidden="true" />
