@@ -4,7 +4,7 @@ import { ShieldCheck, Award, Truck, CheckCircle2 } from "lucide-react";
 const ICONS = [ShieldCheck, Award, Truck];
 const PROMISES = [
   "No minimum order",
-  "Free site assessment",
+  "Bulk pricing available",
   "GST invoice provided",
   "EMI available",
 ];

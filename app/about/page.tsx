@@ -78,6 +78,7 @@ const TEAM = [
   {
     name: "Savita Walia",
     role: "Director",
+    image: "/team/savita-walia.jpg",
   },
   {
     name: "Sunil Kumar",
@@ -88,6 +89,7 @@ const TEAM = [
   {
     name: "R.K Dasgupta",
     role: "Director",
+    image: "/team/rk-dasgupta.jpg",
     linkedin: "https://www.linkedin.com/in/ramkrishna-dasgupta-75b61294",
   },
 ];
@@ -219,7 +221,7 @@ export default function AboutPage() {
 
             {/* Spec card */}
             <aside className="lg:col-span-5 lg:sticky lg:top-24">
-              <div className="relative rounded-[2rem] shadow-xl shadow-slate-200/60 bg-gradient-to-br from-white via-slate-50 to-blue-50/40 p-8 text-slate-800 overflow-hidden border border-slate-200/80">
+              <div className="relative rounded-[2rem] shadow-xl shadow-slate-200/60 bg-linear-to-br from-white via-slate-50 to-blue-50/40 p-8 text-slate-800 overflow-hidden border border-slate-200/80">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,rgba(59,130,246,0.08),transparent_50%)]" />
                 <div className="relative">
                   <div className="flex items-center gap-5 mb-8">
@@ -297,7 +299,7 @@ export default function AboutPage() {
               Our journey
             </p>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight tracking-tight">
-              Building India&apos;s display backbone since 2019.
+              Building India&apos;s display backbone since 2020.
             </h2>
           </div>
 
@@ -361,10 +363,10 @@ export default function AboutPage() {
                 <div className="flex items-center gap-4">
                   {member.image ? (
                     <div className="w-16 h-16 rounded-2xl overflow-hidden border border-gray-100 shadow-md shadow-blue-500/10 shrink-0">
-                      <Image src={member.image} alt={member.name} width={64} height={64} className="object-cover w-full h-full" />
+                      <Image src={member.image} alt={member.name} width={64} height={64} className="object-cover object-top w-full h-full" />
                     </div>
                   ) : (
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center text-slate-200 font-semibold text-2xl shadow-md shadow-slate-900/10 shrink-0 border border-slate-700">
+                    <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-slate-800 to-slate-900 flex items-center justify-center text-slate-200 font-semibold text-2xl shadow-md shadow-slate-900/10 shrink-0 border border-slate-700">
                       {member.name.charAt(0)}
                     </div>
                   )}

@@ -10,6 +10,8 @@ import { useQuote } from "@/context/QuoteContext";
 import { useComparison } from "@/context/ComparisonContext";
 import { trackEvent } from "@/lib/analytics";
 import MobileProductScroller from "@/components/MobileProductScroller";
+import { declusterByImage } from "@/lib/declusterImages";
+import { formatSizeRange } from "@/lib/formatSize";
 
 export default function ProductCatalogSection() {
   const [activeTab, setActiveTab] = useState(productCategories[0].name);
@@ -17,7 +19,11 @@ export default function ProductCatalogSection() {
   const { addItem } = useQuote();
   const { addToCompare, isInCompare, removeFromCompare } = useComparison();
 
-  const filtered = products.filter((p) => p.category === activeTab).sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+  const filtered = declusterByImage(
+    products
+      .filter((p) => p.category === activeTab)
+      .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+  );
 
   const handleCompareToggle = (e: React.MouseEvent, product: Product) => {
     e.preventDefault();
@@ -42,10 +48,7 @@ export default function ProductCatalogSection() {
     });
   };
 
-  const sizeRange = (sizes: string[]) => {
-    if (sizes.length === 1) return `${sizes[0]}″`;
-    return `${sizes[0]}″ – ${sizes[sizes.length - 1]}″`;
-  };
+  const sizeRange = formatSizeRange;
 
   return (
     <section className="pt-4 pb-12 md:pt-6 md:pb-20 bg-gray-50">
@@ -94,17 +97,20 @@ export default function ProductCatalogSection() {
               key={product.id}
               className="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group flex flex-col h-full"
             >
-              {/* Image */}
-              <div className="h-48 bg-linear-to-br from-gray-50 to-gray-100 relative overflow-hidden">
+              {/* Image — fixed inner height normalises display size across
+                  sources with differing whitespace/aspect ratios. */}
+              <div className="h-48 bg-linear-to-br from-gray-50 to-gray-100 relative overflow-hidden flex items-center justify-center px-6 py-5">
                 {product.images && product.images.length > 0 ? (
-                  <Image
-                    src={product.images[0]}
-                    alt={product.name}
-                    fill
-                    priority={index < 2}
-                    sizes="(max-width: 640px) 72vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                    className="object-contain p-6 group-hover:scale-105 transition-transform duration-500"
-                  />
+                  <div className="relative w-full h-[120px]">
+                    <Image
+                      src={product.images[0]}
+                      alt={product.name}
+                      fill
+                      priority={index < 2}
+                      sizes="(max-width: 640px) 72vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                      className="object-contain group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
                 ) : (
                   <Monitor className="text-gray-300 absolute inset-0 m-auto" size={56} />
                 )}

@@ -6,6 +6,7 @@
  */
 
 import type { QuoteItem } from "@/context/QuoteContext";
+import { formatSize } from "@/lib/formatSize";
 
 import {
   A4_HEIGHT,
@@ -315,7 +316,7 @@ function buildSpecLines(item: QuoteItem): string[] {
   const lines: string[] = [
     safe(p.specs.resolution),
     safe(p.specs.brightness),
-    safe(`Sizes: ${p.specs.screenSizes.map((s) => `${s}"`).join(" · ")}`),
+    safe(`Sizes: ${p.specs.screenSizes.map(formatSize).join(" · ")}`),
   ];
 
   // Append up to 3 extra specs from specGroups (flattened) or additionalSpecs

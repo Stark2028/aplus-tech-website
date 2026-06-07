@@ -42,6 +42,7 @@ interface Props {
 
 export default function QuoteSubmitForm({ items, totalItems, onSuccess }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [prefill, setPrefill] = useState<Record<string, string>>({});
 
   // Prefill from the shared lead-gate cache (if visitor already gated a download)
@@ -59,6 +60,7 @@ export default function QuoteSubmitForm({ items, totalItems, onSuccess }: Props)
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError("");
 
     const fd = new FormData(e.currentTarget);
     const name = fd.get("name") as string;
@@ -77,8 +79,8 @@ export default function QuoteSubmitForm({ items, totalItems, onSuccess }: Props)
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const data = await response.json();
-      if (data.success) {
+      const data = await response.json().catch(() => ({}));
+      if (response.ok && data.success) {
         // Cache submitted contact info so future downloads (spec sheet, compare PDF/Excel) skip the gate
         setCachedLead({
           name,
@@ -87,9 +89,21 @@ export default function QuoteSubmitForm({ items, totalItems, onSuccess }: Props)
         });
         trackEvent("quote_cart_submitted", { total_items: totalItems });
         onSuccess(name);
+      } else {
+        // Surface a friendly failure message (never the raw API string) so the
+        // user isn't left staring at a dead form.
+        setSubmitError(
+          response.status === 429
+            ? "Too many requests. Please wait a few minutes and try again."
+            : "Something went wrong sending your request. Please try again, or reach us on WhatsApp below."
+        );
+        trackEvent("quote_cart_submit_failed", { total_items: totalItems, status: response.status });
       }
     } catch (err) {
       console.error("Submission failed", err);
+      setSubmitError(
+        "We couldn't reach our server. Check your connection and try again, or message us on WhatsApp below."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -154,6 +168,16 @@ export default function QuoteSubmitForm({ items, totalItems, onSuccess }: Props)
             className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-300 text-gray-900 text-sm resize-none"
           />
         </div>
+
+        {submitError && (
+          <div
+            role="alert"
+            className="flex items-start gap-2 text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl px-4 py-3"
+          >
+            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+            <span>{submitError}</span>
+          </div>
+        )}
 
         <div className="pt-2 space-y-2.5">
           <button

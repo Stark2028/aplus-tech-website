@@ -2,6 +2,7 @@ import type { Product } from "@/data/products";
 import type { ProductCategory } from "@/data/categories";
 import type { Solution } from "@/data/solutions";
 import type { UseCaseCombo } from "@/data/useCaseCombos";
+import { formatSize } from "@/lib/formatSize";
 
 export const SITE = "https://www.aplustechsol.com";
 
@@ -95,7 +96,7 @@ export function productLd(product: Product) {
     ["Resolution", product.specs.resolution],
     ["Brightness", product.specs.brightness],
     ["Operation Hours", product.specs.operationTime],
-    ["Available Sizes", product.specs.screenSizes.map((s) => `${s}"`).join(", ")],
+    ["Available Sizes", product.specs.screenSizes.map(formatSize).join(", ")],
     ["Series", product.series],
   ];
   const extraProps: Array<[string, string]> = product.specGroups

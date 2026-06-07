@@ -11,6 +11,7 @@ import {
   countActive,
   type Filters,
 } from "@/lib/productFilters";
+import { declusterByImage } from "@/lib/declusterImages";
 
 interface Props {
   products: Product[];
@@ -30,7 +31,11 @@ export default function ProductsClientShell({ products, productCategories }: Pro
     return productCategories
       .map((cat) => ({
         category: cat,
-        items: filtered.filter((p) => p.category === cat.name).sort((a, b) => (b.popularity || 0) - (a.popularity || 0)),
+        items: declusterByImage(
+          filtered
+            .filter((p) => p.category === cat.name)
+            .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+        ),
       }))
       .filter((g) => g.items.length > 0);
   }, [productCategories, filtered]);

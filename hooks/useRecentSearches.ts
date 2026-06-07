@@ -11,8 +11,14 @@ export function useRecentSearches() {
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (stored) setRecent(JSON.parse(stored));
+      if (!stored) return;
+      const parsed = JSON.parse(stored);
+      // Only accept a well-formed array of strings; ignore corrupt/legacy data.
+      if (Array.isArray(parsed)) {
+        const clean = parsed.filter((q): q is string => typeof q === "string").slice(0, MAX_RECENT);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        if (clean.length > 0) setRecent(clean);
+      }
     } catch {}
   }, []);
 

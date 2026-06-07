@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { products } from "@/data/products";
+import { formatSizeRange } from "@/lib/formatSize";
 
 export const alt = "Samsung Commercial Display — Aplus Technology Solutions";
 export const size = { width: 1200, height: 630 };
@@ -33,10 +34,7 @@ export default async function Image({
     );
   }
 
-  const sizesLabel =
-    product.specs.screenSizes.length > 1
-      ? `${product.specs.screenSizes[0]}"–${product.specs.screenSizes[product.specs.screenSizes.length - 1]}"`
-      : `${product.specs.screenSizes[0]}"`;
+  const sizesLabel = formatSizeRange(product.specs.screenSizes);
 
   const specs = [
     product.specs.resolution,

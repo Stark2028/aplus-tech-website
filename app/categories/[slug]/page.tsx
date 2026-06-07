@@ -1,7 +1,7 @@
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import { notFound } from "next/navigation";
-import { getCategoryById, CategorySlug } from "@/data/categories";
+import { getCategoryById, productCategories, CategorySlug } from "@/data/categories";
 import { solutions } from "@/data/solutions";
 import { useCaseCombos } from "@/data/useCaseCombos";
 import Link from "next/link";
@@ -10,6 +10,10 @@ import type { Metadata } from "next";
 import { SITE, breadcrumbLd, categoryCollectionLd, jsonLdString } from "@/lib/jsonLd";
 
 export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  return productCategories.map((c) => ({ slug: c.id }));
+}
 
 export async function generateMetadata({
   params,

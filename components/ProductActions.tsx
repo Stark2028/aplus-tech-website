@@ -48,10 +48,10 @@ export default function ProductActions({ product }: { product: Product }) {
                 {added ? "Added to Quote" : "Add to Quote List"}
             </button>
 
-            {/* Compare — secondary, half width */}
+            {/* Compare — secondary, full width (matches the stack's sizing) */}
             <button
                 onClick={handleCompareToggle}
-                className={`w-full py-3 px-6 rounded-xl font-semibold text-[14px] flex items-center justify-center gap-2 border transition-all duration-300 ${isComparing
+                className={`w-full py-3.5 px-6 rounded-xl font-semibold text-[15px] flex items-center justify-center gap-2 border transition-all duration-300 ${isComparing
                         ? "bg-blue-50 border-blue-200 text-blue-700"
                         : "bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 hover:-translate-y-0.5 hover:shadow-sm"
                     }`}

@@ -6,6 +6,7 @@
  */
 
 import type { Product } from "@/data/products";
+import { formatSize } from "@/lib/formatSize";
 
 import {
   A4_HEIGHT,
@@ -187,7 +188,7 @@ function drawStatsStrip(ctx: Ctx, product: Product) {
     { label: "RESOLUTION", value: safe(product.specs.resolution.split("(")[0].trim()) },
     { label: "BRIGHTNESS", value: safe(product.specs.brightness) },
     { label: "OPERATION", value: safe(product.specs.operationTime) },
-    { label: "SIZES", value: safe(product.specs.screenSizes.map((s) => `${s}"`).join(" • ")) },
+    { label: "SIZES", value: safe(product.specs.screenSizes.map(formatSize).join(" • ")) },
   ];
 
   // Background fill
@@ -399,7 +400,7 @@ function drawSpecsFlat(ctx: Ctx, product: Product) {
   const rows: [string, string][] = [
     ["Resolution", product.specs.resolution],
     ["Brightness", product.specs.brightness],
-    ["Available Sizes", product.specs.screenSizes.map((s) => `${s}"`).join(" · ")],
+    ["Available Sizes", product.specs.screenSizes.map(formatSize).join(" · ")],
     ["Operation Hours", product.specs.operationTime],
     ["Series", product.series],
   ];

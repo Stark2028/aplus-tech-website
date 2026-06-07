@@ -1,5 +1,6 @@
 import { products } from "@/data/products";
 import { blogPosts } from "@/data/blogs";
+import { formatSizeRange } from "@/lib/formatSize";
 
 export interface SearchResult {
   type: "product" | "blog";
@@ -26,7 +27,7 @@ export function computeSearchResults(query: string): SearchResult[] {
       type: "product",
       id: p.id,
       title: p.name,
-      subtitle: `${p.category} · ${p.specs.screenSizes.join(", ")}"`,
+      subtitle: `${p.category} · ${formatSizeRange(p.specs.screenSizes)}`,
       href: `/products/${p.id}`,
     }));
 

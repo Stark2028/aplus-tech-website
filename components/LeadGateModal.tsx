@@ -94,6 +94,8 @@ export default function LeadGateModal({
       phone: cached?.phone ?? "",
       company: cached?.company ?? "",
     });
+    // Reset transient UI state when the modal (re)opens — intentional.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setStatus("idle");
     setErrorMsg("");
     trackEvent(`${analyticsKey}_opened`, {});
@@ -140,6 +142,8 @@ export default function LeadGateModal({
   }, [isOpen]);
 
   const [mounted, setMounted] = useState(false);
+  // Standard SSR mount guard — portals can only render client-side.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 
   if (!mounted || !isOpen) return null;
@@ -167,8 +171,18 @@ export default function LeadGateModal({
           items_list: itemDescription,
         }),
       });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.message || "Submission failed");
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) {
+        // Surface a friendly, non-technical message (never the raw API string).
+        const msg =
+          res.status === 429
+            ? "Too many requests. Please wait a few minutes and try again."
+            : "Something went wrong. Please try again, or contact us directly at info@aplustechsol.com.";
+        setErrorMsg(msg);
+        toast.error(msg);
+        setStatus("error");
+        return;
+      }
 
       setCachedLead(lead);
       trackEvent(`${analyticsKey}_submitted`, {});
@@ -180,7 +194,8 @@ export default function LeadGateModal({
       }, 400);
     } catch (err) {
       console.error(err);
-      const msg = err instanceof Error ? err.message : "Something went wrong.";
+      const msg =
+        "We couldn't reach our server. Check your connection and try again.";
       setErrorMsg(msg);
       toast.error(msg);
       setStatus("error");

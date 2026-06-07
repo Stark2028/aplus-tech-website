@@ -312,7 +312,7 @@ export default async function IndustryCategoryPage({
                   {combo.ctaHeading}
                 </h2>
                 <p className="text-blue-100/90 text-lg max-w-xl leading-relaxed">
-                  Share your requirements and our solution architects will recommend the right Samsung hardware, sizing, and deployment plan — site survey included.
+                  Share your requirements and our solution architects will recommend the right Samsung hardware, sizing, and deployment plan.
                 </p>
               </div>
               <div className="lg:col-span-5 flex flex-col gap-3">

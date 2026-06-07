@@ -196,6 +196,86 @@ h1, h2 {
   display: none;
 }
 
+/* ─── Spotlight cards (cursor-tracking glow, Vercel/Linear style) ──────────
+   A radial glow follows the cursor across a card. The card's JS handler writes
+   `--spot-x` / `--spot-y`; this layer paints them. GPU-friendly (opacity +
+   background only, no layout), desktop-only, and entirely behind the content.
+   Touch devices never trigger mousemove, so the glow simply stays hidden.
+*/
+.spotlight-card {
+  position: relative;
+}
+/* The glow paints on the card's own background layer. Card content sits above
+   it via the `.spotlight-content` helper (and existing absolute `z-10`
+   utilities), so the glow reads as lighting *under* the content, not over it.
+   Using a wrapper layer rather than negative z-index keeps it visible even on
+   opaque (bg-white) cards. */
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    var(--spot-radius, 350px) circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    var(--spot-color, rgba(37, 99, 235, 0.12)),
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+/* Reveal the glow only on hover, and only on pointer (desktop-class) screens. */
+@media (min-width: 1024px) and (hover: hover) {
+  .spotlight-card:hover::before {
+    opacity: 1;
+  }
+}
+/* Lift non-positioned content above the z-index:0 glow. Absolutely-positioned
+   children (badges, compare buttons) already carry their own z-index and are
+   left untouched. */
+.spotlight-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Staggered hero entrance ──────────────────────────────────────────────
+   Each word fades/slides up with a small per-word delay set inline. Pure CSS
+   `both` fill keeps the final state painted.
+
+   LCP note: the H1 is the LCP element, and an opacity-0 start defers when the
+   browser counts it as painted. Durations are kept deliberately tight (last
+   word fully visible by ~0.4s) so the cinematic effect doesn't regress LCP,
+   and the reduced-motion guard collapses it entirely for those users.
+*/
+@keyframes word-rise {
+  from { opacity: 0; transform: translateY(0.35em); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-word {
+  display: inline-block;
+  animation: word-rise 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ─── Reduced-motion guard ─────────────────────────────────────────────────
+   Honour the OS "reduce motion" setting: neutralise all the decorative
+   animations (glows, marquees, aurora, spotlight reveal, hero stagger) while
+   leaving content fully visible. Applies site-wide.
+*/
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .spotlight-card::before {
+    display: none;
+  }
+}
+
 /* ─── Print styles ────────────────────────────────────────────────────────
    Used by the "Download as PDF" flow on /quote. We rely on Tailwind's `print:`
    variants for most hide/show logic; these globals cover what variants can't

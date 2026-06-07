@@ -1,7 +1,33 @@
 "use client";
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { Product } from "@/data/products";
+import { Product, products } from "@/data/products";
+
+const MAX_COMPARE = 3;
+
+/**
+ * Sanitise a persisted compare list: keep only well-formed entries whose product
+ * id still exists in the current catalog, dedupe by id, and cap at MAX_COMPARE.
+ * Guards against stale/oversized/malformed localStorage breaking the compare table.
+ */
+function sanitizeCompareList(raw: unknown): Product[] {
+  if (!Array.isArray(raw)) return [];
+  const validIds = new Set(products.map((p) => p.id));
+  const seen = new Set<string>();
+  const out: Product[] = [];
+  for (const item of raw) {
+    if (!item || typeof item !== "object") continue;
+    const id = (item as { id?: unknown }).id;
+    if (typeof id !== "string" || !validIds.has(id) || seen.has(id)) continue;
+    // Re-hydrate from the canonical product to avoid stale shapes from old data.
+    const canonical = products.find((p) => p.id === id);
+    if (!canonical) continue;
+    seen.add(id);
+    out.push(canonical);
+    if (out.length >= MAX_COMPARE) break;
+  }
+  return out;
+}
 
 interface ComparisonContextType {
     selectedProducts: Product[];
@@ -23,8 +49,9 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
         const saved = localStorage.getItem("b2b_compare_list");
         if (saved) {
             try {
+                const cleaned = sanitizeCompareList(JSON.parse(saved));
                 // eslint-disable-next-line react-hooks/set-state-in-effect
-                setSelectedProducts(JSON.parse(saved));
+                if (cleaned.length > 0) setSelectedProducts(cleaned);
             } catch (e) {
                 console.error("Failed to parse compare list", e);
             }
@@ -43,7 +70,7 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
     const addToCompare = useCallback(
         (product: Product) => {
             setSelectedProducts((prev) => {
-                if (prev.length >= 3) {
+                if (prev.length >= MAX_COMPARE) {
                     setLimitReached(true);
                     if (limitTimerRef.current) clearTimeout(limitTimerRef.current);
                     limitTimerRef.current = setTimeout(() => setLimitReached(false), 2500);

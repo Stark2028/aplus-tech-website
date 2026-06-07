@@ -22,6 +22,22 @@ const ALLOWED_ORIGINS = new Set([
   "https://aplustechsol.com",
 ]);
 
+// Allow local dev origins ONLY outside production, so forms are testable on
+// localhost. This branch is dead in production builds — localhost is never
+// accepted when NODE_ENV === "production".
+const ALLOW_LOCALHOST = process.env.NODE_ENV !== "production";
+
+function isOriginAllowed(origin: string): boolean {
+  if (ALLOWED_ORIGINS.has(origin)) return true;
+  if (ALLOW_LOCALHOST && /^https?:\/\/localhost(:\d+)?$/.test(origin)) return true;
+  return false;
+}
+
+if (process.env.NODE_ENV === "development") {
+  ALLOWED_ORIGINS.add("http://localhost:3000");
+  ALLOWED_ORIGINS.add("http://127.0.0.1:3000");
+}
+
 // Defensive caps so a single request can't carry an unbounded payload.
 const MAX_FIELD_LEN = 5000;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -170,7 +186,7 @@ export async function POST(req: Request) {
 
     // Reject cross-site browser requests (present-but-disallowed Origin).
     const origin = req.headers.get("origin");
-    if (origin && !ALLOWED_ORIGINS.has(origin)) {
+    if (origin && !isOriginAllowed(origin)) {
       return NextResponse.json({ success: false, message: "Forbidden." }, { status: 403 });
     }
 

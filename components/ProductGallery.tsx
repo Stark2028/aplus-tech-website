@@ -139,9 +139,10 @@ export default function ProductGallery({
             className="p-1 hover:bg-gray-100 rounded-md disabled:opacity-50"
             disabled={scale <= 1}
             title="Zoom Out"
+            aria-label="Zoom out"
             type="button"
           >
-            <Minus size={20} className="text-gray-700" />
+            <Minus size={20} className="text-gray-700" aria-hidden="true" />
           </button>
           <span className="min-w-[3ch] text-center font-medium text-sm text-gray-700 flex items-center justify-center">
             {Math.round(scale * 100)}%
@@ -151,17 +152,19 @@ export default function ProductGallery({
             className="p-1 hover:bg-gray-100 rounded-md disabled:opacity-50"
             disabled={scale >= 3}
             title="Zoom In"
+            aria-label="Zoom in"
             type="button"
           >
-            <Plus size={20} className="text-gray-700" />
+            <Plus size={20} className="text-gray-700" aria-hidden="true" />
           </button>
           <button
             onClick={handleReset}
             className="p-1 hover:bg-gray-100 rounded-md ml-1 border-l border-gray-200 pl-2"
             title="Reset"
+            aria-label="Reset zoom"
             type="button"
           >
-            <RefreshCw size={18} className="text-gray-700" />
+            <RefreshCw size={18} className="text-gray-700" aria-hidden="true" />
           </button>
         </div>
         {/* Navigation Buttons (Only if > 1 image) */}
@@ -206,6 +209,9 @@ export default function ProductGallery({
               setActiveIndex(index);
               setScale(1);
             }}
+            type="button"
+            aria-label={`View image ${index + 1} of ${images.length}`}
+            aria-current={activeIndex === index ? "true" : undefined}
             className={`flex-shrink-0 w-20 h-20 rounded-lg border-2 p-1 ${activeIndex === index ? "border-blue-600" : "border-gray-200"
               }`}
           >

@@ -115,6 +115,21 @@ export default function SearchModal() {
         }
       } else if (e.key === "Escape") {
         close();
+      } else if (e.key === "Tab" && modalRef.current) {
+        // Focus trap: keep Tab / Shift+Tab cycling inside the modal.
+        const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
     window.addEventListener("keydown", handler);
@@ -134,12 +149,16 @@ export default function SearchModal() {
             {/* Dark background overlay — tappable so users can dismiss by tapping outside on mobile */}
             <div
               className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              aria-hidden="true"
               onClick={close}
               onTouchEnd={(e) => { e.preventDefault(); close(); }}
             />
 
             <div
               ref={modalRef}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Site search"
               className="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
             >
               <div className="flex items-center gap-3 px-4 py-4 border-b border-gray-100">

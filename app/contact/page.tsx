@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useId } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -34,6 +34,7 @@ const FAQS = [
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
+  const panelId = useId();
 
   useEffect(() => {
     const el = bodyRef.current;
@@ -53,14 +54,18 @@ function FAQItem({ q, a }: { q: string; a: string }) {
         onClick={() => setOpen(!open)}
         className="flex justify-between items-center w-full py-3.5 text-left gap-3 group"
         type="button"
+        aria-expanded={open}
+        aria-controls={panelId}
       >
         <span className="text-sm font-semibold text-slate-700 group-hover:text-slate-900 transition-colors leading-snug">{q}</span>
         {open
-          ? <ChevronUp size={14} className="shrink-0 text-blue-500" />
-          : <ChevronDown size={14} className="shrink-0 text-slate-400" />}
+          ? <ChevronUp size={14} className="shrink-0 text-blue-500" aria-hidden="true" />
+          : <ChevronDown size={14} className="shrink-0 text-slate-400" aria-hidden="true" />}
       </button>
       <div
         ref={bodyRef}
+        id={panelId}
+        role="region"
         style={{ maxHeight: 0, opacity: 0, overflow: "hidden", transition: "max-height 0.25s ease, opacity 0.2s ease" }}
       >
         <p className="text-sm text-slate-500 pb-3.5 leading-relaxed">{a}</p>
@@ -107,16 +112,27 @@ export default function ContactPage() {
       // leave it empty; bots that fill it are silently dropped server-side.
       company_website: (getValues() as Record<string, string>).company_website ?? "",
     };
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-    if (data.success) {
-      setSubmitted(true);
-    } else {
-      setServerError(data.message || "Something went wrong. Please try again.");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success) {
+        setSubmitted(true);
+      } else {
+        // Friendly, non-technical message (never the raw API string).
+        setServerError(
+          res.status === 429
+            ? "Too many requests. Please wait a few minutes and try again."
+            : "Something went wrong. Please try again, or email us directly at info@aplustechsol.com."
+        );
+      }
+    } catch {
+      setServerError(
+        "We couldn't reach our server. Check your connection and try again."
+      );
     }
   };
 
@@ -201,7 +217,7 @@ export default function ContactPage() {
           <div className="lg:col-span-2 animate-page-enter flex flex-col gap-12 lg:gap-16">
             <div className="bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden relative">
               {/* Decorative corner accent */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-50 to-transparent pointer-events-none" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-linear-to-bl from-blue-50 to-transparent pointer-events-none" />
 
               {/* Form header */}
               <div className="px-8 pt-8 pb-6 border-b border-gray-100/80 relative">
@@ -391,8 +407,8 @@ export default function ContactPage() {
           <div className="flex flex-col gap-6">
             {/* Contact info + Map */}
             <div className="bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden group">
-              <div className="px-6 pt-6 pb-5 bg-gradient-to-br from-slate-50 via-white to-blue-50/30 border-b border-gray-100/60 relative">
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-blue-50 to-transparent pointer-events-none" />
+              <div className="px-6 pt-6 pb-5 bg-linear-to-br from-slate-50 via-white to-blue-50/30 border-b border-gray-100/60 relative">
+                <div className="absolute top-0 right-0 w-20 h-20 bg-linear-to-bl from-blue-50 to-transparent pointer-events-none" />
                 <div className="flex items-center gap-3.5 mb-4 relative">
                   <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/25">
                     <Building2 size={18} className="text-white" />
@@ -427,7 +443,7 @@ export default function ContactPage() {
             </div>
 
             {/* WhatsApp */}
-            <div className="rounded-3xl overflow-hidden shadow-xl shadow-green-700/25 bg-gradient-to-br from-[#064e45] via-[#075e54] to-[#128c7e] relative group">
+            <div className="rounded-3xl overflow-hidden shadow-xl shadow-green-700/25 bg-linear-to-br from-[#064e45] via-[#075e54] to-[#128c7e] relative group">
               {/* Subtle grid texture */}
               <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(255,255,255,0.3) 20px, rgba(255,255,255,0.3) 21px), repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,255,255,0.3) 20px, rgba(255,255,255,0.3) 21px)" }} />
               {/* Glow orb */}
@@ -472,7 +488,7 @@ export default function ContactPage() {
             </a>
 
             {/* FAQ */}
-            <div className="relative rounded-[2rem] shadow-xl shadow-slate-200/60 bg-gradient-to-br from-white via-slate-50 to-blue-50/40 p-6 border border-slate-200/80 overflow-hidden">
+            <div className="relative rounded-[2rem] shadow-xl shadow-slate-200/60 bg-linear-to-br from-white via-slate-50 to-blue-50/40 p-6 border border-slate-200/80 overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,rgba(59,130,246,0.08),transparent_50%)]" />
               <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-5">

@@ -8,6 +8,7 @@ import { useComparison } from "@/context/ComparisonContext";
 import { useQuote } from "@/context/QuoteContext";
 import { products as allProducts } from "@/data/products";
 import type { Product } from "@/data/products";
+import { formatSize } from "@/lib/formatSize";
 import {
   ArrowLeft, X, ShoppingBag, Printer, Share2, Check,
   Monitor, Plus, FileSpreadsheet,
@@ -26,7 +27,7 @@ const CORE_SPEC_ROWS: { label: string; getValue: (p: Product) => string }[] = [
   { label: "Operation Hours", getValue: (p) => p.specs.operationTime },
   {
     label: "Available Sizes",
-    getValue: (p) => p.specs.screenSizes.map((s) => `${s}"`).join(", "),
+    getValue: (p) => p.specs.screenSizes.map(formatSize).join(", "),
   },
 ];
 
@@ -100,7 +101,7 @@ function ComparePageInner() {
       ["Resolution", ...selectedProducts.map((p) => p.specs.resolution)],
       ["Brightness", ...selectedProducts.map((p) => p.specs.brightness)],
       ["Operation Hours", ...selectedProducts.map((p) => p.specs.operationTime)],
-      ["Available Sizes", ...selectedProducts.map((p) => p.specs.screenSizes.map((s) => `${s}"`).join(", "))],
+      ["Available Sizes", ...selectedProducts.map((p) => p.specs.screenSizes.map(formatSize).join(", "))],
       // Extended specs — uses specGroups when present, falls back to additionalSpecs
       ...extraSpecKeys.map((key) => [
         key,
@@ -304,10 +305,12 @@ function ComparePageInner() {
                             {product.name}
                           </Link>
                           <button
+                            type="button"
                             onClick={() => addItem(product)}
+                            aria-label={`Add ${product.name} to quote`}
                             className="no-print inline-flex items-center gap-1.5 bg-gray-900 hover:bg-blue-600 text-white text-xs px-4 py-2 rounded-lg font-semibold transition-all"
                           >
-                            <ShoppingBag size={12} />
+                            <ShoppingBag size={12} aria-hidden="true" />
                             Add to Quote
                           </button>
                         </div>

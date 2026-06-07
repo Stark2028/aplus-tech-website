@@ -1,5 +1,17 @@
 import type { NextConfig } from 'next';
 
+// React's dev server (Turbopack/HMR) needs eval() for debugging features.
+// Production React never uses eval(), so 'unsafe-eval' is added in development
+// ONLY — the production CSP stays strict (no unsafe-eval).
+const isDev = process.env.NODE_ENV !== 'production';
+const scriptSrc = [
+  "script-src 'self' 'unsafe-inline'",
+  isDev ? "'unsafe-eval'" : '',
+  'https://www.googletagmanager.com https://us-assets.i.posthog.com',
+]
+  .filter(Boolean)
+  .join(' ');
+
 const securityHeaders = [
   { key: 'X-Frame-Options',           value: 'SAMEORIGIN' },
   { key: 'X-Content-Type-Options',    value: 'nosniff' },
@@ -20,9 +32,9 @@ const securityHeaders = [
       // blocks, which must be inline for SEO crawlers and cannot be hashed across
       // statically-generated pages. No executable inline JS is emitted by app code
       // (gtag init runs from an external bundle), and JSON-LD is "</script>"-escaped,
-      // so the inline XSS vector is minimal. 'unsafe-eval' has been removed — gtag
-      // and PostHog operate without it.
-      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://us-assets.i.posthog.com",
+      // so the inline XSS vector is minimal. 'unsafe-eval' is dev-only (see above) —
+      // production stays strict; gtag and PostHog operate without it.
+      scriptSrc,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https://images.unsplash.com https://plus.unsplash.com https://www.aplustechsol.com https://www.google-analytics.com https://www.googletagmanager.com https://stats.g.doubleclick.net",

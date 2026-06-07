@@ -9,6 +9,7 @@ import { Product } from "@/data/products";
 import { useQuote } from "@/context/QuoteContext";
 import { useComparison } from "@/context/ComparisonContext";
 import { getProductBadge } from "@/lib/productBadges";
+import SpotlightCard from "@/components/SpotlightCard";
 
 interface ProductCardProps {
   product: Product;
@@ -45,13 +46,13 @@ export default function ProductCard({ product }: ProductCardProps) {
   const badge = getProductBadge(product.id);
 
   const badgeStyles: Record<string, string> = {
-    "Best Seller": "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-orange-500/20",
-    Popular: "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-blue-600/20",
-    New: "bg-gradient-to-r from-emerald-400 to-emerald-600 text-white shadow-emerald-500/20",
+    "Best Seller": "bg-linear-to-r from-amber-500 to-orange-500 text-white shadow-orange-500/20",
+    Popular: "bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-blue-600/20",
+    New: "bg-linear-to-r from-emerald-400 to-emerald-600 text-white shadow-emerald-500/20",
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/60 overflow-hidden shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(6,81,237,0.12)] hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group relative">
+    <SpotlightCard className="bg-white rounded-2xl border border-slate-200/60 overflow-hidden shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(6,81,237,0.12)] hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
 
       {/* Badge (Top Left) */}
       {badge && (
@@ -89,9 +90,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           }
         }}
         aria-label={`View details for ${product.name}`}
-        className="relative h-64 bg-gradient-to-b from-slate-50 to-white flex items-center justify-center overflow-hidden cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 border-b border-slate-100/50 p-6"
+        className="spotlight-content h-64 bg-linear-to-b from-slate-50 to-white flex items-center justify-center overflow-hidden cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 border-b border-slate-100/50 px-6 py-8"
       >
-        <div className="relative w-full h-full mix-blend-multiply">
+        {/* Fixed-height image box normalises display size across sources:
+            some product shots fill edge-to-edge, others float with whitespace.
+            Capping the height keeps every card's display visually consistent. */}
+        <div className="relative w-full h-[170px] mix-blend-multiply">
           {primaryImage ? (
             <Image
               src={primaryImage}
@@ -109,7 +113,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Content */}
-      <div className="p-6 flex flex-col grow">
+      <div className="spotlight-content p-6 flex flex-col grow">
         <div className="mb-5">
           <div className="flex items-center mb-3">
             <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold bg-blue-50/80 text-blue-600 uppercase tracking-widest">
@@ -173,6 +177,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           </Link>
         </div>
       </div>
-    </div>
+    </SpotlightCard>
   );
 }

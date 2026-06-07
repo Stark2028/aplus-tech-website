@@ -96,20 +96,28 @@ export default function HeroSection() {
           >
             {/* Added a text-shadow drop for desktop only to improve mobile LCP */}
             <span className="md:drop-shadow-[0_0_80px_rgba(0,0,0,0.9)] drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]">
-              India&apos;s Premier
+              <span className="hero-word" style={{ animationDelay: "0s" }}>India&apos;s</span>{" "}
+              <span className="hero-word" style={{ animationDelay: "0.04s" }}>Premier</span>
               <br />
               <span
-                className="text-transparent bg-clip-text"
+                className="hero-word text-transparent bg-clip-text"
                 style={{
                   backgroundImage:
                     "linear-gradient(90deg, #3b82f6 0%, #60a5fa 45%, #c4b5fd 100%)",
                   whiteSpace: "nowrap",
+                  animationDelay: "0.08s",
+                  // bg-clip-text + tight line-height clips descenders (p, y, g).
+                  // Add a little vertical room and offset it so line spacing
+                  // stays visually unchanged.
+                  lineHeight: 1.18,
+                  paddingBottom: "0.08em",
+                  marginBottom: "-0.08em",
                 }}
               >
                 Display Technology
               </span>
               <br />
-              Partner
+              <span className="hero-word" style={{ animationDelay: "0.12s" }}>Partner</span>
             </span>
             {/* Keyword-rich context for crawlers without altering the visual headline. */}
             <span className="sr-only">
