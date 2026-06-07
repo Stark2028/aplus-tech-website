@@ -212,7 +212,7 @@ export default function Footer() {
                   <Clock size={14} className="text-blue-400" />
                 </div>
                 <div className="text-sm text-slate-400">
-                  Mon – Sat · 10:00 – 18:00 IST
+                  Mon – Sat : 10:00 – 18:00 IST
                 </div>
               </li>
             </ul>

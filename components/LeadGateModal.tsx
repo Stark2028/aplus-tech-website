@@ -172,20 +172,30 @@ export default function LeadGateModal({
         }),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.success) {
-        // Surface a friendly, non-technical message (never the raw API string).
-        const msg =
-          res.status === 429
-            ? "Too many requests. Please wait a few minutes and try again."
-            : "Something went wrong. Please try again, or contact us directly at info@aplustechsol.com.";
+
+      // Rate limiting is the one case where we should NOT hand over the resource
+      // (it's an abuse signal) — ask the user to retry.
+      if (res.status === 429) {
+        const msg = "Too many requests. Please wait a few minutes and try again.";
         setErrorMsg(msg);
         toast.error(msg);
         setStatus("error");
         return;
       }
 
+      // Cache the lead locally regardless, so a later form submission can still
+      // recover the contact, and so repeat downloads skip the gate.
       setCachedLead(lead);
-      trackEvent(`${analyticsKey}_submitted`, {});
+
+      if (res.ok && data.success) {
+        trackEvent(`${analyticsKey}_submitted`, {});
+      } else {
+        // Lead capture failed (e.g. email service misconfigured) — log it so the
+        // failure is visible in analytics, but still deliver the resource: the
+        // PDF is generated client-side and the user came here to get it.
+        console.error("[lead-gate] capture failed", res.status);
+        trackEvent(`${analyticsKey}_capture_failed`, { status: res.status });
+      }
 
       setStatus("success");
       toast.success("Resource unlocked! Downloading now...");
@@ -193,12 +203,15 @@ export default function LeadGateModal({
         onUnlock(lead);
       }, 400);
     } catch (err) {
+      // Network failure: still deliver the client-side PDF, but record the loss.
       console.error(err);
-      const msg =
-        "We couldn't reach our server. Check your connection and try again.";
-      setErrorMsg(msg);
-      toast.error(msg);
-      setStatus("error");
+      setCachedLead(lead);
+      trackEvent(`${analyticsKey}_capture_failed`, { status: "network" });
+      setStatus("success");
+      toast.success("Resource unlocked! Downloading now...");
+      setTimeout(() => {
+        onUnlock(lead);
+      }, 400);
     }
   };
 

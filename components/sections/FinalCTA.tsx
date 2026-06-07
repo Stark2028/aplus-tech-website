@@ -23,7 +23,7 @@ export default function FinalCTA() {
           ))}
         </div>
         <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-          Ready to Upgrade Your Displays?
+          Ready to Upgrade Your Display
         </h2>
         <p className="text-lg text-blue-200/70 mb-10 max-w-xl mx-auto">
           Get a personalised quote in 24 hours. Our display specialists are

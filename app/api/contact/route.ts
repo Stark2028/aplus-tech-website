@@ -27,15 +27,17 @@ const ALLOWED_ORIGINS = new Set([
 // accepted when NODE_ENV === "production".
 const ALLOW_LOCALHOST = process.env.NODE_ENV !== "production";
 
+// Vercel deployment URLs (production aliases + per-commit previews) are served
+// from *.vercel.app. Allow them so forms work on the Vercel domain before the
+// custom domain is attached. The subdomain space is controlled by Vercel, and
+// the per-IP rate limit + honeypot still apply, so this stays low-risk.
+const VERCEL_ORIGIN = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i;
+
 function isOriginAllowed(origin: string): boolean {
   if (ALLOWED_ORIGINS.has(origin)) return true;
-  if (ALLOW_LOCALHOST && /^https?:\/\/localhost(:\d+)?$/.test(origin)) return true;
+  if (VERCEL_ORIGIN.test(origin)) return true;
+  if (ALLOW_LOCALHOST && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true;
   return false;
-}
-
-if (process.env.NODE_ENV === "development") {
-  ALLOWED_ORIGINS.add("http://localhost:3000");
-  ALLOWED_ORIGINS.add("http://127.0.0.1:3000");
 }
 
 // Defensive caps so a single request can't carry an unbounded payload.
