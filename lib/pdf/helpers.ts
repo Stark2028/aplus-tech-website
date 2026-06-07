@@ -193,11 +193,14 @@ export function safe(text: string): string {
   return text
     .replace(/—/g, "-")
     .replace(/–/g, "-")
-    .replace(/[“”]/g, '"')
+    .replace(/[“”″]/g, '"')
     .replace(/[‘’]/g, "'")
     .replace(/·/g, "•")
     .replace(/…/g, "...")
     .replace(/×/g, "x")
+    .replace(/≥/g, ">=")
+    .replace(/≤/g, "<=")
+    .replace(/Ω/g, "Ohm")
     .replace(/[​-‏‪-‮﻿]/g, ""); // strip zero-width / direction marks
 }
 
