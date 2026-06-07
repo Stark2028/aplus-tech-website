@@ -57,6 +57,7 @@ next-env.d.ts
 /diagnose2.py
 /lh-*.json
 /lh-*.html
+/lighthouse-*.json
 /build-out.txt
 # Office temp/lock files
 ~$*
