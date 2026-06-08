@@ -8,6 +8,7 @@ import { PHONE_NUMBER, PHONE_TEL, SOLUTIONS } from "./navConfig";
 
 interface Props {
   cartCount: number;
+  onHomeClick?: (e: React.MouseEvent) => void;
 }
 
 function useDropdown() {
@@ -32,7 +33,7 @@ function useDropdown() {
   return { open, setOpen, ref };
 }
 
-export default function NavbarDesktop({ cartCount }: Props) {
+export default function NavbarDesktop({ cartCount, onHomeClick }: Props) {
   const { open: productsOpen, setOpen: setProductsOpen, ref: productsRef } = useDropdown();
   const { open: solutionsOpen, setOpen: setSolutionsOpen, ref: solutionsRef } = useDropdown();
 
@@ -41,6 +42,7 @@ export default function NavbarDesktop({ cartCount }: Props) {
       <nav className="hidden xl:flex items-center gap-1" aria-label="Primary">
         <Link
           href="/"
+          onClick={onHomeClick}
           className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
         >
           Home

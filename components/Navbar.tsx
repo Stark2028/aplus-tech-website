@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 import { useQuote } from "@/context/QuoteContext";
 import NavbarDesktop from "@/components/navbar/NavbarDesktop";
 import NavbarMobile from "@/components/navbar/NavbarMobile";
@@ -15,8 +16,18 @@ const SearchModal = dynamic(() => import("@/components/SearchModal"), { ssr: fal
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { quoteItems } = useQuote();
+  const pathname = usePathname();
 
   const cartCount = quoteItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  // When the home link / logo is clicked while already on the homepage,
+  // Next.js won't navigate — so scroll back to the top ourselves.
+  const handleHomeClick = (e: React.MouseEvent) => {
+    if (pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -35,7 +46,7 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-18 py-3">
-          <Link href="/" className="flex items-center gap-3 shrink-0">
+          <Link href="/" onClick={handleHomeClick} className="flex items-center gap-3 shrink-0">
             <Image
               src="/logo.png"
               alt="Aplus Technology Solutions"
@@ -51,8 +62,8 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <NavbarDesktop cartCount={cartCount} />
-          <NavbarMobile cartCount={cartCount} />
+          <NavbarDesktop cartCount={cartCount} onHomeClick={handleHomeClick} />
+          <NavbarMobile cartCount={cartCount} onHomeClick={handleHomeClick} />
         </div>
       </div>
     </nav>

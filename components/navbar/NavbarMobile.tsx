@@ -8,9 +8,10 @@ import { PHONE_NUMBER, PHONE_TEL, SOLUTIONS } from "./navConfig";
 
 interface Props {
   cartCount: number;
+  onHomeClick?: (e: React.MouseEvent) => void;
 }
 
-export default function NavbarMobile({ cartCount }: Props) {
+export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [productsOpen, setProductsOpen] = useState(false);
   const [solutionsOpen, setSolutionsOpen] = useState(false);
@@ -106,7 +107,7 @@ export default function NavbarMobile({ cartCount }: Props) {
           <div className="max-w-7xl mx-auto px-4 py-4 space-y-1">
             <Link
               href="/"
-              onClick={close}
+              onClick={(e) => { onHomeClick?.(e); close(); }}
               className="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
             >
               Home

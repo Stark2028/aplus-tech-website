@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   MapPin,
   Phone,
@@ -34,6 +35,15 @@ const COMPANY_LINKS = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // On the homepage the logo link won't navigate, so scroll to top instead.
+  const handleHomeClick = (e: React.MouseEvent) => {
+    if (pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   return (
     <footer className="relative bg-[#070b15] text-gray-400 overflow-hidden print:hidden">
@@ -81,7 +91,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="col-span-2 lg:col-span-3 pr-4">
             <div className="flex items-center gap-4 mb-6">
-              <Link href="/" className="inline-flex items-center justify-center bg-white p-2 rounded-lg shadow-sm shrink-0">
+              <Link href="/" onClick={handleHomeClick} className="inline-flex items-center justify-center bg-white p-2 rounded-lg shadow-sm shrink-0">
                 <Image
                   src="/logo.png"
                   alt="Aplus Technology Solutions"
@@ -222,7 +232,9 @@ export default function Footer() {
 
       {/* ───────────────── Bottom bar ───────────────── */}
       <div className="relative border-t border-slate-800 pb-20 md:pb-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+        {/* On md+ the "Find Your Display" floating button sits at bottom-left,
+            so reserve space below the bar to keep it clear of the CIN line. */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:pb-24 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
           <div className="flex flex-col gap-1 text-center sm:text-left">
             <p>
               &copy; {new Date().getFullYear()} Aplus Technology Solutions Pvt. Ltd. All rights reserved.
