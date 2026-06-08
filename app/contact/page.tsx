@@ -25,8 +25,7 @@ const INQUIRY_TYPES = [
 ];
 
 const FAQS = [
-  { q: "How quickly do you respond?", a: "Within 4 business hours for standard inquiries, same-day for urgent projects." },
-  { q: "Do you offer on-site demos?", a: "Yes — at your office or our Noida showroom. Contact us to schedule." },
+  { q: "How quickly do you respond?", a: "Within 1 business day for standard inquiries, same-day for urgent projects." },
   { q: "What areas do you serve?", a: "Pan-India delivery and installation, with full logistics support for bulk orders." },
   { q: "Is installation included?", a: "Yes. We provide end-to-end supply, installation, and post-sale AMC for every project." },
 ];
@@ -159,7 +158,7 @@ export default function ContactPage() {
             {/* Quick stats */}
             <div className="flex gap-6 sm:gap-10 bg-white/[0.07] p-6 rounded-2xl backdrop-blur-sm border border-white/10">
               {[
-                { icon: Timer,      value: "4 hrs",  label: "Response Time" },
+                { icon: Timer,      value: "1 day",  label: "Response Time" },
                 { icon: BadgeCheck, value: "Samsung",label: "Certified Partner" },
                 { icon: Building2,  value: "Noida",  label: "Headquarters" },
               ].map(({ icon: Icon, value, label }) => (

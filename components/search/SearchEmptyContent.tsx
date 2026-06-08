@@ -3,9 +3,9 @@ import { ArrowRight, Clock } from "lucide-react";
 
 const QUICK_LINKS = [
   { label: "All Products", href: "/products" },
-  { label: "Video Walls", href: "/categories/video-wall" },
+  { label: "Video Walls", href: "/categories/video-walls" },
   { label: "Smart Signage", href: "/categories/digital-signage" },
-  { label: "Hospitality TVs", href: "/categories/hospitality-tv" },
+  { label: "Hospitality TVs", href: "/categories/commercial-tv" },
   { label: "Request a Quote", href: "/quote" },
 ];
 
