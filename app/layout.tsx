@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { QuoteProvider } from "@/context/QuoteContext";
 import { ComparisonProvider } from "@/context/ComparisonContext";
 import Analytics from "@/components/Analytics";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import PostHogProvider from "@/components/PostHogProvider";
 import PageTransition from "@/components/PageTransition";
 import ClientFloats from "@/components/ClientFloats";
@@ -108,6 +109,7 @@ export default function RootLayout({
         <ScrollProgress />
         <Toaster richColors position="bottom-right" />
         <Analytics gaId={GA_ID} />
+        <VercelAnalytics />
 
         {/* Skip-to-content for keyboard/screen-reader users */}
         <a
