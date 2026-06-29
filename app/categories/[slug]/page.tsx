@@ -89,27 +89,25 @@ export default async function CategoryPage({
 
       {/* Hero banner */}
       <div className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 md:py-10">
 
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-2">
-                Samsung Authorized Distributor
-              </p>
+          {/* Breadcrumb — own line on mobile (wraps), floats right on md+ */}
+          <nav className="flex flex-wrap items-center gap-1.5 text-xs text-gray-400 mb-4 md:mb-0 md:float-right md:pt-1">
+            <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
+            <ChevronRight size={12} className="text-gray-300 shrink-0" />
+            <Link href="/products" className="hover:text-blue-600 transition-colors">Products</Link>
+            <ChevronRight size={12} className="text-gray-300 shrink-0" />
+            <span className="text-gray-600 font-medium">{category.navLabel}</span>
+          </nav>
 
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                {category.navLabel}
-              </h1>
-            </div>
+          <div className="min-w-0">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-2">
+              Samsung Authorized Distributor
+            </p>
 
-            {/* Breadcrumb */}
-            <nav className="flex items-center justify-end gap-1.5 text-xs text-gray-400 shrink-0 pt-1">
-              <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
-              <ChevronRight size={12} className="text-gray-300" />
-              <Link href="/products" className="hover:text-blue-600 transition-colors">Products</Link>
-              <ChevronRight size={12} className="text-gray-300" />
-              <span className="text-gray-600 font-medium">{category.navLabel}</span>
-            </nav>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+              {category.navLabel}
+            </h1>
           </div>
 
         </div>

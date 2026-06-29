@@ -36,6 +36,24 @@ export default function MobileProductScroller({
     const el = scrollRef.current;
     if (!el) return;
     const amount = el.clientWidth * 0.78;
+    // The last slide carries a trailing `mr-[28vw]` margin, so `scrollWidth`
+    // overshoots the position the track actually snaps to at the end. Use the
+    // last slide's own offset (where it snaps left-aligned) as the true end
+    // instead — otherwise the wrap condition can never be reached.
+    const lastSlide = el.lastElementChild as HTMLElement | null;
+    const endScroll = lastSlide ? lastSlide.offsetLeft - el.offsetLeft : el.scrollWidth - el.clientWidth;
+    // Loop the carousel: → at the last slide jumps back to the first, and ←
+    // at the first slide jumps to the last. The 25px tolerance absorbs
+    // sub-pixel rounding and snap settling so "near the edge" still wraps.
+    if (dir === "right") {
+      if (el.scrollLeft >= endScroll - 25) {
+        el.scrollTo({ left: 0, behavior: "smooth" });
+        return;
+      }
+    } else if (el.scrollLeft <= 25) {
+      el.scrollTo({ left: endScroll, behavior: "smooth" });
+      return;
+    }
     el.scrollBy({ left: dir === "right" ? amount : -amount, behavior: "smooth" });
   };
 
@@ -49,12 +67,8 @@ export default function MobileProductScroller({
         if (pausedRef.current) return;
         const el = scrollRef.current;
         if (!el || el.clientWidth === 0) return;
-        const maxScroll = el.scrollWidth - el.clientWidth;
-        if (el.scrollLeft >= maxScroll - 25) {
-          el.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-          scroll("right");
-        }
+        // scroll() handles the end→start wrap itself, so auto-play just advances.
+        scroll("right");
       }, autoPlayInterval);
     };
 

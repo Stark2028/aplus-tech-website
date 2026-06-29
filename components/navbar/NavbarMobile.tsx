@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
+import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, Phone, Search, ShoppingBag, X } from "lucide-react";
 import { productCategories } from "@/data/categories";
 import { PHONE_NUMBER, PHONE_TEL, SOLUTIONS } from "./navConfig";
@@ -17,12 +19,27 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
   const [solutionsOpen, setSolutionsOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  // Portals need the DOM; gate on mount so SSR output stays stable.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const close = () => {
     setIsOpen(false);
+    setProductsOpen(false);
+    setSolutionsOpen(false);
     // Return focus to the hamburger button when menu closes
     toggleRef.current?.focus();
   };
+
+  // Auto-close on navigation. Covers every route change — link taps,
+  // back/forward, programmatic — so the menu never lingers over a new page.
+  // Skips the focus() call from close() since the user is moving away.
+  useEffect(() => {
+    setIsOpen(false);
+    setProductsOpen(false);
+    setSolutionsOpen(false);
+  }, [pathname]);
 
   // Close on Escape + trap focus within the open menu (Tab / Shift+Tab cycle)
   useEffect(() => {
@@ -92,11 +109,20 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
 
       {isOpen && (
         <>
-          <div
-            className="xl:hidden fixed inset-0 top-full z-40"
-            onClick={close}
-            aria-hidden="true"
-          />
+          {/* Full-screen tap-to-close backdrop. Portaled to <body> because the
+              navbar uses backdrop-blur, which makes the nav a containing block
+              for fixed-positioned descendants — keeping the backdrop inside the
+              nav would clamp `inset-0` to the 72px nav box instead of the
+              viewport, so taps below the bar never closed the menu. */}
+          {mounted &&
+            createPortal(
+              <div
+                className="xl:hidden fixed inset-0 z-40"
+                onClick={close}
+                aria-hidden="true"
+              />,
+              document.body
+            )}
           <div
             ref={menuRef}
             id="mobile-menu"

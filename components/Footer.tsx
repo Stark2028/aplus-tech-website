@@ -90,8 +90,8 @@ export default function Footer() {
 
           {/* Brand column */}
           <div className="col-span-2 lg:col-span-3 pr-4">
-            <div className="flex items-center gap-4 mb-6">
-              <Link href="/" onClick={handleHomeClick} className="inline-flex items-center justify-center bg-white p-2 rounded-lg shadow-sm shrink-0">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+              <Link href="/" onClick={handleHomeClick} className="inline-flex items-center justify-center bg-white p-2 rounded-lg shadow-sm shrink-0 self-start sm:self-auto">
                 <Image
                   src="/logo.png"
                   alt="Aplus Technology Solutions"
@@ -100,7 +100,7 @@ export default function Footer() {
                   className="h-12 w-auto object-contain"
                 />
               </Link>
-              <p className="text-xs sm:text-sm leading-relaxed text-slate-400">
+              <p className="text-sm leading-relaxed text-slate-400">
                 Authorized Samsung Display distributor providing end-to-end commercial solutions across India.
               </p>
             </div>
@@ -231,17 +231,23 @@ export default function Footer() {
       </div>
 
       {/* ───────────────── Bottom bar ───────────────── */}
-      <div className="relative border-t border-slate-800 pb-20 md:pb-0">
-        {/* On md+ the "Find Your Display" floating button sits at bottom-left,
-            so reserve space below the bar to keep it clear of the CIN line. */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:pb-24 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
-          <div className="flex flex-col gap-1 text-center sm:text-left">
+      <div className="relative border-t border-slate-800 pb-28 md:pb-0">
+        {/* Reserve generous space below the bar on every breakpoint so the
+            fixed floating buttons (Back-to-Top on mobile bottom-right, "Find
+            Your Display" on md+ bottom-left) never overlap the legal links. */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:pb-24 flex flex-col sm:flex-row justify-between items-center gap-5 sm:gap-4 text-xs text-slate-400">
+          <div className="flex flex-col gap-1.5 text-center sm:text-left">
             <p>
               &copy; {new Date().getFullYear()} Aplus Technology Solutions Pvt. Ltd. All rights reserved.
             </p>
-            <p className="text-xs text-slate-400">
-              CIN: U72900DL2020PTC374888 <span className="mx-2 text-slate-600">|</span> GSTIN: 07AAUCA5631L1Z6
-            </p>
+            {/* CIN + GSTIN: each value kept whole (whitespace-nowrap) so it never
+                splits mid-string on narrow phones. Stacked on mobile, inline with
+                a divider from sm up. */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 text-slate-500">
+              <span className="whitespace-nowrap">CIN: U72900DL2020PTC374888</span>
+              <span className="hidden sm:inline mx-2 text-slate-600">|</span>
+              <span className="whitespace-nowrap">GSTIN: 07AAUCA5631L1Z6</span>
+            </div>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center">
             <Link href="/privacy" className="hover:text-white transition-colors">
