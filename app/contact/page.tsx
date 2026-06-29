@@ -257,7 +257,7 @@ export default function ContactPage() {
                       tabIndex={-1}
                       autoComplete="off"
                       aria-hidden="true"
-                      className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                      className="sr-only"
                       {...register("company_website" as keyof ContactFormValues)}
                     />
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
