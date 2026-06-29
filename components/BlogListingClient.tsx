@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Clock, Calendar, Tag } from "lucide-react";
 import type { BlogPost } from "@/data/blogs";
+import { formatBlogDate } from "@/lib/formatDate";
 
 interface BlogListingClientProps {
   featured: BlogPost;
@@ -85,11 +86,7 @@ export default function BlogListingClient({ featured, rest, allTags }: BlogListi
                 <span className="flex items-center gap-1.5">
                   <Calendar size={13} />
                   <time dateTime={featured.date}>
-                    {new Date(featured.date).toLocaleDateString("en-IN", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
+                    {formatBlogDate(featured.date)}
                   </time>
                 </span>
                 <span className="flex items-center gap-1.5">
@@ -138,11 +135,7 @@ export default function BlogListingClient({ featured, rest, allTags }: BlogListi
                   <div className="flex items-center gap-3 text-xs text-gray-400">
                     <span className="flex items-center gap-1">
                       <Calendar size={11} />
-                      {new Date(post.date).toLocaleDateString("en-IN", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
+                      {formatBlogDate(post.date)}
                     </span>
                     <span className="flex items-center gap-1">
                       <Clock size={11} />

@@ -188,7 +188,15 @@ export function drawHr(
   });
 }
 
-/** Render a Latin-1 safe string (pdf-lib WinAnsi font can't encode em-dashes etc.). */
+/**
+ * Render a string the pdf-lib WinAnsi StandardFonts can encode.
+ *
+ * StandardFonts (Helvetica) throw on any character outside WinAnsi/Latin-1,
+ * which silently fails PDF generation. We first transliterate common offenders
+ * to readable ASCII, then strip zero-width/direction marks, and finally replace
+ * ANY remaining non-Latin-1 character with "?" as a catch-all — so a future
+ * glyph in product data (₹, →, €, an emoji, …) can never crash generation.
+ */
 export function safe(text: string): string {
   return text
     .replace(/—/g, "-")
@@ -201,7 +209,15 @@ export function safe(text: string): string {
     .replace(/≥/g, ">=")
     .replace(/≤/g, "<=")
     .replace(/Ω/g, "Ohm")
-    .replace(/[​-‏‪-‮﻿]/g, ""); // strip zero-width / direction marks
+    .replace(/₹/g, "Rs.")
+    .replace(/→/g, "->")
+    .replace(/[​-‏‪-‮﻿]/g, "") // strip zero-width / direction marks
+    // Catch-all: replace anything still outside what pdf-lib's WinAnsi font can
+    // encode. WinAnsi covers Latin-1 (\x00-\xFF) plus a handful of higher code
+    // points (bullet, curly quotes, dashes, €, ™, …) that we keep so existing
+    // bullet separators etc. still render; everything else (→, ₹, emoji, non-
+    // Latin scripts) becomes "?" instead of throwing and aborting generation.
+    .replace(/[^\x00-\xFF•–—‘’“”…€™]/g, "?");
 }
 
 /**

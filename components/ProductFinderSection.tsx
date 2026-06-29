@@ -22,6 +22,12 @@ import {
 import { products, Product } from "@/data/products";
 import { useQuote } from "@/context/QuoteContext";
 import { trackEvent } from "@/lib/analytics";
+import {
+  DISPLAY_TYPES as DISPLAY_TYPE_DATA,
+  SIZE_RANGES,
+  finderCategoryHref,
+  sizeInRange,
+} from "@/components/finderConfig";
 
 type Step = 1 | 2 | 3 | "results";
 
@@ -34,19 +40,16 @@ const INDUSTRIES: { id: IndustryId; label: string; sub: string; Icon: React.Comp
   { id: "retail", label: "Retail", sub: "Stores & Malls", Icon: Store },
 ];
 
-const DISPLAY_TYPES = [
-  { id: "Digital Signage", label: "Digital Signage", sub: "Lobbies & public areas", Icon: Monitor },
-  { id: "Video Wall", label: "Video Wall", sub: "Large-format impact", Icon: LayoutGrid },
-  { id: "Interactive Display", label: "Interactive Display", sub: "Touch & collaboration", Icon: MousePointerClick },
-  { id: "Commercial TV", label: "Commercial TV", sub: "Hotel rooms & offices", Icon: Tv },
-];
-
-const SIZE_RANGES = [
-  { id: "small",  label: "Compact",     sub: 'Under 50"',      min: 0,   max: 49  },
-  { id: "medium", label: "Standard",    sub: '50" – 75"',      min: 50,  max: 75  },
-  { id: "large",  label: "Large",       sub: '75" – 100"',     min: 75,  max: 100 },
-  { id: "xlarge", label: "Extra Large", sub: '100" and above', min: 100, max: 999 },
-];
+// Re-attach icons to the shared, test-covered display-type data (keyed by the
+// category name in DISPLAY_TYPE_DATA[].id). SIZE_RANGES + the URL/size helpers
+// live in finderConfig.ts so their logic is unit-testable.
+const DISPLAY_TYPE_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  "Digital Signage": Monitor,
+  "Video Wall": LayoutGrid,
+  "Interactive Display": MousePointerClick,
+  "Commercial TV": Tv,
+};
+const DISPLAY_TYPES = DISPLAY_TYPE_DATA.map((d) => ({ ...d, Icon: DISPLAY_TYPE_ICONS[d.id] }));
 
 // Per-industry preference scores by display category. Higher = stronger fit.
 // Used to (a) rank results when an industry is picked and (b) suggest
@@ -82,10 +85,7 @@ export default function ProductFinderSection() {
 
     const inSize = (p: Product) => {
       if (!sizeConfig) return true;
-      return p.specs.screenSizes.some((s) => {
-        const n = parseInt(s);
-        return n >= sizeConfig.min && n <= sizeConfig.max;
-      });
+      return p.specs.screenSizes.some((s) => sizeInRange(parseInt(s), sizeConfig));
     };
 
     // Primary: must match category exactly; size matters if chosen.
@@ -411,7 +411,7 @@ export default function ProductFinderSection() {
                 </div>
                 <div className="mt-6 text-center">
                   <Link
-                    href={`/products?category=${encodeURIComponent(displayType)}`}
+                    href={finderCategoryHref(displayType)}
                     className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors"
                   >
                     View all {displayType} products <ArrowRight size={14} />

@@ -26,6 +26,13 @@ import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 
 export const revalidate = 3600;
 
+// All product slugs are enumerated below from static data, so reject any param
+// outside that set at the routing layer. Without this, an unknown slug streams
+// through loading.tsx (Suspense) + ISR and Next serves the notFound() page with
+// a soft 200 instead of a real 404 (vercel/next.js#63478, #76501) — which lets
+// junk/typo URLs get indexed. dynamicParams=false makes unknown slugs a true 404.
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return products.map((p) => ({ slug: p.id }));
 }

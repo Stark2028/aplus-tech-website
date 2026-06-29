@@ -12,6 +12,12 @@ import { SITE, breadcrumbLd, solutionServiceLd, jsonLdString } from "@/lib/jsonL
 
 export const revalidate = 3600;
 
+// Industry slugs are a fixed, fully-enumerated set (generateStaticParams below),
+// so any other slug must 404 at the routing layer. Without this, unknown slugs
+// stream through loading.tsx + ISR and notFound() returns a soft 200 instead of
+// a real 404 (vercel/next.js#63478, #76501).
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
     return solutions.map((s) => ({ industry: s.slug }));
 }

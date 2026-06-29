@@ -16,6 +16,7 @@ import {
 import { trackEvent } from "@/lib/analytics";
 import LeadGateModal from "@/components/LeadGateModal";
 import { hasGated } from "@/lib/leadGate";
+import { toast } from "sonner";
 
 const CORE_SPEC_ROWS: { label: string; getValue: (p: Product) => string }[] = [
   { label: "Category", getValue: (p) => p.category },
@@ -109,6 +110,10 @@ function ComparePageInner() {
       ]),
       // Features — all of them
       ["Key Features", ...selectedProducts.map((p) => p.features.join("; "))],
+      // Product overview — mirrors the on-screen table's conditional row
+      ...(selectedProducts.some((p) => p.longDescription)
+        ? [["Product Overview", ...selectedProducts.map((p) => p.longDescription ?? "—")]]
+        : []),
     ];
 
     const workbook = new ExcelJS.Workbook();
@@ -132,12 +137,19 @@ function ComparePageInner() {
     trackEvent("compare_export_excel", { product_count: selectedProducts.length });
   };
 
+  const runExcelExport = () => {
+    exportExcelNow().catch((err) => {
+      console.error("[compare excel]", err);
+      toast.error("Couldn't generate the spreadsheet. Please try again.");
+    });
+  };
+
   const handleExportExcel = () => {
     if (hasGated()) {
       trackEvent("compare_export_excel_cached", {
         product_count: selectedProducts.length,
       });
-      exportExcelNow();
+      runExcelExport();
       return;
     }
     setGate("excel");
@@ -440,7 +452,7 @@ function ComparePageInner() {
           const action = gate;
           setGate(null);
           if (action === "excel") {
-            exportExcelNow();
+            runExcelExport();
           } else if (action === "print") {
             printNow();
           }

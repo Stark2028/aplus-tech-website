@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface MobileProductScrollerProps {
@@ -27,7 +27,10 @@ export default function MobileProductScroller({
   initialDelay = 0,
 }: MobileProductScrollerProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
+  // Paused state lives in a ref (read at interval fire-time), NOT in the effect
+  // deps — so hovering/touching the carousel suspends advancing without tearing
+  // down and re-arming the `initialDelay` timer on every interaction.
+  const pausedRef = useRef(false);
 
   const scroll = (dir: "left" | "right") => {
     const el = scrollRef.current;
@@ -43,7 +46,7 @@ export default function MobileProductScroller({
 
     const start = () => {
       interval = setInterval(() => {
-        if (isPaused) return;
+        if (pausedRef.current) return;
         const el = scrollRef.current;
         if (!el || el.clientWidth === 0) return;
         const maxScroll = el.scrollWidth - el.clientWidth;
@@ -60,17 +63,17 @@ export default function MobileProductScroller({
       clearTimeout(timeout);
       clearInterval(interval);
     };
-  }, [autoPlay, autoPlayInterval, initialDelay, isPaused]);
+  }, [autoPlay, autoPlayInterval, initialDelay]);
 
   return (
     <>
       {/* ── MOBILE: horizontal snap carousel ─────────────────────── */}
       <div 
         className={`relative sm:hidden`}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onTouchStart={() => setIsPaused(true)}
-        onTouchEnd={() => setIsPaused(false)}
+        onMouseEnter={() => { pausedRef.current = true; }}
+        onMouseLeave={() => { pausedRef.current = false; }}
+        onTouchStart={() => { pausedRef.current = true; }}
+        onTouchEnd={() => { pausedRef.current = false; }}
       >
         {/* Prev arrow */}
         <button

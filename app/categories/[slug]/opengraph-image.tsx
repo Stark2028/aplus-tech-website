@@ -137,9 +137,14 @@ export default async function Image({
           borderRadius: 10,
           fontSize: 15,
           fontWeight: 600,
-          display: "inline-flex",
+          // Satori (next/og) supports only flex/block/contents/none — NOT
+          // inline-flex, which throws and fails the whole OG image. Use flex +
+          // alignSelf:"flex-start" so the pill shrinks to its content (Satori
+          // ignores width:"fit-content"). The flex display also satisfies the
+          // >1-child rule for `{count} Products…`.
+          display: "flex",
           alignItems: "center",
-          width: "fit-content",
+          alignSelf: "flex-start",
           marginBottom: 48,
         }}
       >

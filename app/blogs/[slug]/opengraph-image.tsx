@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getBlogBySlug } from "@/data/blogs";
+import { formatBlogDate } from "@/lib/formatDate";
 
 export const alt = "Aplus Technology Solutions — Blog";
 export const size = { width: 1200, height: 630 };
@@ -33,11 +34,7 @@ export default async function Image({
     );
   }
 
-  const publishedDate = new Date(post.date).toLocaleDateString("en-IN", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+  const publishedDate = formatBlogDate(post.date);
 
   return new ImageResponse(
     <div
@@ -151,7 +148,10 @@ export default async function Image({
             {publishedDate}
           </div>
           <div style={{ color: "rgba(255,255,255,0.25)", fontSize: 15 }}>·</div>
-          <div style={{ color: "rgba(255,255,255,0.35)", fontSize: 15 }}>
+          <div style={{ display: "flex", color: "rgba(255,255,255,0.35)", fontSize: 15 }}>
+            {/* `{n} min read` is two child nodes (number + text); Satori requires
+                an explicit display on any element with >1 child or it throws and
+                the whole OG image fails to render. */}
             {post.readingTimeMinutes} min read
           </div>
         </div>

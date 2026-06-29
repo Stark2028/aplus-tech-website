@@ -201,7 +201,26 @@ export async function POST(req: Request) {
       );
     }
 
-    const body: Record<string, string> = await req.json();
+    const parsed: unknown = await req.json();
+
+    // Body must be a plain JSON object. A parseable-but-wrong-shape body
+    // (null, an array, a string, a number) would otherwise throw on the first
+    // property access below and surface as a noisy 500; reject it as a clean
+    // 400 instead. (typeof null === "object", so the null check is explicit.)
+    if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return NextResponse.json({ success: false, message: "Invalid request body." }, { status: 400 });
+    }
+
+    // Every field must be a string. The email builder interpolates values via
+    // esc(), which calls String.prototype.replace — a non-string value (object,
+    // array, number) would throw there and abort with a 500. Rejecting up front
+    // keeps the contract (Record<string, string>) honest and the failure clean.
+    for (const value of Object.values(parsed)) {
+      if (typeof value !== "string") {
+        return NextResponse.json({ success: false, message: "Invalid request body." }, { status: 400 });
+      }
+    }
+    const body = parsed as Record<string, string>;
 
     // Honeypot: bots fill hidden fields; humans leave them empty.
     // Silently accept (200) so bots don't learn the field is a trap.

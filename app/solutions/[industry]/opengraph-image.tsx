@@ -100,6 +100,10 @@ export default async function Image({
       {/* Category label */}
       <div
         style={{
+          // `For {title}` is two child nodes (text + expression); Satori requires
+          // an explicit display on any element with >1 child or the OG image
+          // fails to render entirely.
+          display: "flex",
           color: "#60a5fa",
           fontSize: 15,
           fontWeight: 700,

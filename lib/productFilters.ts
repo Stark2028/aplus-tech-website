@@ -20,21 +20,29 @@ export const RESOLUTION_OPTIONS = [
   { label: "Custom / LED", match: (r: string) => r.includes("Custom") },
 ];
 
+// Bands are half-open [min, max): each boundary value (350/500/700) belongs to
+// exactly one band — the one whose label names it. A product reading "500 nit"
+// lands in "500–700 nit", and "700 nit" lands in "700 nit +".
 export const BRIGHTNESS_BANDS = [
-  { label: "Under 350 nit", min: 0, max: 349 },
+  { label: "Under 350 nit", min: 0, max: 350 },
   { label: "350–500 nit", min: 350, max: 500 },
-  { label: "500–700 nit", min: 501, max: 700 },
-  { label: "700 nit +", min: 701, max: Infinity },
+  { label: "500–700 nit", min: 500, max: 700 },
+  { label: "700 nit +", min: 700, max: Infinity },
 ];
 
 export const OPERATION_OPTIONS = ["16/7", "24/7"];
 
 export const MIN_SIZE_OPTIONS = [32, 43, 55, 75];
 
-function parseBrightnessNit(brightness: string): number {
+/**
+ * Parse a nit value from a brightness string, or null when it carries no number
+ * (e.g. "HDR", "Standard"). Null products are excluded from numeric brightness
+ * bands rather than being treated as 0 and bucketed into "Under 350 nit".
+ */
+function parseBrightnessNit(brightness: string): number | null {
   const cleaned = brightness.replace(/,/g, "");
   const nums = cleaned.match(/\d+/g);
-  if (!nums) return 0;
+  if (!nums) return null;
   if (nums.length === 1) return parseInt(nums[0]);
   return Math.round((parseInt(nums[0]) + parseInt(nums[nums.length - 1])) / 2);
 }
@@ -58,7 +66,10 @@ export function applyFilters(products: Product[], filters: Filters): Product[] {
       const band = BRIGHTNESS_BANDS.find((b) => b.label === filters.brightness);
       if (band) {
         const nit = parseBrightnessNit(p.specs.brightness);
-        if (nit < band.min || nit > band.max) return false;
+        // Unparseable brightness ("HDR"/"Standard") matches no numeric band.
+        if (nit === null) return false;
+        // Half-open [min, max): boundary value belongs to the band it names.
+        if (nit < band.min || nit >= band.max) return false;
       }
     }
 
@@ -68,7 +79,9 @@ export function applyFilters(products: Product[], filters: Filters): Product[] {
 
     if (filters.minSize > 0) {
       const max = parseMaxSize(p.specs.screenSizes);
-      if (max < filters.minSize && max !== 0) return false;
+      // A product with no numeric size (parseMaxSize → 0, e.g. "Custom") can't
+      // satisfy a minimum-size requirement, so it's excluded when a min is set.
+      if (max < filters.minSize) return false;
     }
 
     return true;

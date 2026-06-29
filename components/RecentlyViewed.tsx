@@ -7,6 +7,7 @@ import { Monitor, Clock, Scale } from "lucide-react";
 import { products } from "@/data/products";
 import { useComparison } from "@/context/ComparisonContext";
 import MobileProductScroller from "@/components/MobileProductScroller";
+import { readRecentIds } from "@/components/recentViewed";
 
 const STORAGE_KEY = "aplus_recently_viewed";
 const MAX_STORED = 8;
@@ -30,17 +31,13 @@ export default function RecentlyViewed({ currentProductId }: RecentlyViewedProps
   };
 
   useEffect(() => {
-    let stored: string[] = [];
+    let raw: string | null = null;
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) stored = JSON.parse(raw);
+      raw = localStorage.getItem(STORAGE_KEY);
     } catch {}
 
-    // Prepend current, dedupe, cap
-    const updated = [currentProductId, ...stored.filter((id) => id !== currentProductId)].slice(
-      0,
-      MAX_STORED
-    );
+    // Prepend current, dedupe, cap — tolerant of corrupt/non-array stored data.
+    const updated = readRecentIds(raw, currentProductId, MAX_STORED);
 
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
