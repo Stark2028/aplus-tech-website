@@ -43,7 +43,7 @@ export default function NavbarDesktop({ cartCount, onHomeClick }: Props) {
         <Link
           href="/"
           onClick={onHomeClick}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
+          className="px-4 py-2 rounded-lg text-[15px] font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
         >
           Home
         </Link>
@@ -58,7 +58,7 @@ export default function NavbarDesktop({ cartCount, onHomeClick }: Props) {
           <button
             type="button"
             onClick={() => setProductsOpen((v) => !v)}
-            className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
+            className="flex items-center gap-1 px-4 py-2 rounded-lg text-[15px] font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
             aria-haspopup="menu"
             aria-expanded={productsOpen}
           >
@@ -117,7 +117,7 @@ export default function NavbarDesktop({ cartCount, onHomeClick }: Props) {
           <button
             type="button"
             onClick={() => setSolutionsOpen((v) => !v)}
-            className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
+            className="flex items-center gap-1 px-4 py-2 rounded-lg text-[15px] font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
             aria-haspopup="menu"
             aria-expanded={solutionsOpen}
           >
@@ -158,13 +158,13 @@ export default function NavbarDesktop({ cartCount, onHomeClick }: Props) {
 
         <Link
           href="/about"
-          className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
+          className="px-4 py-2 rounded-lg text-[15px] font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
         >
           About
         </Link>
         <Link
           href="/contact"
-          className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all"
+          className="px-4 py-2 rounded-lg text-[15px] font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
         >
           Contact
         </Link>

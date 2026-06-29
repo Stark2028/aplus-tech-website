@@ -26,22 +26,22 @@ export const metadata: Metadata = {
     url: ABOUT_URL,
     title: "About Us | Aplus Technology Solutions",
     description:
-      "Authorized Samsung distributor with 7+ years of experience, 500+ enterprise clients, and 1,000+ installations across India.",
+      "Authorized Samsung distributor with 5+ years of experience, 500+ enterprise clients, and 10,000+ installations across India.",
     images: [{ url: "/og-default.png", width: 1200, height: 630, alt: "About Aplus Technology Solutions" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "About Us | Aplus Technology Solutions",
     description:
-      "Authorized Samsung distributor with 7+ years of experience, 500+ enterprise clients, and 1,000+ installations across India.",
+      "Authorized Samsung distributor with 5+ years of experience, 500+ enterprise clients, and 10,000+ installations across India.",
     images: ["/og-default.png"],
   },
 };
 
 const STATS = [
-  { value: "7+", label: "Years in Business" },
+  { value: "5+", label: "Years in Business" },
   { value: "500+", label: "Enterprise Clients" },
-  { value: "1,000+", label: "Installations" },
+  { value: "10,000+", label: "Installations" },
   { value: "50+", label: "Cities Served" },
 ];
 
@@ -239,7 +239,7 @@ export default function AboutPage() {
                       { k: "Certification", v: "Authorized Samsung B2B Partner" },
                       { k: "Coverage", v: "Pan-India · 50+ cities" },
                       { k: "Support", v: "24 / 7 Technical Response" },
-                      { k: "Founded", v: "2020 · Noida, India" },
+                      { k: "Founded", v: "2020 · India" },
                       { k: "CIN", v: "U72900DL2020PTC374888" },
                       { k: "GSTIN", v: "07AAUCA5631L1Z6" },
                     ].map((row, i, arr) => (

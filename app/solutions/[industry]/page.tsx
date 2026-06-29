@@ -61,7 +61,7 @@ const GRADIENTS: Record<string, string> = {
 };
 
 const STATS = [
-    { value: "7+", label: "Years Experience" },
+    { value: "5+", label: "Years Experience" },
     { value: "500+", label: "Deployments" },
     { value: "Pan-India", label: "Service Coverage" },
     { value: "Samsung", label: "Authorized Partner" },

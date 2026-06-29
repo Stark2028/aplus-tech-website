@@ -11,6 +11,22 @@ const CLIENT_SECTORS = [
   { name: "Phoenix Mall", sector: "Retail" },
   { name: "Shoppers Stop", sector: "Retail" },
   { name: "AIIMS Delhi", sector: "Healthcare" },
+  { name: "TATA Advanced Systems", sector: "Defense" },
+  { name: "Asian Paints", sector: "Manufacturing" },
+  { name: "Godrej & Boyce", sector: "Manufacturing" },
+  { name: "Essar", sector: "Enterprise" },
+  { name: "Atlas Copco", sector: "Industrial" },
+  { name: "Ministry of Home Affairs", sector: "Government" },
+  { name: "Ministry of Defence", sector: "Government" },
+  { name: "St. Xavier's College, Calcutta", sector: "Education" },
+  { name: "Tamralipta Mahavidyalaya", sector: "Education" },
+  { name: "Directorate of AYUSH, Chandigarh", sector: "Government" },
+  { name: "Banchharam's", sector: "Retail" },
+  { name: "Actis", sector: "Enterprise" },
+  { name: "Hathway", sector: "Telecom" },
+  { name: "IIT Guwahati", sector: "Education" },
+  { name: "Indogulf Group", sector: "Enterprise" },
+  { name: "EbixCash", sector: "Fintech" },
 ];
 
 export default function ClientLogoStrip() {

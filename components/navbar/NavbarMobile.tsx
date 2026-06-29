@@ -134,7 +134,7 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
             <Link
               href="/"
               onClick={(e) => { onHomeClick?.(e); close(); }}
-              className="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
+              className="block px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
             >
               Home
             </Link>
@@ -145,7 +145,7 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
                 onClick={() => setProductsOpen((v) => !v)}
                 aria-expanded={productsOpen}
                 aria-controls="mobile-products-panel"
-                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
               >
                 Products
                 <ChevronDown
@@ -183,7 +183,7 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
                 onClick={() => setSolutionsOpen((v) => !v)}
                 aria-expanded={solutionsOpen}
                 aria-controls="mobile-solutions-panel"
-                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
               >
                 Solutions
                 <ChevronDown
@@ -211,14 +211,14 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
             <Link
               href="/about"
               onClick={close}
-              className="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
+              className="block px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
             >
               About
             </Link>
             <Link
               href="/contact"
               onClick={close}
-              className="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
+              className="block px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
             >
               Contact
             </Link>

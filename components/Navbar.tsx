@@ -56,7 +56,7 @@ export default function Navbar() {
               priority
             />
             <span
-              style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#1e3a5f", lineHeight: "1.35" }}
+              style={{ display: "block", fontSize: "13px", fontWeight: 700, color: "#1e3a5f", lineHeight: "1.35" }}
             >
               Aplus Technology<br />Solutions Pvt. Ltd.
             </span>

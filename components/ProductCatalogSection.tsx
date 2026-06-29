@@ -139,7 +139,7 @@ export default function ProductCatalogSection() {
 
               {/* Content */}
               <div className="p-5 flex flex-col flex-1">
-                <h3 className="text-sm font-bold text-gray-900 mb-1 line-clamp-2 leading-snug">
+                <h3 className="text-sm font-bold text-gray-900 mb-1 line-clamp-2 leading-snug min-h-10">
                   <Link
                     href={`/products/${product.id}`}
                     className="before:absolute before:inset-0 before:content-[''] before:cursor-pointer focus:outline-none"

@@ -5,8 +5,8 @@ import MagneticButton from "@/components/MagneticButton";
 
 const STATS = [
   { value: "500+", label: "Enterprise Clients" },
-  { value: "7+", label: "Years in Business" },
-  { value: "1,000+", label: "Installations Done" },
+  { value: "5+", label: "Years in Business" },
+  { value: "10,000+", label: "Installations Done" },
   { value: "100%", label: "Genuine Samsung" },
 ];
 

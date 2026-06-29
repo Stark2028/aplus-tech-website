@@ -108,7 +108,7 @@ function drawHeader(ctx: Ctx, product: Product, docDate: string) {
     characterSpacing: 1.4,
   });
   page.drawText(
-    safe("Authorized Samsung Commercial Display Distributor · Noida, India"),
+    safe("Authorized Samsung Commercial Display Distributor · India"),
     { x: MARGIN_X, y: yTop - 12, size: 7.5, font: fonts.regular, color: C.gray500 }
   );
 

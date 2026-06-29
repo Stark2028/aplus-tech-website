@@ -76,6 +76,12 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 const LINKEDIN_URL = "https://in.linkedin.com/company/aplus-technology-solutions-pvt-ltd";
 const MAX_MESSAGE_LENGTH = 500;
 
+const OFFICES = [
+  { tier: "Corporate Office",   cities: "Noida, Uttar Pradesh",   dotColor: "#2563eb" },
+  { tier: "Regional Office",    cities: "Kolkata, West Bengal",   dotColor: "#6366f1" },
+  { tier: "Operational Offices", cities: "Guwahati · Patna · Bhubaneswar", dotColor: "#10b981" },
+];
+
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState("");
@@ -504,6 +510,29 @@ export default function ContactPage() {
         </div>
       </div>
 
+      {/* ── OFFICE NETWORK ───────────────────────────────────────────── */}
+      <div className="border-t border-gray-100 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+          <div className="text-center md:text-left mb-8">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-2">Our Offices</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">A growing presence across India</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {OFFICES.map(({ tier, cities, dotColor }) => (
+              <div
+                key={tier}
+                className="relative bg-white rounded-2xl border border-gray-100 p-6 shadow-lg shadow-gray-100/60 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <span className="absolute top-6 left-6 w-2.5 h-2.5 rounded-full" style={{ background: dotColor }} aria-hidden="true" />
+                <div className="pl-6">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400">{tier}</p>
+                  <p className="text-base font-bold text-gray-900 mt-1.5 leading-snug">{cities}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
     </main>
   );

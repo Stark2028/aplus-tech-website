@@ -21,7 +21,7 @@ const ADVANTAGES = [
   {
     icon: Award,
     title: "Certified Installation",
-    desc: "Samsung-certified install teams with 1,000+ completed projects and zero-compromise quality.",
+    desc: "Samsung-certified install teams with 10,000+ completed projects and zero-compromise quality.",
   },
 ];
 

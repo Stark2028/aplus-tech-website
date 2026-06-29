@@ -87,7 +87,7 @@ h1, h2 {
 
 .animate-marquee {
   display: inline-flex;
-  animation: marquee 35s linear infinite;
+  animation: marquee 75s linear infinite;
 }
 
 .animate-marquee:hover {
