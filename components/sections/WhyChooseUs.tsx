@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { ShieldCheck, Headphones, Truck, Award } from "lucide-react";
 import AnimatedSection from "@/components/AnimatedSection";
+import RandomAccentImage from "@/components/RandomAccentImage";
 
 const ADVANTAGES = [
   {
@@ -38,16 +38,10 @@ export default function WhyChooseUs() {
           </h2>
         </AnimatedSection>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Accent image: real teams collaborating around a display we supply. */}
+          {/* Accent image: real teams collaborating around a display we supply.
+              Rotates to a random image on each page load (see RandomAccentImage). */}
           <AnimatedSection className="relative aspect-3/2 rounded-2xl overflow-hidden shadow-lg">
-            <Image
-              src="/images/collaboration.webp"
-              alt="A team collaborating around a Samsung display in a meeting room"
-              fill
-              loading="lazy"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
+            <RandomAccentImage />
           </AnimatedSection>
 
           {/* MOBILE: Infinite slow scrolling marquee */}

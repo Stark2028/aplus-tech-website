@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import AnimatedCounter from "@/components/AnimatedCounter";
@@ -14,68 +13,41 @@ const STATS = [
 export default function HeroSection() {
   return (
     <section className="relative min-h-[88vh] flex flex-col overflow-hidden bg-[#050b15]">
-      {/* Background image of real digital signage. `priority` makes Next.js
-          preload it at high fetch priority — it's behind the dark gradient,
-          so a moderate WebP quality keeps it light without visible loss. */}
-      {/* Desktop Background Image (Hidden on mobile for LCP optimization) */}
-      <div className="hidden md:block absolute inset-0">
-        <Image
-          src="/images/hero-signage.webp"
-          alt="Digital signage displays in a modern commercial space"
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          className="object-cover"
-        />
-      </div>
-
-      {/* Premium Mobile Background — orbs mirror the headline's blue→violet gradient */}
-      <div className="md:hidden absolute inset-0 overflow-hidden bg-[#080d1a]">
-        {/* Primary orb: deep royal blue — matches headline blue start */}
-        <div className="absolute top-[-8%] left-[5%] w-96 h-96 bg-blue-700 rounded-full filter blur-[110px] animate-slow-glow pointer-events-none" />
+      {/* Unified deep-navy background (no photo — it was invisible under the
+          dark overlay, so it's dropped to save the image fetch). A subtle
+          left→right gradient gives the white headline a darker anchor. */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(110deg, #03070e 0%, #050b15 55%, #060d1a 100%)",
+        }}
+      />
+      {/* Mobile glow orbs — mirror the headline's blue→violet gradient, dimmed so the section reads dark */}
+      <div className="md:hidden absolute inset-0 overflow-hidden">
+        {/* Primary orb: deep royal blue */}
+        <div className="absolute top-[-8%] left-[5%] w-96 h-96 bg-blue-700 rounded-full filter blur-[110px] opacity-40 animate-slow-glow pointer-events-none" />
         {/* Secondary orb: rich violet — matches headline gradient end (#c4b5fd) */}
-        <div className="absolute bottom-[5%] right-[2%] w-80 h-80 bg-violet-600 rounded-full filter blur-[110px] animate-slow-glow-delayed pointer-events-none" />
+        <div className="absolute bottom-[5%] right-[2%] w-80 h-80 bg-violet-600 rounded-full filter blur-[110px] opacity-35 animate-slow-glow-delayed pointer-events-none" />
         {/* Faint indigo mid-layer for depth */}
-        <div className="absolute top-[40%] right-[20%] w-64 h-64 bg-indigo-700 rounded-full filter blur-[130px] opacity-50 pointer-events-none" />
+        <div className="absolute top-[40%] right-[20%] w-64 h-64 bg-indigo-700 rounded-full filter blur-[130px] opacity-25 pointer-events-none" />
       </div>
-
-      {/* Primary left-to-right gradient anchors the white headline on the
-          dark left side; kept darker on the right (0.55) so the busy kiosk /
-          wayfinding signage recedes instead of competing with the CTAs. */}
-      {/* Desktop-only: dark gradient overlay — cranked up for a darker, moodier look */}
-      <div
-        className="hidden md:block absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(110deg, rgba(5,11,21,0.98) 0%, rgba(5,11,21,0.97) 40%, rgba(5,11,21,0.92) 65%, rgba(5,11,21,0.82) 100%)",
-        }}
-      />
-      {/* Desktop-only: bottom-right vignette — heavier to darken the image corner */}
-      <div
-        className="hidden md:block absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(120% 120% at 100% 100%, rgba(5,11,21,0.88) 0%, rgba(5,11,21,0) 60%)",
-        }}
-      />
-      <div className="hidden md:block absolute inset-0 bg-blue-950/40" />
 
       {/* ── Desktop premium gradient effects ────────────────────────────── */}
-      {/* Top-edge aurora sweep: a wide band of colour along the very top */}
+      {/* Top-edge aurora sweep: a faint band of colour along the very top */}
       <div
         className="hidden md:block absolute top-0 left-0 right-0 h-[420px] pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(37,99,235,0.18) 0%, rgba(79,70,229,0.10) 40%, transparent 100%)",
+            "linear-gradient(180deg, rgba(37,99,235,0.10) 0%, rgba(79,70,229,0.06) 40%, transparent 100%)",
         }}
       />
-      {/* Primary blue orb — behind the text, acts like a key light */}
-      <div className="hidden md:block absolute top-[-5%] left-[-4%] w-[36rem] h-[36rem] bg-blue-600 rounded-full blur-[160px] opacity-30 animate-slow-glow pointer-events-none" />
+      {/* Primary blue orb — behind the text, dimmed to a faint key light */}
+      <div className="hidden md:block absolute top-[-5%] left-[-4%] w-[36rem] h-[36rem] bg-blue-600 rounded-full blur-[160px] opacity-[0.14] animate-slow-glow pointer-events-none" />
       {/* Violet accent — bottom-centre creates depth under the CTA buttons */}
-      <div className="hidden md:block absolute bottom-[-10%] left-[25%] w-[28rem] h-[28rem] bg-violet-600 rounded-full blur-[180px] opacity-20 animate-slow-glow-delayed pointer-events-none" />
+      <div className="hidden md:block absolute bottom-[-10%] left-[25%] w-[28rem] h-[28rem] bg-violet-600 rounded-full blur-[180px] opacity-[0.10] animate-slow-glow-delayed pointer-events-none" />
       {/* Cyan glint — top-right edge, subtle highlight that catches the eye */}
-      <div className="hidden md:block absolute top-[10%] right-[8%] w-72 h-72 bg-cyan-500 rounded-full blur-[140px] opacity-15 animate-slow-glow pointer-events-none" />
+      <div className="hidden md:block absolute top-[10%] right-[8%] w-72 h-72 bg-cyan-500 rounded-full blur-[140px] opacity-[0.08] animate-slow-glow pointer-events-none" />
 
       <div className="relative flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center py-10 md:py-24">
         <div className="max-w-2xl">
