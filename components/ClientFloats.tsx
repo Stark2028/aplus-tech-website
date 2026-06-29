@@ -13,6 +13,7 @@ import dynamic from "next/dynamic";
 const CursorSpotlight = dynamic(() => import("./CursorSpotlight"), { ssr: false });
 const ChatWidget = dynamic(() => import("./ChatWidget"), { ssr: false });
 const ComparisonFloatingBar = dynamic(() => import("./ComparisonFloatingBar"), { ssr: false });
+const QuoteLimitToast = dynamic(() => import("./QuoteLimitToast"), { ssr: false });
 const FinderFloatButton = dynamic(() => import("./FinderFloatButton"), { ssr: false });
 const BackToTop = dynamic(() => import("./BackToTop"), { ssr: false });
 const CookieConsent = dynamic(() => import("./CookieConsent"), { ssr: false });
@@ -25,6 +26,7 @@ export default function ClientFloats() {
       <div className="print:hidden">
         <ChatWidget />
         <ComparisonFloatingBar />
+        <QuoteLimitToast />
         <FinderFloatButton />
         <BackToTop />
         <CookieConsent />

@@ -95,6 +95,8 @@ export default function QuoteSubmitForm({ items, totalItems, onSuccess }: Props)
         setSubmitError(
           response.status === 429
             ? "Too many requests. Please wait a few minutes and try again."
+            : response.status === 413
+            ? "Your request is too large. Please remove a few items or shorten your notes, then try again."
             : "Something went wrong sending your request. Please try again, or reach us on WhatsApp below."
         );
         trackEvent("quote_cart_submit_failed", { total_items: totalItems, status: response.status });
