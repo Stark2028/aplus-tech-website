@@ -87,7 +87,7 @@ function ComparePageInner() {
   const [gate, setGate] = useState<null | "excel" | "print">(null);
 
   const exportExcelNow = async () => {
-    const ExcelJS = await import("exceljs");
+    const ExcelJS = (await import("exceljs")).default;
     const headers = ["Specification", ...selectedProducts.map((p) => p.name)];
 
     const extraSpecKeys = getExtraSpecKeys(selectedProducts);
