@@ -2,7 +2,8 @@ export type CategorySlug =
   | "digital-signage"
   | "video-walls"
   | "interactive"
-  | "commercial-tv";
+  | "commercial-tv"
+  | "led-signage";
 
 export interface ProductCategory {
   id: CategorySlug;
@@ -55,6 +56,15 @@ export const productCategories: ProductCategory[] = [
     subtitle: "Enterprise-grade commercial TVs for hospitality, corporate, and public environments.",
     useCases: ["Hotel Rooms", "Serviced Apartments", "Waiting Areas", "Corporate Offices"],
     description: "Durable commercial TVs featuring centralized management, designed specifically for demanding hospitality and business applications.",
+  },
+  {
+    id: "led-signage",
+    name: "LED Signage",
+    navLabel: "LED Signage",
+    tagline: "Seamless direct-view LED at any scale",
+    subtitle: "Fine-pitch direct-view LED for large-format walls, lobbies, and flagship spaces.",
+    useCases: ["Corporate Lobbies", "Control Rooms", "Retail Flagships", "Auditoriums", "Experience Centres"],
+    description: "Direct-view LED display solutions — from The Wall's micro-LED to all-in-one packages — delivering bezel-free, large-format visuals that scale to any space.",
   },
 ];
 
