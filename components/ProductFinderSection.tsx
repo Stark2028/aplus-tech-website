@@ -10,6 +10,7 @@ import {
   LayoutGrid,
   MousePointerClick,
   Tv,
+  Cpu,
   Building2,
   GraduationCap,
   Store,
@@ -48,6 +49,7 @@ const DISPLAY_TYPE_ICONS: Record<string, React.ComponentType<{ size?: number; cl
   "Video Wall": LayoutGrid,
   "Interactive Display": MousePointerClick,
   "Commercial TV": Tv,
+  "LED Signage": Cpu,
 };
 const DISPLAY_TYPES = DISPLAY_TYPE_DATA.map((d) => ({ ...d, Icon: DISPLAY_TYPE_ICONS[d.id] }));
 

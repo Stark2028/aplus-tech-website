@@ -5,6 +5,7 @@ import {
   LayoutGrid,
   MousePointerClick,
   Tv,
+  Cpu,
 } from "lucide-react";
 import { products } from "@/data/products";
 import AnimatedSection from "@/components/AnimatedSection";
@@ -50,6 +51,16 @@ const CATEGORY_CARDS = [
     iconColor: "#0e7490",
     iconColorLight: "rgba(14, 116, 144, 0.1)",
     count: products.filter((p) => p.category === "Commercial TV").length,
+  },
+  {
+    id: "led-signage",
+    Icon: Cpu,
+    title: "LED Signage",
+    tagline: "Seamless direct-view LED",
+    href: "/products?category=led-signage",
+    iconColor: "#0891b2",
+    iconColorLight: "rgba(8, 145, 178, 0.1)",
+    count: products.filter((p) => p.category === "LED Signage").length,
   },
 ];
 

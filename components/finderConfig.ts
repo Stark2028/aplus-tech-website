@@ -11,6 +11,7 @@ export const DISPLAY_TYPES = [
   { id: "Video Wall", label: "Video Wall", sub: "Large-format impact" },
   { id: "Interactive Display", label: "Interactive Display", sub: "Touch & collaboration" },
   { id: "Commercial TV", label: "Commercial TV", sub: "Hotel rooms & offices" },
+  { id: "LED Signage", label: "LED Signage", sub: "Direct-view LED walls" },
 ];
 
 // Half-open [min, max): each boundary inch (50/75/100) belongs to exactly one
