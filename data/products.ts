@@ -1,6 +1,9 @@
 export interface Product {
   id: string;
   popularity?: number;
+  /** True for products in the current (2026) Samsung catalog.
+   *  Sole source of truth for the "latest first" sort. */
+  catalog2026?: boolean;
   name: string;
   /** Must match ProductCategory.name exactly */
   category: string;
@@ -102,6 +105,7 @@ With a 16/7 operation rating and a size range from 43" to 82", the QET Series ad
   {
     id: "samsung-signage-qbc",
     popularity: 81,
+    catalog2026: true,
     name: "Samsung Crystal UHD Signage QBC Series",
     category: "Digital Signage",
     series: "QBC",
@@ -182,6 +186,7 @@ With Smart Calibration via the Samsung mobile app, teams can guarantee brand col
   {
     id: "samsung-signage-qhc",
     popularity: 70,
+    catalog2026: true,
     name: "Samsung Signage QHC Series — High Brightness",
     category: "Digital Signage",
     series: "QHC",
@@ -254,6 +259,7 @@ The QHC's 4K UHD resolution combined with Samsung's Crystal Display technology p
   {
     id: "samsung-signage-qmc",
     popularity: 95,
+    catalog2026: true,
     name: "Samsung Crystal UHD Signage QMC Series",
     category: "Digital Signage",
     series: "QMC",
@@ -509,6 +515,7 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
   {
     id: "samsung-touch-qbc-t",
     popularity: 97,
+    catalog2026: true,
     name: "Samsung Interactive Signage QMB-T Series",
     category: "Digital Signage",
     subCategory: "Touch Signage",
@@ -892,6 +899,7 @@ With full daisy chain support and Samsung's Image Enhancement Technology ensurin
   {
     id: "samsung-vmb-u-46",
     popularity: 97,
+    catalog2026: true,
     name: "Samsung VMB-U 46\" Ultra Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VMB-U",
@@ -961,6 +969,7 @@ Built-in daisy chain connectivity simplifies multi-display wiring, allowing sign
   {
     id: "samsung-vmb-u-55",
     popularity: 98,
+    catalog2026: true,
     name: "Samsung VMB-U 55\" Ultra Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VMB-U",
@@ -1091,6 +1100,7 @@ With 24/7 operation certification and wide 178°/178° viewing angles, the VMB-R
   {
     id: "samsung-videowall-vmc-r",
     popularity: 62,
+    catalog2026: true,
     name: "Samsung VMC-R Series Video Wall",
     category: "Video Wall",
     series: "VMC-R",
@@ -1869,6 +1879,7 @@ Slim Fit Wall Mount support ensures seamless integration with modern hospitality
   {
     id: "samsung-qpdx105",
     popularity: 77,
+    catalog2026: true,
     name: "Samsung Commercial Display QPDX 5K (105\")",
     category: "Digital Signage",
     subCategory: "Large Format",
@@ -1937,6 +1948,7 @@ With 24/7 operation certification and integrated MagicINFO S6 content management
   {
     id: "samsung-qh115fx",
     popularity: 97,
+    catalog2026: true,
     name: "Samsung Commercial Display QH115FX (115\")",
     category: "Digital Signage",
     subCategory: "Large Format",
@@ -2005,6 +2017,7 @@ With 24/7 operation certification and MagicINFO compatibility, the QH115FX becom
   {
     id: "samsung-vhc-e",
     popularity: 60,
+    catalog2026: true,
     name: "Samsung VHC-E FHD Video Wall Display",
     category: "Video Wall",
     series: "VHC-E",
@@ -2340,6 +2353,7 @@ Roll-and-view capability enables the Flip 2 to be used in either landscape or po
   {
     id: "samsung-waf-series",
     popularity: 66,
+    catalog2026: true,
     name: "Samsung WAF Series Interactive Display",
     category: "Interactive Display",
     series: "WAF",
@@ -2404,6 +2418,7 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
   {
     id: "samsung-qbc-t",
     popularity: 64,
+    catalog2026: true,
     name: "Samsung QBC-T Interactive Touch Display",
     category: "Interactive Display",
     series: "QBC-T",
@@ -2474,6 +2489,7 @@ With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, 
   {
     id: "samsung-business-tv-befx-h2",
     popularity: 81,
+    catalog2026: true,
     name: "Samsung Business TV BEFX-H2 Series",
     category: "Commercial TV",
     subCategory: "Business TV",
@@ -2765,6 +2781,7 @@ Dynamic Crystal Color technology delivers exceptional color saturation and vibra
   {
     id: "samsung-interactive-wafx-p",
     popularity: 91,
+    catalog2026: true,
     name: "Samsung WAFX-P Series Interactive Display",
     category: "Interactive Display",
     series: "WAFX-P",
