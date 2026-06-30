@@ -1,4 +1,5 @@
-export interface Product {
+
+export interface Product {
   id: string;
   popularity?: number;
   /** True for products in the current (2026) Samsung catalog.
@@ -530,18 +531,18 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "300 nit",
+      brightness: "500 nit (w/o touch glass)",
       screenSizes: ["43", "55"],
-      operationTime: "16/7",
+      operationTime: "24/7",
     },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 55\"",
         "Panel Type": "IPS (capacitive touch overlay)",
         "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "300 nit",
+        "Brightness (Type)": "500 nit (w/o touch glass)",
         "Viewing Angle (H/V)": "178° / 178°",
-        "Operation Time Support": "16/7",
+        "Operation Time Support": "24/7",
       },
       "Connectivity": {
         "HDMI In": "2 × HDMI",
@@ -2031,7 +2032,7 @@ With 24/7 operation certification and MagicINFO compatibility, the QH115FX becom
     ],
     specs: {
       resolution: "1,920 × 1,080 (FHD)",
-      brightness: "500 nit",
+      brightness: "700 nit",
       screenSizes: ["55"],
       operationTime: "24/7",
     },
@@ -2048,7 +2049,7 @@ With 24/7 operation certification and MagicINFO compatibility, the QH115FX becom
       "/products/video-walls/samsung-vhc-e/10.png",
     ],
   
-    longDescription: `The Samsung VHC-E represents the entry point into professional video wall deployments, combining standard narrow bezel performance with proven reliability that makes it ideal for organizations taking their first steps into multi-screen installations. With 500-nit brightness and FHD (1,920 × 1,080) resolution per 55" tile, the VHC-E delivers excellent visual impact for retail display walls, reception area installations, and smaller corporate video wall projects.
+    longDescription: `The Samsung VHC-E represents the entry point into professional video wall deployments, combining standard narrow bezel performance with proven reliability that makes it ideal for organizations taking their first steps into multi-screen installations. With 700-nit brightness and FHD (1,920 × 1,080) resolution per 55" tile, the VHC-E delivers excellent visual impact for retail display walls, reception area installations, and smaller corporate video wall projects.
 
 The 178°/178° wide viewing angles ensure content remains visible and accurately colored whether viewed head-on or from the side of the installation, a critical requirement for public-facing retail and hospitality environments. 24/7 operation certification confirms the VHC-E is engineered for installations that never power down — retail display walls that run during all business hours, casino gaming areas, and 24-hour information displays.
 
@@ -2058,7 +2059,7 @@ With factory-calibrated color performance and straightforward daisy chain connec
         "Diagonal Size": "55\"",
         "Panel Type": "S-PVA",
         "Resolution": "1,920 × 1,080 (FHD)",
-        "Brightness (Type)": "500 nit",
+        "Brightness (Type)": "700 nit",
         "Contrast Ratio": "4,000:1 (typical)",
         "Viewing Angle (H/V)": "178° / 178°",
         "Color Gamut": "72% NTSC (typical)",
@@ -2369,7 +2370,7 @@ Roll-and-view capability enables the Flip 2 to be used in either landscape or po
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "400 nit",
       screenSizes: ["65", "75", "86"],
-      operationTime: "16/7",
+      operationTime: "12/7",
     },
     images: [
       "/products/interactive/samsung-waf-series/2.webp",
@@ -2396,7 +2397,7 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
         "Brightness (Type)": "400 nit",
         "Color Gamut": "99% sRGB",
         "Viewing Angle (H/V)": "178° / 178°",
-        "Operation Time Support": "16/7",
+        "Operation Time Support": "12/7",
       },
       "Connectivity": {
         "HDMI In": "2 × HDMI 2.0",
@@ -2432,7 +2433,7 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "300 nit",
+      brightness: "250 nit (w/o touch glass)",
       screenSizes: ["24", "43", "55"],
       operationTime: "16/7",
     },
@@ -2459,7 +2460,7 @@ With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, 
         "Diagonal Size": "24\" / 43\" / 55\"",
         "Panel Type": "IPS Dynamic Crystal Color",
         "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "300 nit",
+        "Brightness (Type)": "250 nit (w/o touch glass)",
         "Color Gamut": "72% NTSC",
         "Viewing Angle (H/V)": "178° / 178°",
         "Operation Time Support": "16/7",
@@ -2799,7 +2800,7 @@ Dynamic Crystal Color technology delivers exceptional color saturation and vibra
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "450 cd/m²",
       screenSizes: ["65", "75", "86"],
-      operationTime: "16/7",
+      operationTime: "12/7",
     },
     images: [
       "/products/interactive/samsung-interactive-wafx-p/5.png",
@@ -2829,7 +2830,7 @@ Embedded AI functions unlock AI Write & Search: simply circle handwritten notes 
         "Response Time (G-to-G)": "8 ms",
         "Glass Haze": "25%",
         "Backlight Life": "50,000 hrs",
-        "Operation Time Support": "16/7",
+        "Operation Time Support": "12/7",
       },
       "Connectivity": {
         "HDMI In": "3 (Rear 2, Front 1)",
