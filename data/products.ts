@@ -2420,21 +2420,21 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
     id: "samsung-qbc-t",
     popularity: 64,
     catalog2026: true,
-    name: "Samsung QBC-T Interactive Touch Display",
+    name: "Samsung QBC-T Small Signage Touch Display",
     category: "Interactive Display",
     series: "QBC-T",
     description:
-      "Compact touch-enabled display combining the slim QBC design with capacitive touch — ideal for reception desks, POS counters, and interactive information points.",
+      "Compact 13\" and 24\" Full HD capacitive touch signage — ideal for reception desks, POS counters, and interactive information points where space is constrained.",
     features: [
       "Capacitive multi-touch recognition",
-      "Ultra-slim 28.5 mm depth",
-      "Dynamic Crystal Color display",
-      "MagicINFO Player S6 built-in",
+      "Compact 13\" / 24\" form factor",
+      "Full HD 1080p display",
+      "Built-in media player",
     ],
     specs: {
-      resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "250 nit (w/o touch glass)",
-      screenSizes: ["24", "43", "55"],
+      resolution: "1,920 × 1,080 (FHD)",
+      brightness: "500 nit (13\") / 250 nit (24\")",
+      screenSizes: ["13", "24"],
       operationTime: "16/7",
     },
     images: [
@@ -2450,17 +2450,17 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
       "/products/interactive/samsung-qbc-t/10.png",
     ],
   
-    longDescription: `The Samsung QBC-T represents the convergence of two Samsung display families — combining the ultra-slim 28.5 mm depth and Dynamic Crystal Color technology of the QBC Series with sophisticated capacitive multi-touch recognition. This hybrid design creates a compact interactive display perfect for reception desks, POS counters, information kiosks, and self-service check-in points where physical space is constrained.
+    longDescription: `The Samsung QBC-T is a compact small-signage touch display available in 13" and 24" sizes, purpose-built for reception desks, POS counters, information kiosks, and self-service check-in points where physical space is constrained. Its Full HD (1,920 × 1,080) panel delivers crisp, readable content at close viewing distances.
 
-Capacitive touch technology eliminates the need for protective glass overlays or external touch frame systems, maintaining the sleek aesthetic that professional environments demand. The 10-point multi-touch recognition enables complex gesture controls and simultaneous multi-user interaction, transforming mundane information displays into engaging interactive experiences.
+Capacitive touch technology eliminates the need for an external touch frame, maintaining the sleek aesthetic that professional environments demand. Multi-touch recognition enables gesture controls and interactive workflows, transforming static information displays into engaging touchpoints. The 13" model offers 500-nit brightness for bright counter-top settings, while the 24" model is rated at 250 nit.
 
-With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, reception desk counters, and modern interior designs where bulky displays would disrupt visual harmony. Integrated MagicINFO Player S6 enables content management without external computers, while the comprehensive 24" to 55" size range adapts to any installation scenario — from compact tabletop displays to wall-mounted larger formats.`,
+The compact form factor integrates seamlessly into built-in cabinetry, reception desk counters, and modern interiors where larger displays would be impractical. A built-in media player enables content management without an external computer, making the QBC-T a self-contained interactive solution for tight spaces.`,
     specGroups: {
       "Display": {
-        "Diagonal Size": "24\" / 43\" / 55\"",
-        "Panel Type": "IPS Dynamic Crystal Color",
-        "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "250 nit (w/o touch glass)",
+        "Diagonal Size": "13\" / 24\"",
+        "Panel Type": "Full HD LED-LCD",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit (13\") / 250 nit (24\")",
         "Color Gamut": "72% NTSC",
         "Viewing Angle (H/V)": "178° / 178°",
         "Operation Time Support": "16/7",
@@ -2474,13 +2474,12 @@ With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, 
         "Bluetooth": "5.0",
       },
       "Mechanical Specification": {
-        "VESA Mount (mm)": "200 × 200 (24\") / 400 × 400 (43\", 55\")",
-        "Depth": "28.5 mm (ultra-slim)",
+        "VESA Mount (mm)": "75 × 75",
       },
       "SoC": {
-        "OS Version": "Tizen 6.5",
-        "Content Player": "MagicINFO Player S6",
-        "Touch Technology": "Capacitive multi-touch (10 points)",
+        "OS Version": "Tizen",
+        "Content Player": "Embedded media player",
+        "Touch Technology": "Capacitive multi-touch",
       },
     },
   },
