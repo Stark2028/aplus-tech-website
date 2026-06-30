@@ -6,7 +6,7 @@
 
 **Architecture:** A single optional `catalog2026` boolean on `Product` is the source of truth for "latest." A shared `byLatestThenPopularity` comparator (new `lib/productSort.ts`) replaces six duplicated inline `.sort()` calls so every listing orders identically. The category set gains a fifth entry; three listing surfaces that don't yet handle a zero-product category get a "coming soon" guard.
 
-**Tech Stack:** Next.js 15 (App Router), React 19, TypeScript, Tailwind v4, lucide-react. **No test framework is installed** — verification is `npx tsc --noEmit` for types, a standalone `node` assertion script for the one pure function, and `npm run build` + manual checks for UI.
+**Tech Stack:** Next.js 16 (App Router), React 19, TypeScript, Tailwind v4, lucide-react. **Vitest** is the test runner (`npm test` → `vitest run`), configured in `vitest.config.mts` with native `@/` alias resolution. Verification = Vitest for pure logic, `npx tsc --noEmit` for types, `npm run build` + manual checks for UI.
 
 ## Global Constraints
 
@@ -96,68 +96,57 @@ git commit -m "feat: add catalog2026 flag to mark 2026 catalog products"
 
 ---
 
-## Task 2: Create the shared `byLatestThenPopularity` comparator
+## Task 2: Create the shared `byLatestThenPopularity` comparator (TDD with Vitest)
 
 **Files:**
 - Create: `lib/productSort.ts`
-- Create: `scripts/productSort.check.mjs` (standalone assertion script — no framework)
+- Create: `lib/productSort.test.ts`
 
 **Interfaces:**
 - Produces: `byLatestThenPopularity(a: Product, b: Product): number` — a comparator usable directly in `[...].sort(byLatestThenPopularity)`. Consumed by Task 3 at all six sort sites.
 
-- [ ] **Step 1: Write the failing check script.**
+**Tooling:** Vitest is installed (`npm test` → `vitest run`) with native `@/` alias resolution via `vitest.config.mts`.
 
-Create `scripts/productSort.check.mjs`. It re-implements the spec's expected ordering inline and asserts the real comparator matches. Because the project has no test runner, this is a plain Node script using `assert`.
+- [ ] **Step 1: Write the failing test.**
 
-```js
-// Standalone check for byLatestThenPopularity (no test framework in this repo).
-// Run: node scripts/productSort.check.mjs
-import assert from "node:assert/strict";
-import { byLatestThenPopularity } from "../lib/productSort.ts";
+Create `lib/productSort.test.ts`:
 
-const p = (id, popularity, catalog2026) => ({ id, popularity, catalog2026 });
+```ts
+import { describe, it, expect } from "vitest";
+import type { Product } from "@/data/products";
+import { byLatestThenPopularity } from "@/lib/productSort";
 
-// A latest product outranks a higher-popularity non-latest product.
-{
-  const latestLowPop = p("latest", 10, true);
-  const oldHighPop = p("old", 99, false);
-  const sorted = [oldHighPop, latestLowPop].sort(byLatestThenPopularity);
-  assert.equal(sorted[0].id, "latest", "latest must sort before higher-pop non-latest");
-}
+// Minimal Product factory — only the fields the comparator reads.
+const p = (id: string, popularity?: number, catalog2026?: boolean): Product =>
+  ({ id, popularity, catalog2026 } as Product);
 
-// Within the latest group, higher popularity wins.
-{
-  const a = p("a", 80, true);
-  const b = p("b", 90, true);
-  const sorted = [a, b].sort(byLatestThenPopularity);
-  assert.equal(sorted[0].id, "b", "within latest, higher popularity first");
-}
+describe("byLatestThenPopularity", () => {
+  it("ranks a latest product above a higher-popularity non-latest one", () => {
+    const sorted = [p("old", 99, false), p("latest", 10, true)].sort(byLatestThenPopularity);
+    expect(sorted[0].id).toBe("latest");
+  });
 
-// Within the non-latest group, higher popularity wins.
-{
-  const a = p("a", 80, false);
-  const b = p("b", 90, false);
-  const sorted = [a, b].sort(byLatestThenPopularity);
-  assert.equal(sorted[0].id, "b", "within non-latest, higher popularity first");
-}
+  it("within the latest group, higher popularity wins", () => {
+    const sorted = [p("a", 80, true), p("b", 90, true)].sort(byLatestThenPopularity);
+    expect(sorted[0].id).toBe("b");
+  });
 
-// Missing popularity / missing flag are treated as 0 / false (no throw).
-{
-  const a = p("a", undefined, undefined);
-  const b = p("b", 5, false);
-  const sorted = [a, b].sort(byLatestThenPopularity);
-  assert.equal(sorted[0].id, "b", "undefined popularity treated as 0");
-}
+  it("within the non-latest group, higher popularity wins", () => {
+    const sorted = [p("a", 80, false), p("b", 90, false)].sort(byLatestThenPopularity);
+    expect(sorted[0].id).toBe("b");
+  });
 
-console.log("OK: byLatestThenPopularity checks passed");
+  it("treats missing popularity / flag as 0 / false without throwing", () => {
+    const sorted = [p("a"), p("b", 5, false)].sort(byLatestThenPopularity);
+    expect(sorted[0].id).toBe("b");
+  });
+});
 ```
 
-- [ ] **Step 2: Run the check to verify it fails (module doesn't exist yet).**
+- [ ] **Step 2: Run the test to verify it fails (module doesn't exist yet).**
 
-Run: `node scripts/productSort.check.mjs`
-Expected: FAIL — `Cannot find module '../lib/productSort.ts'` (or a TS-loader error). Either way, it does not print "OK".
-
-> Note: Node may not import `.ts` directly. If the import errors on the `.ts` extension rather than "module not found", that still satisfies "fails before implementation." Task 2 Step 4 resolves loading via `--experimental-strip-types` (Node 22+) or `npx tsx`.
+Run: `npm test`
+Expected: FAIL — cannot resolve `@/lib/productSort` (module not found).
 
 - [ ] **Step 3: Write the comparator.**
 
@@ -181,14 +170,10 @@ export function byLatestThenPopularity(a: Product, b: Product): number {
 }
 ```
 
-- [ ] **Step 4: Run the check to verify it passes.**
+- [ ] **Step 4: Run the test to verify it passes.**
 
-The `@/` alias and `.ts` import won't resolve under plain `node`. Use `npx tsx` (already transitively available via Next's toolchain; if not, install dev-only is out of scope — fall back to the inline JS copy below).
-
-Run: `npx tsx scripts/productSort.check.mjs`
-Expected: prints `OK: byLatestThenPopularity checks passed`
-
-If `npx tsx` is unavailable, change the script's import to an inline copy of the function body (same logic) so the check is self-contained, and re-run with `node scripts/productSort.check.mjs`. Expected: `OK: ...`.
+Run: `npm test`
+Expected: PASS — 4 tests in `lib/productSort.test.ts`.
 
 - [ ] **Step 5: Type-check.**
 
@@ -198,8 +183,8 @@ Expected: no errors.
 - [ ] **Step 6: Commit.**
 
 ```bash
-git add lib/productSort.ts scripts/productSort.check.mjs
-git commit -m "feat: add shared byLatestThenPopularity comparator"
+git add lib/productSort.ts lib/productSort.test.ts
+git commit -m "feat: add shared byLatestThenPopularity comparator with tests"
 ```
 
 ---
@@ -616,10 +601,10 @@ On `/products`, in the **Interactive Displays** section, confirm WAFX-P and WAF 
 
 On the **Digital Signage** section, confirm QBC/QHC/QMC/QPDX/QH115FX/QMB-T/QBC-T (latest) lead, with QET/QBR-B/MP016F/QMR-T after.
 
-- [ ] **Step 4: Run the comparator check once more.**
+- [ ] **Step 4: Run the test suite once more.**
 
-Run: `npx tsx scripts/productSort.check.mjs` (or `node` per Task 2 fallback)
-Expected: `OK: byLatestThenPopularity checks passed`
+Run: `npm test`
+Expected: all tests pass (the 4 `byLatestThenPopularity` cases).
 
 - [ ] **Step 5: Final commit if any verification-driven tweaks were made; otherwise none.**
 
