@@ -91,7 +91,21 @@ export default function ProductCatalogSection() {
 
         <div className="mt-4 mb-8" />
 
-        {/* Product grid */}
+        {/* Product grid — or a coming-soon placeholder when the active tab
+            (e.g. LED Signage before Phase 2) has no products yet. */}
+        {filtered.length === 0 ? (
+          <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-gray-200">
+            <p className="text-lg font-medium text-gray-500">
+              Products coming soon — contact us for availability.
+            </p>
+            <Link
+              href="/contact"
+              className="mt-4 inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
+            >
+              Contact Sales
+            </Link>
+          </div>
+        ) : (
         <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" autoPlay={true} autoPlayInterval={3900} initialDelay={3300}>
           {filtered.map((product, index) => (
             <div
@@ -202,6 +216,7 @@ export default function ProductCatalogSection() {
             </div>
           ))}
         </MobileProductScroller>
+        )}
 
         {/* Bottom CTA */}
         <div className="mt-6 md:mt-10 text-center">
