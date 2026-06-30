@@ -2,6 +2,7 @@ import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import { notFound } from "next/navigation";
 import { getCategoryById, productCategories, CategorySlug } from "@/data/categories";
+import { byLatestThenPopularity } from "@/lib/productSort";
 import { solutions } from "@/data/solutions";
 import { useCaseCombos } from "@/data/useCaseCombos";
 import Link from "next/link";
@@ -62,7 +63,7 @@ export default async function CategoryPage({
 
   const categoryProducts = products.filter(
     (p) => p.category === category.name
-  ).sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+  ).sort(byLatestThenPopularity);
 
   // Group by subCategory when present (e.g. Commercial TV → Hotel TV / Business TV)
   const subCategories = Array.from(

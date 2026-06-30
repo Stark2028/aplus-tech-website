@@ -12,6 +12,7 @@ import {
   type Filters,
 } from "@/lib/productFilters";
 import { declusterByImage } from "@/lib/declusterImages";
+import { byLatestThenPopularity } from "@/lib/productSort";
 
 interface Props {
   products: Product[];
@@ -34,7 +35,7 @@ export default function ProductsClientShell({ products, productCategories }: Pro
         items: declusterByImage(
           filtered
             .filter((p) => p.category === cat.name)
-            .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+            .sort(byLatestThenPopularity)
         ),
       }))
       .filter((g) => g.items.length > 0);

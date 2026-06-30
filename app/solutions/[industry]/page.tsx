@@ -4,6 +4,7 @@ import { ArrowRight, ChevronRight, Phone } from "lucide-react";
 import { solutions } from "@/data/solutions";
 import { products } from "@/data/products";
 import { getCategoryById } from "@/data/categories";
+import { byLatestThenPopularity } from "@/lib/productSort";
 import { useCaseCombos } from "@/data/useCaseCombos";
 import ProductCard from "@/components/ProductCard";
 import MobileProductScroller from "@/components/MobileProductScroller";
@@ -77,7 +78,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
 
     const recommendedProducts = products.filter((p) =>
         solution.recommendedSeries.some((series) => p.series.includes(series))
-    ).sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+    ).sort(byLatestThenPopularity);
 
     const combosForIndustry = useCaseCombos.filter((c) => c.industry === industry);
 

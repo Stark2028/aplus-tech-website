@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { solutions } from "@/data/solutions";
 import { products } from "@/data/products";
 import { getCategoryById, type CategorySlug } from "@/data/categories";
+import { byLatestThenPopularity } from "@/lib/productSort";
 import { useCaseCombos, getCombo } from "@/data/useCaseCombos";
 import ProductCard from "@/components/ProductCard";
 import {
@@ -93,13 +94,13 @@ export default async function IndustryCategoryPage({
     (p) =>
       p.category === categoryObj.name &&
       solution.recommendedSeries.some((series) => p.series.includes(series))
-  ).sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+  ).sort(byLatestThenPopularity);
 
   // Fallback: if the combo has no recommended-series matches, show top products in the category.
   const featuredProducts =
     matchingProducts.length > 0
       ? matchingProducts.slice(0, 8)
-      : products.filter((p) => p.category === categoryObj.name).sort((a, b) => (b.popularity || 0) - (a.popularity || 0)).slice(0, 4);
+      : products.filter((p) => p.category === categoryObj.name).sort(byLatestThenPopularity).slice(0, 4);
 
   const showingFallback = matchingProducts.length === 0;
   const accentGradient = GRADIENTS[industry] || "from-blue-900 via-blue-950 to-slate-900";

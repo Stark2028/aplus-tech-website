@@ -12,6 +12,7 @@ import { trackEvent } from "@/lib/analytics";
 import MobileProductScroller from "@/components/MobileProductScroller";
 import { declusterByImage } from "@/lib/declusterImages";
 import { formatSizeRange } from "@/lib/formatSize";
+import { byLatestThenPopularity } from "@/lib/productSort";
 
 export default function ProductCatalogSection() {
   const [activeTab, setActiveTab] = useState(productCategories[0].name);
@@ -22,7 +23,7 @@ export default function ProductCatalogSection() {
   const filtered = declusterByImage(
     products
       .filter((p) => p.category === activeTab)
-      .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+      .sort(byLatestThenPopularity)
   );
 
   const handleCompareToggle = (e: React.MouseEvent, product: Product) => {
