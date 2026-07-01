@@ -4,14 +4,14 @@ export interface Filters {
   brightness: string | null;
   resolution: string | null;
   operation: string | null;
-  minSize: number;
+  sizeBucket: string | null;
 }
 
 export const DEFAULT_FILTERS: Filters = {
   brightness: null,
   resolution: null,
   operation: null,
-  minSize: 0,
+  sizeBucket: null,
 };
 
 export const RESOLUTION_OPTIONS = [
@@ -32,7 +32,16 @@ export const BRIGHTNESS_BANDS = [
 
 export const OPERATION_OPTIONS = ["16/7", "24/7"];
 
-export const MIN_SIZE_OPTIONS = [32, 43, 55, 75];
+// Single-select size buckets, half-open [min, max): each boundary inch belongs
+// to exactly one bucket (a 55" panel is '55"+', not also '43"+'). A product's
+// size is its LARGEST offered diagonal. Mirrors BRIGHTNESS_BANDS.
+export const SIZE_BUCKETS = [
+  { label: 'Below 43"', min: 0,  max: 43 },
+  { label: '43"+',      min: 43, max: 55 },
+  { label: '55"+',      min: 55, max: 75 },
+  { label: '75"+',      min: 75, max: 98 },
+  { label: '98"+',      min: 98, max: Infinity },
+];
 
 /**
  * Parse a nit value from a brightness string, or null when it carries no number
@@ -77,11 +86,17 @@ export function applyFilters(products: Product[], filters: Filters): Product[] {
       if (!p.specs.operationTime.includes(filters.operation)) return false;
     }
 
-    if (filters.minSize > 0) {
-      const max = parseMaxSize(p.specs.screenSizes);
-      // A product with no numeric size (parseMaxSize → 0, e.g. "Custom") can't
-      // satisfy a minimum-size requirement, so it's excluded when a min is set.
-      if (max < filters.minSize) return false;
+    if (filters.sizeBucket) {
+      const bucket = SIZE_BUCKETS.find((b) => b.label === filters.sizeBucket);
+      if (bucket) {
+        const max = parseMaxSize(p.specs.screenSizes);
+        // A product with no numeric size (parseMaxSize → 0, e.g. "Custom") can't
+        // satisfy a size bucket, so it's excluded whenever one is selected —
+        // including 'Below 43"' (min 0), which the max===0 guard rules out first.
+        if (max === 0) return false;
+        // Half-open [min, max): boundary inch belongs to the bucket it names.
+        if (max < bucket.min || max >= bucket.max) return false;
+      }
     }
 
     return true;
