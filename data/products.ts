@@ -3189,4 +3189,410 @@ Everything needed to begin operating is in one package — control box, wall bra
       "/products/led-signage/samsung-all-in-one-led-iac/5.jpg",
     ],
   },
+
+  // ── SMART SIGNAGE — SPECIALTY & NEXT-GEN (2026 catalog) ──────────────────────
+
+  {
+    id: "samsung-spatial-smhx",
+    popularity: 95,
+    catalog2026: true,
+    name: "Samsung Spatial Signage (SMHX)",
+    category: "Digital Signage",
+    subCategory: "Spatial",
+    series: "SMHX",
+    description:
+      "Glasses-free 3D signage powered by patented 3D Plate technology — turns ordinary content into striking, lifelike depth in a slim 5.2 cm profile.",
+    longDescription: `The Samsung Spatial Signage (SMHX) delivers an immersive glasses-free 3D experience using Samsung's patented 3D Plate technology, which applies binocular parallax to send a different image to each eye — creating cinematic depth and 360° product rotation without special glasses or separately authored 3D content.
+
+At 85 inches with 4K UHD clarity (a compact 32-inch 9:16 portrait model is also available), Spatial Signage combines a striking visual with an UltraThin 5.2 cm profile that integrates cleanly into retail, lobby, and experience-centre environments. A 500-nit panel with anti-glare treatment keeps content vivid under commercial lighting.
+
+Samsung VXT with the AI Studio app makes 3D content creation simple: upload an image and write a prompt to generate dynamic 3D video, then manage and monitor devices remotely. Recognised as a CES 2026 Innovation Award honoree, Spatial Signage redefines attention-grabbing display for premium commercial spaces.`,
+    features: [
+      "Glasses-free Virtual 3D via patented 3D Plate technology",
+      "UltraThin 5.2 cm profile",
+      "4K UHD (85\") / FHD 9:16 (32\")",
+      "AI Studio 3D content generation in Samsung VXT",
+      "Quantum Processor, anti-glare",
+      "24/7 operation",
+    ],
+    specs: {
+      resolution: "3,840 × 2,160 (4K UHD)",
+      brightness: "500 nit",
+      screenSizes: ["32", "85"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "85\" (4K UHD) / 32\" (FHD, 9:16 portrait)",
+        "Resolution": "3,840 × 2,160 (85\") / 1,080 × 1,920 (32\")",
+        "Brightness (Type)": "500 nit",
+        "3D Technology": "Patented 3D Plate (glasses-free binocular parallax)",
+        "Depth": "52 mm (UltraThin)",
+        "Operation Time Support": "24/7",
+      },
+      "Processing & Software": {
+        "Processor": "Quantum Processor",
+        "Panel": "Anti-glare",
+        "Content": "Samsung VXT with AI Studio (image-to-3D-video)",
+        "Platform": "Tizen 7.0",
+      },
+      "Recognition": {
+        "Award": "CES 2026 Innovation Award honoree",
+        "Model Code": "LH85SMHPBGCXZA (SM85HX-P)",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-spatial-smhx/1.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/2.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/3.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/4.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/5.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/6.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/7.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/8.jpg",
+    ],
+  },
+  {
+    id: "samsung-color-epaper-emdx",
+    popularity: 90,
+    catalog2026: true,
+    name: "Samsung Color E-Paper (EMDX)",
+    category: "Digital Signage",
+    subCategory: "Color E-Paper",
+    series: "EMDX",
+    description:
+      "Paper-thin colour e-paper signage with a built-in battery and near-zero power draw — digitises posters and notices without cabling or daily charging.",
+    longDescription: `The Samsung Color E-Paper (EMDX) is a lightweight, paper-thin display that brings printed communication into the digital realm. Its 32-inch WQHD (2,560 × 1,440) E-Ink Spectra 6 panel reproduces rich, natural colour while preserving the calm, glare-free readability of paper — ideal for retail shelf edges, restaurant menus, transit notices, and office signage.
+
+Because e-paper only draws power when the image changes, the EMDX consumes zero watts while displaying a static image, and its built-in 4,600 mAh battery can run for up to ~200 days on a single charge at one update per day. A 17.9 mm profile, Wi-Fi/Bluetooth/USB-C connectivity, and a dedicated mobile app mean it can be placed almost anywhere without dedicated infrastructure.
+
+Managed through Samsung VXT and the Tizen Enterprise Platform, and built with recycled materials, Color E-Paper is a practical, energy-conscious way to replace static paper with dynamic, remotely-updatable content. A compact 13-inch model is also available.`,
+    features: [
+      "E-Ink Spectra 6 colour e-paper, paper-like readability",
+      "Zero-watt power on static images",
+      "Built-in 4,600 mAh battery (~200 days / update-a-day)",
+      "Paper-thin 17.9 mm design",
+      "Wi-Fi, Bluetooth, USB-C; Samsung VXT + E-Paper app",
+      "Made with recycled materials",
+    ],
+    specs: {
+      resolution: "2,560 × 1,440 (WQHD)",
+      brightness: "Reflective e-paper (0 W on static image)",
+      screenSizes: ["13", "32"],
+      operationTime: "Always-on (battery)",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "32\" (also 13\")",
+        "Panel Type": "E-Ink Spectra 6 colour e-paper",
+        "Resolution": "2,560 × 1,440 (WQHD)",
+        "Colours": "Up to 77K (with dithering)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Depth": "17.9 mm",
+      },
+      "Power & Battery": {
+        "Battery": "4,600 mAh Li-ion (built-in)",
+        "Battery Life": "~200 days at 1 update/day",
+        "Static Power": "0 W (image unchanged)",
+      },
+      "Connectivity & Platform": {
+        "Wireless": "Wi-Fi, Bluetooth",
+        "Wired": "USB-C (data/power)",
+        "Platform": "Tizen 8.0, Samsung VXT + E-Paper app",
+        "IP Rating": "IP5X",
+      },
+      "Eco": {
+        "Materials": "Recycled plastics (bio-resin on 13\" model)",
+        "Model Code": "LH32EMDIBGBXZA (EM32DX)",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-color-epaper-emdx/1.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/2.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/3.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/4.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/5.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/6.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/7.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/8.jpg",
+    ],
+  },
+  {
+    id: "samsung-outdoor-oh",
+    popularity: 87,
+    catalog2026: true,
+    name: "Samsung Outdoor Signage (OH Series)",
+    category: "Digital Signage",
+    subCategory: "Outdoor",
+    series: "OHA/OHDX/OHB",
+    description:
+      "Weatherproof high-brightness outdoor signage — UL-verified for outdoor visibility at 3,500 nits (peak 4,000) with IP56 and IK10 durability for 24/7 storefront and street-facing use.",
+    longDescription: `The Samsung Outdoor Signage (OH Series) is engineered to deliver clear, vivid messaging in the harshest environments — direct sunlight, rain, dust, and wide temperature swings. With 3,500-nit brightness (peak 4,000 nit) and UL-verified outdoor visibility, content stays legible around the clock, while an advanced heat-dissipation structure keeps the panel stable under load.
+
+The range spans the 75-inch 4K OHA, the 46-/55-inch FHD OHDX with a 6,000:1 contrast ratio, and the compact OHB — covering everything from drive-thru menu boards to building-mounted brand displays. IP56-rated protection and IK10 impact resistance mean the displays shrug off water jets, dust, and physical knocks, and an auto-brightness sensor adapts output to ambient light.
+
+Managed through Samsung VXT with support for additional protective glass installation, the OH Series lets businesses take impactful digital signage confidently outdoors, 24/7.`,
+    features: [
+      "UL-verified outdoor visibility, 3,500 nit (peak 4,000)",
+      "IP56 dust/water protection, IK10 impact resistance",
+      "Advanced heat-dissipation structure",
+      "Auto brightness sensor",
+      "Additional-glass-installable structure",
+      "24/7 operation, Samsung VXT",
+    ],
+    specs: {
+      resolution: "3,840 × 2,160 (4K) / FHD by model",
+      brightness: "3,500 nit (peak 4,000)",
+      screenSizes: ["24", "46", "55", "75"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "Display": {
+        "OHA": "75\" (1.90 m), 4K UHD, 3,500 nit (peak 4,000), 1,200:1",
+        "OHDX": "46\"/55\" (1.16 m/1.39 m), FHD, 3,500 nit (peak 4,000), 6,000:1, UL-verified outdoor visibility",
+        "OHB": "24\" (61 cm), FHD, 1,500 nit, 1,000:1",
+        "Operation Time Support": "24/7",
+      },
+      "Durability": {
+        "IP Rating": "IP56 (dust & water)",
+        "Impact": "IK10-certified",
+        "Cooling": "Heat-dissipation structure (OHDX)",
+        "Brightness Control": "Auto brightness sensor",
+        "Glass": "Additional glass installable",
+      },
+      "Software": {
+        "Management": "Samsung VXT",
+        "Model Code": "LH75OHAEBGBXZA (OH75A)",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-outdoor-oh/1.jpg",
+      "/products/digital-signage/samsung-outdoor-oh/2.jpg",
+      "/products/digital-signage/samsung-outdoor-oh/3.jpg",
+      "/products/digital-signage/samsung-outdoor-oh/4.jpg",
+    ],
+  },
+  {
+    id: "samsung-window-om",
+    popularity: 86,
+    catalog2026: true,
+    name: "Samsung Window Signage (OM Series)",
+    category: "Digital Signage",
+    subCategory: "Window",
+    series: "OMA/OMN/OMB/OMDX",
+    description:
+      "High-brightness window-facing signage up to 4,000 nits with polarized-sunglass support and IP5X protection — cuts through sunlit storefront glass to attract passers-by.",
+    longDescription: `The Samsung Window Signage (OM Series) is built to command attention through glass, even against direct sunlight. With brightness up to 4,000 nits and polarized-sunglass support, storefront content stays vivid and legible to passers-by, while a slim profile preserves valuable window space.
+
+The lineup covers the 75-inch 4K OMA, the OMB (46-inch FHD at 4,000 nit / 55-inch 4K at 3,000 nit), the OMN/OMN-D (4,000 nit, with OMN-D offering a dual-sided 3,000/1,000-nit configuration for inside-and-out messaging), and the compact 32-inch OMDX with a 4.56 cm window-facing depth. IP5X dust protection and proprietary overheating-mitigation technology keep the displays reliable in demanding window installations.
+
+Auto brightness control, built-in Wi-Fi, and clean cable management make the OM Series a polished, low-maintenance way to turn any window into a high-impact advertising surface, 24/7.`,
+    features: [
+      "High brightness up to 4,000 nit",
+      "Polarized-sunglass support",
+      "IP5X dust protection + overheating mitigation",
+      "Dual-sided option (OMN-D)",
+      "Auto brightness control, built-in Wi-Fi",
+      "24/7 operation, slim window-facing design",
+    ],
+    specs: {
+      resolution: "4K UHD / FHD by model",
+      brightness: "up to 4,000 nit",
+      screenSizes: ["32", "46", "55", "75"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "Display": {
+        "OMA": "75\" (1.90 m), 4K UHD",
+        "OMB": "46\" FHD 4,000 nit / 55\" 4K 3,000 nit, 6,000:1",
+        "OMN / OMN-D": "FHD 4,000 nit (OMN-D dual-sided 3,000 / 1,000 nit)",
+        "OMDX": "32\" FHD 2,000 nit, 4.56 cm depth",
+        "Operation Time Support": "24/7",
+      },
+      "Durability & Features": {
+        "IP Rating": "IP5X (dust)",
+        "Overheating": "Proprietary overheating-mitigation technology",
+        "Brightness Control": "Auto brightness control",
+        "Sunglasses": "Polarized-sunglass support",
+        "Connectivity": "Built-in Wi-Fi, clean cable management",
+      },
+      "Model": {
+        "Model Code": "LH55OMBEBGBXZA (OM55B)",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-window-om/1.png",
+      "/products/digital-signage/samsung-window-om/2.webp",
+      "/products/digital-signage/samsung-window-om/3.jpg",
+      "/products/digital-signage/samsung-window-om/4.jpg",
+      "/products/digital-signage/samsung-window-om/5.jpg",
+    ],
+  },
+  {
+    id: "samsung-stretched-shc",
+    popularity: 82,
+    catalog2026: true,
+    name: "Samsung Stretched Signage (SHC)",
+    category: "Digital Signage",
+    subCategory: "Stretched",
+    series: "SHC",
+    description:
+      "Ultra-wide 16:4.5 stretched display for shelf edges, transit, and narrow spaces — communicates clearly at 700 nits where a standard panel won't fit.",
+    longDescription: `The Samsung Stretched Signage (SH37C) is a versatile, cost-effective display purpose-built for narrow spaces where conventional 16:9 panels don't fit. Its 37-inch 16:4.5 ultra-wide format (1,920 × 540) is ideal for shelf edges, above-door boards, transit information strips, and check-out lanes — turning otherwise unusable slivers of space into clear communication surfaces.
+
+A 700-nit, non-glare panel keeps messaging readable in bright retail lighting and from wide angles, and an embedded media player lets the display run content without an external PC. The SHC supports both horizontal and vertical installation, adapting to the shape of the space.
+
+Backed by ENERGY STAR 8.0 and EPEAT certification with recycled-plastic construction, the Stretched Signage pairs practical, space-savvy design with energy-conscious operation for 24/7 commercial use.`,
+    features: [
+      "16:4.5 ultra-wide stretched format",
+      "700-nit non-glare panel",
+      "Embedded media player (no external PC)",
+      "Horizontal or vertical installation",
+      "24/7 operation",
+      "ENERGY STAR 8.0 / EPEAT, recycled plastics",
+    ],
+    specs: {
+      resolution: "1,920 × 540 (16:4.5)",
+      brightness: "700 nit",
+      screenSizes: ["37"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "37\" (94 cm)",
+        "Aspect Ratio": "16:4.5 (stretched)",
+        "Resolution": "1,920 × 540",
+        "Brightness (Type)": "700 nit",
+        "Contrast Ratio": "4,000:1",
+        "Panel": "Anti-glare",
+        "Operation Time Support": "24/7",
+      },
+      "Features": {
+        "Media Player": "Embedded",
+        "Installation": "Horizontal / vertical",
+        "Platform": "Tizen 7.0",
+      },
+      "Eco & Model": {
+        "Certifications": "ENERGY STAR 8.0, EPEAT",
+        "Model Code": "LH37SHCEBGBXZA (SH37C)",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-stretched-shc/1.jpg",
+    ],
+  },
+  {
+    id: "samsung-small-qbc",
+    popularity: 84,
+    catalog2026: true,
+    name: "Samsung Small Signage (QBC)",
+    category: "Digital Signage",
+    subCategory: "Small Signage",
+    series: "QB13C/QB24C",
+    description:
+      "Compact 13\" and 24\" Full HD signage for close-range, space-constrained spots — reception desks, shelf edges, and information points where larger displays don't fit.",
+    longDescription: `The Samsung Small Signage (QBC) brings clear, effective communication to areas with limited space. Available in compact 13-inch (33 cm) and 24-inch (61 cm) Full HD formats, it is designed for close-range viewing — reception desks, counters, shelf edges, meeting-room name plates, and customer-facing information points where a large display would be impractical.
+
+The 13-inch model's slim 19.9 mm profile lets it slot into tight spaces and mount cleanly on a wall, while an intuitive Home UI keeps device setup, content playback, and settings simple. Dual-band Wi-Fi (2.4 GHz + 5 GHz) delivers faster, more reliable network connections — useful in busy, high-traffic environments.
+
+Managed through Samsung VXT, the Small Signage is a flexible, low-footprint way to add dynamic digital messaging exactly where it's needed. (This is the non-touch QBC small signage; a touch variant is available separately.)`,
+    features: [
+      "Compact 13\" / 24\" Full HD form factor",
+      "Slim 19.9 mm design (13\")",
+      "Intuitive Home UI",
+      "Dual Wi-Fi (2.4 GHz + 5 GHz)",
+      "Samsung VXT management",
+      "16/7 operation",
+    ],
+    specs: {
+      resolution: "1,920 × 1,080 (FHD)",
+      brightness: "500 nit (13\") / 250 nit (24\")",
+      screenSizes: ["13", "24"],
+      operationTime: "16/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "13\" (33 cm) / 24\" (61 cm)",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit (13\") / 250 nit (24\")",
+        "Contrast Ratio": "800:1 (13\") / 1,000:1 (24\")",
+        "Depth": "19.9 mm (13\")",
+        "Operation Time Support": "16/7",
+      },
+      "Features": {
+        "Interface": "Home UI",
+        "Wireless": "Dual Wi-Fi (2.4 GHz + 5 GHz)",
+        "Management": "Samsung VXT",
+        "Platform": "Tizen 7.0",
+      },
+      "Model": {
+        "Model Code": "LH13QBCEBGBXZA (QB13C) / QB24C",
+        "Note": "Non-touch small signage (touch variant sold separately)",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-small-qbc/1.jpg",
+    ],
+  },
+  {
+    id: "samsung-flip-wmfx",
+    popularity: 98,
+    catalog2026: true,
+    name: "Samsung Flip (WMFX)",
+    category: "Interactive Display",
+    subCategory: "Flip",
+    series: "WMFX",
+    description:
+      "The 2026 Samsung Flip — a 4K interactive whiteboard with natural 26 ms writing, an enhanced multi-window workspace on Tizen 9.0, and Samsung Knox security.",
+    longDescription: `The Samsung Flip (WMFX) is the latest generation of Samsung's interactive whiteboard, built for meeting rooms, classrooms, and collaborative spaces where ideas need to flow the moment inspiration strikes. Available in 55, 65, 75, and 85 inches with 4K UHD clarity and a 450-nit anti-glare panel, it delivers instant, natural writing at 26 ms response with 2,048 pressure levels and dual-pen support.
+
+Running on the enhanced Tizen 9.0 platform, the WMFX moves beyond a digital whiteboard to a PC-like workspace: multi-window multitasking, a taskbar, Annotation On over any content, and an integrated Workspace for direct access to remote PCs, network drives, and cloud apps like Microsoft 365. SmartView+ lets up to nine devices share content wirelessly at once.
+
+The Enhanced Whiteboard makes it easy to edit, move, and resize notes and turn handwriting into clean visuals, while a rotatable design adapts between portrait and landscape. Samsung Knox provides multi-layered security from power-on to shutdown, making the Flip a secure, versatile hub for modern collaboration.`,
+    features: [
+      "Natural writing — 26 ms response, 2,048 pressure levels, dual pen",
+      "Enhanced Whiteboard + Flip Home",
+      "Tizen 9.0 multi-window workspace & taskbar",
+      "SmartView+ — up to 9 devices share wirelessly",
+      "Rotatable design (portrait / landscape)",
+      "Samsung Knox security, USB-C Hub / HDMI Out / OPS",
+    ],
+    specs: {
+      resolution: "3,840 × 2,160 (4K UHD)",
+      brightness: "450 nit",
+      screenSizes: ["55", "65", "75", "85"],
+      operationTime: "16/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\" / 65\" / 75\" / 85\"",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "450 nit",
+        "Panel": "Anti-glare",
+        "Operation Time Support": "16/7",
+      },
+      "Writing & Interaction": {
+        "Response Time": "26 ms",
+        "Pressure Levels": "2,048",
+        "Pen": "Dual pen",
+        "Wireless Sharing": "SMARTVIEW+ (up to 9 devices)",
+      },
+      "Software & Security": {
+        "Platform": "Tizen 9.0",
+        "Workspace": "Multi-window, taskbar, Annotation On, Workspace (remote PC / M365)",
+        "Whiteboard": "Enhanced Whiteboard, Flip Home",
+        "Security": "Samsung Knox",
+      },
+      "Connectivity & Model": {
+        "Connectivity": "USB-C Hub, HDMI Out, OPS",
+        "Design": "Rotatable (portrait / landscape)",
+        "Model Code": "LH55WMFWBGCX (WM55FX)",
+      },
+    },
+    images: [
+      "/products/interactive/samsung-flip-wmfx/1.jpg",
+      "/products/interactive/samsung-flip-wmfx/2.jpg",
+      "/products/interactive/samsung-flip-wmfx/3.jpg",
+    ],
+  },
 ];
