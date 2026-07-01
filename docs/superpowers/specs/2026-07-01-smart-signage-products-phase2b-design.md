@@ -96,6 +96,10 @@ full detail in `specGroups`. Special cases:
 ## Category placement & grouping
 
 - 6 products → `category: "Digital Signage"`, each with its own `subCategory`.
+  This includes Spatial (a 3D display, but grouped under Digital Signage with a
+  "Spatial" chip — user-confirmed) and Color E-Paper (kept in Digital Signage as
+  the most suitable existing category; user noted it may be moved later if
+  needed — not a blocker for 2b).
 - Flip WMFX → `category: "Interactive Display"`, `subCategory: "Flip"`.
 - On the Digital Signage category page: new products appear in labeled
   subCategory groups; existing untagged signage falls into the trailing
