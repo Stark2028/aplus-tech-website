@@ -2872,4 +2872,321 @@ Embedded AI functions unlock AI Write & Search: simply circle handwritten notes 
       },
     },
   },
+
+  // ── LED SIGNAGE (2026 catalog) ──────────────────────────────────────────────
+
+  {
+    id: "samsung-the-wall-mpf",
+    popularity: 96,
+    catalog2026: true,
+    name: "Samsung The Wall (MPF)",
+    category: "LED Signage",
+    subCategory: "The Wall",
+    series: "MPF",
+    description:
+      "Premium micro-LED direct-view display with flip-chip RGB LEDs, Black Seal contrast, and modular any-size scalability — the flagship of Samsung's LED signage line.",
+    longDescription: `The Samsung The Wall (MPF) is the flagship of Samsung's direct-view LED lineup, built on flip-chip RGB micro-LED technology that places each red, green, and blue sub-pixel directly on the board for exceptional brightness, color purity, and longevity. Available in P0.8, P1.2, and P1.6 pixel pitches, it scales seamlessly from close-viewing lobby installations to expansive feature walls without bezels interrupting the image.
+
+Black Seal Technology delivers a uniform, ultra-black canvas that deepens contrast and reveals fine shadow detail, while PANTONE-validated color reproduction and 20-bit processing with Linear Grayscale ensure accurate, lifelike imagery. The NQM AI Gen2 processor analyses every frame in real time, upscaling content toward 8K and removing noise for consistently vivid results.
+
+Engineered for permanent commercial installation, The Wall MPF supports 24/7 operation, front-serviceable cabinets, and a one-body modular structure that simplifies large-scale builds. It is the definitive choice for corporate lobbies, experience centres, broadcast studios, and premium retail flagships.`,
+    features: [
+      "Flip-chip RGB micro-LED for deep blacks and wide color",
+      "Black Seal Technology for superior contrast",
+      "PANTONE-validated color, 20-bit processing, MICRO HDR",
+      "NQM AI Gen2 processor with up-to-8K scaling",
+      "Modular, bezel-free any-size installation",
+      "24/7 operation, front-serviceable",
+    ],
+    specs: {
+      resolution: "P0.8 / P1.2 / P1.6 pixel pitch",
+      brightness: "1,800 nit (peak)",
+      screenSizes: ["110", "130", "146"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Pixel Pitch": "P0.8 / P1.2 / P1.6",
+        "Diode Type": "Flip-chip RGB LED",
+        "Brightness (peak)": "1,800 nit (P0.8, P1.2) / 1,600 nit (P1.6)",
+        "Contrast Ratio": "29,000:1 (P0.8) / 41,000:1 (P1.2) / 43,000:1 (P1.6)",
+        "Model Codes": "LH012MPFAAA (P1.2), LH016MPFAAA (P1.6)",
+      },
+      "Processing & Picture": {
+        "Processor": "NQM AI Gen2",
+        "Color": "20-bit processing, Linear Grayscale, MICRO HDR",
+        "Contrast Enhancement": "Black Seal Technology",
+        "Color Validation": "PANTONE Validated",
+      },
+      "Mechanical & Operation": {
+        "Service": "Front",
+        "IP Rating": "IP40 / IP20 (Front / Rear)",
+        "Operation Time Support": "24/7",
+        "Design": "One-body modular, bezel-free",
+      },
+      "Certification": {
+        "EMC": "EMC Class B",
+        "Eye Comfort": "TUV Eye Comfort",
+        "Safety": "IEC 62368-1 / 60950-1",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-the-wall-mpf/1.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/2.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/3.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/4.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/5.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/6.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/7.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/8.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/9.jpg",
+    ],
+  },
+  {
+    id: "samsung-the-wall-mmf",
+    popularity: 90,
+    catalog2026: true,
+    name: "Samsung The Wall (MMF)",
+    category: "LED Signage",
+    subCategory: "The Wall",
+    series: "MMF",
+    description:
+      "Modular flip-chip RGB LED display delivering The Wall's signature deep blacks and seamless canvas at an accessible brightness tier for indoor commercial spaces.",
+    longDescription: `The Samsung The Wall (MMF) brings the design language and picture quality of Samsung's flagship LED line to a broader range of indoor commercial environments. Built on flip-chip RGB LED technology in P0.9, P1.2, and P1.5 pixel pitches, it produces a seamless, bezel-free canvas with the deep blacks and smooth grayscale that define The Wall family.
+
+Rated at 600 nits, the MMF is tuned for controlled indoor lighting — corporate lobbies, meeting spaces, broadcast sets, and retail interiors — where its high contrast (up to 10,000:1) and modular scalability let designers build displays to any dimension. TUV Eye Comfort certification supports comfortable long-duration viewing.
+
+As part of The Wall ecosystem, the MMF offers a simple modular structure for straightforward installation and maintenance, making premium direct-view LED accessible for everyday commercial signage.`,
+    features: [
+      "Flip-chip RGB LED, seamless bezel-free canvas",
+      "Deep blacks and smooth Linear Grayscale",
+      "Up to 10,000:1 contrast (P1.5)",
+      "Modular any-size installation",
+      "TUV Eye Comfort certified",
+      "24/7 operation",
+    ],
+    specs: {
+      resolution: "P0.9 / P1.2 / P1.5 pixel pitch",
+      brightness: "600 nit",
+      screenSizes: ["110", "130", "146"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Pixel Pitch": "P0.9 / P1.2 / P1.5",
+        "Diode Type": "Flip-chip RGB LED",
+        "Brightness": "600 nit",
+        "Contrast Ratio": "8,000:1 (P0.9, P1.2) / 10,000:1 (P1.5)",
+      },
+      "Picture": {
+        "Color": "20-bit processing, Linear Grayscale",
+        "Contrast Enhancement": "Black Seal Technology",
+      },
+      "Mechanical & Operation": {
+        "Operation Time Support": "24/7",
+        "Design": "Modular, bezel-free",
+      },
+      "Certification": {
+        "EMC": "EMC Class A",
+        "Eye Comfort": "TUV Eye Comfort",
+        "Safety": "IEC 62368-1 / 60950-1",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-the-wall-mmf/1.webp",
+      "/products/led-signage/samsung-the-wall-mmf/2.webp",
+      "/products/led-signage/samsung-the-wall-mmf/3.webp",
+      "/products/led-signage/samsung-the-wall-mmf/4.webp",
+      "/products/led-signage/samsung-the-wall-mmf/5.webp",
+    ],
+  },
+  {
+    id: "samsung-indoor-led-ie",
+    popularity: 88,
+    catalog2026: true,
+    name: "Samsung Indoor LED Signage (IE Series)",
+    category: "LED Signage",
+    subCategory: "Indoor LED",
+    series: "IEA/IEF",
+    description:
+      "Versatile indoor direct-view LED signage with HDR10/10+ picture quality, GoB durability, and flexible curved, L-shaped, and ceiling installation across a wide pixel-pitch range.",
+    longDescription: `Samsung Indoor LED Signage (IE Series) delivers best-in-class direct-view LED picture quality for retail stores, corporate spaces, and public venues. Available across P1.2, P1.5, P2.0, P2.5, and P4.0 pixel pitches, the range spans fine-pitch close-viewing walls to larger-format displays for wider viewing distances — all driven by Samsung's LED HDR technology for accurate color and sharp detail without additional metadata.
+
+The NQM AI Processor with 4K AI upscaling optimises brightness and contrast while suppressing glare, and HDR10/10+ support preserves highlight and shadow detail across content types. GoB (Glue-on-Board) technology adds a protective layer over the LED surface, guarding against water droplets, electrical shock, and physical impact while improving handling during installation.
+
+Advanced modular design supports portrait, landscape, curved, L-shaped, and ceiling installations, giving businesses full control to build the ideal display for their space. Managed via LED Signage Manager 2 and Samsung VXT, the IE Series pairs striking visuals with straightforward, centralised operation.`,
+    features: [
+      "LED HDR with HDR10/10+ support",
+      "NQM AI Processor with 4K AI upscaling",
+      "GoB technology for surface durability",
+      "Curved, L-shaped, portrait & ceiling installation",
+      "Wide pixel-pitch range (P1.2–P4.0)",
+      "24/7 operation",
+    ],
+    specs: {
+      resolution: "P1.2 / P1.5 / P2.0 / P2.5 / P4.0 pixel pitch",
+      brightness: "1,000 nit",
+      screenSizes: ["110", "130", "146", "165"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Pixel Pitch": "P1.2 (IEF) / P1.5 / P2.0 / P2.5 / P4.0 (IEA)",
+        "Diode Type": "Surface Mount Device (SMD)",
+        "Brightness": "1,000 nit (P1.5–P2.5) / 800 nit (P4.0) / 600 nit (P1.2 IEF)",
+        "Contrast Ratio": "6,000:1 (P1.5) / 7,500:1 (P2.0) / 5,000:1 (P2.5, P4.0) / 4,000:1 (P1.2 IEF)",
+        "Model Codes": "IE015A (P1.5), IE020A (P2.0), IE025A (P2.5)",
+      },
+      "Picture & Processing": {
+        "Processor": "NQM AI Processor",
+        "HDR": "HDR10 / HDR10+",
+        "Upscaling": "4K AI upscaling",
+        "Durability": "GoB (Glue-on-Board) technology",
+      },
+      "Installation & Management": {
+        "Orientations": "Portrait, landscape, curved, L-shaped, ceiling",
+        "Management": "LED Signage Manager 2, Samsung VXT, Signage Setup Assistant",
+        "Operation Time Support": "24/7",
+      },
+      "Certification": {
+        "EMC": "EMC Class A",
+        "Safety": "IEC 62368-1 / 60950-1",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-indoor-led-ie/1.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/2.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/3.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/4.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/5.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/6.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/7.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/8.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/9.jpg",
+    ],
+  },
+  {
+    id: "samsung-all-in-one-led-iab",
+    popularity: 92,
+    catalog2026: true,
+    name: "Samsung All-in-One LED (IAB)",
+    category: "LED Signage",
+    subCategory: "All-in-One LED",
+    series: "IAB",
+    description:
+      "146-inch all-in-one direct-view LED display with Quick Build installation, built-in control box, and everything needed to deploy a big-impact wall in hours.",
+    longDescription: `The Samsung All-in-One LED (IAB) is a true all-in-one direct-view LED solution engineered for fast, high-impact installation. At 146 inches with P0.8 and P1.6 pixel-pitch options, it delivers a bold, seamless canvas backed by flip-chip RGB LEDs, MICRO HDR, and the NQM AI Processor for vivid color and deep, Black-Seal blacks.
+
+Exclusive Quick Build technology lets integrators complete a large-scale display in just a few hours: combine the two background plates and attach four preset modules. The control box is built directly into the display, streamlining configuration and eliminating the external processing hardware conventional LED walls require.
+
+Every component needed for operation ships in one package — control box, wall brackets, speakers, and decorative bezels — with no additional purchases. Rated for 24/7 operation, the IAB is ideal for corporate lobbies, retail flagships, auditoriums, and experience centres that need a premium LED wall without the complexity of a custom build.`,
+    features: [
+      "146\" all-in-one LED, up to 4K",
+      "Quick Build — installs in hours",
+      "Built-in control box (no external processor)",
+      "All-inclusive: brackets, speakers, décor bezels",
+      "MICRO HDR, NQM AI Processor, 20-bit, Black Seal",
+      "24/7 operation",
+    ],
+    specs: {
+      resolution: "P0.8 / P1.2 / P1.6 pixel pitch",
+      brightness: "1,600 nit (peak)",
+      screenSizes: ["146"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Diagonal": "3.70 m (146\")",
+        "Pixel Pitch": "P0.8 / P1.2 / P1.6",
+        "Diode Type": "Flip-chip RGB LED",
+        "Brightness (peak)": "1,600 nit (P0.8) / 1,400 nit (P1.6)",
+        "Contrast Ratio": "24,000:1 (P0.8) / 22,000:1 (P1.6)",
+      },
+      "All-in-One & Installation": {
+        "Installation": "Quick Build (background plates + 4 preset modules)",
+        "Control Box": "Built-in",
+        "Included": "Control box, wall brackets, speakers, décor bezels",
+        "Weight": "~160 kg",
+        "Service": "Front",
+      },
+      "Picture & Processing": {
+        "Processor": "NQM AI Processor",
+        "Color": "20-bit processing, Linear Grayscale, MICRO HDR",
+        "Contrast Enhancement": "Black Seal / True Black Presentation",
+      },
+      "Certification & Operation": {
+        "IP Rating": "IP20",
+        "EMC": "EMC Class A",
+        "Eye Comfort": "TUV Eye Comfort",
+        "Operation Time Support": "24/7",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-all-in-one-led-iab/1.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iab/2.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iab/3.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iab/4.jpg",
+    ],
+  },
+  {
+    id: "samsung-all-in-one-led-iac",
+    popularity: 89,
+    catalog2026: true,
+    name: "Samsung All-in-One LED (IAC)",
+    category: "LED Signage",
+    subCategory: "All-in-One LED",
+    series: "IAC",
+    description:
+      "130-inch 2K all-in-one direct-view LED display with Quick Build installation and an all-inclusive package — big-screen impact deployed fast, out of the box.",
+    longDescription: `The Samsung All-in-One LED (IAC) packages a 130-inch 2K (Full HD) direct-view LED display into a complete, ready-to-install solution. With a P1.5 pixel pitch and a 6,000:1 contrast ratio, it produces vivid color expression, reduced noise, and a full range of grays and blacks — a genuine big-screen alternative to projection and tiled LCD.
+
+Quick Build structure simplifies installation: dock the two background plates and hang four preset modules to complete the wall in hours rather than days. The control box is integrated into the display, and a 3,840 Hz refresh rate keeps motion smooth and camera-capture flicker-free.
+
+Everything needed to begin operating is in one package — control box, wall brackets, speakers, and decorative bezels — so there are no extra components to source. Rated for 24/7 operation, the IAC suits meeting spaces, lobbies, showrooms, and retail environments that want a premium LED display without a bespoke integration project.`,
+    features: [
+      "130\" 2K (Full HD) all-in-one LED",
+      "P1.5 pixel pitch, 6,000:1 contrast",
+      "3,840 Hz refresh for smooth, flicker-free capture",
+      "Quick Build — installs in hours",
+      "All-inclusive: control box, brackets, speakers, bezels",
+      "24/7 operation",
+    ],
+    specs: {
+      resolution: "P1.5 pixel pitch (2K / FHD)",
+      brightness: "1,000 nit",
+      screenSizes: ["130", "146"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Diagonal": "3.30 m (130\")",
+        "Pixel Pitch": "P1.5",
+        "Diode Type": "Surface Mount Device (SMD)",
+        "Resolution": "2K (Full HD)",
+        "Brightness": "1,000 nit",
+        "Contrast Ratio": "6,000:1",
+        "Refresh Rate": "3,840 Hz",
+        "Model Code": "LH015IACCHS",
+      },
+      "All-in-One & Installation": {
+        "Installation": "Quick Build (background plates + 4 preset modules)",
+        "Control Box": "Built-in",
+        "Included": "Control box, wall brackets, speakers, décor bezels",
+        "Service": "Front",
+      },
+      "Certification & Operation": {
+        "IP Rating": "IP20",
+        "EMC": "EMC Class A",
+        "Eye Comfort": "TUV Eye Comfort",
+        "Operation Time Support": "24/7",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-all-in-one-led-iac/1.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iac/2.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iac/3.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iac/4.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iac/5.jpg",
+    ],
+  },
 ];
