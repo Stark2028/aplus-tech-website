@@ -106,11 +106,14 @@ additions, so "latest first" in that category mostly takes effect in Phase 2.
 
 ## Ranking — two-key sort (replaces the rejected popularity-bump)
 
-Listings sort by `popularity` desc in four places: `ProductCatalogSection`,
-`ProductsClientShell`, `app/solutions/[industry]/page.tsx`,
-`app/categories/[slug]/page.tsx`. **Sorting is per-category** (each listing
-filters by category, then sorts), so "latest first" is a *within-category*
-ordering.
+Listings sort by `popularity` desc in **six** call sites across five files:
+`components/ProductCatalogSection.tsx:25`, `components/ProductsClientShell.tsx:37`,
+`app/categories/[slug]/page.tsx:65`, `app/solutions/[industry]/page.tsx:80`, and
+`app/solutions/[industry]/[category]/page.tsx:96` **and** `:102`. **Sorting is
+per-category** (each listing filters by category, then sorts), so "latest first"
+is a *within-category* ordering. (The `solutions/[industry]` site at :80 sorts a
+recommended-series list, not a category list, but uses the same comparator and
+benefits identically.)
 
 **Why the original "bump popularity into a 90-99 band" was rejected:** the
 existing popularity numbers actively contradict catalog recency. Example
