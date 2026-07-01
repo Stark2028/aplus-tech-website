@@ -463,9 +463,9 @@ The QBR-B's 16/7 operation rating and robust industrial design ensure dependable
     ],
     specs: {
       resolution: "FHD (32\") / 4K UHD (43\", 55\")",
-      brightness: "300 nit",
+      brightness: "300 nit (32\") / up to 500 nit (43\", 55\", w/o glass)",
       screenSizes: ["32", "43", "55"],
-      operationTime: "16/7",
+      operationTime: "16/7 (32\") / 24/7 (43\", 55\")",
     },
     images: [
       "/products/digital-signage/samsung-touch-qmr-t/1.webp",
@@ -489,9 +489,9 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
       "Display": {
         "Diagonal Size": "32\" / 43\" / 55\"",
         "Resolution": "1,920 × 1,080 FHD (32\") / 3,840 × 2,160 4K UHD (43\", 55\")",
-        "Brightness (Type)": "300 nit",
+        "Brightness (Type)": "300 nit (32\", w/ glass) / up to 500 nit (43\", 55\", w/o glass)",
         "Viewing Angle (H/V)": "178° / 178°",
-        "Operation Time Support": "16/7",
+        "Operation Time Support": "16/7 (32\") / 24/7 (43\", 55\")",
       },
       "Connectivity": {
         "HDMI In": "2 × HDMI",
@@ -581,11 +581,11 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
       "Pixel pitch 1.6 mm for crisp close-range viewing",
       "HDR support",
       "Magnetic service access for easy maintenance",
-      "1,200 nit brightness for indoor impact",
+      "1,400 nit peak brightness for indoor impact",
     ],
     specs: {
       resolution: "Custom",
-      brightness: "1,200 nit",
+      brightness: "1,400 nit (peak)",
       screenSizes: ["Custom"],
       operationTime: "24/7",
     },
@@ -597,14 +597,14 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
   
     longDescription: `The Samsung MP016F fine-pitch LED module opens the door to custom large-format displays that command attention in high-traffic venues — corporate atriums, flagship retail spaces, concert stages, and sports arenas. At 1.6 mm pixel pitch, the MP016F delivers cinema-quality resolution from close viewing distances while maintaining impact at distance, allowing viewers to enjoy seamless content whether they're 3 feet away or 30 feet away.
 
-The modular MP016F architecture enables virtually unlimited scaling, from intimate 2×2 arrays to massive installation walls covering entire building facades. HDR support ensures content retains highlight detail and shadow depth even in extreme brightness environments, while the 1,200-nit brightness dominates interior spaces without requiring specialized dark rooms or controlled lighting.
+The modular MP016F architecture enables virtually unlimited scaling, from intimate 2×2 arrays to massive installation walls covering entire building facades. HDR support ensures content retains highlight detail and shadow depth even in extreme brightness environments, while the 1,400-nit peak brightness dominates interior spaces without requiring specialized dark rooms or controlled lighting.
 
 Magnetic service access design allows technicians to swap panels or perform maintenance without disassembling the entire installation, dramatically reducing downtime and maintenance costs. 24/7 operation rating makes the MP016F ideal for command centers, entertainment venues, and 24-hour retail environments where reliability and visual impact are equally critical to business success.`,
     specGroups: {
       "Display": {
         "Pixel Pitch": "1.6 mm",
         "Resolution": "Custom (modular scalable)",
-        "Brightness (Type)": "1,200 nit",
+        "Brightness (Type)": "1,400 nit (peak)",
         "Contrast Ratio": "5,000:1 (typical)",
         "Viewing Angle (H/V)": "160° / 160°",
         "Color Depth": "16.7M colors (8-bit per channel)",
@@ -1253,7 +1253,7 @@ The Flip Pro runs on Tizen OS with Samsung Knox security built in, ensuring sess
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "350 nit",
-      screenSizes: ["75", "85"],
+      screenSizes: ["55", "65", "75", "85"],
       operationTime: "16/7",
     },
     images: [
@@ -1276,13 +1276,19 @@ Built with antimicrobial coating that inhibits bacterial growth on the touchscre
 With a single USB-C connection delivering power, data, and high-bandwidth content streaming, the Flip 3 simplifies installation and eliminates cable clutter in modern meeting rooms. Dual-stack resolution support (portrait and landscape) and intuitive gesture controls enable natural interaction patterns that match how humans naturally communicate — drawing, writing, gesturing, pointing.`,
     specGroups: {
       "Display": {
-        "Diagonal Size": "75\" / 85\"",
-        "Panel Type": "IPS with antimicrobial coating",
+        "Diagonal Size": "55\" / 65\" / 75\" / 85\" (WMA series)",
+        "Panel Type": "New Edge with antimicrobial coating",
         "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "350 nit",
+        "Brightness (Type)": "350 nit (w/o glass)",
+        "Contrast Ratio": "4,000:1 (w/o glass)",
         "Color Gamut": "99% sRGB",
         "Viewing Angle (H/V)": "178° / 178°",
         "Operation Time Support": "16/7",
+      },
+      "Writing & Interaction": {
+        "Latency": "34 ms",
+        "Pressure Levels": "2,048",
+        "Touch": "Electromagnetic stylus + 10-point multi-touch",
       },
       "Connectivity": {
         "USB-C": "USB-C 3.1 Gen1 × 1 (65 W Power Delivery)",
@@ -1291,7 +1297,7 @@ With a single USB-C connection delivering power, data, and high-bandwidth conten
         "Screen Share": "AirPlay, Miracast, Screen Mirroring",
       },
       "Mechanical Specification": {
-        "VESA Mount (mm)": "400 × 400 (75\") / 600 × 400 (85\")",
+        "VESA Mount (mm)": "200 × 200 (55\") / 400 × 400 (65\", 75\") / 600 × 400 (85\")",
       },
       "SoC": {
         "OS Version": "Tizen 6.0 (Samsung Knox)",
@@ -1318,8 +1324,8 @@ With a single USB-C connection delivering power, data, and high-bandwidth conten
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "390 cd/m²",
-      screenSizes: ["65", "75"],
+      brightness: "400 cd/m²",
+      screenSizes: ["65", "75", "86"],
       operationTime: "16/7",
     },
     images: [
@@ -1342,9 +1348,9 @@ Multi-touch capability supporting up to 20 simultaneous touch points enables who
 Powerful screen sharing supports up to nine simultaneous screens so content flows bidirectionally between the large display and individual student devices. Intelligent classroom apps such as timers and stopwatches, easily pinned to the home screen bar, help teachers keep lessons structured and engaging.`,
     specGroups: {
       "Display": {
-        "Diagonal Size": "65\" / 75\"",
+        "Diagonal Size": "65\" / 75\" / 86\"",
         "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "390 cd/m²",
+        "Brightness (Type)": "400 cd/m²",
         "Viewing Angle (H/V)": "178° / 178°",
         "Glass": "25% haze, 3.2T, ≥8H hardness",
         "Operation Time Support": "16/7",
@@ -1396,7 +1402,7 @@ Powerful screen sharing supports up to nine simultaneous screens so content flow
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "400 nit",
       screenSizes: ["65", "75", "86"],
-      operationTime: "16/7",
+      operationTime: "12/7",
     },
     images: [
       "/products/interactive/samsung-interactive-wad/1.webp",
@@ -1423,7 +1429,7 @@ The WAD's 4K UHD resolution, wide 178°/178° viewing angles, and 400-nit bright
         "Brightness (Type)": "400 nit",
         "Color Gamut": "99% sRGB",
         "Viewing Angle (H/V)": "178° / 178°",
-        "Operation Time Support": "16/7",
+        "Operation Time Support": "12/7",
       },
       "Connectivity": {
         "HDMI In": "2 × HDMI 2.0",
@@ -2307,7 +2313,7 @@ With 24/7 operation reliability and wide 178°/178° viewing angles, the VH55R s
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "300 nit",
+      brightness: "350 nit",
       screenSizes: ["55"],
       operationTime: "16/7",
     },
@@ -2328,7 +2334,7 @@ Roll-and-view capability enables the Flip 2 to be used in either landscape or po
         "Diagonal Size": "55\"",
         "Panel Type": "IPS",
         "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "300 nit",
+        "Brightness (Type)": "350 nit (w/o glass)",
         "Color Gamut": "72% NTSC",
         "Viewing Angle (H/V)": "178° / 178°",
         "Operation Time Support": "16/7",
