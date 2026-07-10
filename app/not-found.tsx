@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Search, Phone, ArrowRight } from "lucide-react";
 import { MonitorIcon } from "@/components/icons";
+import { useIsMac } from "@/hooks/usePlatform";
 import { products } from "@/data/products";
 
 const POPULAR = products.slice(0, 4);
@@ -16,6 +17,7 @@ const CATEGORIES = [
 ];
 
 export default function NotFound() {
+  const isMac = useIsMac();
   const openSearch = () =>
     window.dispatchEvent(new CustomEvent("aplus:search:open"));
 
@@ -43,7 +45,7 @@ export default function NotFound() {
             <Search size={16} className="shrink-0" />
             <span className="flex-1 text-left">Search products, guides…</span>
             <kbd className="text-[10px] bg-white border border-gray-200 rounded px-1.5 py-0.5 font-mono text-gray-400">
-              ⌘K
+              {isMac ? "⌘K" : "Ctrl K"}
             </kbd>
           </button>
 

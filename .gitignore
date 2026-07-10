@@ -45,6 +45,7 @@ next-env.d.ts
 /.claude/
 /.cursor/
 /.vscode/
+/.superpowers/
 
 # Local-only backups of large media (kept outside git for size)
 /public/videos/*-original.*

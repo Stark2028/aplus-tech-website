@@ -72,11 +72,10 @@ export default function HeroSection() {
               <span className="hero-word" style={{ animationDelay: "0.04s" }}>Premier</span>
               <br />
               <span
-                className="hero-word text-transparent bg-clip-text"
+                className="hero-word text-transparent bg-clip-text sm:whitespace-nowrap"
                 style={{
                   backgroundImage:
                     "linear-gradient(90deg, #3b82f6 0%, #60a5fa 45%, #c4b5fd 100%)",
-                  whiteSpace: "nowrap",
                   animationDelay: "0.08s",
                   // bg-clip-text + tight line-height clips descenders (p, y, g).
                   // Add a little vertical room and offset it so line spacing

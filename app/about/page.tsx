@@ -305,7 +305,7 @@ export default function AboutPage() {
           {/* Desktop: horizontal timeline */}
           <div className="hidden md:block">
             <div className="relative">
-              <div className="absolute left-[calc(100%/12)] right-[calc(100%/12)] top-6.5 h-px bg-gray-200" />
+              <div className="absolute left-[calc(100%/12)] right-[calc(100%/12)] top-[7px] h-px bg-gray-200" />
               <div className="grid grid-cols-6 gap-x-3 relative">
                 {MILESTONES.map((m) => (
                   <div key={m.year} className="relative">

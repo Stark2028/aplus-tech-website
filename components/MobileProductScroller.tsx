@@ -60,11 +60,16 @@ export default function MobileProductScroller({
   useEffect(() => {
     if (!autoPlay) return;
 
+    // Honour the OS "reduce motion" setting — read live at each tick (like
+    // pausedRef) so it reacts to changes the same way the CSS marquees do,
+    // which stay frozen for these users via the global reduced-motion guard.
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
     let interval: ReturnType<typeof setInterval>;
 
     const start = () => {
       interval = setInterval(() => {
-        if (pausedRef.current) return;
+        if (pausedRef.current || reduceMotion.matches) return;
         const el = scrollRef.current;
         if (!el || el.clientWidth === 0) return;
         // scroll() handles the end→start wrap itself, so auto-play just advances.
@@ -123,10 +128,11 @@ export default function MobileProductScroller({
         {/* Next arrow */}
         <button
           aria-label="Scroll right"
+          aria-controls="mobile-scroller-track"
           onClick={() => scroll("right")}
           className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-10 bg-white border border-gray-200 shadow-md rounded-full p-1.5 text-gray-500 hover:text-blue-600 transition-colors"
         >
-          <ChevronRight size={16} />
+          <ChevronRight size={16} aria-hidden="true" />
         </button>
       </div>
 

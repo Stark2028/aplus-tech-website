@@ -60,8 +60,8 @@ export default function Footer() {
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-300 mb-2">
                 Get in touch
               </p>
-              <h3 className="text-white text-2xl md:text-2xl font-bold tracking-tight leading-tight">
-                Need Help Choosing The Right Display !
+              <h3 className="text-white text-2xl font-bold tracking-tight leading-tight">
+                Need help choosing the right display?
               </h3>
             </div>
             <div className="lg:col-span-5 flex flex-col sm:flex-row gap-3 lg:justify-end">

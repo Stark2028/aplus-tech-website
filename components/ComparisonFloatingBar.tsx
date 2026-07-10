@@ -14,6 +14,8 @@ export default function ComparisonFloatingBar() {
     return (
         <div
             className="fixed bottom-6 left-0 right-0 z-50 flex flex-col items-center gap-2 px-4 transition-all duration-300"
+            inert={!visible}
+            aria-hidden={!visible}
             style={{
                 transform: visible ? "translateY(0)" : "translateY(100px)",
                 opacity: visible ? 1 : 0,
