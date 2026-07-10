@@ -3,16 +3,13 @@ import { products } from "@/data/products";
 import { getCategoryByName } from "@/data/categories";
 import QuoteForm from "@/components/QuoteForm";
 import Link from "next/link";
+import { ChevronRight, Check, Phone, ArrowRight } from "lucide-react";
 import {
-  ChevronRight,
-  Check,
-  Monitor,
-  Phone,
-  ShieldCheck,
-  Truck,
-  Award,
-  ArrowRight,
-} from "lucide-react";
+  MonitorIcon,
+  ShieldCheckIcon,
+  TruckIcon,
+  AwardIcon,
+} from "@/components/icons";
 import ProductGallery from "@/components/ProductGallery";
 import ProductActions from "@/components/ProductActions";
 import SpecSheetButton from "@/components/SpecSheetButton";
@@ -22,6 +19,7 @@ import { Metadata } from "next";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import MobileProductScroller from "@/components/MobileProductScroller";
 import { breadcrumbLd, productLd, jsonLdString } from "@/lib/jsonLd";
+import { formatSize, formatSizeRange } from "@/lib/formatSize";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 
 export const revalidate = 3600;
@@ -172,7 +170,7 @@ export default async function ProductPage({
                 <ProductGallery images={product.images} productName={product.name} />
               ) : (
                 <div className="h-72 flex flex-col items-center justify-center text-gray-300 gap-3">
-                  <Monitor size={64} strokeWidth={1} />
+                  <MonitorIcon size={64} accentClassName="text-current" />
                   <p className="text-sm">Product image coming soon</p>
                 </div>
               )}
@@ -191,7 +189,7 @@ export default async function ProductPage({
                   },
                   {
                     label: "Sizes",
-                    value: product.specs.screenSizes.length === 1 ? `${product.specs.screenSizes[0]}\"` : `${product.specs.screenSizes[0]}\"–${product.specs.screenSizes[product.specs.screenSizes.length - 1]}\"`,
+                    value: formatSizeRange(product.specs.screenSizes),
                   },
                 ].map(({ label, value }) => (
                   <div key={label} className="bg-slate-50/80 rounded-xl p-3 border border-slate-100">
@@ -215,7 +213,7 @@ export default async function ProductPage({
                         key={s}
                         className="px-3 py-1.5 bg-slate-50 border border-slate-200/80 rounded-lg text-xs font-semibold text-slate-700"
                       >
-                        {s}&quot;
+                        {formatSize(s)}
                       </span>
                     ))}
                   </div>
@@ -321,7 +319,7 @@ export default async function ProductPage({
                       { label: "Brightness", value: product.specs.brightness },
                       {
                         label: "Available Sizes",
-                        value: product.specs.screenSizes.map((s) => `${s}"`).join(" · "),
+                        value: product.specs.screenSizes.map(formatSize).join(" · "),
                       },
                       { label: "Operation Hours", value: product.specs.operationTime },
                       { label: "Series", value: product.series },
@@ -350,15 +348,15 @@ export default async function ProductPage({
             {/* Trust badges */}
             <div className="grid grid-cols-3 gap-3">
               {[
-                { icon: ShieldCheck, label: "Authorized Samsung Distributor" },
-                { icon: Truck, label: "Pan-India Delivery" },
-                { icon: Award, label: "Certified Installation" },
+                { icon: ShieldCheckIcon, label: "Authorized Samsung Distributor" },
+                { icon: TruckIcon, label: "Pan-India Delivery" },
+                { icon: AwardIcon, label: "Certified Installation" },
               ].map(({ icon: Icon, label }) => (
                 <div
                   key={label}
                   className="bg-white border border-gray-100 rounded-xl p-4 flex flex-col items-center gap-2 text-center"
                 >
-                  <Icon size={22} className="text-blue-600" />
+                  <Icon size={22} className="text-slate-700" />
                   <span className="text-xs font-medium text-gray-600">{label}</span>
                 </div>
               ))}
@@ -396,7 +394,7 @@ export default async function ProductPage({
                     },
                     {
                       label: "Sizes",
-                      value: product.specs.screenSizes.length === 1 ? `${product.specs.screenSizes[0]}\"` : `${product.specs.screenSizes[0]}\"–${product.specs.screenSizes[product.specs.screenSizes.length - 1]}\"`,
+                      value: formatSizeRange(product.specs.screenSizes),
                     },
                   ].map(({ label, value }) => (
                     <div key={label} className="bg-slate-50/80 rounded-xl p-3.5 border border-slate-100 transition-colors hover:bg-blue-50/30 hover:border-blue-100/50">
@@ -420,7 +418,7 @@ export default async function ProductPage({
                           key={s}
                           className="px-3.5 py-1.5 bg-slate-50 border border-slate-200/80 hover:border-blue-300 rounded-lg text-[13px] font-semibold text-slate-700 cursor-default transition-all"
                         >
-                          {s}&quot;
+                          {formatSize(s)}
                         </span>
                       ))}
                     </div>
@@ -522,7 +520,11 @@ export default async function ProductPage({
                         className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <Monitor size={40} className="text-gray-300" />
+                      <MonitorIcon
+                        size={40}
+                        className="text-gray-300"
+                        accentClassName="text-gray-300"
+                      />
                     )}
                   </div>
                   <div className="p-4 relative z-10">

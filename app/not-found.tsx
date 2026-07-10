@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Search, Phone, ArrowRight, Monitor } from "lucide-react";
+import { ArrowLeft, Search, Phone, ArrowRight } from "lucide-react";
+import { MonitorIcon } from "@/components/icons";
 import { products } from "@/data/products";
 
 const POPULAR = products.slice(0, 4);
@@ -109,7 +110,11 @@ export default function NotFound() {
                   />
                 ) : (
                   <div className="h-full flex items-center justify-center">
-                    <Monitor size={28} className="text-gray-300" />
+                    <MonitorIcon
+                      size={28}
+                      className="text-gray-300"
+                      accentClassName="text-gray-300"
+                    />
                   </div>
                 )}
               </div>

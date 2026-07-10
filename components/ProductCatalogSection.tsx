@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Check, Monitor, ShoppingBag, Scale } from "lucide-react";
+import { ArrowRight, Check, ShoppingBag, Scale } from "lucide-react";
+import { MonitorIcon } from "@/components/icons";
 import { products, Product } from "@/data/products";
 import { productCategories } from "@/data/categories";
 import { useQuote } from "@/context/QuoteContext";
@@ -127,7 +128,11 @@ export default function ProductCatalogSection() {
                     />
                   </div>
                 ) : (
-                  <Monitor className="text-gray-300 absolute inset-0 m-auto" size={56} />
+                  <MonitorIcon
+                    className="text-gray-300 absolute inset-0 m-auto"
+                    accentClassName="text-gray-300"
+                    size={56}
+                  />
                 )}
 
                 {product.subCategory && (

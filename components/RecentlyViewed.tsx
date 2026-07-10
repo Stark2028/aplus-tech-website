@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Monitor, Clock, Scale } from "lucide-react";
+import { Clock, Scale } from "lucide-react";
+import { MonitorIcon } from "@/components/icons";
 import { products } from "@/data/products";
 import { useComparison } from "@/context/ComparisonContext";
 import MobileProductScroller from "@/components/MobileProductScroller";
@@ -92,7 +93,11 @@ export default function RecentlyViewed({ currentProductId }: RecentlyViewedProps
                 />
               ) : (
                 <div className="h-full flex items-center justify-center">
-                  <Monitor size={28} className="text-gray-300" />
+                  <MonitorIcon
+                    size={28}
+                    className="text-gray-300"
+                    accentClassName="text-gray-300"
+                  />
                 </div>
               )}
             </div>

@@ -1,14 +1,13 @@
+import { ChevronRight, ArrowRight, Linkedin } from "lucide-react";
 import {
-  CheckCircle2,
-  Users,
-  Award,
-  Headphones,
-  Truck,
-  ShieldCheck,
-  ChevronRight,
-  ArrowRight,
-  Linkedin,
-} from "lucide-react";
+  CheckCircleIcon,
+  UsersIcon,
+  AwardIcon,
+  HeadphonesIcon,
+  TruckIcon,
+  ShieldCheckIcon,
+  IconTile,
+} from "@/components/icons";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
@@ -47,22 +46,22 @@ const STATS = [
 
 const VALUES = [
   {
-    icon: ShieldCheck,
+    icon: ShieldCheckIcon,
     title: "Authorized & Genuine",
     desc: "Every product we supply is 100% genuine Samsung with full manufacturer warranty. We are an official Samsung Business Display partner.",
   },
   {
-    icon: Users,
+    icon: UsersIcon,
     title: "Client-First Approach",
     desc: "We don't push products — we understand your space, use case, and budget, then recommend exactly what's right for you.",
   },
   {
-    icon: Truck,
+    icon: TruckIcon,
     title: "End-to-End Service",
     desc: "From pre-sales consultation to post-installation support, we manage the entire journey. One point of contact, zero headaches.",
   },
   {
-    icon: Headphones,
+    icon: HeadphonesIcon,
     title: "Always-On Support",
     desc: "Technical issues don't keep business hours. Our support team is available 24/7 with guaranteed response SLAs for enterprise accounts.",
   },
@@ -201,7 +200,7 @@ export default function AboutPage() {
                 {STORY_PILLARS.map((item) => (
                   <div key={item} className="flex items-center gap-4 bg-slate-50 border border-slate-100 rounded-2xl p-4 hover:bg-blue-50/50 hover:border-blue-100/60 transition-colors">
                     <div className="w-10 h-10 shrink-0 rounded-full bg-blue-100/80 flex items-center justify-center">
-                      <CheckCircle2 className="text-blue-600" size={18} strokeWidth={2.5} />
+                      <CheckCircleIcon className="text-slate-700" size={18} />
                     </div>
                     <span className="text-slate-800 text-[14px] font-bold leading-snug block">{item}</span>
                   </div>
@@ -209,7 +208,7 @@ export default function AboutPage() {
                 <div className="flex items-center gap-4 bg-linear-to-br from-blue-50/50 to-white border border-blue-100/60 rounded-2xl p-4 hover:shadow-sm hover:border-blue-200 transition-all group relative overflow-hidden">
                   <div className="absolute right-0 top-0 w-24 h-24 bg-blue-100/50 rounded-full blur-2xl -mr-8 -mt-8 group-hover:bg-blue-200/60 transition-colors duration-500" />
                   <div className="w-10 h-10 shrink-0 rounded-full bg-blue-100/80 flex items-center justify-center relative z-10 group-hover:scale-105 transition-transform duration-500">
-                    <Award className="text-blue-600" size={18} strokeWidth={2.5} />
+                    <AwardIcon className="text-slate-700" size={18} />
                   </div>
                   <div className="relative z-10">
                     <span className="text-slate-900 text-[14px] font-extrabold leading-snug block mb-0.5">Best AV Distributor</span>
@@ -280,9 +279,9 @@ export default function AboutPage() {
                 key={title}
                 className="group bg-white p-8 hover:bg-linear-to-br hover:from-white hover:to-blue-50/40 transition-colors"
               >
-                <div className="w-11 h-11 rounded-xl bg-blue-50 group-hover:bg-blue-600 flex items-center justify-center mb-6 transition-colors">
-                  <Icon className="text-blue-600 group-hover:text-white transition-colors" size={20} />
-                </div>
+                <IconTile className="mb-6">
+                  <Icon className="text-current" size={22} />
+                </IconTile>
                 <h3 className="font-bold text-gray-900 mb-2 tracking-tight">{title}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
               </div>
