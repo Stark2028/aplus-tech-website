@@ -3,14 +3,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Phone, ArrowRight } from "lucide-react";
 import {
-  MapPin,
-  Phone,
-  Mail,
-  ArrowRight,
-  ShieldCheck,
-  Clock,
-} from "lucide-react";
+  MapPinIcon,
+  PhoneIcon,
+  MailIcon,
+  ShieldCheckIcon,
+  TimerIcon,
+} from "@/components/icons";
 
 const PRODUCT_LINKS = [
   { label: "Digital Signage", href: "/categories/digital-signage" },
@@ -108,7 +108,7 @@ export default function Footer() {
             {/* Authorized badge */}
             <div className="inline-flex items-center gap-3 bg-slate-800/40 border border-slate-700/50 rounded-xl px-4 py-3">
               <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
-                <ShieldCheck size={16} className="text-blue-400" />
+                <ShieldCheckIcon size={16} className="text-slate-200" accentClassName="text-blue-400" />
               </div>
               <div>
                 <p className="text-xs font-semibold text-slate-200 leading-tight">
@@ -187,7 +187,7 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0 mt-0.5">
-                  <MapPin size={14} className="text-blue-400" />
+                  <MapPinIcon size={14} className="text-slate-300" accentClassName="text-blue-400" />
                 </div>
                 <div className="text-sm leading-relaxed text-slate-400">
                   Office No. 855, 8th Floor,<br />
@@ -197,7 +197,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
-                  <Phone size={14} className="text-blue-400" />
+                  <PhoneIcon size={14} className="text-slate-300" accentClassName="text-blue-400" />
                 </div>
                 <a
                   href="tel:+919310509909"
@@ -208,7 +208,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
-                  <Mail size={14} className="text-blue-400" />
+                  <MailIcon size={14} className="text-slate-300" accentClassName="text-blue-400" />
                 </div>
                 <a
                   href="mailto:info@aplustechsol.com"
@@ -219,7 +219,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
-                  <Clock size={14} className="text-blue-400" />
+                  <TimerIcon size={14} className="text-slate-300" accentClassName="text-blue-400" />
                 </div>
                 <div className="text-sm text-slate-400">
                   Mon – Sat : 10:00 – 18:00 IST
