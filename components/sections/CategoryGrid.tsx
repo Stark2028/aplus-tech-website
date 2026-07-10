@@ -19,7 +19,9 @@ import MobileProductScroller from "@/components/MobileProductScroller";
 const CATEGORY_CARDS: {
   id: CategorySlug;
   Icon: typeof MonitorIcon;
-  title: string;
+  // Split across two lines so every card title occupies the same two-line
+  // height, matching how "Interactive Displays" / "Commercial & Hotel TV" wrap.
+  title: [string, string];
   iconColor: string;
   accentClass: string;
   span: string;
@@ -27,7 +29,7 @@ const CATEGORY_CARDS: {
   {
     id: "digital-signage",
     Icon: MonitorIcon,
-    title: "Digital Signage",
+    title: ["Digital", "Signage"],
     iconColor: "#2563eb",
     accentClass: "text-blue-600",
     span: "",
@@ -35,7 +37,7 @@ const CATEGORY_CARDS: {
   {
     id: "video-walls",
     Icon: LayoutGridIcon,
-    title: "Video Walls",
+    title: ["Video", "Walls"],
     iconColor: "#4f46e5",
     accentClass: "text-indigo-600",
     span: "",
@@ -43,7 +45,7 @@ const CATEGORY_CARDS: {
   {
     id: "interactive",
     Icon: InteractiveIcon,
-    title: "Interactive Displays",
+    title: ["Interactive", "Displays"],
     iconColor: "#7c3aed",
     accentClass: "text-violet-600",
     span: "",
@@ -51,7 +53,7 @@ const CATEGORY_CARDS: {
   {
     id: "commercial-tv",
     Icon: TvIcon,
-    title: "Commercial & Hotel TV",
+    title: ["Commercial &", "Hotel TV"],
     iconColor: "#0e7490",
     accentClass: "text-cyan-700",
     span: "",
@@ -59,7 +61,7 @@ const CATEGORY_CARDS: {
   {
     id: "led-signage",
     Icon: LedIcon,
-    title: "LED Signage",
+    title: ["LED", "Signage"],
     iconColor: "#0891b2",
     accentClass: "text-cyan-600",
     span: "sm:col-span-2 lg:col-span-1",
@@ -99,10 +101,11 @@ export default function CategoryGrid() {
                     />
                   </IconTile>
 
-                  {/* At lg the narrow columns wrap some titles to two lines;
-                      reserve two lines so all taglines start level. */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-1.5 lg:min-h-14">
-                    {card.title}
+                  {/* Every title spans two lines so all taglines start level. */}
+                  <h3 className="text-xl font-bold text-gray-900 mb-1.5">
+                    {card.title[0]}
+                    <br />
+                    {card.title[1]}
                   </h3>
                   {category && (
                     <p className="text-sm text-gray-500 leading-relaxed mb-5">
