@@ -144,7 +144,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Operation Rating */}
         <div className="flex items-center gap-2 mb-6 text-[13px] text-slate-500 bg-blue-50/50 rounded-lg py-2.5 px-3.5 border border-blue-100/30">
-          <Clock size={14} className="text-blue-500 shrink-0" strokeWidth={2.5} />
+          <Clock size={14} className="text-blue-500 shrink-0" />
           <span className="truncate">
             Rated for <strong className="text-slate-700 font-bold">{product.specs.operationTime}</strong> continuous operation
           </span>
@@ -163,7 +163,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 : "bg-slate-900 text-white hover:bg-blue-600 hover:shadow-md hover:shadow-blue-600/20 hover:-translate-y-0.5"
             }`}
           >
-            {added ? <Check size={16} strokeWidth={2.5} aria-hidden="true" /> : <ShoppingBag size={16} aria-hidden="true" />}
+            {added ? <Check size={16} aria-hidden="true" /> : <ShoppingBag size={16} aria-hidden="true" />}
             {added ? "Added!" : "Add to Quote"}
           </button>
 

@@ -193,7 +193,7 @@ export default async function IndustryCategoryPage({
                 className="bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-md hover:border-blue-100 transition-all"
               >
                 <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
-                  <Check size={18} className="text-blue-600" strokeWidth={3} />
+                  <Check size={18} className="text-blue-600" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">{uc.title}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">{uc.description}</p>

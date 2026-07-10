@@ -200,7 +200,7 @@ export default function NavbarDesktop({ cartCount, onHomeClick }: Props) {
           className="relative w-9 h-9 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-all"
           aria-label={cartCount > 0 ? `View quote cart, ${cartCount} items` : "View quote cart"}
         >
-          <ShoppingBag size={18} strokeWidth={1.8} aria-hidden="true" />
+          <ShoppingBag size={18} aria-hidden="true" />
           {cartCount > 0 && (
             <span aria-hidden="true" className="absolute -top-1 -right-1 bg-blue-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
               {cartCount}

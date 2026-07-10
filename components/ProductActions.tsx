@@ -44,7 +44,7 @@ export default function ProductActions({ product }: { product: Product }) {
                         : "bg-slate-900 text-white hover:bg-blue-600 hover:shadow-md hover:shadow-blue-600/20 hover:-translate-y-0.5"
                     }`}
             >
-                {added ? <Check size={18} strokeWidth={2.5} /> : <ShoppingBag size={18} />}
+                {added ? <Check size={18} /> : <ShoppingBag size={18} />}
                 {added ? "Added to Quote" : "Add to Quote List"}
             </button>
 

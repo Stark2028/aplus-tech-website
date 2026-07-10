@@ -22,6 +22,7 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
   const pathname = usePathname();
   // Portals need the DOM; gate on mount so SSR output stays stable.
   const [mounted, setMounted] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 
   const close = () => {
@@ -35,7 +36,10 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
   // Auto-close on navigation. Covers every route change — link taps,
   // back/forward, programmatic — so the menu never lingers over a new page.
   // Skips the focus() call from close() since the user is moving away.
+  // Synchronizing with an external system (the URL), so setState here is
+  // intentional.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsOpen(false);
     setProductsOpen(false);
     setSolutionsOpen(false);
@@ -87,7 +91,7 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
           className="relative p-2"
           aria-label={cartCount > 0 ? `View quote cart, ${cartCount} items` : "View quote cart"}
         >
-          <ShoppingBag size={22} className="text-gray-700" strokeWidth={1.8} aria-hidden="true" />
+          <ShoppingBag size={22} className="text-gray-700" aria-hidden="true" />
           {cartCount > 0 && (
             <span className="absolute top-1 right-0 bg-blue-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
               {cartCount}
