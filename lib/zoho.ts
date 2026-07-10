@@ -58,6 +58,11 @@ export async function createZohoLead(body: Record<string, string>): Promise<void
 
   const description = [
     body.items_list ? `Products Requested:\n${body.items_list}` : "",
+    body.product ? `Product: ${body.product}` : "",
+    body.inquiry_type ? `Inquiry Type: ${body.inquiry_type}` : "",
+    // Lead-gate submissions send the same text as both message and items_list;
+    // skip the duplicate so the description stays readable.
+    body.message && body.message !== body.items_list ? `Message: ${body.message}` : "",
     body.requirements ? `Notes: ${body.requirements}` : "",
     body.subject ? `Ref: ${body.subject}` : "",
   ]

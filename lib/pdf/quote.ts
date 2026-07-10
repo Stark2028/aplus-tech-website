@@ -355,7 +355,12 @@ function drawItemRow(ctx: Ctx, item: QuoteItem, idx: number) {
   const metaText = safe(
     `${item.product.series} · ${item.product.category}`
   );
-  const specLines = buildSpecLines(item);
+  // Pre-wrap every spec line to the column width so long values render in
+  // full (and the row height accounts for the extra lines) instead of being
+  // silently truncated to their first wrapped line.
+  const specLines = buildSpecLines(item).flatMap((line) =>
+    wrapText(line, fonts.regular, metaSize, COL_SPECS_W - 8)
+  );
 
   const productHeight = nameLines.length * lineH + 4 + metaSize;
   const specHeight = specLines.length * (metaSize + 4);
@@ -401,8 +406,7 @@ function drawItemRow(ctx: Ctx, item: QuoteItem, idx: number) {
   // Specifications
   const specsX = COL_NUM_X + COL_NUM_W + COL_PRODUCT_W;
   specLines.forEach((line, i) => {
-    const fitted = wrapText(line, fonts.regular, metaSize, COL_SPECS_W - 8);
-    page.drawText(fitted[0] ?? "", {
+    page.drawText(line, {
       x: specsX,
       y: rowTop - i * (metaSize + 4),
       size: metaSize,

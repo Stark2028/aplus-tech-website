@@ -27,15 +27,25 @@ const ALLOWED_ORIGINS = new Set([
 // accepted when NODE_ENV === "production".
 const ALLOW_LOCALHOST = process.env.NODE_ENV !== "production";
 
-// Vercel deployment URLs (production aliases + per-commit previews) are served
-// from *.vercel.app. Allow them so forms work on the Vercel domain before the
-// custom domain is attached. The subdomain space is controlled by Vercel, and
-// the per-IP rate limit + honeypot still apply, so this stays low-risk.
-const VERCEL_ORIGIN = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i;
+// Vercel deployment URLs (per-commit preview, branch alias, and the project's
+// production .vercel.app alias), taken from Vercel's own env vars rather than
+// a *.vercel.app wildcard — anyone can deploy an unrelated project to
+// some-name.vercel.app, so a wildcard would let any Vercel-hosted page pass
+// the Origin gate. These env vars are absent off-Vercel, leaving only the
+// custom domains above.
+const VERCEL_ORIGINS = new Set(
+  [
+    process.env.VERCEL_URL,
+    process.env.VERCEL_BRANCH_URL,
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+  ]
+    .filter((host): host is string => Boolean(host))
+    .map((host) => `https://${host.toLowerCase()}`)
+);
 
 function isOriginAllowed(origin: string): boolean {
   if (ALLOWED_ORIGINS.has(origin)) return true;
-  if (VERCEL_ORIGIN.test(origin)) return true;
+  if (VERCEL_ORIGINS.has(origin.toLowerCase())) return true;
   if (ALLOW_LOCALHOST && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true;
   return false;
 }
@@ -260,7 +270,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, message: "Failed to send email." }, { status: 500 });
     }
 
-    if (isQuote && process.env.ZOHO_REFRESH_TOKEN) {
+    // Every submission becomes a CRM lead — quote carts, lead-gate downloads,
+    // per-product quote requests, and contact inquiries alike. Zoho failure is
+    // deliberately non-fatal: the email above already delivered the lead.
+    if (process.env.ZOHO_REFRESH_TOKEN) {
       await createZohoLead(body).catch((err) => console.error("[zoho]", err));
     }
 

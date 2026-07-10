@@ -212,11 +212,17 @@ export function safe(text: string): string {
     .replace(/₹/g, "Rs.")
     .replace(/→/g, "->")
     .replace(/[​-‏‪-‮﻿]/g, "") // strip zero-width / direction marks
+    // WinAnsi is NOT Latin-1: inside \x00-\xFF it leaves \x81 \x8D \x8F \x90
+    // \x9D undefined and cannot encode DEL (\x7F) or C0 controls (except \t \n
+    // \r, which pdf-lib cleans itself). Any of those reaching drawText throws
+    // "WinAnsi cannot encode", so replace them here before the catch-all.
+    .replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f\x81\x8d\x8f\x90\x9d]/g, "?")
     // Catch-all: replace anything still outside what pdf-lib's WinAnsi font can
-    // encode. WinAnsi covers Latin-1 (\x00-\xFF) plus a handful of higher code
-    // points (bullet, curly quotes, dashes, €, ™, …) that we keep so existing
-    // bullet separators etc. still render; everything else (→, ₹, emoji, non-
-    // Latin scripts) becomes "?" instead of throwing and aborting generation.
+    // encode. WinAnsi covers Latin-1 (\x00-\xFF, minus the gaps handled above)
+    // plus a handful of higher code points (bullet, curly quotes, dashes, €, ™,
+    // …) that we keep so existing bullet separators etc. still render;
+    // everything else (→, ₹, emoji, non-Latin scripts) becomes "?" instead of
+    // throwing and aborting generation.
     .replace(/[^\x00-\xFF•–—‘’“”…€™]/g, "?");
 }
 
