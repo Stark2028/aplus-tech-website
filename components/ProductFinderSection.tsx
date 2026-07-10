@@ -6,20 +6,22 @@ import Image from "next/image";
 import {
   ArrowRight,
   RotateCcw,
-  Monitor,
-  LayoutGrid,
-  MousePointerClick,
-  Tv,
-  Cpu,
-  Building2,
-  GraduationCap,
-  Store,
-  Hotel,
   CheckCircle2,
   Sparkles,
   ShoppingBag,
   Check,
 } from "lucide-react";
+import {
+  MonitorIcon,
+  LayoutGridIcon,
+  InteractiveIcon,
+  TvIcon,
+  LedIcon,
+  BuildingIcon,
+  GraduationCapIcon,
+  StoreIcon,
+  HotelIcon,
+} from "@/components/icons";
 import { products, Product } from "@/data/products";
 import { useQuote } from "@/context/QuoteContext";
 import { trackEvent } from "@/lib/analytics";
@@ -37,22 +39,28 @@ type Step = 1 | 2 | 3 | "results";
 
 type IndustryId = "hospitality" | "corporate" | "education" | "retail" | "any";
 
-const INDUSTRIES: { id: IndustryId; label: string; sub: string; Icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
-  { id: "hospitality", label: "Hospitality", sub: "Hotels & Resorts", Icon: Hotel },
-  { id: "corporate", label: "Corporate", sub: "Offices & Boardrooms", Icon: Building2 },
-  { id: "education", label: "Education", sub: "Schools & Universities", Icon: GraduationCap },
-  { id: "retail", label: "Retail", sub: "Stores & Malls", Icon: Store },
+type FinderIcon = React.ComponentType<{
+  size?: number;
+  className?: string;
+  accentClassName?: string;
+}>;
+
+const INDUSTRIES: { id: IndustryId; label: string; sub: string; Icon: FinderIcon }[] = [
+  { id: "hospitality", label: "Hospitality", sub: "Hotels & Resorts", Icon: HotelIcon },
+  { id: "corporate", label: "Corporate", sub: "Offices & Boardrooms", Icon: BuildingIcon },
+  { id: "education", label: "Education", sub: "Schools & Universities", Icon: GraduationCapIcon },
+  { id: "retail", label: "Retail", sub: "Stores & Malls", Icon: StoreIcon },
 ];
 
 // Re-attach icons to the shared, test-covered display-type data (keyed by the
 // category name in DISPLAY_TYPE_DATA[].id). SIZE_RANGES + the URL/size helpers
 // live in finderConfig.ts so their logic is unit-testable.
-const DISPLAY_TYPE_ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-  "Digital Signage": Monitor,
-  "Video Wall": LayoutGrid,
-  "Interactive Display": MousePointerClick,
-  "Commercial TV": Tv,
-  "LED Signage": Cpu,
+const DISPLAY_TYPE_ICONS: Record<string, FinderIcon> = {
+  "Digital Signage": MonitorIcon,
+  "Video Wall": LayoutGridIcon,
+  "Interactive Display": InteractiveIcon,
+  "Commercial TV": TvIcon,
+  "LED Signage": LedIcon,
 };
 const DISPLAY_TYPES = DISPLAY_TYPE_DATA.map((d) => ({ ...d, Icon: DISPLAY_TYPE_ICONS[d.id] }));
 
@@ -193,7 +201,11 @@ export default function ProductFinderSection() {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <Monitor size={40} className="text-gray-200" />
+              <MonitorIcon
+                size={40}
+                className="text-gray-200"
+                accentClassName="text-gray-200"
+              />
             </div>
           )}
         </div>
@@ -304,7 +316,7 @@ export default function ProductFinderSection() {
                   onClick={() => { setIndustry(id); setStep(2); }}
                   className="group p-6 rounded-2xl border-2 border-gray-200 bg-white text-left hover:border-blue-400 hover:bg-blue-50 transition-all duration-200"
                 >
-                  <Icon size={28} className="mb-3 text-gray-400 group-hover:text-blue-500 transition-colors" />
+                  <Icon size={28} className="mb-3 text-slate-500 group-hover:text-blue-600 transition-colors" />
                   <div className="font-bold text-gray-900 text-sm">{label}</div>
                   <div className="text-gray-400 text-xs mt-0.5">{sub}</div>
                 </button>
@@ -340,8 +352,9 @@ export default function ProductFinderSection() {
                     <Icon
                       size={28}
                       className={`mb-3 transition-colors ${
-                        enabled ? "text-gray-400 group-hover:text-blue-500" : "text-gray-300"
+                        enabled ? "text-slate-500 group-hover:text-blue-600" : "text-gray-300"
                       }`}
+                      accentClassName={enabled ? undefined : "text-gray-300"}
                     />
                     <div className={`font-bold text-sm ${enabled ? "text-gray-900" : "text-gray-400"}`}>{label}</div>
                     <div className="text-gray-400 text-xs mt-0.5">

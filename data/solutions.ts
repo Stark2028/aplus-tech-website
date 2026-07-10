@@ -1,4 +1,9 @@
-import { Zap, Monitor, LayoutGrid, Award } from "lucide-react";
+import {
+  ZapIcon as Zap,
+  MonitorIcon as Monitor,
+  LayoutGridIcon as LayoutGrid,
+  AwardIcon as Award,
+} from "@/components/icons";
 import { ElementType } from "react";
 
 export interface Solution {

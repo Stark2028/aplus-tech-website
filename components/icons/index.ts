@@ -25,6 +25,7 @@ export { default as PackageIcon } from "./PackageIcon";
 
 // Industry set
 export { default as BuildingIcon } from "./BuildingIcon";
+export { default as HotelIcon } from "./HotelIcon";
 export { default as GraduationCapIcon } from "./GraduationCapIcon";
 export { default as StoreIcon } from "./StoreIcon";
 
