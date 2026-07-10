@@ -1,25 +1,31 @@
-import { ShieldCheck, Headphones, Truck, Award } from "lucide-react";
+import {
+  ShieldCheckIcon,
+  HeadphonesIcon,
+  TruckIcon,
+  AwardIcon,
+  IconTile,
+} from "@/components/icons";
 import AnimatedSection from "@/components/AnimatedSection";
 import RandomAccentImage from "@/components/RandomAccentImage";
 
 const ADVANTAGES = [
   {
-    icon: ShieldCheck,
+    icon: ShieldCheckIcon,
     title: "Authorized Distributor",
     desc: "Official Samsung partner. Every unit is genuine, warranty-valid, and fully supported.",
   },
   {
-    icon: Headphones,
+    icon: HeadphonesIcon,
     title: "24/7 Support",
     desc: "Dedicated account managers and technical support available around the clock.",
   },
   {
-    icon: Truck,
+    icon: TruckIcon,
     title: "Pan-India Delivery",
     desc: "Warehouses in 4 cities with express delivery to 100+ locations nationwide.",
   },
   {
-    icon: Award,
+    icon: AwardIcon,
     title: "Certified Installation",
     desc: "Samsung-certified install teams with 10,000+ completed projects and zero-compromise quality.",
   },
@@ -52,12 +58,9 @@ export default function WhyChooseUs() {
                   key={`${title}-${index}`}
                   className="inline-flex flex-col bg-white border border-gray-200/80 rounded-2xl p-6 w-[250px] shrink-0 shadow-sm whitespace-normal group"
                 >
-                  <div className="w-10 h-10 bg-blue-50 group-hover:bg-blue-600 rounded-xl flex items-center justify-center mb-4 transition-colors">
-                    <Icon
-                      className="text-blue-600 group-hover:text-white transition-colors"
-                      size={20}
-                    />
-                  </div>
+                  <IconTile className="mb-4">
+                    <Icon className="text-current" size={22} />
+                  </IconTile>
                   <h3 className="text-sm font-bold text-gray-900 mb-1.5">{title}</h3>
                   <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
                 </div>
@@ -72,12 +75,9 @@ export default function WhyChooseUs() {
                 key={title}
                 className="bg-white border border-gray-100 rounded-2xl p-7 hover:border-blue-100 hover:shadow-lg transition-all group"
               >
-                <div className="w-12 h-12 bg-blue-50 group-hover:bg-blue-600 rounded-xl flex items-center justify-center mb-5 transition-colors">
-                  <Icon
-                    className="text-blue-600 group-hover:text-white transition-colors"
-                    size={24}
-                  />
-                </div>
+                <IconTile className="mb-5">
+                  <Icon className="text-current" size={24} />
+                </IconTile>
                 <h3 className="text-base font-bold text-gray-900 mb-2">{title}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
               </div>

@@ -1,35 +1,38 @@
 import Link from "next/link";
-import { ArrowRight, Building2, Monitor, GraduationCap, Store } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import {
+  BuildingIcon,
+  MonitorIcon,
+  GraduationCapIcon,
+  StoreIcon,
+  IconTile,
+} from "@/components/icons";
 import MobileProductScroller from "@/components/MobileProductScroller";
 
 const SOLUTIONS = [
   {
-    icon: Building2,
+    icon: BuildingIcon,
     title: "Hospitality",
     desc: "Guest-room TVs, lobby video walls, and digital concierge displays for hotels and resorts.",
     link: "/solutions/hospitality",
-    color: "from-blue-500 to-cyan-500",
   },
   {
-    icon: Monitor,
+    icon: MonitorIcon,
     title: "Corporate",
     desc: "Interactive whiteboards, boardroom displays, and operations center video walls.",
     link: "/solutions/corporate",
-    color: "from-indigo-500 to-blue-500",
   },
   {
-    icon: GraduationCap,
+    icon: GraduationCapIcon,
     title: "Education",
     desc: "Smart classroom displays, campus signage, and hybrid learning solutions.",
     link: "/solutions/education",
-    color: "from-violet-500 to-indigo-500",
   },
   {
-    icon: Store,
+    icon: StoreIcon,
     title: "Retail",
     desc: "Window displays, digital menu boards, and in-store visual merchandising.",
     link: "/solutions/retail",
-    color: "from-blue-500 to-violet-500",
   },
 ];
 
@@ -53,11 +56,13 @@ export default function IndustrySolutions() {
               href={s.link}
               className="group bg-white/5 backdrop-blur-md border border-white/10 p-7 rounded-2xl hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 block h-full"
             >
-              <div
-                className={`w-12 h-12 bg-linear-to-br ${s.color} rounded-xl flex items-center justify-center mb-5 shadow-lg`}
-              >
-                <s.icon className="text-white" size={24} />
-              </div>
+              <IconTile dark className="mb-5">
+                <s.icon
+                  className="text-current"
+                  accentClassName="text-blue-400"
+                  size={24}
+                />
+              </IconTile>
               <h3 className="text-lg font-bold text-white mb-2">{s.title}</h3>
               <p className="text-sm text-gray-300 mb-5 leading-relaxed">{s.desc}</p>
               <span className="inline-flex items-center gap-1 text-blue-400 group-hover:text-blue-300 text-sm font-semibold transition">
