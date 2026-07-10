@@ -14,3 +14,23 @@ export { default as BadgeCheckIcon } from "./BadgeCheckIcon";
 export { default as UsersIcon } from "./UsersIcon";
 export { default as TimerIcon } from "./TimerIcon";
 export { default as ZapIcon } from "./ZapIcon";
+
+// Category / product set
+export { default as MonitorIcon } from "./MonitorIcon";
+export { default as LayoutGridIcon } from "./LayoutGridIcon";
+export { default as InteractiveIcon } from "./InteractiveIcon";
+export { default as TvIcon } from "./TvIcon";
+export { default as LedIcon } from "./LedIcon";
+export { default as PackageIcon } from "./PackageIcon";
+
+// Industry set
+export { default as BuildingIcon } from "./BuildingIcon";
+export { default as GraduationCapIcon } from "./GraduationCapIcon";
+export { default as StoreIcon } from "./StoreIcon";
+
+// CTA / contact set
+export { default as ShoppingBagIcon } from "./ShoppingBagIcon";
+export { default as SendIcon } from "./SendIcon";
+export { default as PhoneIcon } from "./PhoneIcon";
+export { default as MailIcon } from "./MailIcon";
+export { default as MapPinIcon } from "./MapPinIcon";
