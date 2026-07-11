@@ -1167,6 +1167,78 @@ DP 1.2 daisy chain support allows up to 4K content to be driven through a single
       },
     },
   },
+  {
+    id: "samsung-vmc-e",
+    popularity: 63,
+    catalog2026: true,
+    name: "Samsung VMC-E Extreme Narrow Bezel Video Wall",
+    category: "Video Wall",
+    series: "VMC-E",
+    description:
+      "Extreme narrow 1.74 mm bezel FHD video wall on a non-glare IPS panel — for near-seamless multi-screen walls in retail, lobbies, and control rooms.",
+    features: [
+      "Extreme narrow 1.74 mm bezel-to-bezel",
+      "Non-glare IPS panel",
+      "Picture Enhancer & Black Equalizer",
+      "24/7 operation with 500 nit brightness",
+    ],
+    specs: {
+      resolution: "1,920 × 1,080 (FHD)",
+      brightness: "500 nit",
+      screenSizes: ["55"],
+      operationTime: "24/7",
+    },
+    images: [
+      "/products/video-walls/samsung-vmc-e/1.webp",
+      "/products/video-walls/samsung-vmc-e/2.webp",
+      "/products/video-walls/samsung-vmc-e/3.webp",
+      "/products/video-walls/samsung-vmc-e/4.png",
+      "/products/video-walls/samsung-vmc-e/5.png",
+      "/products/video-walls/samsung-vmc-e/6.png",
+      "/products/video-walls/samsung-vmc-e/7.png",
+      "/products/video-walls/samsung-vmc-e/8.png",
+      "/products/video-walls/samsung-vmc-e/9.png",
+      "/products/video-walls/samsung-vmc-e/10.png",
+    ],
+    longDescription: `The Samsung VMC-E pushes bezel width down to an extreme 1.74 mm, producing a near-seamless canvas across tiled installations where the visual break between panels needs to all but disappear. Built on a non-glare IPS panel, the VMC-E holds color and contrast across wide 178°/178° viewing angles, making it well suited to retail flagship walls, corporate lobbies, broadcast backdrops, and 24/7 control-room environments.
+
+With 500-nit brightness and Samsung's Picture Enhancer and Black Equalizer processing, the VMC-E keeps content vivid and legible even in brightly lit public spaces, while the non-glare surface reduces reflections that would otherwise wash out a large array. Each 55" tile runs FHD (1,920 × 1,080) at a 0.63 mm pixel pitch for crisp text and imagery at typical viewing distances.
+
+DisplayPort 1.2 and dual HDMI 2.0 inputs, plus DVI and RS-232C/RJ45 control, allow the VMC-E to slot into existing AV infrastructure and be centrally managed. Rated for 24/7 continuous operation, it is engineered for installations that never power down.`,
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "IPS (non-glare)",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit",
+        "Contrast Ratio": "1,000:1 (typical) / 100,000:1 (dynamic)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Response Time": "8 ms",
+        "Pixel Pitch": "0.63 × 0.63 mm",
+        "Bezel-to-Bezel": "1.74 mm (extreme narrow)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 (HDMI 2.0)",
+        "DP In": "1 (DisplayPort 1.2)",
+        "DVI-D": "1",
+        "USB": "1",
+        "RS-232C": "In/Out",
+        "RJ45 In": "Yes",
+        "IR / Audio": "IR In, Audio In/Out",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~220 W (typical)",
+        "Power Consumption (Sleep)": "0.5 W",
+      },
+      "Mechanical Specification": {
+        "Set Dimensions (W×H×D)": "1,212.2 × 683.0 × 70.4 mm",
+        "Model Code": "LH55VMCEBGBXZA",
+      },
+    },
+  },
 
   // ── INTERACTIVE DISPLAYS ─────────────────────────────────────────────────────
 
@@ -2086,6 +2158,73 @@ With factory-calibrated color performance and straightforward daisy chain connec
       },
       "Mechanical Specification": {
         "VESA Mount (mm)": "400 × 400",
+      },
+    },
+  },
+  {
+    id: "samsung-vhc-r",
+    popularity: 61,
+    catalog2026: true,
+    name: "Samsung VHC-R Razor-Thin Bezel Video Wall",
+    category: "Video Wall",
+    series: "VHC-R",
+    description:
+      "High-brightness 700 nit FHD video wall with a razor-thin 1.74 mm bezel — built for control rooms, lobbies, retail, and transportation hubs.",
+    features: [
+      "Razor-thin 1.74 mm bezel (0.9 mm even bezel)",
+      "High 700 nit brightness for lit environments",
+      "Uniform color & brightness calibration",
+      "24/7 operation with slim, durable cabinet",
+    ],
+    specs: {
+      resolution: "1,920 × 1,080 (FHD)",
+      brightness: "700 nit",
+      screenSizes: ["55"],
+      operationTime: "24/7",
+    },
+    images: [
+      "/products/video-walls/samsung-vhc-r/1.webp",
+      "/products/video-walls/samsung-vhc-r/2.webp",
+      "/products/video-walls/samsung-vhc-r/3.webp",
+      "/products/video-walls/samsung-vhc-r/4.png",
+      "/products/video-walls/samsung-vhc-r/5.png",
+      "/products/video-walls/samsung-vhc-r/6.png",
+      "/products/video-walls/samsung-vhc-r/7.png",
+      "/products/video-walls/samsung-vhc-r/8.png",
+      "/products/video-walls/samsung-vhc-r/9.png",
+      "/products/video-walls/samsung-vhc-r/10.png",
+    ],
+    longDescription: `The Samsung VHC-R pairs a razor-thin 1.74 mm bezel with high 700-nit brightness, making it the choice when a video wall has to stay sharp and legible in demanding, brightly lit spaces. Its near-seamless tiling and even 0.9 mm bezel keep multi-screen content coherent across the array, while high brightness ensures visibility in daylight-facing lobbies, retail storefronts, and transportation hubs.
+
+Engineered for uninterrupted duty, the VHC-R is rated for 24/7 continuous operation and delivers uniform color and brightness calibration across every tile, so large walls render as one consistent surface rather than a grid of mismatched panels. The slim, durable cabinet simplifies mounting flush against walls and inside custom enclosures.
+
+Standard professional connectivity — dual HDMI 2.0, DisplayPort 1.2, DVI-D, and RS-232C/RJ45 control — lets the VHC-R integrate with existing processors and centralized management. At 55" FHD per tile and just 19.4 kg, it balances visual impact with practical installation for control rooms, corporate lobbies, and public-facing retail environments.`,
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "Commercial-grade LCD",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "700 nit",
+        "Contrast Ratio": "500,000:1 (dynamic)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Response Time": "8 ms",
+        "Bezel-to-Bezel": "1.74 mm (0.9 mm even bezel)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 (HDMI 2.0)",
+        "DP In": "1 (DisplayPort 1.2)",
+        "DVI-D": "1",
+        "RS-232C": "In/Out",
+        "RJ45 In": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "Mechanical Specification": {
+        "Set Dimensions (W×H×D)": "1,211.5 × 682.3 × 70 mm",
+        "Weight": "19.4 kg",
+        "Model Code": "LH55VHCRBGBXXL",
       },
     },
   },
