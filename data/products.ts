@@ -3601,4 +3601,139 @@ The Enhanced Whiteboard makes it easy to edit, move, and resize notes and turn h
       "/products/interactive/samsung-flip-wmfx/3.jpg",
     ],
   },
+
+  // ── CRYSTAL UHD HOSPITALITY TV (2026 catalog) ───────────────────────────────
+
+  {
+    id: "samsung-hotel-tv-hu8000f",
+    popularity: 97,
+    catalog2026: true,
+    name: "Samsung Crystal UHD Hotel TV (HU8000F)",
+    category: "Commercial TV",
+    subCategory: "Hotel TV",
+    series: "HU8000F",
+    description:
+      "The 2026 Crystal UHD hospitality flagship — AirSlim 4K with LYNK Cloud management, Google Cast, Apple AirPlay, and Samsung Knox for a premium, home-like guest experience.",
+    longDescription: `The Samsung Crystal UHD Hotel TV (HU8000F) is the 2026 flagship of Samsung's hospitality lineup, giving guests a familiar, home-like 4K experience while giving hotel managers powerful centralized control. Powered by the Crystal Processor 4K with AI-driven 4K upscaling, HDR10+, and Dynamic Crystal Color, it renders content in over a billion shades with lifelike clarity, while adaptive sound tunes 20W stereo audio to whatever is on screen.
+
+Its AirSlim design creates an elegant, nearly bezel-free profile that complements any guest room. Guests can cast directly from their own devices via Google Cast and Apple AirPlay, or browse built-in apps — Netflix, Prime Video, and Samsung TV Plus — straight from the Tizen home screen, with no dongles or logins required.
+
+For operators, Samsung LYNK Cloud delivers remote, multi-property display management and guest-usage analytics that surface marketing insights and drive incremental revenue, while the Tizen Enterprise Platform, SmartThings Pro, and Samsung Knox provide enterprise-grade integration and security. Available from 43" to 85".`,
+    features: [
+      "AirSlim nearly bezel-free 4K design",
+      "Crystal Processor 4K with AI 4K upscaling, HDR10+, Dynamic Crystal Color",
+      "Google Cast + Apple AirPlay device casting",
+      "LYNK Cloud remote management & guest analytics",
+      "Built-in Netflix, Prime Video, Samsung TV Plus (Tizen)",
+      "Samsung Knox security, SmartThings Pro",
+    ],
+    specs: {
+      resolution: "3,840 × 2,160 (4K UHD)",
+      brightness: "300 nit",
+      screenSizes: ["43", "50", "55", "65", "75", "85"],
+      operationTime: "16/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\" / 85\"",
+        "Panel Type": "4K VA, direct backlight",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "HDR": "HDR10 / HDR10+",
+        "Processor": "Crystal Processor 4K",
+        "Picture": "AI 4K upscaling, Dynamic Crystal Color, Motion Xcelerator, Contrast Enhancer",
+        "Refresh Rate": "60 Hz",
+        "Design": "AirSlim",
+      },
+      "Hospitality Features": {
+        "Management": "LYNK Cloud, Tizen Enterprise Platform",
+        "Casting": "Google Cast, Apple AirPlay",
+        "Apps": "Smart Hub, Samsung TV Plus, Netflix, Prime Video",
+        "Control": "Multi-Code Remote, SmartThings Pro",
+        "Security": "Samsung Knox",
+      },
+      "Audio & Connectivity": {
+        "Speakers": "20 W stereo + adaptive sound",
+        "Wireless": "Wi-Fi 5, Bluetooth 5.2",
+        "HDMI": "3 × HDMI",
+        "USB": "2 × USB-A",
+      },
+      "Model": {
+        "Model Codes": "HG43U800FNFXZA … HG85U800FNFXZA",
+      },
+    },
+    images: [
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/1.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/2.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/3.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/4.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/5.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/6.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/7.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/8.jpg",
+    ],
+  },
+  {
+    id: "samsung-hotel-tv-hu7010f",
+    popularity: 93,
+    catalog2026: true,
+    name: "Samsung Crystal UHD Hotel TV (HU7010F)",
+    category: "Commercial TV",
+    subCategory: "Hotel TV",
+    series: "HU7010F",
+    description:
+      "2026 Crystal UHD hospitality TV for India — 4K with LYNK Cloud management, Google Cast, Apple AirPlay, and Samsung Knox, delivering a home-like guest experience at a smart price point.",
+    longDescription: `The Samsung Crystal UHD Hotel TV (HU7010F) brings the 2026 Crystal UHD guest experience to hotels across India. Driven by the Crystal Processor 4K with AI 4K upscaling, HDR, and Dynamic Crystal Color, it delivers crisp, vibrant 4K content that makes every guest room feel like home, complemented by Motion Xcelerator for smooth motion and a Contrast Enhancer for depth.
+
+Guests can cast their own content via Google Cast and Apple AirPlay or use built-in apps and Samsung TV Plus from the Tizen home screen. For operators, Samsung LYNK Cloud enables remote, centralized management across properties along with guest-usage analytics, while the Tizen Enterprise Platform, SmartThings Pro, and Samsung Knox provide secure integration into hotel systems.
+
+Positioned just below the AirSlim HU8000F flagship, the HU7010F focuses on core hospitality value and is launched in India. Available from 43" to 75".`,
+    features: [
+      "Crystal Processor 4K with AI 4K upscaling & HDR",
+      "Dynamic Crystal Color, Motion Xcelerator, Contrast Enhancer",
+      "Google Cast + Apple AirPlay device casting",
+      "LYNK Cloud remote management & guest analytics",
+      "Samsung TV Plus & Smart Hub (Tizen)",
+      "Samsung Knox security, SmartThings Pro — launched in India",
+    ],
+    specs: {
+      resolution: "3,840 × 2,160 (4K UHD)",
+      brightness: "300 nit",
+      screenSizes: ["43", "50", "55", "65", "75"],
+      operationTime: "16/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\"",
+        "Panel Type": "4K VA, direct backlight",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "HDR": "HDR",
+        "Processor": "Crystal Processor 4K",
+        "Picture": "AI 4K upscaling, Dynamic Crystal Color, Motion Xcelerator, Contrast Enhancer",
+        "Refresh Rate": "60 Hz",
+      },
+      "Hospitality Features": {
+        "Management": "LYNK Cloud, Tizen Enterprise Platform",
+        "Casting": "Google Cast, Apple AirPlay",
+        "Apps": "Smart Hub, Samsung TV Plus",
+        "Control": "Multi-Code Remote, SmartThings Pro",
+        "Security": "Samsung Knox",
+      },
+      "Audio & Connectivity": {
+        "Speakers": "20 W stereo + adaptive sound (Dolby Digital MS12)",
+        "Wireless": "Wi-Fi 5, Bluetooth 5.2",
+        "HDMI": "2 × HDMI",
+        "USB": "2 × USB-A",
+      },
+      "Availability": {
+        "Region": "Launched in India only",
+        "Model Code": "HG55U701FNFXZA (HU701F)",
+      },
+    },
+    images: [
+      "/products/commercial-tv/samsung-hotel-tv-hu7010f/1.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu7010f/2.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu7010f/3.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu7010f/4.jpg",
+    ],
+  },
 ];
