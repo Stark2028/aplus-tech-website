@@ -82,7 +82,7 @@ const TEAM = [
   {
     name: "Sunil Kumar",
     role: "Director",
-    image: "/team/sunil-kumar.png",
+    image: "/team/sunil-kumar.jpg",
     linkedin: "https://www.linkedin.com/in/sunil-kumar-a5850217/",
   },
   {
