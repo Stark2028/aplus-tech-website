@@ -16,6 +16,8 @@ export interface ProductCategory {
   tagline: string;
   /** Short subtitle shown in the category hero banner */
   subtitle: string;
+  /** Multi-sentence SEO overview rendered on the category landing page */
+  overview: string;
   /** Use-case chips shown in the category hero banner */
   useCases: string[];
 }
@@ -29,6 +31,8 @@ export const productCategories: ProductCategory[] = [
     subtitle: "Commercial-grade Samsung displays engineered for high-traffic environments.",
     useCases: ["Lobbies & Atriums", "Retail Stores", "Campuses", "Wayfinding", "Airports"],
     description: "Enterprise-grade digital signage offering scalable sizes and high-brightness options for any commercial installation.",
+    overview:
+      "Samsung digital signage displays are commercial-grade screens built for continuous operation in retail stores, corporate lobbies, restaurants, campuses, and transport hubs. Unlike consumer TVs, they deliver higher brightness, 16/7 to 24/7 duty ratings, built-in Tizen media players with MagicINFO, and remote fleet management — so content can be scheduled and updated across sites without an external player. As an authorized Samsung distributor, Aplus Technology Solutions supplies the full signage range across India, from compact shelf-edge displays to 115-inch large-format panels, with GST invoicing, certified installation, and AMC support.",
   },
   {
     id: "video-walls",
@@ -38,6 +42,8 @@ export const productCategories: ProductCategory[] = [
     subtitle: "Ultra-narrow bezel displays for seamless, large-format visual installations.",
     useCases: ["Control Rooms", "Command Centers", "Corporate Lobbies", "Event Venues"],
     description: "High-impact video walls featuring ultra-narrow bezels for near-seamless, immersive viewing in control rooms and large venues.",
+    overview:
+      "Samsung video walls tile ultra-narrow-bezel LCD panels into a single large canvas for control rooms, command centres, corporate lobbies, broadcast studios, and retail flagships. Razor-thin bezel-to-bezel gaps and 24/7-rated panels deliver seamless, always-on visuals, while DisplayPort daisy-chaining and factory colour calibration simplify large-array installations. Aplus Technology Solutions supplies and installs the complete Samsung video wall lineup across India — including the VMB, VHC, and VMC series — with professional mounting, colour matching, and AMC support.",
   },
   {
     id: "interactive",
@@ -47,6 +53,8 @@ export const productCategories: ProductCategory[] = [
     subtitle: "Advanced multi-touch panels for collaborative workspaces and smart classrooms.",
     useCases: ["Meeting Rooms", "Classrooms", "Training Centres", "Collaboration Spaces"],
     description: "Interactive flat panels featuring integrated multi-touch, wireless casting, and powerful collaboration tools for modern environments.",
+    overview:
+      "Samsung interactive displays replace whiteboards and projectors with 4K multi-touch panels for meeting rooms, classrooms, training centres, and collaboration spaces. The Flip and WAC/WAD/WAF series support multi-point touch, wireless screen sharing, USB-C connectivity, and Tizen with Samsung Knox security, so teams can annotate, cast, and save sessions without extra hardware. Aplus Technology Solutions delivers and installs the full interactive display range across India with warranty, onboarding, and AMC support.",
   },
   {
     id: "commercial-tv",
@@ -56,6 +64,8 @@ export const productCategories: ProductCategory[] = [
     subtitle: "Enterprise-grade commercial TVs for hospitality, corporate, and public environments.",
     useCases: ["Hotel Rooms", "Serviced Apartments", "Waiting Areas", "Corporate Offices"],
     description: "Durable commercial TVs featuring centralized management, designed specifically for demanding hospitality and business applications.",
+    overview:
+      "Samsung commercial and hospitality TVs are purpose-built for hotels, serviced apartments, hospitals, and corporate spaces — with centralized content management, LYNK Cloud and pro:idiom compatibility, and durable panels rated for extended daily use. The range spans Hotel TVs (HGU and HBU Crystal UHD series) and Business TVs (BE-H series) from 32 inches up to 98 inches. Aplus Technology Solutions supplies, configures, and installs commercial TV fleets across India with GST invoicing, bulk pricing, and AMC support.",
   },
   {
     id: "led-signage",
@@ -65,6 +75,8 @@ export const productCategories: ProductCategory[] = [
     subtitle: "Fine-pitch direct-view LED for large-format walls, lobbies, and flagship spaces.",
     useCases: ["Corporate Lobbies", "Control Rooms", "Retail Flagships", "Auditoriums", "Experience Centres"],
     description: "Direct-view LED display solutions — from The Wall's micro-LED to all-in-one packages — delivering bezel-free, large-format visuals that scale to any space.",
+    overview:
+      "Samsung direct-view LED signage delivers bezel-free, large-format visuals that scale to virtually any size — from The Wall's micro-LED to IE-series indoor cabinets and All-in-One (IAB and IAC) packages. Fine pixel pitches produce crisp, seamless imagery for corporate lobbies, auditoriums, control rooms, retail flagships, and experience centres, without the seams of a tiled LCD wall. Aplus Technology Solutions handles LED site survey, supply, and turnkey installation across India, with service and AMC support.",
   },
 ];
 

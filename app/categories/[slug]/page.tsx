@@ -8,7 +8,8 @@ import { useCaseCombos } from "@/data/useCaseCombos";
 import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
-import { SITE, breadcrumbLd, categoryCollectionLd, jsonLdString } from "@/lib/jsonLd";
+import { SITE, breadcrumbLd, categoryCollectionLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
+import { buildCategoryFaqs, categorySizeRange } from "@/lib/categoryFaq";
 
 export const revalidate = 3600;
 
@@ -32,8 +33,15 @@ export async function generateMetadata({
   if (!category) return {};
   const url = `${SITE}/categories/${slug}`;
   return {
-    title: `${category.navLabel} — Aplus Technology Solutions`,
-    description: category.description,
+    title: `Samsung ${category.navLabel} — Price, Models & Specs`,
+    description: `${category.description} Authorized Samsung distributor in India — B2B pricing, certified installation & AMC.`,
+    keywords: [
+      `Samsung ${category.navLabel}`,
+      `${category.navLabel} price India`,
+      `${category.navLabel} dealer`,
+      "Samsung B2B",
+      "Aplus Technology Solutions",
+    ],
     alternates: { canonical: url },
     openGraph: {
       type: "website",
@@ -72,6 +80,9 @@ export default async function CategoryPage({
 
   const hasSubCategories = subCategories.length > 1;
 
+  const sizeRange = categorySizeRange(categoryProducts);
+  const faqs = buildCategoryFaqs(category, categoryProducts);
+
   const jsonLd = [
     categoryCollectionLd(category, categoryProducts),
     breadcrumbLd([
@@ -79,6 +90,7 @@ export default async function CategoryPage({
       { name: "Products", url: "/products" },
       { name: category.navLabel, url: `/categories/${slug}` },
     ]),
+    faqPageLd(faqs.map((f) => ({ question: f.q, answer: f.a }))),
   ];
 
   return (
@@ -107,14 +119,45 @@ export default async function CategoryPage({
             </p>
 
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-              {category.navLabel}
+              Samsung {category.navLabel}
             </h1>
+
+            <p className="mt-3 max-w-2xl text-gray-500 text-sm md:text-base leading-relaxed">
+              {category.subtitle}
+            </p>
+
+            {/* Quick facts + use cases (indexable, keyword-rich) */}
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">
+                {categoryProducts.length} Samsung series
+              </span>
+              {sizeRange && (
+                <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">
+                  Sizes {sizeRange}
+                </span>
+              )}
+              {category.useCases.slice(0, 4).map((uc) => (
+                <span
+                  key={uc}
+                  className="inline-flex items-center px-3 py-1 rounded-full bg-slate-50 border border-slate-100 text-slate-500 text-xs font-medium"
+                >
+                  {uc}
+                </span>
+              ))}
+            </div>
           </div>
 
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Overview — indexable landing-page copy */}
+        <div className="max-w-3xl mb-10">
+          <p className="text-gray-600 text-[15px] leading-relaxed">
+            {category.overview}
+          </p>
+        </div>
+
         {categoryProducts.length === 0 ? (
           <div className="text-center py-24 bg-white rounded-2xl border border-dashed border-gray-300">
             <p className="text-lg font-medium text-gray-500">
@@ -213,6 +256,42 @@ export default async function CategoryPage({
           </section>
         );
       })()}
+
+      {/* ── FAQ ────────────────────────────────────────────────────────── */}
+      {faqs.length > 0 && (
+        <section
+          className="border-t border-gray-100"
+          aria-labelledby="category-faq-heading"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <h2
+              id="category-faq-heading"
+              className="text-2xl md:text-3xl font-bold text-gray-900 mb-8"
+            >
+              Frequently asked questions
+            </h2>
+            <div className="max-w-3xl space-y-3">
+              {faqs.map((faq, i) => (
+                <details
+                  key={i}
+                  className="group bg-white rounded-2xl border border-gray-100 shadow-sm open:shadow-md transition-shadow"
+                >
+                  <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 text-[15px] font-semibold text-gray-900">
+                    {faq.q}
+                    <ChevronRight
+                      size={18}
+                      className="shrink-0 text-blue-600 transition-transform group-open:rotate-90"
+                    />
+                  </summary>
+                  <div className="px-6 pb-5 -mt-1 text-sm text-gray-600 leading-relaxed">
+                    {faq.a}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

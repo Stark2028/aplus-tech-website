@@ -19,7 +19,9 @@ import Image from "next/image";
 import { Metadata } from "next";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import MobileProductScroller from "@/components/MobileProductScroller";
-import { breadcrumbLd, productLd, jsonLdString } from "@/lib/jsonLd";
+import { breadcrumbLd, productLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
+import { buildProductFaqs } from "@/lib/productFaq";
+import { modelCodeFor } from "@/lib/modelCodes";
 import { formatSize, formatSizeRange } from "@/lib/formatSize";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
@@ -47,23 +49,31 @@ export async function generateMetadata({
   if (!product) return { title: "Product Not Found | Aplus Tech" };
   const url = `https://www.aplustechsol.com/products/${slug}`;
   const ogAlt = `${product.name} — ${product.series} ${product.category}`;
+  const modelCode = modelCodeFor(slug);
+  // Model code in the title captures exact model-number searches (common in B2B).
+  const title = modelCode ? `${product.name} (${modelCode})` : product.name;
+  const sizeRange = formatSizeRange(product.specs.screenSizes);
+  const metaDescription = `${product.description} Available in ${sizeRange} — B2B pricing from Aplus, an authorized Samsung distributor in India.`;
   return {
-    title: product.name,
-    description: product.description,
+    title,
+    description: metaDescription,
     keywords: [
       product.name,
       product.series,
+      ...(modelCode ? [modelCode] : []),
       product.category,
       "Samsung",
       "B2B",
+      "price",
+      "dealer India",
       "Aplus Technology Solutions",
     ],
     alternates: { canonical: url },
     openGraph: {
       type: "website",
       url,
-      title: product.name,
-      description: product.description,
+      title,
+      description: metaDescription,
       images: product.images?.[0]
         ? [{ url: product.images[0], width: 1200, height: 630, alt: ogAlt }]
         : [],
@@ -98,6 +108,9 @@ export default async function ProductPage({
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
+  const faqs = buildProductFaqs(product);
+  const modelCode = modelCodeFor(product.id);
+
   const jsonLd = [
     productLd(product),
     breadcrumbLd([
@@ -106,6 +119,7 @@ export default async function ProductPage({
       { name: product.category, url: `/categories/${categorySlug}` },
       { name: product.name, url: `/products/${product.id}` },
     ]),
+    faqPageLd(faqs.map((f) => ({ question: f.q, answer: f.a }))),
   ];
 
   return (
@@ -156,6 +170,11 @@ export default async function ProductPage({
           <h1 className="text-2xl font-extrabold text-slate-900 mb-2 leading-snug tracking-tight">
             {product.name}
           </h1>
+          {modelCode && (
+            <p className="text-[11px] font-mono text-slate-400 mb-2 tracking-tight">
+              Model: {modelCode}
+            </p>
+          )}
           <p className="text-slate-500 text-sm leading-relaxed">
             {product.description}
           </p>
@@ -379,6 +398,11 @@ export default async function ProductPage({
                 <h1 className="text-2xl font-extrabold text-slate-900 mb-3 leading-snug tracking-tight">
                   {product.name}
                 </h1>
+                {modelCode && (
+                  <p className="text-xs font-mono text-slate-400 mb-3 tracking-tight">
+                    Model: {modelCode}
+                  </p>
+                )}
                 <p className="text-slate-500 text-[14px] leading-relaxed mb-6">
                   {product.description}
                 </p>
@@ -547,6 +571,37 @@ export default async function ProductPage({
                 </div>
               ))}
             </MobileProductScroller>
+          </section>
+        )}
+
+        {/* ── FAQ ──────────────────────────────────────────────────── */}
+        {faqs.length > 0 && (
+          <section className="mt-16" aria-labelledby="product-faq-heading">
+            <h2
+              id="product-faq-heading"
+              className="text-2xl font-bold text-gray-900 mb-8"
+            >
+              Frequently asked questions
+            </h2>
+            <div className="max-w-3xl space-y-3">
+              {faqs.map((faq, i) => (
+                <details
+                  key={i}
+                  className="group bg-white rounded-2xl border border-gray-100 shadow-sm open:shadow-md transition-shadow"
+                >
+                  <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 text-[15px] font-semibold text-gray-900">
+                    {faq.q}
+                    <ChevronRight
+                      size={18}
+                      className="shrink-0 text-blue-600 transition-transform group-open:rotate-90"
+                    />
+                  </summary>
+                  <div className="px-6 pb-5 -mt-1 text-sm text-gray-600 leading-relaxed">
+                    {faq.a}
+                  </div>
+                </details>
+              ))}
+            </div>
           </section>
         )}
 
