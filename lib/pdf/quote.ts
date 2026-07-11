@@ -7,6 +7,7 @@
 
 import type { QuoteItem } from "@/context/QuoteContext";
 import { formatSize } from "@/lib/formatSize";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 
 import {
   A4_HEIGHT,
@@ -104,7 +105,7 @@ function drawHeader(ctx: Ctx) {
   });
 
   // Phone + email clickable
-  const phone = "+91 93105 09909";
+  const phone = PHONE_DISPLAY;
   const email = "info@aplustechsol.com";
   const sep = " • ";
   const fontSize = 8;
@@ -127,7 +128,7 @@ function drawHeader(ctx: Ctx) {
     thickness: 0.4,
     color: C.gray400,
   });
-  addLinkAnnotation(ctx.doc, page, "tel:+919310509909", {
+  addLinkAnnotation(ctx.doc, page, PHONE_TEL, {
     x: MARGIN_X,
     y: lineY - 2,
     width: phoneW,
@@ -533,7 +534,7 @@ function drawInfoGrid(ctx: Ctx) {
     characterSpacing: 1.4,
   });
 
-  const phoneText = "+91 93105 09909";
+  const phoneText = PHONE_DISPLAY;
   const emailText = "info@aplustechsol.com";
   const siteText = "aplustechsol.com";
 
@@ -546,7 +547,7 @@ function drawInfoGrid(ctx: Ctx) {
     startY - 14,
     10,
     C.black,
-    "tel:+919310509909"
+    PHONE_TEL
   );
   drawLeftLink(
     doc,

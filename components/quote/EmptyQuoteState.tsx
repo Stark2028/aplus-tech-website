@@ -1,14 +1,8 @@
 import Link from "next/link";
 import { ArrowLeft, Phone } from "lucide-react";
 import { ShoppingBagIcon } from "@/components/icons";
-import { PHONE_NUMBER, PHONE_TEL } from "@/components/navbar/navConfig";
-
-const CATEGORIES = [
-  { label: "Digital Signage", href: "/categories/digital-signage" },
-  { label: "Video Walls", href: "/categories/video-walls" },
-  { label: "Interactive Displays", href: "/categories/interactive" },
-  { label: "Hospitality TV", href: "/categories/commercial-tv" },
-];
+import { productCategories } from "@/data/categories";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 
 export default function EmptyQuoteState() {
   return (
@@ -28,15 +22,16 @@ export default function EmptyQuoteState() {
         proposal with B2B pricing within one business day.
       </p>
 
-      {/* Category shortcuts — give an empty cart somewhere to go, mirroring 404 */}
-      <div className="flex flex-wrap justify-center gap-2 mb-8">
-        {CATEGORIES.map((cat) => (
+      {/* Category shortcuts — derived from the canonical category list so it
+          always covers every category (mirrors the 404 page). */}
+      <div className="flex flex-wrap justify-center gap-2 mb-8 max-w-2xl">
+        {productCategories.map((cat) => (
           <Link
-            key={cat.href}
-            href={cat.href}
+            key={cat.id}
+            href={`/categories/${cat.id}`}
             className="px-4 py-1.5 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:text-blue-700 hover:bg-blue-50 transition-all"
           >
-            {cat.label}
+            {cat.navLabel}
           </Link>
         ))}
       </div>
@@ -54,7 +49,7 @@ export default function EmptyQuoteState() {
           className="inline-flex items-center justify-center gap-2 bg-white border border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-700 px-7 py-3.5 rounded-xl font-semibold transition-all"
         >
           <Phone size={16} />
-          Call {PHONE_NUMBER}
+          Call {PHONE_DISPLAY}
         </a>
       </div>
     </div>

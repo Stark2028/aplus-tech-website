@@ -8,6 +8,7 @@ import { getCategoryById, type CategorySlug } from "@/data/categories";
 import { byLatestThenPopularity } from "@/lib/productSort";
 import { useCaseCombos, getCombo } from "@/data/useCaseCombos";
 import ProductCard from "@/components/ProductCard";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 import {
   SITE,
   breadcrumbLd,
@@ -165,10 +166,10 @@ export default async function IndustryCategoryPage({
               Request a Quote <ArrowRight size={16} aria-hidden="true" />
             </Link>
             <a
-              href="tel:+919310509909"
+              href={PHONE_TEL}
               className="inline-flex items-center gap-2 border border-white/30 text-white font-semibold px-6 py-3 rounded-lg hover:bg-white/10 transition-colors"
             >
-              <Phone size={16} aria-hidden="true" /> +91 93105 09909
+              <Phone size={16} aria-hidden="true" /> {PHONE_DISPLAY}
             </a>
           </div>
         </div>

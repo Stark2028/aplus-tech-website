@@ -11,6 +11,7 @@ import {
   ShieldCheckIcon,
   TimerIcon,
 } from "@/components/icons";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 
 const PRODUCT_LINKS = [
   { label: "Digital Signage", href: "/categories/digital-signage" },
@@ -66,11 +67,11 @@ export default function Footer() {
             </div>
             <div className="lg:col-span-5 flex flex-col sm:flex-row gap-3 lg:justify-end">
               <a
-                href="tel:+919310509909"
+                href={PHONE_TEL}
                 className="inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white px-5 py-3 rounded-xl text-sm font-medium transition-colors"
               >
                 <Phone size={15} className="text-blue-300" />
-                +91 93105 09909
+                {PHONE_DISPLAY}
               </a>
               <Link
                 href="/quote"
@@ -200,10 +201,10 @@ export default function Footer() {
                   <PhoneIcon size={14} className="text-slate-300" accentClassName="text-blue-400" />
                 </div>
                 <a
-                  href="tel:+919310509909"
+                  href={PHONE_TEL}
                   className="text-sm text-slate-300 hover:text-white transition-colors"
                 >
-                  +91 93105 09909
+                  {PHONE_DISPLAY}
                 </a>
               </li>
               <li className="flex items-center gap-3">

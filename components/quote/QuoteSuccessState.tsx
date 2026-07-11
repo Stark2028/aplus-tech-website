@@ -8,8 +8,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import ProgressStepper from "./ProgressStepper";
-
-const WHATSAPP_NUMBER = "919310509909";
+import { WHATSAPP_NUMBER } from "@/lib/contact";
 
 const NEXT_STEPS = [
   {

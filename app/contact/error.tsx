@@ -1,6 +1,7 @@
 "use client";
 
 import ErrorCard from "@/components/ErrorCard";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 
 export default function ContactError({
   reset,
@@ -13,8 +14,8 @@ export default function ContactError({
       title="Contact page failed to load"
       message="There was a problem loading the contact page. You can still reach us directly."
       reset={reset}
-      backHref="tel:+919310509909"
-      backLabel="Call +91 93105 09909"
+      backHref={PHONE_TEL}
+      backLabel={`Call ${PHONE_DISPLAY}`}
     />
   );
 }

@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { WHATSAPP_NUMBER, getWhatsAppMessage } from "@/lib/whatsapp";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 
 const QUICK_ACTIONS = [
   { label: "Get a product quote", msg: "Hi, I need a quote for Samsung display products." },
@@ -180,9 +181,9 @@ export default function ChatWidget() {
               {/* Contact alternatives */}
               <div className="pt-2 border-t border-gray-100 space-y-2">
                 <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Other ways to reach us</p>
-                <a href="tel:+919310509909" className="flex items-center gap-3 text-sm text-gray-600 hover:text-blue-600 transition-colors py-1">
+                <a href={PHONE_TEL} className="flex items-center gap-3 text-sm text-gray-600 hover:text-blue-600 transition-colors py-1">
                   <Phone size={15} className="text-blue-500 shrink-0" />
-                  +91 93105 09909
+                  {PHONE_DISPLAY}
                 </a>
                 <a href="mailto:info@aplustechsol.com" className="flex items-center gap-3 text-sm text-gray-600 hover:text-blue-600 transition-colors py-1">
                   <Mail size={15} className="text-blue-500 shrink-0" />

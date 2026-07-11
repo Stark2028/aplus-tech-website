@@ -6,15 +6,10 @@ import { ArrowLeft, Search, Phone, ArrowRight } from "lucide-react";
 import { MonitorIcon } from "@/components/icons";
 import { useIsMac } from "@/hooks/usePlatform";
 import { products } from "@/data/products";
+import { productCategories } from "@/data/categories";
+import { PHONE_TEL } from "@/lib/contact";
 
 const POPULAR = products.slice(0, 4);
-
-const CATEGORIES = [
-  { label: "Digital Signage", href: "/categories/digital-signage" },
-  { label: "Video Walls", href: "/categories/video-walls" },
-  { label: "Interactive Displays", href: "/categories/interactive" },
-  { label: "Hospitality TV", href: "/categories/commercial-tv" },
-];
 
 export default function NotFound() {
   const isMac = useIsMac();
@@ -51,13 +46,13 @@ export default function NotFound() {
 
           {/* Category pills */}
           <div className="flex flex-wrap justify-center gap-2 mb-8">
-            {CATEGORIES.map((cat) => (
+            {productCategories.map((cat) => (
               <Link
-                key={cat.href}
-                href={cat.href}
+                key={cat.id}
+                href={`/categories/${cat.id}`}
                 className="px-4 py-1.5 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:text-blue-700 hover:bg-blue-50 transition-all"
               >
-                {cat.label}
+                {cat.navLabel}
               </Link>
             ))}
           </div>
@@ -72,7 +67,7 @@ export default function NotFound() {
               Back to Home
             </Link>
             <a
-              href="tel:+919310509909"
+              href={PHONE_TEL}
               className="inline-flex items-center justify-center gap-2 bg-white border border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-700 px-7 py-3 rounded-xl font-semibold text-sm transition-all"
             >
               <Phone size={15} />

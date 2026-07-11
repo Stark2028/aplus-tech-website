@@ -6,8 +6,11 @@
  * desktop chat widget, PDP inline button, etc).
  */
 
-/** Country code + number, no '+'. Used as wa.me path segment. */
-export const WHATSAPP_NUMBER = "919310509909";
+import { WHATSAPP_NUMBER } from "@/lib/contact";
+
+/** Country code + number, no '+'. Used as wa.me path segment. Re-exported so
+ *  existing `@/lib/whatsapp` imports keep resolving to the canonical value. */
+export { WHATSAPP_NUMBER };
 
 const DEFAULT_MSG =
   "Hi! I'm interested in Samsung display solutions for my business. Could you help?";

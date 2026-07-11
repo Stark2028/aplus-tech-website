@@ -19,6 +19,7 @@ import {
   IconTile,
 } from "@/components/icons";
 import { contactFormSchema, type ContactFormValues } from "@/lib/formSchemas";
+import { PHONE_DISPLAY, PHONE_TEL, WHATSAPP_NUMBER } from "@/lib/contact";
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
@@ -196,7 +197,7 @@ export default function ContactPage() {
         <div className="px-2">
           <div className="grid grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: PhoneIcon,  label: "Call Us",  value: "+91 93105 09909",       sub: "Mon – Sat, 10 AM – 6 PM",      href: "tel:+919310509909",         accentClass: "text-blue-600",    accent: "#3b82f6" },
+              { icon: PhoneIcon,  label: "Call Us",  value: PHONE_DISPLAY,       sub: "Mon – Sat, 10 AM – 6 PM",      href: PHONE_TEL,         accentClass: "text-blue-600",    accent: "#3b82f6" },
               { icon: MailIcon,   label: "Email",    value: "info@aplustechsol.com", sub: "Reply within 24 hours",        href: "mailto:info@aplustechsol.com", accentClass: "text-violet-600", accent: "#8b5cf6" },
               { icon: MapPinIcon, label: "Office",   value: "Sector-94, Noida",      sub: "Supernova Astralis, 8th Fl.", href: "https://maps.google.com/?q=Aplus+Technology+Solutions+Private+Limited+Noida", accentClass: "text-emerald-600", accent: "#10b981" },
               { icon: TimerIcon,  label: "Support",  value: "24 × 7",   sub: "Emergency assistance",    href: null,      accentClass: "text-amber-600",   accent: "#f59e0b" },
@@ -476,7 +477,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <div className="px-5 pb-6 relative z-10">
-                <a href="https://wa.me/919310509909?text=Hi%2C%20I%20have%20an%20inquiry%20about%20your%20Samsung%20display%20products."
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%20have%20an%20inquiry%20about%20your%20Samsung%20display%20products.`}
                   target="_blank" rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2.5 w-full text-sm font-bold py-4 rounded-2xl transition-all bg-[#25d366] hover:bg-[#20ba5a] text-white shadow-lg shadow-green-900/30 hover:shadow-xl hover:shadow-green-900/40 hover:-translate-y-0.5 active:translate-y-0">
                   <svg viewBox="0 0 24 24" className="w-4.5 h-4.5 fill-white">

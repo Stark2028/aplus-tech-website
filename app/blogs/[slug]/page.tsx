@@ -7,6 +7,7 @@ import ShareButtons from "@/components/ShareButtons";
 import { Calendar, Clock, ArrowRight, Tag } from "lucide-react";
 import { SITE, breadcrumbLd, jsonLdString } from "@/lib/jsonLd";
 import { formatBlogDate } from "@/lib/formatDate";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -210,10 +211,10 @@ export default async function BlogDetailPage({
                 <ArrowRight size={15} />
               </Link>
               <a
-                href="tel:+919310509909"
+                href={PHONE_TEL}
                 className="inline-flex items-center justify-center gap-2 border border-white/30 text-white font-medium px-6 py-3 rounded-xl text-sm hover:bg-white/10 transition-colors"
               >
-                Call +91 93105 09909
+                Call {PHONE_DISPLAY}
               </a>
             </div>
           </div>

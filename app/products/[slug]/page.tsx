@@ -22,6 +22,7 @@ import MobileProductScroller from "@/components/MobileProductScroller";
 import { breadcrumbLd, productLd, jsonLdString } from "@/lib/jsonLd";
 import { formatSize, formatSizeRange } from "@/lib/formatSize";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 
 export const revalidate = 3600;
 
@@ -119,8 +120,8 @@ export default async function ProductPage({
         <span className="font-medium">Authorized Samsung Distributor</span>
         <span className="mx-2 opacity-50">·</span>
         Get B2B pricing in 24 hrs —{" "}
-        <a href="tel:+919310509909" className="underline font-semibold hover:no-underline">
-          Call +91 93105 09909
+        <a href={PHONE_TEL} className="underline font-semibold hover:no-underline">
+          Call {PHONE_DISPLAY}
         </a>
       </div>
 
@@ -437,7 +438,7 @@ export default async function ProductPage({
                 {/* Direct contact */}
                 <div className="flex gap-3 mt-4">
                   <a
-                    href={`https://wa.me/919310509909?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(product.name)}.%20Please%20share%20pricing.`}
+                    href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(product.name)}.%20Please%20share%20pricing.`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 flex items-center justify-center gap-2 bg-linear-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-400 text-white py-3.5 rounded-xl font-semibold text-[14px] shadow-sm shadow-emerald-500/20 hover:shadow-md hover:shadow-emerald-500/20 hover:-translate-y-0.5 transition-all duration-300"
@@ -446,7 +447,7 @@ export default async function ProductPage({
                     WhatsApp
                   </a>
                   <a
-                    href="tel:+919310509909"
+                    href={PHONE_TEL}
                     className="flex-1 flex items-center justify-center gap-2 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 py-3.5 rounded-xl font-semibold text-[14px] shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
                   >
                     <Phone size={15} />
