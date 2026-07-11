@@ -150,10 +150,10 @@ export default async function CategoryPage({
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12">
         {/* Overview — indexable landing-page copy */}
-        <div className="max-w-3xl mb-10">
-          <p className="text-gray-600 text-[15px] leading-relaxed">
+        <div className="mb-10">
+          <p className="text-gray-600 text-[15px] leading-normal">
             {category.overview}
           </p>
         </div>
@@ -266,11 +266,11 @@ export default async function CategoryPage({
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <h2
               id="category-faq-heading"
-              className="text-2xl md:text-3xl font-bold text-gray-900 mb-8"
+              className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center"
             >
               Frequently asked questions
             </h2>
-            <div className="max-w-3xl space-y-3">
+            <div className="max-w-3xl mx-auto space-y-3">
               {faqs.map((faq, i) => (
                 <details
                   key={i}

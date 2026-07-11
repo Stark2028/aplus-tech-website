@@ -171,8 +171,13 @@ export default async function ProductPage({
             {product.name}
           </h1>
           {modelCode && (
-            <p className="text-[11px] font-mono text-slate-400 mb-2 tracking-tight">
-              Model: {modelCode}
+            <p className="flex items-center gap-2 mb-3 text-[11px]">
+              <span className="font-semibold uppercase tracking-widest text-slate-400">
+                Model
+              </span>
+              <span className="font-mono text-[13px] font-semibold text-slate-900 bg-white border border-slate-300 shadow-sm rounded-lg px-2.5 py-1 tracking-wide">
+                {modelCode}
+              </span>
             </p>
           )}
           <p className="text-slate-500 text-sm leading-relaxed">
@@ -399,8 +404,13 @@ export default async function ProductPage({
                   {product.name}
                 </h1>
                 {modelCode && (
-                  <p className="text-xs font-mono text-slate-400 mb-3 tracking-tight">
-                    Model: {modelCode}
+                  <p className="flex items-center gap-2 mb-4 text-[11px]">
+                    <span className="font-semibold uppercase tracking-widest text-slate-400">
+                      Model
+                    </span>
+                    <span className="font-mono text-[13px] font-semibold text-slate-900 bg-white border border-slate-300 shadow-sm rounded-lg px-2.5 py-1 tracking-wide">
+                      {modelCode}
+                    </span>
                   </p>
                 )}
                 <p className="text-slate-500 text-[14px] leading-relaxed mb-6">
@@ -579,11 +589,11 @@ export default async function ProductPage({
           <section className="mt-16" aria-labelledby="product-faq-heading">
             <h2
               id="product-faq-heading"
-              className="text-2xl font-bold text-gray-900 mb-8"
+              className="text-2xl font-bold text-gray-900 mb-8 text-center"
             >
               Frequently asked questions
             </h2>
-            <div className="max-w-3xl space-y-3">
+            <div className="max-w-3xl mx-auto space-y-3">
               {faqs.map((faq, i) => (
                 <details
                   key={i}

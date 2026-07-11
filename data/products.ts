@@ -249,7 +249,7 @@ The QHC's 4K UHD resolution combined with Samsung's Crystal Display technology p
         "Anti-Glare": "Yes (non-glare coating)",
       },
       "SoC": {
-        "OS Version": "Tizen 6.5",
+        "OS Version": "Tizen 7.0",
         "Processor": "Quad-core 1.5 GHz",
         "RAM": "2.5 GB",
         "Flash Memory Size": "16 GB",
@@ -1235,7 +1235,7 @@ DisplayPort 1.2 and dual HDMI 2.0 inputs, plus DVI and RS-232C/RJ45 control, all
       },
       "Mechanical Specification": {
         "Set Dimensions (W×H×D)": "1,212.2 × 683.0 × 70.4 mm",
-        "Model Code": "LH55VMCEBGBXZA",
+        "Model Code": "LH55VMCEBGBXXL",
       },
     },
   },
@@ -3122,6 +3122,7 @@ As part of The Wall ecosystem, the MMF offers a simple modular structure for str
         "Diode Type": "Flip-chip RGB LED",
         "Brightness": "600 nit",
         "Contrast Ratio": "8,000:1 (P0.9, P1.2) / 10,000:1 (P1.5)",
+        "Model Codes": "LH012MMFRGS (P1.2) / LH015MMFRGS (P1.5)",
       },
       "Picture": {
         "Color": "20-bit processing, Linear Grayscale",
@@ -3180,7 +3181,7 @@ Advanced modular design supports portrait, landscape, curved, L-shaped, and ceil
         "Diode Type": "Surface Mount Device (SMD)",
         "Brightness": "1,000 nit (P1.5–P2.5) / 800 nit (P4.0) / 600 nit (P1.2 IEF)",
         "Contrast Ratio": "6,000:1 (P1.5) / 7,500:1 (P2.0) / 5,000:1 (P2.5, P4.0) / 4,000:1 (P1.2 IEF)",
-        "Model Codes": "IE015A (P1.5), IE020A (P2.0), IE025A (P2.5)",
+        "Model Codes": "LH015IEACLS (P1.5) / LH020IEACLS (P2.0) / LH025IEACLS (P2.5); IEF: LH015IEACFS (P1.2)",
       },
       "Picture & Processing": {
         "Processor": "NQM AI Processor",
@@ -3220,13 +3221,13 @@ Advanced modular design supports portrait, landscape, curved, L-shaped, and ceil
     series: "IAB",
     description:
       "146-inch all-in-one direct-view LED display with Quick Build installation, built-in control box, and everything needed to deploy a big-impact wall in hours.",
-    longDescription: `The Samsung All-in-One LED (IAB) is a true all-in-one direct-view LED solution engineered for fast, high-impact installation. At 146 inches with P0.8 and P1.6 pixel-pitch options, it delivers a bold, seamless canvas backed by flip-chip RGB LEDs, MICRO HDR, and the NQM AI Processor for vivid color and deep, Black-Seal blacks.
+    longDescription: `The Samsung All-in-One LED (IAB) is a true all-in-one direct-view LED solution engineered for fast, high-impact installation. At 146 inches (P0.8 / P1.6) and 110 inches (P1.2), it delivers a bold, seamless canvas backed by flip-chip RGB LEDs, MICRO HDR, and the NQM AI Processor for vivid color and deep, Black-Seal blacks.
 
 Exclusive Quick Build technology lets integrators complete a large-scale display in just a few hours: combine the two background plates and attach four preset modules. The control box is built directly into the display, streamlining configuration and eliminating the external processing hardware conventional LED walls require.
 
 Every component needed for operation ships in one package — control box, wall brackets, speakers, and decorative bezels — with no additional purchases. Rated for 24/7 operation, the IAB is ideal for corporate lobbies, retail flagships, auditoriums, and experience centres that need a premium LED wall without the complexity of a custom build.`,
     features: [
-      "146\" all-in-one LED, up to 4K",
+      "146\" (up to 4K) & 110\" all-in-one LED",
       "Quick Build — installs in hours",
       "Built-in control box (no external processor)",
       "All-inclusive: brackets, speakers, décor bezels",
@@ -3236,16 +3237,17 @@ Every component needed for operation ships in one package — control box, wall 
     specs: {
       resolution: "P0.8 / P1.2 / P1.6 pixel pitch",
       brightness: "1,600 nit (peak)",
-      screenSizes: ["146"],
+      screenSizes: ["110", "146"],
       operationTime: "24/7",
     },
     specGroups: {
       "LED": {
-        "Diagonal": "3.70 m (146\")",
-        "Pixel Pitch": "P0.8 / P1.2 / P1.6",
+        "Diagonal": "3.70 m (146\") / 2.79 m (110\")",
+        "Pixel Pitch": "P0.8 / P1.6 (146\") · P1.2 (110\")",
         "Diode Type": "Flip-chip RGB LED",
-        "Brightness (peak)": "1,600 nit (P0.8) / 1,400 nit (P1.6)",
-        "Contrast Ratio": "24,000:1 (P0.8) / 22,000:1 (P1.6)",
+        "Brightness (peak)": "1,600 nit (146\" P0.8 / 110\" P1.2) / 1,400 nit (146\" P1.6)",
+        "Contrast Ratio": "24,000:1 (146\" P0.8 / 110\" P1.2) / 22,000:1 (146\" P1.6)",
+        "Model Codes": "LH008IABMUS (146\" 4K) / LH012IABMHS (110\") / LH016IABMHS (146\" 2K)",
       },
       "All-in-One & Installation": {
         "Installation": "Quick Build (background plates + 4 preset modules)",
@@ -3299,7 +3301,7 @@ Everything needed to begin operating is in one package — control box, wall bra
     specs: {
       resolution: "P1.5 pixel pitch (2K / FHD)",
       brightness: "1,000 nit",
-      screenSizes: ["130", "146"],
+      screenSizes: ["130"],
       operationTime: "24/7",
     },
     specGroups: {
@@ -3349,13 +3351,13 @@ Everything needed to begin operating is in one package — control box, wall bra
       "Glasses-free 3D signage powered by patented 3D Plate technology — turns ordinary content into striking, lifelike depth in a slim 5.2 cm profile.",
     longDescription: `The Samsung Spatial Signage (SMHX) delivers an immersive glasses-free 3D experience using Samsung's patented 3D Plate technology, which applies binocular parallax to send a different image to each eye — creating cinematic depth and 360° product rotation without special glasses or separately authored 3D content.
 
-At 85 inches with 4K UHD clarity (a compact 32-inch 9:16 portrait model is also available), Spatial Signage combines a striking visual with an UltraThin 5.2 cm profile that integrates cleanly into retail, lobby, and experience-centre environments. A 500-nit panel with anti-glare treatment keeps content vivid under commercial lighting.
+At 85 inches with 4K UHD clarity, Spatial Signage combines a striking visual with an UltraThin 5.2 cm profile that integrates cleanly into retail, lobby, and experience-centre environments. A 500-nit panel with anti-glare treatment keeps content vivid under commercial lighting.
 
 Samsung VXT with the AI Studio app makes 3D content creation simple: upload an image and write a prompt to generate dynamic 3D video, then manage and monitor devices remotely. Recognised as a CES 2026 Innovation Award honoree, Spatial Signage redefines attention-grabbing display for premium commercial spaces.`,
     features: [
       "Glasses-free Virtual 3D via patented 3D Plate technology",
       "UltraThin 5.2 cm profile",
-      "4K UHD (85\") / FHD 9:16 (32\")",
+      "4K UHD (85\")",
       "AI Studio 3D content generation in Samsung VXT",
       "Quantum Processor, anti-glare",
       "24/7 operation",
@@ -3363,13 +3365,13 @@ Samsung VXT with the AI Studio app makes 3D content creation simple: upload an i
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "500 nit",
-      screenSizes: ["32", "85"],
+      screenSizes: ["85"],
       operationTime: "24/7",
     },
     specGroups: {
       "Display": {
-        "Diagonal Size": "85\" (4K UHD) / 32\" (FHD, 9:16 portrait)",
-        "Resolution": "3,840 × 2,160 (85\") / 1,080 × 1,920 (32\")",
+        "Diagonal Size": "85\" (4K UHD)",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
         "Brightness (Type)": "500 nit",
         "3D Technology": "Patented 3D Plate (glasses-free binocular parallax)",
         "Depth": "52 mm (UltraThin)",
@@ -3383,7 +3385,7 @@ Samsung VXT with the AI Studio app makes 3D content creation simple: upload an i
       },
       "Recognition": {
         "Award": "CES 2026 Innovation Award honoree",
-        "Model Code": "LH85SMHPBGCXZA (SM85HX-P)",
+        "Model Code": "LH85SMHPBGCXXL (SM85HX-P)",
       },
     },
     images: [
@@ -3507,7 +3509,7 @@ Managed through Samsung VXT with support for additional protective glass install
       },
       "Software": {
         "Management": "Samsung VXT",
-        "Model Code": "LH75OHAEBGBXZA (OH75A)",
+        "Model Code": "LH75OHAEBGBXXL (OH75A)",
       },
     },
     images: [
@@ -3731,7 +3733,7 @@ The Enhanced Whiteboard makes it easy to edit, move, and resize notes and turn h
       "Connectivity & Model": {
         "Connectivity": "USB-C Hub, HDMI Out, OPS",
         "Design": "Rotatable (portrait / landscape)",
-        "Model Code": "LH55WMFWBGCX (WM55FX)",
+        "Model Code": "LH55WMFWBGCXXL (WM55F) … LH85WMFWLGCXXL (WM85F)",
       },
     },
     images: [
@@ -3797,7 +3799,7 @@ For operators, Samsung LYNK Cloud delivers remote, multi-property display manage
         "USB": "2 × USB-A",
       },
       "Model": {
-        "Model Codes": "HG43U800FNFXZA … HG85U800FNFXZA",
+        "Model Code": "HG43U800FAULXL (India; sizes 43\"–85\")",
       },
     },
     images: [
@@ -3865,7 +3867,7 @@ Positioned just below the AirSlim HU8000F flagship, the HU7010F focuses on core 
       },
       "Availability": {
         "Region": "Launched in India only",
-        "Model Code": "HG55U701FNFXZA (HU701F)",
+        "Model Code": "HG43U701FAULXL (India; U701F, 43\"–75\")",
       },
     },
     images: [
@@ -3873,6 +3875,193 @@ Positioned just below the AirSlim HU8000F flagship, the HU7010F focuses on core 
       "/products/commercial-tv/samsung-hotel-tv-hu7010f/2.jpg",
       "/products/commercial-tv/samsung-hotel-tv-hu7010f/3.jpg",
       "/products/commercial-tv/samsung-hotel-tv-hu7010f/4.jpg",
+    ],
+  },
+
+  // ── 2026 CATALOG — ADDED FOR FULL CATALOG COVERAGE ──────────────────────────
+  // NOTE: images below reuse the closest sibling product's photos as placeholders
+  // until dedicated photography is added for QMC-T, MMF-A, and IVC.
+
+  {
+    id: "samsung-touch-qmc-t",
+    popularity: 80,
+    catalog2026: true,
+    name: "Samsung Touch Signage QMC-T Series (32\")",
+    category: "Digital Signage",
+    subCategory: "Touch Signage",
+    series: "QMC-T",
+    description:
+      "Compact 32\" all-in-one capacitive touch signage for close-range interactive points — self-service counters, wayfinding kiosks, and information desks.",
+    longDescription: `The Samsung Touch Signage QMC-T brings responsive, all-in-one capacitive touch interaction to compact 32-inch spaces where a large touch wall would be impractical. With Full HD (1,920 × 1,080) clarity and an optimised anti-glare, low-haze panel, content stays clear and readable under both indoor lighting and daylight.
+
+Touch works without external devices or a connected PC — interactive content is deployed and run from the display itself, simplifying setup at self-service counters, hospitality check-in points, and store directories. Center IR enables convenient remote control without an IR-receiver extension when wall-mounted, and built-in Wi-Fi supports wireless content and settings management.
+
+Rated for 16/7 operation with an IP5X-rated capacitive touch surface and running Tizen 7.0, the QMC-T is a durable, low-footprint way to add interactivity exactly where customers need it.`,
+    features: [
+      "All-in-one capacitive touch (no external PC)",
+      "Anti-glare, optimised low-haze panel",
+      "Center IR remote control + built-in Wi-Fi",
+      "IP5X-rated touch surface",
+      "16/7 operation",
+      "Tizen 7.0",
+    ],
+    specs: {
+      resolution: "1,920 × 1,080 (FHD)",
+      brightness: "300 nit (with touch glass) / 400 nit (without)",
+      screenSizes: ["32"],
+      operationTime: "16/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "32\" (81.2 cm)",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "300 nit (with touch glass) / 400 nit (without)",
+        "Contrast Ratio": "4,000:1 (w/o glass)",
+        "Panel": "Anti-glare",
+        "Operation Time Support": "16/7",
+      },
+      "Touch & Connectivity": {
+        "Touch Technology": "Capacitive multi-touch",
+        "HDMI In": "3 (HDMI 2.0)",
+        "USB": "2 × USB 2.0",
+        "Remote": "Center IR",
+        "Wireless": "Built-in Wi-Fi",
+        "RS-232C": "In/Out",
+        "RJ45 In": "Yes",
+        "IP Rating": "IP5X",
+      },
+      "Platform": {
+        "OS Version": "Tizen 7.0",
+        "Model Code": "LH32QMCTBGCXXL",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-touch-qmr-t/1.webp",
+      "/products/digital-signage/samsung-touch-qmr-t/2.webp",
+      "/products/digital-signage/samsung-touch-qmr-t/3.webp",
+    ],
+  },
+  {
+    id: "samsung-all-in-one-led-mmf-a",
+    popularity: 85,
+    catalog2026: true,
+    name: "Samsung All-in-One LED (MMF-A)",
+    category: "LED Signage",
+    subCategory: "All-in-One LED",
+    series: "MMF-A",
+    description:
+      "All-in-One flip-chip RGB LED display in 108\" and 136\" — The Wall's picture quality in an integrated, all-inclusive package for fast indoor installation.",
+    longDescription: `The Samsung All-in-One LED (MMF-A) packages the flip-chip RGB LED picture quality of The Wall family into a complete, ready-to-install solution for indoor commercial spaces. Available in 2.74 m (108") with a P1.2 pixel pitch and 3.45 m (136") with a P1.5 pixel pitch, it delivers a seamless, bezel-free canvas with deep blacks and smooth Linear Grayscale.
+
+Rated at 500 nits with high contrast (8,000:1 on the 108" P1.2 and 10,000:1 on the 136" P1.5), the MMF-A is tuned for controlled indoor lighting in lobbies, meeting spaces, showrooms, and retail interiors. Everything needed to operate ships together, and the modular structure keeps installation and front-servicing straightforward.
+
+TUV Eye Comfort certification supports comfortable long-duration viewing, while EMC Class A and IEC safety certification make the MMF-A a dependable choice for premium always-on indoor LED signage.`,
+    features: [
+      "108\" (P1.2) and 136\" (P1.5) all-in-one LED",
+      "Flip-chip RGB LED, seamless bezel-free canvas",
+      "8,000:1 (108\") / 10,000:1 (136\") contrast",
+      "All-inclusive package, front-serviceable",
+      "TUV Eye Comfort certified",
+      "24/7 operation",
+    ],
+    specs: {
+      resolution: "P1.2 (108\") / P1.5 (136\") — 2K",
+      brightness: "500 nit",
+      screenSizes: ["108", "136"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Diagonal": "2.74 m (108\") / 3.45 m (136\")",
+        "Pixel Pitch": "P1.2 (108\") / P1.5 (136\")",
+        "Diode Type": "Flip-chip RGB LED",
+        "Resolution": "2K",
+        "Brightness": "500 nit",
+        "Contrast Ratio": "8,000:1 (108\" P1.2) / 10,000:1 (136\" P1.5)",
+        "Model Code": "LHA15MMFRHS (136\" P1.5)",
+      },
+      "Mechanical & Operation": {
+        "Cabinet Size (per cabinet)": "24.08 × 13.65 × 6.28 cm",
+        "Weight": "80.5 kg (108\") / 130 kg (136\")",
+        "Service": "Front",
+        "IP Rating": "IP40 / IP20 (Front / Rear)",
+        "Operation Time Support": "24/7",
+      },
+      "Certification": {
+        "EMC": "EMC Class A",
+        "Eye Comfort": "TUV Eye Comfort",
+        "Safety": "IEC 62368-1 / 60950-1",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-all-in-one-led-iac/1.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iac/2.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iac/3.jpg",
+    ],
+  },
+  {
+    id: "samsung-the-wall-ivc",
+    popularity: 78,
+    catalog2026: true,
+    name: "Samsung The Wall for Virtual Production (IVC)",
+    category: "LED Signage",
+    subCategory: "The Wall",
+    series: "IVC",
+    description:
+      "The Wall built for virtual production — an industry-leading 12,288 Hz refresh rate with genlock and phase-offset for flicker-free, in-camera LED-volume shooting.",
+    longDescription: `The Samsung The Wall for Virtual Production (IVC) is engineered specifically for LED-volume film and broadcast sets, where the display itself becomes the shooting environment. Its industry-leading 12,288 Hz refresh rate minimises the flicker lines and moiré artefacts that appear when a camera captures a conventional LED wall, producing clean, broadcast-ready in-camera imagery.
+
+Genlock synchronises all system signals for perfect frame alignment, while a phase-offset function provides additional frame correction to match camera shutters exactly. Built on flip-chip RGB LEDs in P1.6 and P2.1 pixel pitches with Black Seal and Ultra Chroma technology, 20-bit processing, and Linear Grayscale, the IVC delivers the deep blacks and colour fidelity demanding productions require.
+
+An optimised half-width 4:9 cabinet enables flawless curved installations with smooth angles down to a 5,800 R radius, supporting both hanging and stacking. Paired with Virtual Production Manager, the IVC gives studios a precise, reliable canvas for immersive virtual sets.`,
+    features: [
+      "12,288 Hz refresh — minimises flicker & artefacts on camera",
+      "Genlock & phase-offset frame synchronisation",
+      "Flip-chip RGB LED, Black Seal & Ultra Chroma, 20-bit",
+      "Half-width 4:9 cabinet for curved installs (max 5,800 R)",
+      "Virtual Production Manager, hanging & stacking",
+      "P1.6 / P2.1 pixel pitch, 1,500 nit",
+    ],
+    specs: {
+      resolution: "P1.6 / P2.1 pixel pitch",
+      brightness: "1,500 nit",
+      screenSizes: ["Custom"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Pixel Pitch": "P1.6 / P2.1",
+        "Diode Type": "Flip-chip RGB LED",
+        "Brightness": "1,500 nit",
+        "Contrast Ratio": "31,000:1 (P1.6) / 35,000:1 (P2.1)",
+        "Model Codes": "LH016IVCMVS (P1.6) / LH021IVCMVS (P2.1)",
+      },
+      "Virtual Production": {
+        "Refresh Rate": "12,288 Hz",
+        "Synchronisation": "Genlock & phase offset",
+        "Management": "Virtual Production Manager",
+        "Installation": "Half-width 4:9 cabinet, curved to 5,800 R, hanging & stacking",
+      },
+      "Picture": {
+        "Color": "20-bit processing, Linear Grayscale, Ultra Chroma",
+        "Contrast Enhancement": "Black Seal Technology",
+      },
+      "Mechanical & Operation": {
+        "Cabinet Size (per cabinet)": "40.31 × 90.70 × 8.3 cm",
+        "Weight": "13.3 kg (per cabinet)",
+        "Service": "Front (Module/Tcon) / Rear (Tcon/SMPS)",
+        "IP Rating": "IP20",
+        "Operation Time Support": "24/7",
+      },
+      "Certification": {
+        "EMC": "EMC Class A",
+        "Safety": "IEC 62368-1 / 60950-1",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-the-wall-mpf/1.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/2.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/3.jpg",
     ],
   },
 ];
