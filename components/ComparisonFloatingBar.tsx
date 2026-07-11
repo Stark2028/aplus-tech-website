@@ -1,15 +1,24 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { X, ArrowRight, Scale, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 import { useComparison } from "@/context/ComparisonContext";
 
 export default function ComparisonFloatingBar() {
     const { selectedProducts, removeFromCompare, clearCompare, limitReached } = useComparison();
     const pathname = usePathname();
+    const router = useRouter();
 
     const visible = selectedProducts.length > 0 && pathname !== "/compare";
+
+    const handleCompare = () => {
+        if (selectedProducts.length < 2) {
+            toast.error("Add at least 2 products to compare.");
+            return;
+        }
+        router.push("/compare");
+    };
 
     return (
         <div
@@ -79,13 +88,15 @@ export default function ComparisonFloatingBar() {
                     >
                         Clear
                     </button>
-                    <Link
-                        href="/compare"
-                        className="flex-1 md:flex-none text-center bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 py-2 text-sm font-semibold flex items-center justify-center gap-2 transition"
+                    <button
+                        type="button"
+                        onClick={handleCompare}
+                        aria-disabled={selectedProducts.length < 2}
+                        className="flex-1 md:flex-none text-center bg-blue-600 hover:bg-blue-700 text-white rounded-full px-5 py-2 text-sm font-semibold flex items-center justify-center gap-2 transition disabled:opacity-60"
                     >
                         Compare
                         <ArrowRight size={14} />
-                    </Link>
+                    </button>
                 </div>
             </div>
         </div>
