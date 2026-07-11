@@ -101,8 +101,14 @@ export default function CategoryGrid() {
                     />
                   </IconTile>
 
-                  {/* Every title spans two lines so all taglines start level. */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-1.5">
+                  {/* Every title spans two lines so all taglines start level.
+                      The <br/> would otherwise join the two words into one
+                      accessible name ("DigitalSignage"), so aria-label restores
+                      the spaced form for screen readers. */}
+                  <h3
+                    aria-label={`${card.title[0]} ${card.title[1]}`}
+                    className="text-xl font-bold text-gray-900 mb-1.5"
+                  >
                     {card.title[0]}
                     <br />
                     {card.title[1]}
