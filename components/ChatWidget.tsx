@@ -87,11 +87,19 @@ export default function ChatWidget() {
     setSubmitError("");
 
     const fd = new FormData(e.currentTarget);
-    const name = (fd.get("name") as string) ?? "";
-    const email = (fd.get("email") as string) ?? "";
-    const phone = (fd.get("phone") as string) ?? "";
-    const message = (fd.get("message") as string) ?? "";
+    const name = ((fd.get("name") as string) ?? "").trim();
+    const email = ((fd.get("email") as string) ?? "").trim();
+    const phone = ((fd.get("phone") as string) ?? "").trim();
+    const message = ((fd.get("message") as string) ?? "").trim();
     const company_website = (fd.get("company_website") as string) ?? "";
+
+    // Whitespace-only values pass the browser's `required` attribute but make
+    // junk CRM leads — block them client-side before hitting the API.
+    if (!name || !email || !phone || !message) {
+      setSubmitError("Please fill in your name, email, phone, and message.");
+      setIsSubmitting(false);
+      return;
+    }
 
     const payload: Record<string, string> = {
       name,
@@ -122,14 +130,15 @@ export default function ChatWidget() {
             ? "Too many requests. Please wait a few minutes and try again."
             : res.status === 413
             ? "Your message is too long. Please shorten it and try again."
-            : "Something went wrong. Please try again, or reach us on WhatsApp above."
+            : "Something went wrong. Please try again, or use WhatsApp or phone below."
         );
         trackEvent("chat_lead_failed", { page: pathname, status: res.status });
       }
     } catch (err) {
       console.error("Chat submission failed", err);
+      trackEvent("chat_lead_failed", { page: pathname, status: 0 });
       setSubmitError(
-        "We couldn't reach our server. Check your connection and try again, or use WhatsApp above."
+        "We couldn't reach our server. Check your connection and try again, or use WhatsApp or phone below."
       );
     } finally {
       setIsSubmitting(false);
@@ -212,7 +221,11 @@ export default function ChatWidget() {
             {(["whatsapp", "message"] as const).map((t) => (
               <button
                 key={t}
-                onClick={() => setTab(t)}
+                onClick={() => {
+                  setSubmitError("");
+                  setSubmittedName(null);
+                  setTab(t);
+                }}
                 className={`flex-1 py-2.5 text-xs font-semibold transition-colors ${tab === t ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-400 hover:text-gray-600"}`}
               >
                 {t === "whatsapp" ? "💬 WhatsApp" : "✉️ Leave a message"}
@@ -355,9 +368,30 @@ export default function ChatWidget() {
                 </div>
 
                 {submitError && (
-                  <div role="alert" className="flex items-start gap-2 text-xs text-red-700 bg-red-50 border border-red-200 rounded-xl px-3 py-2.5">
-                    <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
-                    <span>{submitError}</span>
+                  <div role="alert" className="space-y-2.5 text-red-700 bg-red-50 border border-red-200 rounded-xl px-3 py-2.5">
+                    <div className="flex items-start gap-2 text-xs">
+                      <span className="mt-1 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                      <span>{submitError}</span>
+                    </div>
+                    {/* Never a dead end: offer WhatsApp Web + phone right here. */}
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => openWhatsApp()}
+                        className="flex-1 flex items-center justify-center gap-1.5 bg-[#25D366] hover:bg-[#20ba5a] text-white px-3 py-2 rounded-lg font-semibold text-xs transition-all"
+                      >
+                        <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-white shrink-0">
+                          <path d={WA_PATH} />
+                        </svg>
+                        WhatsApp Web
+                      </button>
+                      <a
+                        href={PHONE_TEL}
+                        className="flex-1 flex items-center justify-center gap-1.5 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-3 py-2 rounded-lg font-semibold text-xs transition-all"
+                      >
+                        <Phone size={13} /> Call
+                      </a>
+                    </div>
                   </div>
                 )}
 
