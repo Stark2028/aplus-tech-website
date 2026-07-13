@@ -22,6 +22,8 @@ export const REPRESENTATIVE_MODEL_CODE: Record<string, string> = {
   "samsung-spatial-smhx": "LH85SMHPBGCXXL",
   "samsung-outdoor-oh": "LH75OHAEBGBXXL",
   "samsung-small-qbc": "LH13QBCEBGBXXL",
+  // India sells the Window OM as the OMN series (46"/55" only).
+  "samsung-window-om": "LH46OMNSLGB",
   // Touch
   "samsung-touch-qbc-t": "LH43QMBTBGCXXL",
   "samsung-touch-qmc-t": "LH32QMCTBGCXXL",
@@ -33,7 +35,7 @@ export const REPRESENTATIVE_MODEL_CODE: Record<string, string> = {
   "samsung-interactive-wad": "LH65WADWLGCXXS", // ~ India page not found
   "samsung-waf-series": "LH65WAFWLNCXXL",
   "samsung-interactive-wafx-p": "LH65WAFPLGCXXL",
-  "samsung-interactive-wac": "LH65WACWLGCXXL",
+  "samsung-interactive-wac": "LH65WACWLGCXXL", // ~ India page not found
   "samsung-flip-pro-wm85b": "LH85WMBWLGCXXL",
   "samsung-flip-wmfx": "LH55WMFWBGCXXL",
   // Video Wall
@@ -49,6 +51,9 @@ export const REPRESENTATIVE_MODEL_CODE: Record<string, string> = {
   "samsung-vmb-u-46": "LH46VMBUBGBXXL",
   // LED Signage
   "samsung-the-wall-mpf": "LH012MPFAAA",
+  // MP016F is The Wall MPF at 1.6mm pitch — its own India SKU, distinct from
+  // the 1.2mm code above (the digits here are pitch, not a diagonal).
+  "samsung-mp016f": "LH016MPFAAA",
   "samsung-the-wall-mmf": "LH012MMFRGS",
   "samsung-the-wall-ivc": "LH016IVCMVS",
   "samsung-all-in-one-led-iab": "LH008IABMUS",
@@ -56,20 +61,17 @@ export const REPRESENTATIVE_MODEL_CODE: Record<string, string> = {
   "samsung-all-in-one-led-mmf-a": "LHA15MMFRHS",
   "samsung-indoor-led-ie": "LH015IEACLS",
   // Business / Hotel TV
-  "samsung-business-tv-bed-h": "LH43BEDHLGFXGO", // ~ India lists 98" LH98BEDHLGUXXL
+  // India lists BED-H in 98" only, so that IS the representative size here.
+  "samsung-business-tv-bed-h": "LH98BEDHLGUXXL",
   "samsung-business-tv-befx-h2": "LH43BEFH8GULXL",
   "samsung-business-tv-bec-h": "LH43BECHLGKLXL", // ~ India page not found
-  "samsung-hotel-tv-hgu701f": "HG43U701FAULXL",
   "samsung-hotel-tv-hg75u700f": "HG75U700FAUXXL",
-  "samsung-hotel-tv-hgu800f": "HG65U800FAWXXS", // ~ likely same product as hu8000f
   "samsung-hotel-tv-hgbu800": "HG43BU800AKLXL",
   "samsung-hotel-tv-hu8000f": "HG43U800FAULXL",
-  // "samsung-hotel-tv-hu7010f" intentionally has no entry: it previously
-  // duplicated samsung-hotel-tv-hgu701f's code ("HG43U701FAULXL"), which
-  // caused search to return both products as ambiguous exact-code matches.
-  // HU7010F and HGU701F are different Samsung models ("7010F" vs "701F"),
-  // so this needs its own code sourced from samsung.com/in/business —
-  // omitted rather than fabricated in the meantime.
+  // A hospitality series name drops a zero to form its order code — HU8000F is
+  // HG43U800F above, and by the same rule HU7010F is HG43U701F. That is why the
+  // duplicate HGU701F page carried this code: it was the same TV.
+  "samsung-hotel-tv-hu7010f": "HG43U701FAULXL",
 };
 
 /** Representative Samsung model code for a product, or undefined if unknown. */

@@ -59,9 +59,9 @@ export const OLD_PRODUCT_SLUG_TO_ID: Record<string, string> = {
   "samsung-business-tv-uhd-crystal-4k-bec-h": "samsung-business-tv-bec-h",
 
   // ── Hotel TV ──
-  "samsung-hotel-tv-hg55u701f": "samsung-hotel-tv-hgu701f",
+  "samsung-hotel-tv-hg55u701f": "samsung-hotel-tv-hu7010f",
   "samsung-hotel-tv-hg75u700f": "samsung-hotel-tv-hg75u700f",
-  "samsung-hotel-tv-hg85u800f": "samsung-hotel-tv-hgu800f",
+  "samsung-hotel-tv-hg85u800f": "samsung-hotel-tv-hu8000f",
   "samsung-hotel-tv-4k-uhd-crystal-hgbu800": "samsung-hotel-tv-hgbu800",
 
   // ── Legacy per-SKU pages (older R/T-gen), mapped to their current series ──
@@ -89,8 +89,8 @@ export const OLD_PRODUCT_SLUG_TO_ID: Record<string, string> = {
   "samsung-hg50bu800": "samsung-hotel-tv-hgbu800",
   "samsung-vm55be": "samsung-vmb-e",
   "samsung-vm55bu": "samsung-vmb-u-55",
-  "samsung-vm55ce": "samsung-vm55c-e",
-  "samsung-vm55cr": "samsung-vm55c-r",
+  "samsung-vm55ce": "samsung-vmc-e",
+  "samsung-vm55cr": "samsung-videowall-vmc-r",
   "samsung-wa65c": "samsung-interactive-wac",
   "samsung-wa75c": "samsung-interactive-wac",
   "samsung-wa65d": "samsung-interactive-wad",
@@ -129,4 +129,29 @@ export const OLD_EXACT_PATH_TO_NEW: Record<string, string> = {
   "distributor": "/products",
   "suppliers": "/products",
   "exporters": "/products",
+};
+
+/**
+ * Removed product page → the surviving product it was a duplicate of.
+ *
+ * Each of these described the same Samsung display as its canonical twin, under
+ * Samsung's other name for it: a series page and its sole SKU page (VMC-R is
+ * only made in 55", and that SKU is called VM55C-R), or a hospitality series
+ * whose order code drops a zero (HU7010F → HG43U701FAULXL, exactly as the known
+ * HU8000F → HG43U800FAULXL does). Two pages for one product split Google's
+ * ranking signals between them, so the duplicates are gone and their URLs 301
+ * to the survivor.
+ *
+ * Unlike every other map here these keys are NEW-site product ids, not old
+ * WordPress slugs — /products/{id} is otherwise reserved in middleware.ts, so
+ * this map is what lets those specific paths still redirect instead of 404.
+ * Values must never appear as keys, or the redirect would loop.
+ */
+export const MERGED_PRODUCT_TO_CANONICAL: Record<string, string> = {
+  "samsung-hotel-tv-hgu701f": "samsung-hotel-tv-hu7010f",
+  "samsung-hotel-tv-hgu800f": "samsung-hotel-tv-hu8000f",
+  "samsung-vm55c-r": "samsung-videowall-vmc-r",
+  "samsung-vh55c-r": "samsung-vhc-r",
+  "samsung-vm55c-e": "samsung-vmc-e",
+  "samsung-vh55c-e": "samsung-vhc-e",
 };

@@ -40,9 +40,11 @@ describe("computeSearchResults — model-code search", () => {
     expect(results.some((r) => r.id === "samsung-outdoor-oh")).toBe(false);
   });
 
-  it("only returns one product for the exact code that used to collide (hgu701f/hu7010f)", () => {
+  it("returns only the surviving product for the code that used to collide", () => {
+    // hgu701f and hu7010f both claimed HG43U701FAULXL because they were the same
+    // TV; hgu701f was merged away, so the code now resolves to exactly one page.
     const results = computeSearchResults("HG43U701FAULXL");
     const hits = results.filter((r) => r.subtitle === "Model HG43U701FAULXL");
-    expect(hits.map((r) => r.id)).toEqual(["samsung-hotel-tv-hgu701f"]);
+    expect(hits.map((r) => r.id)).toEqual(["samsung-hotel-tv-hu7010f"]);
   });
 });

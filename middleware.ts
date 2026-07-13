@@ -4,6 +4,7 @@ import {
   OLD_PRODUCT_SLUG_TO_ID,
   OLD_CATEGORY_ROOT_TO_ID,
   OLD_EXACT_PATH_TO_NEW,
+  MERGED_PRODUCT_TO_CANONICAL,
 } from "@/lib/redirects";
 
 // New / reserved top-level routes the migration redirects must never touch,
@@ -35,6 +36,18 @@ export function middleware(req: NextRequest) {
 
   const segments = clean.split("/").filter(Boolean);
   const first = segments[0];
+
+  // Products removed as duplicates still 301 to the twin they duplicated, so the
+  // ranking equity of their URLs (and of every old slug that redirects into one)
+  // survives the merge instead of dying on a 404. This MUST precede the
+  // RESERVED_ROOTS check below, which would otherwise wave every /products/ path
+  // straight through. Safe from looping because no canonical id is itself a key.
+  if (first === "products" && segments.length === 2) {
+    const canonical = MERGED_PRODUCT_TO_CANONICAL[segments[1]];
+    if (canonical) {
+      return permanent(new URL(`/products/${canonical}`, req.url));
+    }
+  }
 
   // Never interfere with the new site's own routes.
   if (RESERVED_ROOTS.has(first)) return NextResponse.next();

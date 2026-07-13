@@ -39,14 +39,14 @@ describe("modelCodesForProduct", () => {
   });
 
   it("has no two products sharing the same representative code", () => {
-    // Regression guard for the hgu701f/hu7010f collision: a duplicate code
-    // makes model-code search return two ambiguous, indistinguishable hits.
+    // The original hgu701f/hu7010f collision turned out to be two pages for one
+    // TV. Any future duplicate means the same mistake, so guard the whole map.
     const codes = Object.values(REPRESENTATIVE_MODEL_CODE);
     expect(new Set(codes).size).toBe(codes.length);
   });
 
-  it("hu7010f has no code until its real one is sourced (was mis-assigned hgu701f's)", () => {
-    expect(modelCodeFor("samsung-hotel-tv-hu7010f")).toBeUndefined();
-    expect(modelCodeFor("samsung-hotel-tv-hgu701f")).toBe("HG43U701FAULXL");
+  it("HG43U701FAULXL belongs to hu7010f, the page that survived the merge", () => {
+    expect(modelCodeFor("samsung-hotel-tv-hu7010f")).toBe("HG43U701FAULXL");
+    expect(modelCodeFor("samsung-hotel-tv-hgu701f")).toBeUndefined();
   });
 });

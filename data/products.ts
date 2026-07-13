@@ -631,273 +631,6 @@ Magnetic service access design allows technicians to swap panels or perform main
   // ── VIDEO WALLS ──────────────────────────────────────────────────────────────
 
   {
-    id: "samsung-vm55c-r",
-    popularity: 62,
-    name: "Samsung VM55C-R Razor-Thin Bezel Video Wall",
-    category: "Video Wall",
-    series: "VM55C-R",
-    description:
-      "Seamless video walls with a razor-thin 0.44 mm bezel for an immersive 24/7 viewing experience in control rooms and atriums.",
-    longDescription: `The Samsung VM55C-R sets the benchmark for LCD video wall performance with its razor-thin 0.44 mm bezel-to-bezel specification — the narrowest gap achievable in an LCD tile format. Designed for 24/7 environments such as security control rooms, network operations centers, airport information displays, and corporate command centers, the VM55C-R delivers uninterrupted visual continuity across large multi-screen arrays.
-
-Image Enhancement Technology ensures accurate color reproduction and picture uniformity across all tiles in an array, eliminating the color and brightness drift that can occur during extended operation. The 178°/178° wide viewing angles mean content remains visible and accurate from virtually any position in the room.
-
-UHD Daisy Chain support allows up to a 5×5 (25-tile) array to be driven without an external video processor, dramatically reducing installation complexity and cost. The display integrates natively with Samsung's MagicINFO S6 platform for centralized content scheduling and remote monitoring across the entire installation.`,
-    features: [
-      "0.44 mm bezel-to-bezel for near-seamless imagery",
-      "178°/178° wide viewing angles",
-      "Image Enhancement Technology for vibrant colors",
-      "UHD Daisy Chain up to 5×5 without extra hardware",
-    ],
-    specs: {
-      resolution: "1,920 × 1,080 (FHD)",
-      brightness: "500 nit",
-      screenSizes: ["55"],
-      operationTime: "24/7",
-    },
-    specGroups: {
-      "Display": {
-        "Diagonal Size": "55\"",
-        "Panel Type": "S-PVA",
-        "Resolution": "1,920 × 1,080 (FHD)",
-        "Brightness (Type)": "500 nit",
-        "Contrast Ratio": "4,000:1 (typical)",
-        "Viewing Angle (H/V)": "178° / 178°",
-        "Bezel-to-Bezel": "0.44 mm (all sides)",
-        "Operation Time Support": "24/7",
-      },
-      "Connectivity": {
-        "HDMI In": "2 (HDMI 1.4)",
-        "DP In": "1 (DisplayPort 1.2)",
-        "DVI-D": "1",
-        "RS-232C": "Yes",
-        "RJ45 In": "Yes",
-        "Daisy Chain": "UHD Daisy Chain (up to 5×5)",
-      },
-      "Power": {
-        "Power Supply": "AC 100–240 V, 50/60 Hz",
-        "Power Consumption (On Mode, W)": "~100 W (typical)",
-      },
-      "Dimension": {
-        "Set Dimension (W×H×D, mm)": "1,209.6 × 680.4 × 77.6 mm",
-      },
-      "Weight": {
-        "Set Weight": "~19.6 kg (without stand)",
-      },
-      "Mechanical Specification": {
-        "VESA Mount (mm)": "400 × 400",
-      },
-    },
-    images: [
-      "/products/video-walls/vm55c-r/1.avif",
-      "/products/video-walls/vm55c-r/2.avif",
-      "/products/video-walls/vm55c-r/3.avif",
-      "/products/video-walls/vm55c-r/4.avif",
-      "/products/video-walls/vm55c-r/5.avif",
-      "/products/video-walls/vm55c-r/6.avif",
-      "/products/video-walls/vm55c-r/7.avif",
-      "/products/video-walls/vm55c-r/8.avif",
-      "/products/video-walls/vm55c-r/9.avif",
-    ],
-  },
-  {
-    id: "samsung-vh55c-r",
-    popularity: 81,
-    name: "Samsung VH55C-R Razor-Thin Bezel Video Wall",
-    category: "Video Wall",
-    series: "VH55C-R",
-    description:
-      "High-brightness razor-thin bezel video wall with non-glare panel, ideal for broadcast studios and command centers.",
-    features: [
-      "0.088 cm bezel-to-bezel (0.88 mm)",
-      "700 nit high brightness",
-      "Non-glare panel",
-      "Wide viewing angle",
-    ],
-    specs: {
-      resolution: "1,920 × 1,080 (FHD)",
-      brightness: "700 nit",
-      screenSizes: ["55"],
-      operationTime: "24/7",
-    },
-    images: [
-      "/products/video-walls/vh55c-r/1.avif",
-      "/products/video-walls/vh55c-r/2.avif",
-      "/products/video-walls/vh55c-r/3.avif",
-      "/products/video-walls/vh55c-r/4.avif",
-      "/products/video-walls/vh55c-r/5.avif",
-      "/products/video-walls/vh55c-r/6.avif",
-      "/products/video-walls/vh55c-r/7.avif",
-      "/products/video-walls/vh55c-r/8.avif",
-    ],
-  
-    longDescription: `The Samsung VH55C-R sets the performance benchmark for high-brightness video walls with its razor-thin 0.88 mm bezel-to-bezel specification combined with class-leading 700-nit brightness. Engineered for broadcast studios, command centers, and security control rooms where lighting is controlled yet visibility across large multi-tile arrays is absolutely critical, the VH55C-R delivers professional-grade picture uniformity and color accuracy.
-
-The non-glare panel eliminates reflections that would otherwise create hot spots across the video wall surface, ensuring content remains readable from any position within the control room. The 178°/178° wide viewing angles mean operators and observers positioned to the side of the installation see the same accurate colors and brightness as those viewing head-on, a critical requirement in emergency response and surveillance operations.
-
-Image Enhancement Technology ensures each tile in a multi-screen array maintains identical brightness, color saturation, and contrast — eliminating the visual "seams" that occur when tiles age at different rates or experience uneven ambient lighting exposure. With daisy chain support, up to 25 tiles (5×5) can operate as a unified canvas without an external video processor, simplifying installation and reducing overall system cost.`,
-    specGroups: {
-      "Display": {
-        "Diagonal Size": "55\"",
-        "Panel Type": "S-PVA (non-glare)",
-        "Resolution": "1,920 × 1,080 (FHD)",
-        "Brightness (Type)": "700 nit",
-        "Contrast Ratio": "4,500:1 (typical)",
-        "Viewing Angle (H/V)": "178° / 178°",
-        "Response Time": "8 ms (typical)",
-        "Bezel-to-Bezel": "0.88 mm (all sides)",
-        "Operation Time Support": "24/7",
-      },
-      "Connectivity": {
-        "HDMI In": "2 (HDMI 1.4)",
-        "DP In": "1 (DisplayPort 1.2)",
-        "DVI-D": "1",
-        "RS-232C": "Yes",
-        "RJ45 In": "Yes",
-        "Daisy Chain": "Daisy Chain support (5×5 max)",
-      },
-      "Power": {
-        "Power Supply": "AC 100–240 V, 50/60 Hz",
-        "Power Consumption (On Mode, W)": "~120 W (typical)",
-      },
-      "Mechanical Specification": {
-        "VESA Mount (mm)": "400 × 400",
-      },
-    },
-  },
-  {
-    id: "samsung-vh55c-e",
-    popularity: 60,
-    name: "Samsung VH55C-E Extreme Narrow Bezel Video Wall",
-    category: "Video Wall",
-    series: "VH55C-E",
-    description:
-      "Extreme narrow bezel video wall with 0.174 cm bezel-to-bezel for demanding seamless display installations.",
-    features: [
-      "0.174 cm bezel-to-bezel",
-      "Non-glare panel",
-      "700 nit brightness",
-      "Wide viewing angle",
-    ],
-    specs: {
-      resolution: "1,920 × 1,080 (FHD)",
-      brightness: "700 nit",
-      screenSizes: ["55"],
-      operationTime: "24/7",
-    },
-    images: [
-      "/products/video-walls/vh55c-e/1.avif",
-      "/products/video-walls/vh55c-e/2.avif",
-      "/products/video-walls/vh55c-e/3.avif",
-      "/products/video-walls/vh55c-e/4.avif",
-      "/products/video-walls/vh55c-e/5.avif",
-      "/products/video-walls/vh55c-e/6.avif",
-      "/products/video-walls/vh55c-e/7.avif",
-      "/products/video-walls/vh55c-e/8.avif",
-    ],
-  
-    longDescription: `The Samsung VH55C-E achieves extreme narrow bezel performance with its 0.174 cm (1.74 mm) bezel-to-bezel specification — pushing the boundaries of LCD video wall seamlessness while maintaining the 700-nit brightness that high-ambient environments demand. Designed for demanding seamless display installations in sports arenas, broadcast facilities, and luxury retail environments, the VH55C-E creates near-invisible tile boundaries that pull audiences into immersive content experiences.
-
-The non-glare panel coating reduces reflections and ambient light washout, ensuring vibrant, detailed imagery remains visible even when video walls are positioned near windows or bright architectural lighting. The exceptional picture quality and minimal bezel presence combine to create installations where viewers forget they're watching tiled displays and instead experience unified, continuous storytelling.
-
-With 24/7 operation certification and Samsung's Image Enhancement Technology, each tile in a multi-screen VH55C-E array maintains pixel-perfect alignment and color uniformity — critical for applications like weather radar displays, sports statistics walls, and immersive retail brand experiences where content continuity drives customer engagement.`,
-    specGroups: {
-      "Display": {
-        "Diagonal Size": "55\"",
-        "Panel Type": "S-PVA (non-glare coating)",
-        "Resolution": "1,920 × 1,080 (FHD)",
-        "Brightness (Type)": "700 nit",
-        "Contrast Ratio": "4,500:1 (typical)",
-        "Viewing Angle (H/V)": "178° / 178°",
-        "Color Gamut": "72% NTSC (typical)",
-        "Response Time": "8 ms (typical)",
-        "Bezel-to-Bezel": "1.74 mm (extreme narrow)",
-        "Operation Time Support": "24/7",
-      },
-      "Connectivity": {
-        "HDMI In": "2 (HDMI 1.4)",
-        "DP In": "1 (DisplayPort 1.2)",
-        "DVI-D": "1",
-        "RS-232C": "Yes",
-        "RJ45 In": "Yes",
-      },
-      "Power": {
-        "Power Supply": "AC 100–240 V, 50/60 Hz",
-        "Power Consumption (On Mode, W)": "~115 W (typical)",
-      },
-      "Mechanical Specification": {
-        "VESA Mount (mm)": "400 × 400",
-      },
-    },
-  },
-  {
-    id: "samsung-vm55c-e",
-    popularity: 77,
-    name: "Samsung VM55C-E Extreme Narrow Bezel Video Wall",
-    category: "Video Wall",
-    series: "VM55C-E",
-    description:
-      "Extreme narrow bezel video wall with non-glare panel for immersive seamless displays.",
-    features: [
-      "0.174 cm bezel-to-bezel (1.74 mm)",
-      "Non-glare panel",
-      "Wide viewing angle",
-      "500 nit brightness",
-    ],
-    specs: {
-      resolution: "1,920 × 1,080 (FHD)",
-      brightness: "500 nit",
-      screenSizes: ["55"],
-      operationTime: "24/7",
-    },
-    images: [
-      "/products/video-walls/vm55c-e/1.avif",
-      "/products/video-walls/vm55c-e/2.avif",
-      "/products/video-walls/vm55c-e/3.avif",
-      "/products/video-walls/vm55c-e/4.avif",
-      "/products/video-walls/vm55c-e/5.avif",
-      "/products/video-walls/vm55c-e/6.avif",
-      "/products/video-walls/vm55c-e/7.avif",
-      "/products/video-walls/vm55c-e/8.avif",
-      "/products/video-walls/vm55c-e/9.avif",
-    ],
-  
-    longDescription: `The Samsung VM55C-E delivers extreme narrow bezel performance at a mid-range brightness level, making it ideal for climate-controlled control rooms, broadcast studios, and indoor retail environments where bright ambient light is not a challenge. The 1.74 mm bezel-to-bezel specification combined with 500-nit brightness creates an exceptional price-to-performance ratio for organizations deploying large video wall installations.
-
-The non-glare panel technology prevents light reflections from sources like fluorescent ceiling fixtures and monitor backlighting that would otherwise create visual distractions across the video wall canvas. The result is a seamless, immersive viewing experience where content appears to float on an invisible panel rather than being divided into distinct LCD tiles.
-
-With full daisy chain support and Samsung's Image Enhancement Technology ensuring color uniformity across all tiles, the VM55C-E scales seamlessly from compact 2×2 arrays to massive installations spanning entire control room walls. MagicINFO S6 integration enables centralized content scheduling, monitoring, and management across fleets of video walls, making the VM55C-E a scalable solution for organizations with multiple facilities.`,
-    specGroups: {
-      "Display": {
-        "Diagonal Size": "55\"",
-        "Panel Type": "S-PVA (non-glare)",
-        "Resolution": "1,920 × 1,080 (FHD)",
-        "Brightness (Type)": "500 nit",
-        "Contrast Ratio": "4,000:1 (typical)",
-        "Viewing Angle (H/V)": "178° / 178°",
-        "Color Gamut": "72% NTSC (typical)",
-        "Response Time": "8 ms (typical)",
-        "Bezel-to-Bezel": "1.74 mm (extreme narrow)",
-        "Operation Time Support": "24/7",
-      },
-      "Connectivity": {
-        "HDMI In": "2 (HDMI 1.4)",
-        "DP In": "1 (DisplayPort 1.2)",
-        "DVI-D": "1",
-        "RS-232C": "Yes",
-        "RJ45 In": "Yes",
-        "Daisy Chain": "Daisy Chain support (5×5 max)",
-      },
-      "Power": {
-        "Power Supply": "AC 100–240 V, 50/60 Hz",
-        "Power Consumption (On Mode, W)": "~100 W (typical)",
-      },
-      "Mechanical Specification": {
-        "VESA Mount (mm)": "400 × 400",
-      },
-    },
-  },
-  {
     id: "samsung-vmb-u-46",
     popularity: 97,
     catalog2026: true,
@@ -1147,7 +880,7 @@ DP 1.2 daisy chain support allows up to 4K content to be driven through a single
         "Viewing Angle (H/V)": "178° / 178°",
         "Color Gamut": "72% NTSC (typical)",
         "Response Time": "8 ms",
-        "Bezel-to-Bezel": "5.5 mm (ultra-narrow)",
+        "Bezel-to-Bezel": "0.44 mm (all sides)",
         "Operation Time Support": "24/7",
       },
       "Connectivity": {
@@ -2142,7 +1875,7 @@ With factory-calibrated color performance and straightforward daisy chain connec
         "Viewing Angle (H/V)": "178° / 178°",
         "Color Gamut": "72% NTSC (typical)",
         "Response Time": "8 ms",
-        "Bezel-to-Bezel": "8.5 mm (standard narrow)",
+        "Bezel-to-Bezel": "1.74 mm (extreme narrow)",
         "Operation Time Support": "24/7",
       },
       "Connectivity": {
@@ -2169,9 +1902,9 @@ With factory-calibrated color performance and straightforward daisy chain connec
     category: "Video Wall",
     series: "VHC-R",
     description:
-      "High-brightness 700 nit FHD video wall with a razor-thin 1.74 mm bezel — built for control rooms, lobbies, retail, and transportation hubs.",
+      "High-brightness 700 nit FHD video wall with a razor-thin 0.88 mm bezel — built for control rooms, lobbies, retail, and transportation hubs.",
     features: [
-      "Razor-thin 1.74 mm bezel (0.9 mm even bezel)",
+      "Razor-thin 0.88 mm bezel-to-bezel (0.44 mm even bezel)",
       "High 700 nit brightness for lit environments",
       "Uniform color & brightness calibration",
       "24/7 operation with slim, durable cabinet",
@@ -2194,7 +1927,7 @@ With factory-calibrated color performance and straightforward daisy chain connec
       "/products/video-walls/samsung-vhc-r/9.png",
       "/products/video-walls/samsung-vhc-r/10.png",
     ],
-    longDescription: `The Samsung VHC-R pairs a razor-thin 1.74 mm bezel with high 700-nit brightness, making it the choice when a video wall has to stay sharp and legible in demanding, brightly lit spaces. Its near-seamless tiling and even 0.9 mm bezel keep multi-screen content coherent across the array, while high brightness ensures visibility in daylight-facing lobbies, retail storefronts, and transportation hubs.
+    longDescription: `The Samsung VHC-R pairs a razor-thin 0.88 mm bezel-to-bezel with high 700-nit brightness, making it the choice when a video wall has to stay sharp and legible in demanding, brightly lit spaces. Its near-seamless tiling and even 0.44 mm bezel keep multi-screen content coherent across the array, while high brightness ensures visibility in daylight-facing lobbies, retail storefronts, and transportation hubs.
 
 Engineered for uninterrupted duty, the VHC-R is rated for 24/7 continuous operation and delivers uniform color and brightness calibration across every tile, so large walls render as one consistent surface rather than a grid of mismatched panels. The slim, durable cabinet simplifies mounting flush against walls and inside custom enclosures.
 
@@ -2208,7 +1941,7 @@ Standard professional connectivity — dual HDMI 2.0, DisplayPort 1.2, DVI-D, an
         "Contrast Ratio": "500,000:1 (dynamic)",
         "Viewing Angle (H/V)": "178° / 178°",
         "Response Time": "8 ms",
-        "Bezel-to-Bezel": "1.74 mm (0.9 mm even bezel)",
+        "Bezel-to-Bezel": "0.88 mm (0.44 mm even bezel)",
         "Operation Time Support": "24/7",
       },
       "Connectivity": {
@@ -2707,78 +2440,6 @@ Available in six sizes from 43" to 85", the BEFX-H2 adapts to any commercial spa
     },
   },
   {
-    id: "samsung-hotel-tv-hgu701f",
-    popularity: 65,
-    name: "Samsung Hotel TV HGU701F",
-    category: "Commercial TV",
-    subCategory: "Hotel TV",
-    series: "HGU701F",
-    description:
-      "Reliable entry-level hospitality TV with hotel-mode features and LYNK Cloud management for small and mid-scale hotel properties.",
-    features: [
-      "Hotel Mode for locked-down guest settings",
-      "LYNK Cloud remote management compatible",
-      "Multiple HDMI and USB ports",
-      "Slim wall-mount design",
-    ],
-    specs: {
-      resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "300 nit",
-      screenSizes: ["43", "50", "55"],
-      operationTime: "16/7",
-    },
-    images: [
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/1.jpg",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/2.jpg",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/3.jpg",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/4.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/5.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/6.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/7.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/8.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/9.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/10.png",
-    ],
-  
-    longDescription: `The Samsung HGU701F provides reliable entry-level hospitality television for small and mid-scale hotel properties seeking to upgrade guest room experiences without premium pricing. With hotel-specific features like locked-down guest settings and simplified remote controls, the HGU701F ensures guests can enjoy entertainment while preventing accidental changes to critical settings.
-
-LYNK Cloud remote management compatibility enables hoteliers to monitor display status, manage firmware updates, and troubleshoot issues from a central operations dashboard — dramatically reducing on-site engineering overhead. The ability to push promotional content to guest rooms enables revenue optimization through targeted VOD suggestions, restaurant reservation options, and spa service promotions.
-
-With multiple HDMI and USB ports supporting diverse guest devices — from older set-top boxes to modern streaming appliances to personal USB media — the HGU701F accommodates the full spectrum of guest technology expectations. The slim wall-mount design adapts to modern hospitality room layouts where space efficiency and aesthetic integration are paramount.`,
-    specGroups: {
-      "Display": {
-        "Diagonal Size": "43\" / 50\" / 55\"",
-        "Panel Type": "IPS",
-        "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "300 nit",
-        "Color Gamut": "72% NTSC (typical)",
-        "Viewing Angle (H/V)": "178° / 178°",
-        "Operation Time Support": "16/7",
-      },
-      "Connectivity": {
-        "HDMI In": "2 × HDMI",
-        "USB": "2 × USB",
-        "RJ45 In": "Yes",
-        "RS-232C": "Yes",
-      },
-      "Power": {
-        "Power Supply": "AC 100–240 V, 50/60 Hz",
-      },
-      "Mechanical Specification": {
-        "VESA Mount (mm)": "200 × 200 (43\"–50\") / 300 × 300 (55\")",
-        "Slim Design": "Yes",
-      },
-      "SoC": {
-        "OS Version": "Tizen 5.5 (Hotel Edition)",
-        "Processor": "Quad-core 1.5 GHz",
-        "RAM": "1.5 GB",
-        "Flash Memory Size": "8 GB",
-        "Hotel Mode": "Yes",
-        "LYNK Cloud": "Compatible",
-      },
-    },
-  },
-  {
     id: "samsung-hotel-tv-hg75u700f",
     popularity: 97,
     name: "Samsung Hotel TV HG75U700F (75\")",
@@ -2847,79 +2508,6 @@ Hotel Mode restricts guest access to critical settings while enabling easy strea
         "Flash Memory Size": "8 GB",
         "Hotel Mode": "Yes",
         "LYNK Cloud": "Compatible",
-      },
-    },
-  },
-  {
-    id: "samsung-hotel-tv-hgu800f",
-    popularity: 78,
-    name: "Samsung Hotel TV HGU800F",
-    category: "Commercial TV",
-    subCategory: "Hotel TV",
-    series: "HGU800F",
-    description:
-      "Premium hotel TV series with Google Cast, LYNK Cloud management, and Dynamic Crystal Color for a superior guest experience.",
-    features: [
-      "Google Cast for seamless guest device mirroring",
-      "Dynamic Crystal Color 4K UHD",
-      "LYNK Cloud centralised room management",
-      "Slim Fit design for modern interiors",
-    ],
-    specs: {
-      resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "300 nit",
-      screenSizes: ["43", "50", "55", "65", "75", "85"],
-      operationTime: "16/7",
-    },
-    images: [
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/1.jpg",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/2.jpg",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/3.jpg",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/4.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/5.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/6.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/7.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/8.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/9.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/10.png",
-    ],
-  
-    longDescription: `The Samsung HGU800F represents the premium tier of hospitality television, combining Google Cast seamless guest device mirroring with Dynamic Crystal Color vibrancy and LYNK Cloud centralized room management. Designed for luxury hotel properties and high-end resort destinations where guest expectations are highest and room revenues justify premium equipment investments, the HGU800F transforms guest rooms into premium entertainment sanctuaries.
-
-Google Cast integration enables guests to instantly stream content from their personal devices without pairing codes, authentication screens, or technical complexity. Whether guests want to mirror YouTube videos, share Netflix screens, or play personal music libraries, Google Cast makes it seamless.
-
-Dynamic Crystal Color technology delivers exceptional color saturation and vibrancy that makes standard cable broadcasts look stunning and transforms streaming content into cinema-quality experiences. The comprehensive 43" to 85" size range adapts to any property segment — from compact business hotel rooms to sprawling resort penthouse suites. LYNK Cloud enables centralized management of hundreds of displays across multiple properties from a single operations dashboard.`,
-    specGroups: {
-      "Display": {
-        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\" / 85\"",
-        "Panel Type": "IPS Dynamic Crystal Color",
-        "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "300 nit",
-        "HDR": "HDR standard",
-        "Color Gamut": "99% BT.709",
-        "Viewing Angle (H/V)": "178° / 178°",
-        "Operation Time Support": "16/7",
-      },
-      "Connectivity": {
-        "HDMI In": "2 × HDMI",
-        "USB": "2 × USB",
-        "RJ45 In": "Yes",
-        "RS-232C": "Yes",
-        "Google Cast": "Yes (built-in)",
-      },
-      "Power": {
-        "Power Supply": "AC 100–240 V, 50/60 Hz",
-      },
-      "Mechanical Specification": {
-        "VESA Mount (mm)": "300 × 300 (43\"–65\") / 400 × 400 (75\"–85\")",
-        "Slim Fit": "Yes",
-      },
-      "SoC": {
-        "OS Version": "Tizen 6.5 (Hotel Edition)",
-        "Processor": "Quad-core 1.5 GHz",
-        "RAM": "2 GB",
-        "Flash Memory Size": "8 GB",
-        "LYNK Cloud": "Compatible with centralized management",
       },
     },
   },
