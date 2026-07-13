@@ -64,10 +64,65 @@ export const REPRESENTATIVE_MODEL_CODE: Record<string, string> = {
   "samsung-hotel-tv-hgu800f": "HG65U800FAWXXS", // ~ likely same product as hu8000f
   "samsung-hotel-tv-hgbu800": "HG43BU800AKLXL",
   "samsung-hotel-tv-hu8000f": "HG43U800FAULXL",
-  "samsung-hotel-tv-hu7010f": "HG43U701FAULXL",
+  // "samsung-hotel-tv-hu7010f" intentionally has no entry: it previously
+  // duplicated samsung-hotel-tv-hgu701f's code ("HG43U701FAULXL"), which
+  // caused search to return both products as ambiguous exact-code matches.
+  // HU7010F and HGU701F are different Samsung models ("7010F" vs "701F"),
+  // so this needs its own code sourced from samsung.com/in/business —
+  // omitted rather than fabricated in the meantime.
 };
 
 /** Representative Samsung model code for a product, or undefined if unknown. */
 export function modelCodeFor(productId: string): string | undefined {
   return REPRESENTATIVE_MODEL_CODE[productId];
+}
+
+/**
+ * Product ids where the representative code's size digits equal a real
+ * `screenSizes` entry (so the substitution guard below would normally pass),
+ * but substitution is still wrong because the product page bundles multiple
+ * distinct Samsung sub-series rather than one size-only SKU family.
+ *
+ * Confirmed for "samsung-outdoor-oh": screenSizes ["24","46","55","75"] span
+ * three different sub-series per the product's own specGroups — 75" is OHA
+ * (the representative code's family), 46"/55" is OHDX, 24" is OHB. Naively
+ * substituting the size would fabricate an OHA-branded code for what's
+ * actually an OHDX/OHB model.
+ */
+const MIXED_SUBSERIES_PRODUCTS = new Set<string>(["samsung-outdoor-oh"]);
+
+/**
+ * Every plausible Samsung order code for a product's series, derived from the
+ * representative code by substituting the diagonal size.
+ *
+ * SKUs within a display series differ only by the size digits right after the
+ * two-letter prefix (`LH65WAFP…` → `LH75WAFP…`), so we generate one code per
+ * numeric entry in `screenSizes`. The catch: we only substitute when the
+ * representative code's own digits are themselves one of those sizes — proof
+ * that the digit field really encodes the diagonal — and the product isn't
+ * flagged in `MIXED_SUBSERIES_PRODUCTS` above. For products whose code
+ * encodes something else (The Wall's pixel pitch `LH012MPF…`, All-in-One LED
+ * `LH008IAB…`), the guard fails and we return just the representative code
+ * rather than fabricate a wrong one. Because the model family (everything after
+ * the size) is always preserved, a bad guess could only ever miss — never
+ * surface the wrong product.
+ */
+export function modelCodesForProduct(
+  productId: string,
+  screenSizes: string[]
+): string[] {
+  const rep = REPRESENTATIVE_MODEL_CODE[productId];
+  if (!rep) return [];
+  if (MIXED_SUBSERIES_PRODUCTS.has(productId)) return [rep];
+
+  const m = /^([A-Za-z]{2})(\d+)([A-Za-z].*)$/.exec(rep);
+  if (!m) return [rep];
+
+  const [, prefix, sizeDigits, rest] = m;
+  const numericSizes = screenSizes.filter((s) => /^\d+$/.test(s));
+  if (!numericSizes.includes(sizeDigits)) return [rep];
+
+  const codes = numericSizes.map((size) => `${prefix}${size}${rest}`);
+  // Dedupe; the representative is already among `codes` since its size qualifies.
+  return Array.from(new Set([rep, ...codes]));
 }
