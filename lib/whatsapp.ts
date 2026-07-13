@@ -51,3 +51,10 @@ export function getWhatsAppMessage(pathname: string): string {
 export function buildWhatsAppUrl(message: string): string {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
+
+/** Build a WhatsApp Web deep link. Used on desktop so a click opens the
+ *  in-browser WhatsApp Web client directly, skipping the wa.me "Continue to
+ *  Chat" interstitial that looks broken to visitors without the desktop app. */
+export function buildWhatsAppWebUrl(message: string): string {
+  return `https://web.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}`;
+}
