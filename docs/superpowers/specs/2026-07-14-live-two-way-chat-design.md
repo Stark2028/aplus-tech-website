@@ -2,6 +2,10 @@
 
 **Date:** 2026-07-14
 **Status:** Approved (design), pending implementation plan
+**Amended 2026-07-14:** (a) **attachments** — the console can send catalogues /
+spec sheets / images, via **both** file upload and quick-send links, promoted from
+non-goal into **Phase 1** (§4.1); (b) **agent WhatsApp ping** added as **Phase 4**
+(§8.1), sequenced after FCM so Meta's approval queue cannot block the build.
 **Scope owner:** customer `ChatWidget` + new sales console at `/admin/chat` + Firebase backend
 **Supersedes/extends:** [2026-07-13-chat-lead-capture-design.md](2026-07-13-chat-lead-capture-design.md)
 (that spec explicitly parked "live two-way chat … requires a datastore + auth …
@@ -62,6 +66,16 @@ Consequences:
   one-click **WhatsApp** button in the console (see §6.3).
 - **Visitor intelligence:** live visitor list + proactive chat + journey
   enrichment (see §7).
+- **Attachments (amended):** the salesperson sells display hardware — he must be
+  able to **send catalogues, spec sheets and images**. The console gets **both**
+  real **file upload** (Firebase Storage) **and** **quick-send links** to assets
+  the site already produces. Both land in **Phase 1** (see §4.1).
+- **Agent WhatsApp ping (amended):** **FCM push ships first** (free, instant, no
+  Meta approval). A WhatsApp alert to the salesperson is deferred to **Phase 4**
+  (§8.1): it needs Meta business verification + utility-template approval, which
+  takes days and must not block the build. Rationale: the salesperson lives in
+  WhatsApp, so the ping is genuinely more likely to be *seen* than a web push —
+  it is worth doing, just not worth blocking on.
 
 ## What is already safe (do not rebuild)
 
@@ -149,6 +163,9 @@ conversations/{conversationId}/messages/{messageId}
   sender          // "customer" | "agent" | "system"
   text, createdAt
   emailedAt       // set when an agent reply was emailed to an offline customer
+  attachment      // optional { url, name, mime, size } — agent-sent file    (§4.1)
+  link            // optional { url, label, kind } — quick-send site link    (§4.1)
+                  //   kind: "product" | "specSheet" | "catalogue" | "category"
 
 agentDevices/{fcmToken}
   token, label, agentUid, createdAt   // one doc per device → multi-device push
@@ -279,12 +296,50 @@ The panel's WhatsApp path (Web link + QR + phone/email) is **unchanged**; only i
 - **Lead context beside the chat** — journey (page trail), products viewed,
   city/region, IP, referrer. *(P3; name/email/phone/page available from P1.)*
 - **[WhatsApp customer]** — one click, pre-filled with conversation context (§6.3).
+- **Send catalogues & images** — file upload + quick-send links (§4.1).
 - **Live visitors panel** — who is on the site right now, with a **[Chat]** button
   to open a proactive conversation. *(P3)*
 - **Layout** — mobile: list → tap → thread; laptop: side-by-side.
 - **In-app alerts** — sound + tab-title badge while open.
 - **Heartbeat** — writes `status/team.onlineUntil = now + 90s` while open.
 - `lib/chat/useInbox.ts`, `lib/chat/useLiveVisitors.ts`.
+
+### 4.1 Sending catalogues, spec sheets & images (Phase 1)
+
+He sells display hardware: "here is the spec sheet" is a core sales move, so the
+console gets **two** ways to send one — a cheap link and a real file.
+
+**A. Quick-send links (no new storage).** The site already produces the assets:
+product pages, spec sheets, and the compare PDF/Excel exports behind
+[lib/leadGate.ts](../../../lib/leadGate.ts). The console offers a picker —
+search the catalogue ([data/products.ts](../../../data/products.ts)) and send a
+**link** message (`link: { url, label, kind }`). Rendered in the thread as a
+titled card. Cheapest path, and it keeps the visitor on-site where the existing
+lead-gate and PostHog tracking still apply.
+
+**B. File upload (Firebase Storage).** For anything not already on the site — a
+brochure, a photo, a quotation PDF. Agent picks a file → uploaded to
+`chat-attachments/{conversationId}/{messageId}/{filename}` → message written with
+`attachment: { url, name, mime, size }`. Thread renders images inline and other
+types as a download card.
+
+**Limits (enforced in Storage rules, not just the UI):**
+- **Max 10 MB** per file.
+- **Allowed types only:** `application/pdf`, `image/png`, `image/jpeg`,
+  `image/webp`. Everything else rejected — this is the malware surface, so the
+  allow-list is a security control, not a convenience.
+- **Agent-only writes.** Customers **cannot** upload in Phase 1 (see §14): it adds
+  an anonymous-write malware/abuse surface for a need nobody has raised yet. If a
+  customer needs to send a room photo, revisit it deliberately.
+
+**Offline customer.** An attachment/link sent to an offline customer follows the
+same §6.3 path: the auto-email includes the **link** (or a download URL for the
+file), so it lands even if they never return to the tab.
+
+**Files:** `components/admin/chat/AttachmentPicker.tsx` (upload + type/size
+guard), `components/admin/chat/LinkPicker.tsx` (catalogue search → link message),
+`components/chat/MessageAttachment.tsx` (shared renderer — image inline, file and
+link as cards), `lib/chat/uploadAttachment.ts`.
 
 ## 5. Presence — both directions
 
@@ -377,6 +432,40 @@ fallbacks already in the widget. The customer always has another route to a huma
 - **iOS** — minimal PWA manifest scoped to `/admin/chat` so it can be Added to
   Home Screen (required for push on iPhone). Android/desktop need no install.
 
+### 8.1 WhatsApp ping to the salesperson (Phase 4)
+
+**Why:** the salesperson lives in WhatsApp. A web push he has dismissed once may
+never be looked at again; a WhatsApp message will be. This is a *reliability*
+upgrade on the alert, not a replacement for FCM.
+
+**The constraint that sets the phasing.** A `wa.me` link cannot be fired by a
+server — it requires a human click. Sending a message *to* someone proactively
+requires the **WhatsApp Business Platform (Meta Cloud API)**, and because the
+24-hour service window will not be open, it must be a **pre-approved utility
+template**. That needs a Meta Business account, business verification, and
+template approval — **days of lead time**, gated on Meta, not on us. Per-message
+cost is negligible at this volume; the setup is the real cost. Blocking the whole
+chat build behind that queue would be a mistake, so it is **Phase 4**.
+
+**Design (additive — no redesign).** §8's `POST /api/chat/notify` is already the
+**single choke point** through which every alert fans out. WhatsApp becomes one
+more fan-out target inside that same route:
+
+```
+/api/chat/notify ──┬──▶ FCM  ──▶ all agentDevices        (Phase 2)
+                   └──▶ WhatsApp Cloud API (template)    (Phase 4)
+```
+
+- Template (utility): *"New website chat from {{1}} ({{2}}) — {{3}}. Reply:
+  {{4}}"* → name, city, message preview, console deep link.
+- Recipients: `AGENT_WHATSAPP_NUMBERS` (E.164, comma-separated) — same
+  multi-recipient thinking as the FCM device fan-out, so the owner can be copied.
+- New env: `WHATSAPP_CLOUD_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`,
+  `WHATSAPP_TEMPLATE_NAME`, `AGENT_WHATSAPP_NUMBERS`.
+- **Failure is non-fatal**, exactly like FCM: the message is already in Firestore,
+  the email and Zoho lead already landed, and the console still updates live.
+- Same treatment for the §6 escalation push ("⚠️ Unanswered chat").
+
 ## 9. Security, privacy & cost
 
 **Firestore rules**
@@ -390,11 +479,25 @@ fallbacks already in the widget. The customer always has another route to a huma
 - *public*: read-only `status/team` (leaks no UIDs).
 - `scripts/set-agent-claim.mjs` — one-time Admin-SDK script granting `agent: true`.
 
+**Storage rules (attachments, §4.1)** — the upload path is the one place an
+outsider could push a file at us, so the limits are enforced *in rules*, not only
+in the UI:
+- **Write:** only `request.auth.token.agent == true`. Customers cannot upload
+  (§14) — no anonymous write surface.
+- **Size:** `request.resource.size < 10 * 1024 * 1024` (10 MB).
+- **Type allow-list:** `request.resource.contentType` must be one of
+  `application/pdf`, `image/png`, `image/jpeg`, `image/webp`. Deny by default.
+- **Read:** the conversation's `ownerUid` (so the customer can open what was sent
+  to them) and any agent. Path scoped per conversation:
+  `chat-attachments/{conversationId}/…`.
+
 **CSP** ([next.config.ts](../../../next.config.ts#L28)) — add Firebase hosts:
 - `connect-src`: `https://*.googleapis.com https://firestore.googleapis.com
   https://fcm.googleapis.com https://firebaseinstallations.googleapis.com
   https://identitytoolkit.googleapis.com https://securetoken.googleapis.com
-  https://*.gstatic.com`
+  https://firebasestorage.googleapis.com https://*.gstatic.com`
+- `img-src`: add `https://firebasestorage.googleapis.com` (inline image
+  attachments render from Storage).
 - `script-src`: `https://www.gstatic.com` (messaging SW `importScripts`, unless the
   SW is bundled)
 - `worker-src 'self' blob:` already present (SW is same-origin).
@@ -408,6 +511,10 @@ data. Mitigations: **90-day TTL** on `visitors`; used only for sales follow-up;
 the design: heartbeat only while the tab is visible; journey capped at 30; session
 written once; bots excluded. Overage is ~$0.18/100k writes — cheap, but **worth
 watching** given the site's large SEO surface.
+Firebase **Storage** free tier (5 GB stored, ~1 GB/day download) comfortably
+covers attachment volume at 10 MB/file; the quick-send **link** path (§4.1 A)
+costs nothing at all, which is why it is offered alongside upload rather than
+being replaced by it.
 
 **Abuse** — pre-chat honeypot; per-IP limits on every new route; message-rate cap
 in rules; `escalate`/`notify`/`reply-email` all verify conversation ownership.
@@ -421,6 +528,8 @@ in rules; `escalate`/`notify`/`reply-email` all verify conversation ownership.
   `NEXT_PUBLIC_FIREBASE_VAPID_KEY`.
 - **Server (secret):** `FIREBASE_ADMIN_PROJECT_ID`, `FIREBASE_ADMIN_CLIENT_EMAIL`,
   `FIREBASE_ADMIN_PRIVATE_KEY`, `CHAT_RESUME_SECRET`.
+- **Phase 4 only (WhatsApp agent ping, §8.1):** `WHATSAPP_CLOUD_TOKEN`,
+  `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_TEMPLATE_NAME`, `AGENT_WHATSAPP_NUMBERS`.
 
 ## 11. Error handling — never a dead end
 
@@ -445,10 +554,17 @@ in rules; `escalate`/`notify`/`reply-email` all verify conversation ownership.
   +91); HMAC resume-token sign/verify (and rejection of a tampered token);
   `/api/chat/notify` (mock Admin SDK — ownership check, multi-device fan-out,
   stale-token pruning); `/api/visitor/session` (geo headers → doc; missing headers
-  → "Unknown").
+  → "Unknown"); **attachment guards (§4.1)** — file over 10 MB rejected, a
+  disallowed MIME type (e.g. `application/zip`, `image/svg+xml`) rejected, an
+  allowed type accepted; quick-send link builder produces the right
+  `{ url, label, kind }` for a product vs a spec sheet.
 - **Rules (Firestore emulator):** a customer cannot read another customer's
   conversation, another visitor's doc, or `agentDevices`; cannot forge
   `sender: "agent"`; an agent can; `status/team` is public-read, not public-write.
+- **Storage rules (emulator, §4.1):** a customer (anon) **cannot upload at all**;
+  an agent can; an oversized file is rejected; a disallowed content type is
+  rejected; the conversation's `ownerUid` can *read* an attachment sent to them,
+  and an unrelated visitor cannot.
 - **Runtime (`verify` skill), two windows:** live round-trip both directions;
   team presence flips to "Away" when the console closes; customer presence flips
   to "Left" when the visitor's tab closes; the 3-min timeout posts the system
@@ -483,26 +599,49 @@ in rules; `escalate`/`notify`/`reply-email` all verify conversation ownership.
 | 12 | **Both** sides see live/offline | §5 |
 | 13 | What happens if nobody replies | §6 |
 | 14 | **Don't confuse users with two widgets** | §3.1 (2 bubbles → 1) |
+| 15 | Tell **multiple simultaneous** visitors apart; reply to each | §2 (one conversation per anon uid) + §4 (inbox) |
+| 16 | Send **catalogues / spec sheets / images** | §4.1 (upload + quick-send links) |
+| 17 | Salesperson **need not sit on the site** | §8 (push) + §4 (phone-responsive console) + §6 (safety net) |
+| 18 | Ping the salesperson's **WhatsApp** | §8.1 (Phase 4) |
 
 ## 13. Phasing
 
 Each phase ships independently and is useful on its own.
 
-- **Phase 1 — Live chat core + two-way presence + safety net.** Firebase wiring +
-  rules; **entry-point consolidation (§3.1 — two desktop bubbles → one; mobile bar
-  gains Chat)**; widget live chat (desktop + mobile); console conversations;
-  `status/team` presence; visitor `lastSeenAt`/`currentPage`/`chatOpen` heartbeat;
-  unanswered timeout + `needsFollowUp`; email + Zoho on chat start; auto-email
-  agent replies to offline customers (+ resume link) and the WhatsApp button.
+- **Phase 1 — Live chat core + two-way presence + safety net + attachments.**
+  Firebase wiring + rules; **entry-point consolidation (§3.1 — two desktop bubbles
+  → one; mobile bar gains Chat)**; widget live chat (desktop + mobile); console
+  conversations; `status/team` presence; visitor
+  `lastSeenAt`/`currentPage`/`chatOpen` heartbeat; unanswered timeout +
+  `needsFollowUp`; email + Zoho on chat start; auto-email agent replies to offline
+  customers (+ resume link) and the WhatsApp button; **§4.1 attachments — file
+  upload (Storage + rules) *and* quick-send links.**
+  *(Phase 1 is large. If it needs splitting at plan time, cut it as **1a** = live
+  chat + presence + safety net, **1b** = §4.1 attachments — 1b depends only on the
+  message model and the console, so it lifts out cleanly.)*
 - **Phase 2 — Push.** FCM + service worker + multi-device fan-out + escalation
   push + iOS PWA manifest.
 - **Phase 3 — Visitor intelligence.** Journey, products viewed, IP/city/referrer,
   live visitors panel, proactive chat.
+- **Phase 4 — WhatsApp ping to the salesperson (§8.1).** Meta Cloud API utility
+  template fanned out from the existing `/api/chat/notify` choke point. Sequenced
+  last **because it is gated on Meta's business-verification and template-approval
+  queue, not on our code** — it must never block Phases 1–3. Start the Meta
+  verification paperwork early, in parallel, so the queue is not the long pole.
 
 ## 14. Non-goals (deferred)
 
-Typing indicators; "seen" receipts for the customer; file/image attachments;
-canned replies; multi-agent assignment/routing; transcript export; AI auto-answer;
-a Firestore-trigger Cloud Function for push (the API-route approach suffices and
-avoids the Blaze plan); rebuilding the old console's product-on/off, SEO, and
-analytics tabs (separate project — PostHog covers analytics).
+Typing indicators; "seen" receipts for the customer; canned replies (the §4.1
+quick-send link picker covers the one canned action that matters — sending a
+product/spec sheet); multi-agent assignment/routing; transcript export; AI
+auto-answer; a Firestore-trigger Cloud Function for push (the API-route approach
+suffices and avoids the Blaze plan); rebuilding the old console's product-on/off,
+SEO, and analytics tabs (separate project — PostHog covers analytics).
+
+**Customer-side file upload** is deliberately deferred. Only the *agent* can
+attach (§4.1). Letting an anonymous visitor upload opens a malware/abuse surface
+and needs its own scanning and quota story, and no one has asked for it — a
+customer who wants to send a photo of their venue can still do so over the
+WhatsApp path that is one click away. Revisit only on real demand.
+
+**Attachments are no longer a non-goal** — they moved into Phase 1 (§4.1).
