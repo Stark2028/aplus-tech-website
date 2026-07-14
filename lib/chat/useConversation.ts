@@ -58,6 +58,16 @@ export function useConversation() {
     isFirebaseConfigured() ? null : "Chat is unavailable right now."
   );
 
+  // Reset the thread synchronously when the conversation changes. Doing this in
+  // an effect would let one render escape with the previous conversation's
+  // messages under the new id; adjusting state during render closes that window.
+  // https://react.dev/reference/react/useState#storing-information-from-previous-renders
+  const [prevConversationId, setPrevConversationId] = useState(conversationId);
+  if (conversationId !== prevConversationId) {
+    setPrevConversationId(conversationId);
+    setMessages([]);
+  }
+
   // ── anonymous identity ────────────────────────────────────────────────────
   useEffect(() => {
     if (!isFirebaseConfigured()) return;
@@ -120,13 +130,7 @@ export function useConversation() {
 
   // ── stream the thread ─────────────────────────────────────────────────────
   useEffect(() => {
-    if (!conversationId) {
-      // conversationId is a dependency (unlike the static isFirebaseConfigured()
-      // checks above), so there's no render-time value to derive this from —
-      // clearing the thread here IS the unsubscribe branch.
-      setMessages([]); // eslint-disable-line react-hooks/set-state-in-effect -- see comment above
-      return;
-    }
+    if (!conversationId) return;
     const q = query(
       collection(getDb(), COL.conversations, conversationId, COL.messages),
       orderBy("createdAt", "asc"),
