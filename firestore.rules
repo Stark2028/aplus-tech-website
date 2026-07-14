@@ -1,0 +1,107 @@
+rules_version = '2';
+
+// Live chat security model (spec §9).
+//
+// The customer widget runs in a hostile browser: every check the UI makes is
+// advisory. THIS FILE is the only thing that actually stops a crafted request,
+// so it is written deny-by-default and each allow is justified.
+//
+// Two principals:
+//   agent    — request.auth.token.agent == true (set by scripts/set-agent-claim.mjs)
+//   customer — an anonymous uid that owns exactly one conversation + one visitor doc
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAgent() {
+      // Guarded with `'agent' in token` because a customer's auth token has no
+      // `agent` claim at all — some rules-engine paths (ternary conditions in
+      // particular) treat an undefined map key as a hard error rather than a
+      // falsy value, which would wrongly deny a legitimate customer request.
+      return request.auth != null
+        && ('agent' in request.auth.token)
+        && request.auth.token.agent == true;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Public presence (spec §5). Read-only to the world so the widget can show
+    // "team is away" BEFORE the visitor signs in. It leaks no uids — one field.
+    match /status/team {
+      allow read: if true;
+      allow write: if isAgent();
+    }
+
+    // A visitor may touch only their OWN doc, keyed by their anonymous uid.
+    // (Phase 3 adds journey/geo here; the server writes geo via the Admin SDK,
+    // which bypasses rules, so no client-write allowance is needed for it.)
+    match /visitors/{visitorId} {
+      allow read:          if isAgent() || (isSignedIn() && request.auth.uid == visitorId);
+      allow create, update: if isAgent() || (isSignedIn() && request.auth.uid == visitorId);
+      allow delete:        if isAgent();
+    }
+
+    match /conversations/{conversationId} {
+      function owned() {
+        return isSignedIn() && resource.data.ownerUid == request.auth.uid;
+      }
+
+      allow read: if isAgent() || owned();
+
+      // A customer may open a conversation only in their own name. Forging
+      // ownerUid would otherwise let them read a thread they do not own.
+      allow create: if isAgent() || (
+        isSignedIn()
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.status == 'open'
+      );
+
+      // A customer may update their own conversation, but may NOT reassign it
+      // or clear the follow-up flag — that flag is the safety net (spec §6) and
+      // is cleared only by an agent reply or the Admin SDK.
+      allow update: if isAgent() || (
+        owned()
+        && request.resource.data.ownerUid == resource.data.ownerUid
+        && request.resource.data.visitorId == resource.data.visitorId
+        && request.resource.data.needsFollowUp == resource.data.needsFollowUp
+      );
+
+      allow delete: if isAgent();
+
+      match /messages/{messageId} {
+        function conv() {
+          return get(/databases/$(database)/documents/conversations/$(conversationId)).data;
+        }
+        function ownsThread() {
+          return isSignedIn() && conv().ownerUid == request.auth.uid;
+        }
+
+        allow read: if isAgent() || ownsThread();
+
+        // The load-bearing rule. A customer may write only as themselves (or as
+        // the system, for the §6.1 timeout notice), is length-capped, and may
+        // NOT carry an attachment — customer upload is deliberately not a thing
+        // in Phase 1 (spec §14), so the field is refused outright.
+        allow create: if isAgent()
+          ? request.resource.data.sender in ['agent', 'system']
+          : (
+              ownsThread()
+              && request.resource.data.sender in ['customer', 'system']
+              && request.resource.data.text is string
+              && request.resource.data.text.size() <= 2000
+              && !('attachment' in request.resource.data)
+            );
+
+        // Messages are an append-only log. Only an agent may amend one (the
+        // reply-email route stamps emailedAt via the Admin SDK anyway).
+        allow update, delete: if isAgent();
+      }
+    }
+
+    // Push targets (Phase 2). A customer must never enumerate them.
+    match /agentDevices/{token} {
+      allow read, write: if isAgent();
+    }
+  }
+}

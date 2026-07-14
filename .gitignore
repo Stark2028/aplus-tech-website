@@ -31,6 +31,13 @@ yarn-error.log*
 .pnpm-debug.log*
 build.log
 
+# firebase emulator artifacts (written by `npm run test:rules`)
+firestore-debug.log
+firebase-debug.log
+database-debug.log
+ui-debug.log
+pubsub-debug.log
+
 # env files (can opt-in for committing if needed)
 .env*
 !.env.example

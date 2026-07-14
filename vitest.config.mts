@@ -8,6 +8,9 @@ export default defineConfig({
   },
   test: {
     include: ["**/*.test.{ts,tsx}"],
+    // Firebase rules tests need the emulator (and a JDK). They run separately
+    // via `npm run test:rules` so the default suite stays dependency-free.
+    exclude: ["**/node_modules/**", "tests/rules/**"],
     environment: "node",
   },
 });
