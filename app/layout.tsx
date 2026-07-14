@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { QuoteProvider } from "@/context/QuoteContext";
 import { ComparisonProvider } from "@/context/ComparisonContext";
+import { ChatProvider } from "@/context/ChatContext";
 import Analytics from "@/components/Analytics";
 import PostHogProvider from "@/components/PostHogProvider";
 import PageTransition from "@/components/PageTransition";
@@ -120,17 +121,19 @@ export default function RootLayout({
         <PostHogProvider>
           <QuoteProvider>
             <ComparisonProvider>
-              <div className="min-h-screen flex flex-col">
-                <Navbar />
-                <main
-                  id="main-content"
-                  className="flex-1 bg-white"
-                >
-                  <PageTransition>{children}</PageTransition>
-                </main>
-                <Footer />
-              </div>
-              <ClientFloats />
+              <ChatProvider>
+                <div className="min-h-screen flex flex-col">
+                  <Navbar />
+                  <main
+                    id="main-content"
+                    className="flex-1 bg-white"
+                  >
+                    <PageTransition>{children}</PageTransition>
+                  </main>
+                  <Footer />
+                </div>
+                <ClientFloats />
+              </ChatProvider>
             </ComparisonProvider>
           </QuoteProvider>
         </PostHogProvider>
