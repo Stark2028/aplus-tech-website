@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { FileDown } from "lucide-react";
 import type { Product } from "@/data/products";
 import { trackEvent } from "@/lib/analytics";
@@ -30,7 +31,7 @@ export default function SpecSheetButton({ product }: Props) {
     }
   };
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (isGenerating) return;
     // Smart gate: skip the modal if the visitor has already submitted any Aplus form
     if (hasGated()) {
@@ -39,7 +40,22 @@ export default function SpecSheetButton({ product }: Props) {
       return;
     }
     setIsOpen(true);
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isGenerating, product.id]);
+
+  const searchParams = useSearchParams();
+  const autoFired = useRef(false);
+
+  // A spec-sheet link sent from the sales console (lib/chat/links.ts) lands here
+  // as ?download=spec. Fire the SAME gated path the button uses — not triggerPdf
+  // directly — so the lead gate and PostHog tracking still apply. Guard with a
+  // ref (not state) so StrictMode's double-invoke in dev can't fire it twice.
+  useEffect(() => {
+    if (autoFired.current) return;
+    if (searchParams.get("download") !== "spec") return;
+    autoFired.current = true;
+    handleClick();
+  }, [searchParams, handleClick]);
 
   return (
     <>
