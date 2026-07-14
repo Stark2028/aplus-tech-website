@@ -40,8 +40,7 @@ export default function SpecSheetButton({ product }: Props) {
       return;
     }
     setIsOpen(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isGenerating, product.id]);
+  }, [isGenerating, product.id]); // eslint-disable-line react-hooks/exhaustive-deps -- triggerPdf is a plain fn, not memoized
 
   const searchParams = useSearchParams();
   const autoFired = useRef(false);
