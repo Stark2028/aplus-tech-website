@@ -83,6 +83,14 @@ service cloud.firestore {
         // the system, for the §6.1 timeout notice), is length-capped, and may
         // NOT carry an attachment — customer upload is deliberately not a thing
         // in Phase 1 (spec §14), so the field is refused outright.
+        //
+        // `link` is refused for the same reason, and one sharper one: quick-send
+        // links are an agent-only console feature (§4.1 A), and the thread is
+        // rendered in the CONSOLE, where the reader holds an `agent: true` token
+        // and can see every conversation. A visitor writing to their own thread
+        // with the SDK could otherwise plant a `javascript:` URI in a link card
+        // and aim it at the salesperson. The renderer refuses the scheme too
+        // (lib/chat/safeUrl.ts); this is the layer that stops it being stored.
         allow create: if isAgent()
           ? request.resource.data.sender in ['agent', 'system']
           : (
@@ -91,6 +99,7 @@ service cloud.firestore {
               && request.resource.data.text is string
               && request.resource.data.text.size() <= 2000
               && !('attachment' in request.resource.data)
+              && !('link' in request.resource.data)
             );
 
         // Messages are an append-only log. Only an agent may amend one (the

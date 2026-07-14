@@ -3,6 +3,7 @@
 import { FileText, ExternalLink, Download } from "lucide-react";
 import type { ChatAttachment, ChatLink } from "@/lib/chat/types";
 import { isImageMime, formatBytes } from "@/lib/chat/attachments";
+import { safeHttpUrl } from "@/lib/chat/safeUrl";
 
 /**
  * Renders the non-text payload of a message (spec §4.1). Shared by the customer
@@ -25,24 +26,33 @@ export default function MessageAttachment({
 }) {
   if (!attachment && !link) return null;
 
+  // Never render an untrusted scheme into href/src. A visitor can write to their
+  // own thread with the Firebase SDK directly, and the salesperson reads that
+  // thread in the console while holding an `agent: true` token — so a
+  // `javascript:` URI here would execute in the console, not just in the sender's
+  // own tab. An unsafe URL degrades to an inert card rather than a live link.
+  const attachmentUrl = safeHttpUrl(attachment?.url);
+  const linkUrl = safeHttpUrl(link?.url);
+
   return (
     <div className="mt-2 space-y-2">
       {attachment &&
         (isImageMime(attachment.mime) ? (
-          <a href={attachment.url} target="_blank" rel="noopener noreferrer" className="block">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={attachment.url}
-              alt={attachment.name}
-              className="max-w-full max-h-64 rounded-xl border border-black/10 object-contain bg-white"
-            />
-          </a>
+          attachmentUrl ? (
+            <a href={attachmentUrl} target="_blank" rel="noopener noreferrer" className="block">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={attachmentUrl}
+                alt={attachment.name}
+                className="max-w-full max-h-64 rounded-xl border border-black/10 object-contain bg-white"
+              />
+            </a>
+          ) : null
         ) : (
           <a
-            href={attachment.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            download={attachment.name}
+            {...(attachmentUrl
+              ? { href: attachmentUrl, target: "_blank", rel: "noopener noreferrer", download: attachment.name }
+              : {})}
             className="flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-3 py-2.5 hover:border-blue-300 hover:bg-blue-50/50 transition-colors"
           >
             <span className="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-lg bg-red-50 text-red-500">
@@ -60,9 +70,7 @@ export default function MessageAttachment({
 
       {link && (
         <a
-          href={link.url}
-          target="_blank"
-          rel="noopener noreferrer"
+          {...(linkUrl ? { href: linkUrl, target: "_blank", rel: "noopener noreferrer" } : {})}
           className="flex items-center gap-3 rounded-xl border border-blue-200 bg-blue-50/60 px-3 py-2.5 hover:bg-blue-50 transition-colors"
         >
           <span className="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-lg bg-white text-blue-600">

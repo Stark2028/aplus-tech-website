@@ -122,6 +122,58 @@ describe("messages", () => {
     );
   });
 
+  // The thread is rendered in the CONSOLE, where the reader holds an agent token
+  // and can see every conversation. A visitor writing to their own thread with
+  // the SDK must not be able to plant a link card — least of all one carrying a
+  // javascript: URI — and aim it at the salesperson.
+  it("BLOCKS a customer from planting a link card — agent-only quick-send surface", async () => {
+    await assertFails(
+      addDoc(msgs(asCustomer()), {
+        sender: "customer",
+        text: "",
+        createdAt: Date.now(),
+        link: { url: "https://evil/x", label: "Spec sheet", kind: "specSheet" },
+      })
+    );
+  });
+
+  it("BLOCKS a customer from planting a javascript: link at the agent console", async () => {
+    await assertFails(
+      addDoc(msgs(asCustomer()), {
+        sender: "customer",
+        text: "",
+        createdAt: Date.now(),
+        link: { url: "javascript:alert(1)", label: "Spec sheet", kind: "specSheet" },
+      })
+    );
+  });
+
+  it("BLOCKS the same via a forged system message", async () => {
+    await assertFails(
+      addDoc(msgs(asCustomer()), {
+        sender: "system",
+        text: "",
+        createdAt: Date.now(),
+        link: { url: "javascript:alert(1)", label: "Spec sheet", kind: "specSheet" },
+      })
+    );
+  });
+
+  it("still lets an agent send a legitimate quick-send link", async () => {
+    await assertSucceeds(
+      addDoc(msgs(asAgent()), {
+        sender: "agent",
+        text: "Here is the spec sheet",
+        createdAt: Date.now(),
+        link: {
+          url: "https://www.aplustechsol.com/products/samsung-qb65?download=spec",
+          label: "QB65 spec sheet",
+          kind: "specSheet",
+        },
+      })
+    );
+  });
+
   it("blocks a customer from posting an over-long message", async () => {
     await assertFails(
       addDoc(msgs(asCustomer()), { sender: "customer", text: "x".repeat(2001), createdAt: Date.now() })
