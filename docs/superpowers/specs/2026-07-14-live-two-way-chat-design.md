@@ -52,8 +52,10 @@ Consequences:
   never stranded when one person is away. iOS needs a one-time "Add to Home
   Screen"; Android + desktop work immediately.
 - **Console URL:** `/admin/chat`.
-- **Mobile entry:** a **Chat launcher alongside** the existing WhatsApp/Call
-  sticky bar — nothing removed.
+- **Entry points — one door, two paths (§3.1).** Today's **two** desktop bubbles
+  (green WhatsApp + blue chat) open the *same* panel and confuse people. They
+  collapse into **one** launcher. Mobile gains Chat in the existing sticky bar —
+  **no new floating element on either breakpoint.**
 - **Presence:** **real presence, both directions** (see §5). Not business hours.
 - **No-reply safety net:** layered — see §6.
 - **Customer offline when the agent replies:** **auto-email the reply** + a
@@ -69,7 +71,10 @@ Consequences:
   `items_list`), so it flows through unchanged with
   `inquiry_type: "Website Live Chat"`.
 - WhatsApp entry points ([lib/whatsapp.ts](../../../lib/whatsapp.ts)) and the
-  WhatsApp tab of [components/ChatWidget.tsx](../../../components/ChatWidget.tsx).
+  WhatsApp *content* of [components/ChatWidget.tsx](../../../components/ChatWidget.tsx)
+  — Web link, scan-to-continue QR, quick-inquiry chips, phone/email fallbacks.
+  Preserved **verbatim**; §3.1 only moves it from a tab into the panel's
+  clearly-labelled secondary path. Its `wa.me`/Web-link logic is untouched.
 - Per-IP rate limit + `clientIp()` ([lib/rateLimit.ts](../../../lib/rateLimit.ts))
   — reused by every new route.
 - **PostHog** stays the analytics system of record. Our visitor tracking is
@@ -158,7 +163,79 @@ Indexes: `conversations` (`status` == open, order `lastMessageAt` desc);
 
 ## 3. Customer widget — refactor [components/ChatWidget.tsx](../../../components/ChatWidget.tsx)
 
-The **WhatsApp tab is unchanged**. The **"Leave a message" tab becomes live chat**:
+### 3.1 Entry points — one door, two paths
+
+**The problem being fixed.** Desktop currently floats **two** near-identical
+bubbles that open the **same panel** — green WhatsApp at
+[ChatWidget.tsx:152](../../../components/ChatWidget.tsx#L152) and blue chat at
+[ChatWidget.tsx:168](../../../components/ChatWidget.tsx#L168) — differing only in
+which tab opens first. Add live chat on top and there would be *three* overlapping
+ways to talk to us. Users cannot tell them apart, so they hesitate.
+
+Current floating inventory (before this change):
+
+| Breakpoint | Bottom-left | Bottom-right | Other |
+|---|---|---|---|
+| Desktop | Finder, Back-to-Top | **WhatsApp bubble + Chat bubble** | Compare bar, Cookie banner |
+| Mobile | — | Back-to-Top | Sticky bar (WhatsApp/Call/Quote), Compare bar, Cookie banner |
+
+**The fix — one launcher, an explicit fork inside.** The two paths are genuinely
+different products, so we *name* the difference instead of hiding it behind
+identical bubbles:
+
+- **Live Chat** — *"Talk to us right here, right now."* Instant, in-page, and the
+  salesperson can see what you were browsing.
+- **WhatsApp** — *"Continue on your phone."* The thread lives in WhatsApp.
+
+**Desktop:** the green + blue bubbles collapse into **one** launcher (bottom-right)
+carrying the real presence dot (§5). The panel is **presence-aware**:
+
+```
+   ⬤ 💬  ← ONE bubble (green dot = team online)
+      │ click
+      ▼
+ ┌──────────────────────────────┐   ┌──────────────────────────────┐
+ │ 🟢 Sales team is online      │   │ ⚫ Team is away              │
+ ├──────────────────────────────┤   ├──────────────────────────────┤
+ │ [ 💬  Chat now        ] ←big │   │ [ 💬 Leave a message  ] ←big │
+ │ [ 🟩  Continue on WhatsApp ] │   │ [ 🟩 WhatsApp ] [ 📞 Call ]  │
+ │    📞 Call    ✉ Email        │   │  "We'll reply by WhatsApp    │
+ │                              │   │   or email."                 │
+ └──────────────────────────────┘   └──────────────────────────────┘
+          ONLINE                              AWAY
+```
+Online → live chat is the hero (it is genuinely the best path). Away → the panel
+says so and gives WhatsApp/Call equal weight, because live chat cannot be answered
+live. **Net: desktop bottom-right goes from 2 floating buttons to 1.**
+
+**Mobile:** Chat joins the **existing** sticky bar — **no new floating element**:
+
+```
+┌────────┬──────────┬────────┬────────┐
+│  💬    │   🟩     │   📞   │   📄   │
+│  Chat  │ WhatsApp │  Call  │ Quote  │   (12-col grid, 3/3/3/3)
+└────────┴──────────┴────────┴────────┘
+```
+Every existing conversion path is kept (Quote included). At 3 columns each, tap
+targets stay ≈80 px on a 360 px phone — comfortably over the 44 px minimum. Chat
+opens the same `LiveChat` panel as a **bottom sheet**.
+
+**On `/quote`:** [MobileStickyCTA](../../../components/MobileStickyCTA.tsx#L29)
+suppresses itself today because the page has its own WhatsApp/Call/Submit
+affordances. That rationale still holds for those three — but **live chat is a
+capability `/quote` does not otherwise have**, so on `/quote` the bar renders
+**Chat only**.
+
+**Layering:** launcher `z-50`; panel/bottom-sheet `z-[60]` (above the sticky bar's
+`z-40`, below the cookie banner's `z-300`). The panel uses `backdrop-blur`, and a
+`backdrop-filter` ancestor becomes the containing block for `fixed` children — so
+the mobile bottom sheet is **portaled to `<body>`** to avoid being clamped.
+
+### 3.2 Behaviour
+
+The panel's WhatsApp path (Web link + QR + phone/email) is **unchanged**; only its
+*presentation* moves from a tab to an explicit secondary action. The message path
+**becomes live chat**:
 
 - **Pre-chat form** — Name/Email/Phone/Message (same contract as today; keeps the
   `company_website` honeypot and `getCachedLead()` prefill). On submit:
@@ -180,14 +257,15 @@ The **WhatsApp tab is unchanged**. The **"Leave a message" tab becomes live chat
   chat **pops the widget open** with the agent's opening line. (P3)
 - **Heartbeat** — sets `chatOpen` while the panel is open; the visitor tracker
   heartbeats `lastSeenAt`/`currentPage` while the tab is visible (§5).
-- **Split for size:** `components/chat/ChatWidget.tsx` (shell + tabs + floating
-  buttons), `components/chat/LiveChat.tsx` (pre-chat form + thread + composer),
+- **Split for size:** `components/chat/ChatLauncher.tsx` (the *single* bubble +
+  presence dot), `components/chat/ChatPanel.tsx` (the presence-aware fork of
+  §3.1 — desktop popover / mobile bottom sheet), `components/chat/LiveChat.tsx`
+  (pre-chat form + thread + composer), `components/chat/WhatsAppPanel.tsx` (the
+  existing Web link + QR + phone/email, lifted out unchanged),
   `lib/chat/useConversation.ts` (customer-side Firestore logic).
-
-**Mobile:** add a **Chat** launcher to
-[components/MobileStickyCTA.tsx](../../../components/MobileStickyCTA.tsx) beside
-WhatsApp/Call (the widget is desktop-only today; phone visitors must be able to
-chat). WhatsApp + Call untouched.
+- **Breakpoint change:** the widget is `hidden md:contents` (desktop-only) today.
+  It must now render on **mobile too**, since phone visitors are the ones who most
+  need to chat. `MobileStickyCTA`'s Chat button opens the same `ChatPanel`.
 
 ## 4. Sales console — `app/admin/chat/` (new, responsive)
 
@@ -378,17 +456,44 @@ in rules; `escalate`/`notify`/`reply-email` all verify conversation ownership.
   offline customer sends the email, and its resume link reopens the same thread
   **in a different browser**; WhatsApp button opens the customer's number
   pre-filled; pre-chat submit produces email + Zoho lead; push lands on a real
-  phone; mobile Chat launcher works; WhatsApp tab + `MobileStickyCTA` unchanged.
+  phone.
+- **Entry-point IA (§3.1):** desktop renders **exactly one** floating chat bubble
+  (assert the old green WhatsApp bubble is gone, not merely hidden); the panel's
+  hero action flips between "Chat now" and "Leave a message" as the console opens
+  and closes; mobile sticky bar shows **four** buttons with tap targets ≥44 px at
+  360 px width; `/quote` on mobile shows **Chat only**; the mobile bottom sheet is
+  portaled to `<body>` and is not clipped by the navbar's `backdrop-filter`; the
+  panel sits above the sticky bar and below the cookie banner.
+
+## 12a. Requirements coverage
+
+| # | Requirement | Where |
+|---|---|---|
+| 1 | Interactive chatbox for enquiries | §3 |
+| 2 | Real-time, two-way | §1, §3.2 |
+| 3 | Customer can chat on mobile **and** laptop | §3.1 (mobile bar + desktop bubble) |
+| 4 | Enquiry received in real time on mobile **and** laptop | §4 (responsive console) + §8 (push) |
+| 5 | Salesperson receives texts from a specific person | §2, §4 |
+| 6 | Separate chat stored per individual | §2 (anon uid — **not** IP, §7) |
+| 7 | Which **products** the visitor viewed | §7 (Phase 3) |
+| 8 | Which visitor went to which **pages** | §7 (Phase 3) |
+| 9 | Visitor's **city** | §7 (Phase 3) + the `/city/product` correction |
+| 10 | Push when the site is **not open**, phone + laptop | §8 (iOS ⇒ Add-to-Home-Screen) |
+| 11 | Chats must not vanish (holiday) | §6.1 |
+| 12 | **Both** sides see live/offline | §5 |
+| 13 | What happens if nobody replies | §6 |
+| 14 | **Don't confuse users with two widgets** | §3.1 (2 bubbles → 1) |
 
 ## 13. Phasing
 
 Each phase ships independently and is useful on its own.
 
 - **Phase 1 — Live chat core + two-way presence + safety net.** Firebase wiring +
-  rules; widget live chat (desktop + mobile); console conversations; `status/team`
-  presence; visitor `lastSeenAt`/`currentPage`/`chatOpen` heartbeat; unanswered
-  timeout + `needsFollowUp`; email + Zoho on chat start; auto-email agent replies
-  to offline customers (+ resume link) and the WhatsApp button.
+  rules; **entry-point consolidation (§3.1 — two desktop bubbles → one; mobile bar
+  gains Chat)**; widget live chat (desktop + mobile); console conversations;
+  `status/team` presence; visitor `lastSeenAt`/`currentPage`/`chatOpen` heartbeat;
+  unanswered timeout + `needsFollowUp`; email + Zoho on chat start; auto-email
+  agent replies to offline customers (+ resume link) and the WhatsApp button.
 - **Phase 2 — Push.** FCM + service worker + multi-device fan-out + escalation
   push + iOS PWA manifest.
 - **Phase 3 — Visitor intelligence.** Journey, products viewed, IP/city/referrer,
