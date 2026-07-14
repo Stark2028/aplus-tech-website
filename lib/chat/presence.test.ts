@@ -13,6 +13,10 @@ describe("isTeamOnline", () => {
     expect(isTeamOnline(NOW + 1_000, NOW)).toBe(true);
   });
 
+  it("is online one millisecond before onlineUntil lapses", () => {
+    expect(isTeamOnline(NOW + 1, NOW)).toBe(true);
+  });
+
   it("is away once onlineUntil has lapsed — a crashed console decays to away", () => {
     expect(isTeamOnline(NOW - 1, NOW)).toBe(false);
     expect(isTeamOnline(NOW, NOW)).toBe(false);

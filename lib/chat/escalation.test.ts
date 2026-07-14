@@ -30,6 +30,12 @@ describe("shouldEscalate", () => {
     ).toBe(true);
   });
 
+  it("does NOT treat a same-millisecond agent reply as answered — still escalates", () => {
+    expect(
+      shouldEscalate({ ...base, lastAgentMessageAt: base.lastCustomerMessageAt })
+    ).toBe(true);
+  });
+
   it("does not escalate twice — an already-flagged conversation is left alone", () => {
     expect(shouldEscalate({ ...base, needsFollowUp: true })).toBe(false);
   });
