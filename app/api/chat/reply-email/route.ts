@@ -6,6 +6,7 @@ import { guardRequest, verifyOwner } from "@/lib/chat/apiGuards";
 import { COL, toMillis } from "@/lib/chat/types";
 import { shouldEmailReply } from "@/lib/chat/replyEmail";
 import { buildResumeUrl } from "@/lib/chat/resumeToken";
+import { safeHttpUrl } from "@/lib/chat/safeUrl";
 
 /**
  * Email an agent reply to a customer who has left (spec §6.3).
@@ -94,8 +95,20 @@ export async function POST(req: Request) {
     }
     const message = messageSnap.data()!;
 
+    // Only an agent's reply is emailable. The console is the intended caller, but
+    // the browser is untrusted (spec §9) — a stale or buggy caller passing a
+    // customer's own messageId must not mail it back under "our sales team replied".
+    if (message.sender !== "agent") {
+      return NextResponse.json({ success: false, message: "Not an agent reply." }, { status: 404 });
+    }
+
     const resumeUrl = buildResumeUrl(conversationId, secret);
-    const attachmentUrl: string | undefined = message.attachment?.url ?? message.link?.url;
+    // Scheme-check before the URL lands in an email href — the same safeUrl gate
+    // MessageAttachment.tsx applies (SECURITY invariant: never render a message URL
+    // raw). esc() escapes HTML but would NOT stop a javascript:/data: scheme, and an
+    // email client is the one place this content leaves the app entirely. Unsafe →
+    // undefined → the attachment card is simply omitted.
+    const attachmentUrl: string | undefined = safeHttpUrl(message.attachment?.url ?? message.link?.url);
     const attachmentLabel: string | undefined = message.attachment?.name ?? message.link?.label;
 
     const resend = new Resend(process.env.RESEND_API_KEY);
