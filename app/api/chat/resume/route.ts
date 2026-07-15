@@ -14,8 +14,9 @@ import { siteUrl } from "@/lib/chat/links";
  *
  * The minted custom token is returned in the URL FRAGMENT, not the query string:
  * fragments are never sent to the server and stay out of access logs, Referer
- * headers, and analytics. It is single-use in practice (Firebase invalidates it
- * once exchanged) and short-lived (1 hour).
+ * headers, and analytics. It is short-lived (Firebase custom tokens expire an
+ * hour after minting), and redeeming it is idempotent — it only ever signs the
+ * caller back in as the same ownerUid, so a replay grants nothing new.
  */
 
 const RATE_LIMIT = 20;

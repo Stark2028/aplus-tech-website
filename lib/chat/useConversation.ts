@@ -77,6 +77,12 @@ export function useConversation() {
   const [resuming, setResuming] = useState(() =>
     typeof window !== "undefined" && window.location.hash.startsWith("#t=")
   );
+  // A failed redemption is NOT the Firebase-unreachable dead end: the anonymous
+  // effect below still mints a working session, so the customer can just start a
+  // fresh chat. This flag drives an inline "that link expired" notice ABOVE the
+  // pre-chat form rather than the blocking `error` screen (spec §6.2 — a resume
+  // that fails must never strand them on a WhatsApp-only fallback).
+  const [resumeExpired, setResumeExpired] = useState(false);
 
   useEffect(() => {
     if (!resuming || !isFirebaseConfigured()) return;
@@ -87,7 +93,7 @@ export function useConversation() {
     window.history.replaceState(null, "", window.location.pathname + window.location.search);
 
     signInWithCustomToken(getAuthClient(), customToken)
-      .catch(() => setError("That chat link has expired. Start a new chat, or use WhatsApp."))
+      .catch(() => setResumeExpired(true))
       .finally(() => setResuming(false));
   }, [resuming]);
 
@@ -313,5 +319,5 @@ export function useConversation() {
     [conversationId]
   );
 
-  return { ready, conversationId, conversation, messages, error, startConversation, sendMessage };
+  return { ready, conversationId, conversation, messages, error, resumeExpired, startConversation, sendMessage };
 }

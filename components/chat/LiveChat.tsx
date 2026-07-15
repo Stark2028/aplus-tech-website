@@ -28,7 +28,7 @@ const FIELDS = [
  */
 export default function LiveChat({ onWhatsApp }: { onWhatsApp: () => void }) {
   const pathname = usePathname();
-  const { ready, conversationId, messages, error, startConversation, sendMessage } = useConversation();
+  const { ready, conversationId, messages, error, resumeExpired, startConversation, sendMessage } = useConversation();
 
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
@@ -112,6 +112,16 @@ export default function LiveChat({ onWhatsApp }: { onWhatsApp: () => void }) {
   if (!conversationId) {
     return (
       <form onSubmit={handleStart} className="flex-1 overflow-y-auto p-4 space-y-3">
+        {/* A resume link that couldn't be redeemed (spec §6.3) — the session is
+            still usable, so we invite them to start fresh rather than dead-end. */}
+        {resumeExpired && (
+          <div role="alert" className="space-y-2.5 text-amber-800 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5">
+            <p className="text-xs">
+              That chat link has expired. Start a new chat below, or reach us on WhatsApp.
+            </p>
+            <Fallbacks onWhatsApp={onWhatsApp} />
+          </div>
+        )}
         <p className="text-xs text-gray-500 text-center">
           Tell us who you are and we&apos;ll start chatting right away.
         </p>
