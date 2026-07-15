@@ -1,8 +1,13 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { Loader2, LogOut } from "lucide-react";
 import { useAgentAuth } from "@/lib/chat/useAgentAuth";
+import { useInbox } from "@/lib/chat/useInbox";
+import { useTeamHeartbeat } from "@/lib/chat/useTeamHeartbeat";
 import AgentLogin from "@/components/admin/chat/AgentLogin";
-import { Loader2 } from "lucide-react";
+import ConversationList from "@/components/admin/chat/ConversationList";
+import ChatThread from "@/components/admin/chat/ChatThread";
 
 export default function AdminChatPage() {
   const { ready, user, isAgent, signIn, signOutAgent, error } = useAgentAuth();
@@ -38,6 +43,76 @@ export default function AdminChatPage() {
     );
   }
 
-  // Task 23 replaces this with the inbox.
-  return <div className="p-6 text-sm text-gray-500">Signed in as {user.email}. Inbox coming next.</div>;
+  return <Console email={user.email ?? ""} onSignOut={signOutAgent} />;
+}
+
+function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise<void> }) {
+  const { conversations, error } = useInbox();
+
+  // Deep link from the escalation email / (Phase 2) a push notification. Read the
+  // ?c= param at mount via a lazy initializer rather than an effect: this repo
+  // enforces react-hooks/set-state-in-effect as an error, and the auth gates above
+  // mean the console never server-renders, so reading window here is client-only
+  // and free of hydration skew. Mirrors lib/chat/useConversation.ts.
+  const [selectedId, setSelectedId] = useState<string | null>(() =>
+    typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("c") : null
+  );
+
+  // "Sales team is online" on every visitor's widget, for as long as this is open.
+  useTeamHeartbeat(true);
+
+  // In-app alert: badge the tab title so an unread chat is visible from another
+  // window (spec §4). Push (Phase 2) covers "nothing open at all".
+  const unread = conversations.reduce((n, c) => n + (c.unreadForAgent > 0 ? 1 : 0), 0);
+  useEffect(() => {
+    document.title = unread > 0 ? `(${unread}) Sales console` : "Sales console";
+  }, [unread]);
+
+  const selected = conversations.find((c) => c.id === selectedId) ?? null;
+
+  return (
+    <div className="h-screen flex flex-col">
+      <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3 shrink-0">
+        <span className="font-bold text-sm text-gray-900">Sales console</span>
+        <span className="flex-1 text-xs text-gray-400 truncate">{email}</span>
+        <button
+          onClick={() => void onSignOut()}
+          className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-900"
+        >
+          <LogOut size={14} /> Sign out
+        </button>
+      </header>
+
+      {error && (
+        <p role="alert" className="text-xs text-red-700 bg-red-50 border-b border-red-200 px-4 py-2">
+          {error}
+        </p>
+      )}
+
+      {/* Mobile: list → tap → thread. Laptop: side by side (spec §4). */}
+      <div className="flex-1 min-h-0 flex">
+        <aside
+          className={`${
+            selected ? "hidden md:block" : "block"
+          } w-full md:w-80 lg:w-96 shrink-0 border-r border-gray-200 bg-white overflow-y-auto`}
+        >
+          <ConversationList
+            conversations={conversations}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+          />
+        </aside>
+
+        <main className={`${selected ? "block" : "hidden md:block"} flex-1 min-w-0`}>
+          {selected ? (
+            <ChatThread conversation={selected} onBack={() => setSelectedId(null)} />
+          ) : (
+            <div className="h-full flex items-center justify-center text-sm text-gray-400">
+              Select a conversation.
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
 }
