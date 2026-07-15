@@ -188,9 +188,13 @@ export function useConversation() {
         createdAt: serverTimestamp(),
       }).catch(() => {});
 
+      const idToken = await getAuthClient().currentUser?.getIdToken();
       await fetch("/api/chat/escalate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
+        },
         body: JSON.stringify({ conversationId }),
       }).catch(() => {
         // Non-fatal (spec §11): the message is stored, and the chat-start email
