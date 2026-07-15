@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Send, Phone, Mail, ArrowLeft, CheckCheck } from "lucide-react";
-import type { Conversation } from "@/lib/chat/types";
+import type { ChatAttachment, ChatLink, Conversation } from "@/lib/chat/types";
 import { useThread } from "@/lib/chat/useInbox";
 import { isVisitorOnline, formatLastSeen } from "@/lib/chat/presence";
 import { isSendable, MAX_MESSAGE_LEN } from "@/lib/chat/messages";
 import MessageAttachment from "@/components/chat/MessageAttachment";
+import AttachmentPicker from "./AttachmentPicker";
+import LinkPicker from "./LinkPicker";
 
 export default function ChatThread({
   conversation,
@@ -17,6 +19,7 @@ export default function ChatThread({
 }) {
   const { messages, visitor, sendReply, markRead, setStatus } = useThread(conversation.id);
   const [draft, setDraft] = useState("");
+  const [uploadError, setUploadError] = useState("");
   const end = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,6 +39,21 @@ export default function ChatThread({
     setDraft("");
     await sendReply({ text }).catch(() => setDraft(text));
   }
+
+  // Pickers send IMMEDIATELY on pick — an attachment or link does not wait for the
+  // agent to also type. Any draft already typed rides along, then the box clears.
+  const sendAttachment = async (attachment: ChatAttachment) => {
+    setUploadError("");
+    await sendReply({ text: draft.trim(), attachment }).catch(() =>
+      setUploadError("Could not send that file.")
+    );
+    setDraft("");
+  };
+
+  const sendLink = async (link: ChatLink) => {
+    await sendReply({ text: draft.trim(), link }).catch(() => {});
+    setDraft("");
+  };
 
   return (
     <div className="flex flex-col h-full bg-white">
@@ -118,25 +136,37 @@ export default function ChatThread({
         <div ref={end} />
       </div>
 
-      {/* Task 24 inserts the AttachmentPicker + LinkPicker into this row. */}
-      <form onSubmit={handleSend} className="border-t border-gray-200 p-3 flex items-center gap-2 shrink-0">
-        <input
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          maxLength={MAX_MESSAGE_LEN}
-          placeholder="Reply…"
-          aria-label="Reply"
-          className="flex-1 px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm text-gray-900"
-        />
-        <button
-          type="submit"
-          disabled={!isSendable({ text: draft })}
-          aria-label="Send reply"
-          className="shrink-0 w-10 h-10 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white rounded-xl flex items-center justify-center transition-colors"
-        >
-          <Send size={16} />
-        </button>
-      </form>
+      <div className="border-t border-gray-200 shrink-0">
+        {uploadError && (
+          <p role="alert" className="text-xs text-red-700 bg-red-50 px-4 py-2">
+            {uploadError}
+          </p>
+        )}
+        <form onSubmit={handleSend} className="p-3 flex items-center gap-2">
+          <LinkPicker onPick={sendLink} />
+          <AttachmentPicker
+            conversationId={conversation.id}
+            onUploaded={sendAttachment}
+            onError={setUploadError}
+          />
+          <input
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            maxLength={MAX_MESSAGE_LEN}
+            placeholder="Reply…"
+            aria-label="Reply"
+            className="flex-1 min-w-0 px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-sm text-gray-900"
+          />
+          <button
+            type="submit"
+            disabled={!isSendable({ text: draft })}
+            aria-label="Send reply"
+            className="shrink-0 w-10 h-10 bg-blue-600 hover:bg-blue-700 disabled:opacity-40 text-white rounded-xl flex items-center justify-center transition-colors"
+          >
+            <Send size={16} />
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
