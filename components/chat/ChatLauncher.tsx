@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { useChat } from "@/context/ChatContext";
 import { useTeamPresence } from "@/lib/chat/useTeamPresence";
@@ -20,11 +21,18 @@ import ChatPanel from "./ChatPanel";
  * inside ChatPanel and opens from either trigger via ChatContext.
  */
 export default function ChatLauncher() {
-  const { isOpen, toggleChat, unread } = useChat();
+  const { isOpen, toggleChat, unread, openChat } = useChat();
   const { teamOnline } = useTeamPresence();
 
   // Tell the agent whether the customer is still watching (spec §5).
   useVisitorHeartbeat(isOpen);
+
+  // Arriving from a "reply in the chat" email — open straight into the thread
+  // instead of leaving them to notice the launcher bubble on their own.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("chat") === "resume") openChat("live");
+  }, [openChat]);
 
   return (
     <>

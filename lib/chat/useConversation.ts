@@ -14,7 +14,7 @@ import {
   where,
   increment,
 } from "firebase/firestore";
-import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
+import { onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "firebase/auth";
 import { getAuthClient, getDb } from "@/lib/firebase/client";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
 import { trackEvent } from "@/lib/analytics";
@@ -68,6 +68,29 @@ export function useConversation() {
     setMessages([]);
   }
 
+  // ── resume from an emailed link (spec §6.3) ───────────────────────────────
+  // /api/chat/resume lands us on /?chat=resume#t=<customToken>; exchange it for
+  // a session as the ORIGINAL ownerUid, so the rules let them back into their
+  // own thread even in a browser that has never seen this site. This must run
+  // BEFORE the anonymous-identity effect below, so a resume token wins over
+  // minting a fresh anonymous uid.
+  const [resuming, setResuming] = useState(() =>
+    typeof window !== "undefined" && window.location.hash.startsWith("#t=")
+  );
+
+  useEffect(() => {
+    if (!resuming || !isFirebaseConfigured()) return;
+
+    const customToken = decodeURIComponent(window.location.hash.slice(3));
+    // Strip the token from the URL immediately — it must not survive into a
+    // bookmark, a shared link, or the back/forward history.
+    window.history.replaceState(null, "", window.location.pathname + window.location.search);
+
+    signInWithCustomToken(getAuthClient(), customToken)
+      .catch(() => setError("That chat link has expired. Start a new chat, or use WhatsApp."))
+      .finally(() => setResuming(false));
+  }, [resuming]);
+
   // ── anonymous identity ────────────────────────────────────────────────────
   useEffect(() => {
     if (!isFirebaseConfigured()) return;
@@ -77,15 +100,16 @@ export function useConversation() {
       setReady(true);
     });
     // Anonymous sign-in is idempotent — an existing session is reused, which is
-    // what lets a returning visitor land back in their own thread.
-    if (!auth.currentUser) {
+    // what lets a returning visitor land back in their own thread. Skipped
+    // while a resume token is being redeemed above, so the two never race.
+    if (!auth.currentUser && !resuming) {
       void signInAnonymously(auth).catch(() => {
         setError("Chat is unavailable right now.");
         setReady(true);
       });
     }
     return unsubscribe;
-  }, []);
+  }, [resuming]);
 
   // ── find this visitor's open conversation ─────────────────────────────────
   useEffect(() => {
