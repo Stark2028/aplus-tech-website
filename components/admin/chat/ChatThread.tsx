@@ -9,6 +9,8 @@ import { isSendable, MAX_MESSAGE_LEN } from "@/lib/chat/messages";
 import MessageAttachment from "@/components/chat/MessageAttachment";
 import AttachmentPicker from "./AttachmentPicker";
 import LinkPicker from "./LinkPicker";
+import { buildWhatsAppUrlTo } from "@/lib/whatsapp";
+import { WA_PATH } from "@/components/chat/WhatsAppPanel";
 
 export default function ChatThread({
   conversation,
@@ -55,6 +57,16 @@ export default function ChatThread({
     setDraft("");
   };
 
+  // "Hi Rahul, following up on your chat about…" — the context line is the whole
+  // point: a bare "hi" from an unknown number gets ignored.
+  const firstName = (conversation.customer.name || "").trim().split(/\s+/)[0];
+  const waHref = buildWhatsAppUrlTo(
+    conversation.customer.phone,
+    `Hi${firstName ? ` ${firstName}` : ""}, following up on your chat with Aplus Technology Solutions about ${
+      conversation.lastPreview || "your enquiry"
+    }`
+  );
+
   return (
     <div className="flex flex-col h-full bg-white">
       <header className="border-b border-gray-200 px-4 py-3 flex items-center gap-3 shrink-0">
@@ -78,6 +90,22 @@ export default function ChatThread({
         </div>
 
         <div className="flex items-center gap-1 shrink-0">
+          {/* null when the phone cannot be normalised — hide rather than open a
+              broken wa.me link (lib/whatsapp.ts: buildWhatsAppUrlTo). */}
+          {waHref && (
+            <a
+              href={waHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp the customer"
+              title="WhatsApp the customer"
+              className="p-2 text-gray-400 hover:text-[#25D366] transition-colors"
+            >
+              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                <path d={WA_PATH} />
+              </svg>
+            </a>
+          )}
           {conversation.customer.phone && (
             <a
               href={`tel:${conversation.customer.phone}`}
