@@ -10,7 +10,7 @@ import dynamic from "next/dynamic";
  * JS bundle. With `ssr: false` they ship as separate chunks loaded after
  * hydration — keeping LCP and TBT lower on every route.
  */
-const ChatWidget = dynamic(() => import("./ChatWidget"), { ssr: false });
+const ChatLauncher = dynamic(() => import("./chat/ChatLauncher"), { ssr: false });
 const ComparisonFloatingBar = dynamic(() => import("./ComparisonFloatingBar"), { ssr: false });
 const QuoteLimitToast = dynamic(() => import("./QuoteLimitToast"), { ssr: false });
 const FinderFloatButton = dynamic(() => import("./FinderFloatButton"), { ssr: false });
@@ -22,7 +22,7 @@ export default function ClientFloats() {
   return (
     <>
       <div className="print:hidden">
-        <ChatWidget />
+        <ChatLauncher />
         <ComparisonFloatingBar />
         <QuoteLimitToast />
         <FinderFloatButton />
