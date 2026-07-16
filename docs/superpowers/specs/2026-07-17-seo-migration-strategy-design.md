@@ -39,23 +39,38 @@ The reports look like success (SEO A, GEO A+, ~1,048 keywords at #1) but describ
 
 ## 2. Redirect coverage — the crux of "not worse"
 
-The migration's safety rests on `middleware.ts` + `lib/redirects.ts`. Two separate questions:
+The migration's safety rests on `middleware.ts` + `lib/redirects.ts`. I pulled the **live old-site sitemaps** (this session, via the public URLs) to measure coverage exactly.
 
-**Integrity (PASS).** Every product redirect target is a real product id; every category target a real category id; no merged-duplicate key still lives as a product; no loops. The last-segment match means one 75-entry slug→id map 301s thousands of city/role URLs at once. The 20 products with no incoming redirect are net-new 2026 inventory (correct).
+### 2.0 Verified live inventory (from `sitemap.xml` + 3 child sitemaps)
 
-**Coverage (INCOMPLETE — must fix before cutover).** Internal integrity ≠ complete coverage. Checking the audit's actual trafficked URLs against the map surfaced **5 confirmed 404s from the top-10 GA pages alone**:
-
-### 2.1 Confirmed redirect gaps (would 404 today)
-
-| Old URL (has real traffic) | 28-day views | Should 301 to (proposed) |
+| Sitemap | Count | Contents |
 | --- | --- | --- |
-| `/services/` | in top pages (p10) | `/products` or a new `/solutions` map — decide in Phase 0 |
-| `/samsung-interactive-displays/` (plural) | in top pages (p10) | `/categories/interactive` (map has only the singular) |
-| `/displays-screens-india/` | in top pages (p10) | `/products` (catch-all catalog) |
-| `/samsung-business-tv/samsung-business-tv-beh-k2/` | 19 (p11) | `/products/samsung-business-tv-befx-h2` (GA title confirms it *is* the BEFX-H2) |
-| `/dahlv/` | 16 (p11) | Unknown slug — resolve via the Phase 0 crawl (likely a mistyped city or a SKU page) |
+| `sitemap.xml` | ~58 | home, `/about-us/`, `/contact-us/`, `/products/`, `/privacy-policy/`, `/terms-and-conditions/`, `/our-presence/`, `/blog/` + 4 posts, 6 category roots, ~40 product pages |
+| `sitemap-1.xml` | 228 | `/distributor/`, `/suppliers/`, `/exporters/` roots + 75 products each |
+| `sitemap-2.xml` | 2,020 | cities A–M: each city **hub** + ~59 city×product pages |
+| `sitemap-3.xml` | 1,190 | cities N–Z: each city **hub** + city×product pages |
+| **Total declared** | **~3,496** | (not the ~7,500 earlier assumed — the real declared surface is ~3.5k) |
 
-**Implication:** the map must be completed against the **full** crawl, not spot-checked. 350 trafficked GA pages + the full indexed set is the real surface. This is precisely what Phase 0 produces.
+**Coverage of the declared sitemap = effectively 100%.** The 75 distinct product slugs used across every city/role URL match the 75 keys in `OLD_PRODUCT_SLUG_TO_ID` **exactly, 1:1** (verified diff, 0 missing). So:
+
+- Static pages, 6 category roots, 4 blog posts, 75 product pages, 3 role roots, all 225 role×product and ~3,200 city×product URLs → **301 correctly** (last-segment match).
+- The 95 **city hubs** (`/agra/`, `/noida/`, …) are the one exception: they must become **real pages** (Phase 1), not redirects — they're the top growth engine.
+
+**Integrity also PASS:** every redirect target resolves; no loops; the 20 products with no incoming redirect are net-new 2026 inventory (correct).
+
+### 2.1 The real gap: non-sitemapped legacy orphans
+
+The only would-404 URLs are ones **not in the current sitemap** but still indexed/trafficked (surfaced by GA4, p10–13). These need manual redirect entries:
+
+| Old URL (has traffic, NOT in sitemap) | Evidence | Should 301 to (proposed) |
+| --- | --- | --- |
+| `/services/` | GA top pages (p10) | `/products` (or a `/solutions` mapping) |
+| `/samsung-interactive-displays/` (plural) | GA top pages (p10) | `/categories/interactive` (map has only the singular) |
+| `/displays-screens-india/` | GA top pages (p10) | `/products` |
+| `/samsung-business-tv/samsung-business-tv-beh-k2/` | 19 views (p11) | `/products/samsung-business-tv-befx-h2` (GA title confirms it IS the BEFX-H2) |
+| `/dahlv/` | 16 views (p11) | resolve via GSC Pages export (likely a mistyped city or stray SKU) |
+
+**Implication:** the declared surface is safe; the residual risk is a **finite set of legacy orphans**. To find them ALL, one input is needed that the public site can't give: the **GSC "Pages" export** (every URL Google has indexed, including de-listed-from-sitemap ones). That is the single remaining Phase-0 dependency.
 
 ---
 
