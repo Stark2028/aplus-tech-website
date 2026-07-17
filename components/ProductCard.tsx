@@ -98,7 +98,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             }
           }}
           aria-label={`View details for ${product.name}`}
-          className="relative h-64 rounded-[6.5px] overflow-hidden flex items-center justify-center cursor-pointer px-6 py-8 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2"
+          className="relative h-64 rounded-[5.5px] overflow-hidden flex items-center justify-center cursor-pointer px-6 py-8 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2"
           style={{ background: "linear-gradient(160deg, #f6f8fb, #eef2f7 60%, #f2f5fa)" }}
         >
           {/* Backlight glow — fades in on hover/focus; under reduced motion it
@@ -175,8 +175,10 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
 
-        {/* Operation Rating */}
-        <div className="flex items-center gap-2 mb-6 text-[13px] text-slate-500 bg-blue-50/50 rounded-lg py-2.5 px-3.5 border border-blue-100/30">
+        {/* Operation Rating — mt-auto pins this row (and the buttons below it)
+            to the card bottom so both stay horizontally aligned across a grid
+            row even when neighbouring titles/specs wrap to different heights. */}
+        <div className="mt-auto flex items-center gap-2 mb-6 text-[13px] text-slate-500 bg-blue-50/50 rounded-lg py-2.5 px-3.5 border border-blue-100/30">
           <Clock size={14} className="text-blue-500 shrink-0" />
           <span className="truncate">
             Rated for <strong className="text-slate-700 font-bold">{product.specs.operationTime}</strong> continuous operation
@@ -184,7 +186,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Footer Buttons */}
-        <div className="mt-auto flex gap-2">
+        <div className="flex gap-2">
           <button
             type="button"
             onClick={handleQuoteAdd}
