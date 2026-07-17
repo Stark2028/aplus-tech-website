@@ -195,3 +195,199 @@
   color: #bae6fd;
   letter-spacing: 0.08em;
 }
+
+/* ── CH·02 · NOC dashboard on a 2×2 video wall ────────────────────────────── */
+.stg-vwall {
+  width: 78%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.3em;
+  padding: 2px;
+  background: linear-gradient(160deg, #334155, #0b1120 40%, #1e293b);
+  box-shadow: 0 2.4em 6em -1.8em rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(148, 163, 184, 0.14), 0 0 5.4em -0.8em rgba(20, 184, 166, 0.35);
+}
+.stg-vwall .stg-screen {
+  border-radius: 2px;
+  height: 100%;
+}
+.stg-ctrl {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #04211c 0%, #0a2f2a 50%, #0f172a 100%);
+}
+.stg-noc-head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 16%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4%;
+  border-bottom: 1px solid rgba(45, 212, 191, 0.18);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.7em;
+  letter-spacing: 0.2em;
+  color: #5eead4;
+  background: rgba(2, 10, 9, 0.4);
+  z-index: 3;
+}
+.stg-noc-live {
+  color: #4ade80;
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+}
+.stg-noc-live::before {
+  content: "";
+  width: 0.4em;
+  height: 0.4em;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+  animation: stg-pulse 1.6s ease-in-out infinite;
+}
+@keyframes stg-pulse {
+  50% { opacity: 0.4; }
+}
+.stg-noc-chart {
+  position: absolute;
+  left: 4%;
+  top: 24%;
+  width: 42%;
+  height: 34%;
+  border: 1px solid rgba(45, 212, 191, 0.16);
+  border-radius: 0.3em;
+  background: rgba(4, 32, 28, 0.45);
+}
+.stg-kpis {
+  position: absolute;
+  right: 4%;
+  top: 24%;
+  width: 44%;
+  display: flex;
+  gap: 0.4em;
+}
+.stg-kpi {
+  flex: 1;
+  border: 1px solid rgba(45, 212, 191, 0.16);
+  border-radius: 0.3em;
+  background: rgba(4, 32, 28, 0.45);
+  padding: 0.5em 0.6em;
+}
+.stg-kpi b {
+  display: block;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  color: #99f6e4;
+  font-size: 1.05em;
+  font-weight: 500;
+}
+.stg-kpi span {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  color: #3d8f84;
+  font-size: 0.56em;
+  letter-spacing: 0.14em;
+}
+.stg-map {
+  position: absolute;
+  right: 4%;
+  top: 47%;
+  width: 44%;
+  height: 32%;
+  border: 1px solid rgba(45, 212, 191, 0.16);
+  border-radius: 0.3em;
+  background: rgba(4, 32, 28, 0.45);
+}
+.stg-mdot {
+  position: absolute;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: #2dd4bf;
+}
+.stg-mdot::after {
+  content: "";
+  position: absolute;
+  inset: -0.5em;
+  border-radius: 50%;
+  border: 1px solid rgba(45, 212, 191, 0.7);
+  animation: stg-ring 2.4s ease-out infinite;
+}
+.stg-mdot.m2::after { animation-delay: 0.7s; }
+.stg-mdot.m3::after { animation-delay: 1.3s; }
+@keyframes stg-ring {
+  from { transform: scale(0.4); opacity: 1; }
+  to { transform: scale(2.1); opacity: 0; }
+}
+.stg-bars {
+  position: absolute;
+  left: 4%;
+  top: 63%;
+  width: 42%;
+  height: 16%;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.3em;
+}
+.stg-bars i {
+  flex: 1;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(180deg, #2dd4bf, rgba(45, 212, 191, 0.12));
+  /* transform-origin added vs mockup so pulsing bars stay planted on the baseline */
+  transform-origin: bottom;
+  animation: stg-bar 2.6s ease-in-out infinite;
+}
+.stg-bars i:nth-child(1) { height: 55%; }
+.stg-bars i:nth-child(2) { height: 70%; animation-delay: 0.3s; }
+.stg-bars i:nth-child(3) { height: 45%; animation-delay: 0.6s; }
+.stg-bars i:nth-child(4) { height: 85%; animation-delay: 0.9s; }
+.stg-bars i:nth-child(5) { height: 60%; animation-delay: 1.2s; }
+@keyframes stg-bar {
+  50% { transform: scaleY(0.72); }
+}
+.stg-ticker {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 13%;
+  background: rgba(2, 10, 9, 0.6);
+  border-top: 1px solid rgba(45, 212, 191, 0.18);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  z-index: 3;
+}
+.stg-ticker > div {
+  white-space: nowrap;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.65em;
+  letter-spacing: 0.12em;
+  color: #5eead4;
+  animation: stg-tick 14s linear infinite;
+}
+@keyframes stg-tick {
+  from { transform: translateX(30%); }
+  to { transform: translateX(-100%); }
+}
+/* Physical bezel seams of the 2×2 wall — hairlines, deliberately px. */
+.stg-seamv {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  margin-left: -1.5px;
+  background: linear-gradient(90deg, #04060d, #1e293b 50%, #04060d);
+  z-index: 4;
+}
+.stg-seamh {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  background: linear-gradient(180deg, #04060d, #1e293b 50%, #04060d);
+  z-index: 4;
+}
