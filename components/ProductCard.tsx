@@ -98,7 +98,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             }
           }}
           aria-label={`View details for ${product.name}`}
-          className="relative h-64 rounded-[5.5px] overflow-hidden flex items-center justify-center cursor-pointer px-6 py-8 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2"
+          className="relative h-64 rounded-[7px] overflow-hidden flex items-center justify-center cursor-pointer px-6 py-8 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2"
           style={{ background: "linear-gradient(160deg, #f6f8fb, #eef2f7 60%, #f2f5fa)" }}
         >
           {/* Backlight glow — fades in on hover/focus; under reduced motion it
