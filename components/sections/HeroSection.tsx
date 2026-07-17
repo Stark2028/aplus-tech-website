@@ -49,7 +49,7 @@ export default function HeroSection() {
       <div className="hero2-noise" aria-hidden="true" />
       <div className="hero2-vignette" aria-hidden="true" />
 
-      <div className="relative z-[2] flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-10 md:py-16 grid items-center gap-10 lg:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
+      <div className="relative z-[2] flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-10 md:py-16 grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
         <div className="max-w-2xl">
           {/* Badge */}
           <div className="hero2-badge hero2-rise mb-5" style={{ animationDelay: "0.1s" }}>
