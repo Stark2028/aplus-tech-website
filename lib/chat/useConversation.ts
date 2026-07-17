@@ -147,8 +147,9 @@ export function useConversation(engaged = false) {
   // clears the id ONLY when we do not already hold one. A genuine close is driven
   // by the agent setting status:'closed', which the widget does not need to react
   // to mid-session.
-  const conversationIdRef = useRef<string | null>(conversationId);
-  conversationIdRef.current = conversationId;
+  // Kept in sync manually at every setConversationId call site (all of them
+  // are subscription/event callbacks) — refs must not be written during render.
+  const conversationIdRef = useRef<string | null>(null);
   useEffect(() => {
     if (!uid) return;
     const q = query(
@@ -167,10 +168,12 @@ export function useConversation(engaged = false) {
           // ignore it while we already have one. Only a visitor who genuinely
           // has no open thread (never started one) falls through to null.
           if (conversationIdRef.current) return;
+          conversationIdRef.current = null;
           setConversationId(null);
           setConversation(null);
           return;
         }
+        conversationIdRef.current = first.id;
         setConversationId(first.id);
         setConversation(mapConversation(first.id, first.data() as Record<string, unknown>));
       },
@@ -321,6 +324,7 @@ export function useConversation(engaged = false) {
 
       setCachedLead({ name: customer.name, email: customer.email, phone: customer.phone });
       trackEvent("chat_started", { page });
+      conversationIdRef.current = convRef.id;
       setConversationId(convRef.id);
     },
     [uid]
