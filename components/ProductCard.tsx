@@ -6,6 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ShoppingBag, Scale, Clock, Check } from "lucide-react";
 import { Product } from "@/data/products";
+import { formatSkuLine } from "@/lib/productSku";
+import { spaceGrotesk, plexMono } from "@/app/fonts-accent";
 import { useQuote } from "@/context/QuoteContext";
 import { useComparison } from "@/context/ComparisonContext";
 import { getProductBadge } from "@/lib/productBadges";
@@ -78,49 +80,72 @@ export default function ProductCard({ product }: ProductCardProps) {
         <Scale size={16} strokeWidth={isComparing ? 2.5 : 2} aria-hidden="true" />
       </button>
 
-      {/* Product Image Area */}
+      {/* Bezel display (spec 2026-07-17): thin metal-gradient frame around a
+          uniform light mat. Light mat — not the dark "display" panel — because
+          27 of 50 primary images are opaque white JPEGs; mix-blend-multiply
+          only melts them into a light surface. */}
       <div
-        onClick={handleImageClick}
-        role="link"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            handleImageClick();
-          }
-        }}
-        aria-label={`View details for ${product.name}`}
-        className="spotlight-content h-64 bg-linear-to-b from-slate-50 to-white flex items-center justify-center overflow-hidden cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 border-b border-slate-100/50 px-6 py-8"
+        className="spotlight-content relative mx-2.5 mt-2.5 rounded-lg p-[1.5px] transition-shadow duration-500 group-hover:shadow-[0_0_30px_-6px_rgba(37,99,235,0.45)] group-focus-within:shadow-[0_0_30px_-6px_rgba(37,99,235,0.45)]"
+        style={{ background: "linear-gradient(160deg, #4b5563, #182131 35%, #2a3648)" }}
       >
-        {/* Fixed-height image box normalises display size across sources:
-            some product shots fill edge-to-edge, others float with whitespace.
-            Capping the height keeps every card's display visually consistent. */}
-        <div className="relative w-full h-[170px] mix-blend-multiply">
-          {primaryImage ? (
-            <Image
-              src={primaryImage}
-              alt={`${product.name} — Samsung ${product.series} ${product.category}`}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-contain transition-transform duration-500 group-hover:scale-105"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-sm text-slate-300 font-medium">
-              Image unavailable
-            </div>
-          )}
+        <div
+          onClick={handleImageClick}
+          role="link"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleImageClick();
+            }
+          }}
+          aria-label={`View details for ${product.name}`}
+          className="relative h-64 rounded-[6.5px] overflow-hidden flex items-center justify-center cursor-pointer px-6 py-8 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2"
+          style={{ background: "linear-gradient(160deg, #f6f8fb, #eef2f7 60%, #f2f5fa)" }}
+        >
+          {/* Backlight glow — fades in on hover/focus; under reduced motion it
+              still appears, just without the transition. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-[20%] opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none"
+            style={{ background: "radial-gradient(closest-side, rgba(37,99,235,0.16), transparent 70%)" }}
+          />
+
+          {/* Fixed-height image box normalises display size across sources:
+              some product shots fill edge-to-edge, others float with whitespace.
+              Capping the height keeps every card's display visually consistent. */}
+          <div className="relative w-[82%] h-[170px] mix-blend-multiply">
+            {primaryImage ? (
+              <Image
+                src={primaryImage}
+                alt={`${product.name} — Samsung ${product.series} ${product.category}`}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-contain transition-transform duration-500 group-hover:scale-105 group-focus-within:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-within:scale-100"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-sm text-slate-300 font-medium">
+                Image unavailable
+              </div>
+            )}
+          </div>
+
+          {/* Sheen sweep — one pass across the panel; transform-driven so it
+              stays compositor-only. Hidden under reduced motion. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-y-[-30%] left-[-45%] w-[30%] -skew-x-[18deg] transition-transform duration-700 ease-out group-hover:translate-x-[585%] group-focus-within:translate-x-[585%] motion-reduce:hidden"
+            style={{ background: "linear-gradient(105deg, transparent, rgba(37,99,235,0.08) 50%, transparent)" }}
+          />
         </div>
       </div>
 
       {/* Content */}
       <div className="spotlight-content p-6 flex flex-col grow">
         <div className="mb-5">
-          <div className="flex items-center mb-3">
-            <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold bg-blue-50/80 text-blue-600 uppercase tracking-widest">
-              {product.series}
-            </span>
-          </div>
-          <h3 className="text-[1.15rem] font-bold text-slate-900 mt-1 mb-2.5 leading-snug tracking-tight line-clamp-2">
+          <p className={`${plexMono.className} text-[11px] tracking-[0.12em] text-slate-500 mb-2`}>
+            {formatSkuLine(product)}
+          </p>
+          <h3 className={`${spaceGrotesk.className} text-[1.15rem] font-bold text-slate-900 mt-1 mb-2.5 leading-snug tracking-tight line-clamp-2`}>
             <Link href={`/products/${product.id}`} className="hover:text-blue-600 transition-colors">
               {product.name}
             </Link>
