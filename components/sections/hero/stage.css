@@ -391,3 +391,135 @@
   background: linear-gradient(180deg, #04060d, #1e293b 50%, #04060d);
   z-index: 4;
 }
+
+/* ── CH·03 · hotel TV home UI on a TV with neck + base stand ──────────────── */
+.stg-tv {
+  width: 64%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.5em;
+  padding: 0.3em;
+  background: linear-gradient(160deg, #3f3f46, #09090b 35%, #18181b);
+  box-shadow: 0 2.4em 6em -1.8em rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(161, 161, 170, 0.16), 0 0 5.4em -0.8em rgba(217, 119, 6, 0.3);
+}
+.stg-tv .stg-screen {
+  border-radius: 0.3em;
+  height: 100%;
+}
+.stg-neck {
+  width: 3.6em;
+  height: 1.3em;
+  background: linear-gradient(180deg, #27272a, #09090b);
+  clip-path: polygon(28% 0, 72% 0, 100% 100%, 0 100%);
+}
+.stg-base {
+  width: 10em;
+  height: 0.6em;
+  border-radius: 99px;
+  background: linear-gradient(180deg, #3f3f46, #18181b);
+  box-shadow: 0 0.6em 1.4em rgba(0, 0, 0, 0.6);
+}
+.stg-hotel {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, #1e1035 0%, #4c1d95 55%, #7c2d12 130%);
+}
+/* Warm bedside-lamp light, upper right. */
+.stg-hotel::before {
+  content: "";
+  position: absolute;
+  right: -8%;
+  top: -30%;
+  width: 55%;
+  height: 110%;
+  background: radial-gradient(closest-side, rgba(251, 191, 36, 0.22), transparent);
+}
+.stg-hbrand {
+  position: absolute;
+  top: 9%;
+  left: 7%;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.7em;
+  letter-spacing: 0.3em;
+  color: #fcd34d;
+}
+.stg-hbrand small {
+  color: #fbbf24;
+  letter-spacing: 0.1em;
+}
+.stg-hgreet {
+  position: absolute;
+  top: 22%;
+  left: 7%;
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-weight: 500;
+  font-size: 0.9em;
+  letter-spacing: 0.06em;
+  color: #d8c9f7;
+}
+/* Typing welcome line. `max-width` steps() is a documented micro-exception to
+   the transform/opacity budget (17ch of text, repaints a few px per step). */
+.stg-htype {
+  display: block;
+  margin-top: 0.25em;
+  color: #fff;
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: 1.78em; /* 16px at mockup scale (parent is 9px) */
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 17ch;
+  border-right: 2px solid rgba(255, 255, 255, 0.75);
+  animation: stg-type 3.6s steps(17) infinite;
+}
+@keyframes stg-type {
+  0% { max-width: 0; }
+  55%, 92% { max-width: 17ch; }
+  100% { max-width: 17ch; }
+}
+.stg-tiles {
+  position: absolute;
+  bottom: 23%;
+  left: 7%;
+  right: 7%;
+  display: flex;
+  gap: 0.6em;
+}
+/* Golden focus ring steps tile-to-tile like a real remote. box-shadow pulse is
+   a documented micro-exception (tiny tiles, paint-only). */
+.stg-tile {
+  flex: 1;
+  height: 3.8em;
+  border-radius: 0.5em;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex;
+  align-items: flex-end;
+  padding: 0.5em 0.7em;
+  font-weight: 600;
+  font-size: 0.7em;
+  color: #f5f3ff;
+  position: relative;
+  animation: stg-focus 5s linear infinite;
+}
+.stg-tile:nth-child(2) { animation-delay: 1s; }
+.stg-tile:nth-child(3) { animation-delay: 2s; }
+.stg-tile:nth-child(4) { animation-delay: 3s; }
+.stg-tile:nth-child(5) { animation-delay: 4s; }
+@keyframes stg-focus {
+  0%, 16% {
+    box-shadow: 0 0 0 1.5px #fbbf24, 0 0.4em 1.8em rgba(251, 191, 36, 0.35);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
+  }
+  20%, 100% { box-shadow: none; }
+}
+.stg-hinfo {
+  position: absolute;
+  bottom: 8%;
+  left: 7%;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.65em;
+  letter-spacing: 0.16em;
+  color: #e9d5ff;
+  opacity: 0.85;
+}
