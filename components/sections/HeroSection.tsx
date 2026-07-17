@@ -56,14 +56,7 @@ export default function HeroSection() {
             Authorized Samsung Business Partner
           </div>
 
-          <h1
-            className="font-bold text-white mb-6"
-            style={{
-              fontSize: "clamp(36px, 4.8vw, 72px)",
-              lineHeight: "1.05",
-              letterSpacing: "-0.03em",
-            }}
-          >
+          <h1 className="hero2-h1 font-bold text-white mb-6">
             <span className="md:drop-shadow-[0_0_80px_rgba(0,0,0,0.9)] drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]">
               <span className="hero-word" style={{ animationDelay: "0.3s" }}>India&apos;s Premier</span>
               <br />

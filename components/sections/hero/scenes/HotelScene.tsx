@@ -24,7 +24,8 @@ export default function HotelScene() {
               <div className="stg-hinfo">8:42 PM&nbsp;·&nbsp;28°C MUMBAI&nbsp;·&nbsp;WIFI: MERIDIAN-GUEST</div>
             </div>
           </div>
-          <div className="stg-cap">HOSPITALITY TV · GUEST ROOM</div>
+          {/* Lifted above the scene's info line (mockup had them colliding). */}
+          <div className="stg-cap" style={{ bottom: "16%" }}>HOSPITALITY TV · GUEST ROOM</div>
         </div>
       </div>
       <div className="stg-neck" />
