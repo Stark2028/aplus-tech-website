@@ -52,18 +52,18 @@ export default function HeroSection() {
       <div className="relative z-[2] flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-10 md:py-16 grid items-center gap-10 lg:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
         <div className="max-w-2xl">
           {/* Badge */}
-          <div className="hero2-badge hero2-rise mb-5" style={{ animationDelay: "0.15s" }}>
+          <div className="hero2-badge hero2-rise mb-5" style={{ animationDelay: "0.1s" }}>
             Authorized Samsung Business Partner
           </div>
 
           <h1 className="hero2-h1 font-bold text-white mb-6">
             <span className="md:drop-shadow-[0_0_80px_rgba(0,0,0,0.9)] drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]">
-              <span className="hero-word" style={{ animationDelay: "0.3s" }}>India&apos;s Premier</span>
+              <span className="hero-word" style={{ animationDelay: "0.12s" }}>India&apos;s Premier</span>
               <br />
               <span
                 className="hero-word hero2-grad sm:whitespace-nowrap"
                 style={{
-                  animationDelay: "0.45s",
+                  animationDelay: "0.2s",
                   // bg-clip-text + tight line-height clips descenders (p, y, g).
                   // Add a little vertical room and offset it so line spacing
                   // stays visually unchanged.
@@ -75,7 +75,7 @@ export default function HeroSection() {
                 Display Technology
               </span>
               <br />
-              <span className="hero-word" style={{ animationDelay: "0.6s" }}>Partner</span>
+              <span className="hero-word" style={{ animationDelay: "0.28s" }}>Partner</span>
             </span>
             {/* Keyword-rich context for crawlers without altering the visual headline. */}
             <span className="sr-only">
@@ -88,7 +88,7 @@ export default function HeroSection() {
               with the primary keywords search engines rank this page on. */}
           <p
             className="hero2-sub hero2-rise text-base md:text-lg mb-7 max-w-xl leading-relaxed"
-            style={{ animationDelay: "0.75s" }}
+            style={{ animationDelay: "0.4s" }}
           >
             Authorized Samsung distributor for{" "}
             <strong className="font-semibold">Smart Signage</strong>,{" "}
@@ -98,7 +98,7 @@ export default function HeroSection() {
             with certified installation and support across India.
           </p>
 
-          <div className="hero2-rise flex flex-col sm:flex-row gap-3" style={{ animationDelay: "0.9s" }}>
+          <div className="hero2-rise flex flex-col sm:flex-row gap-3" style={{ animationDelay: "0.5s" }}>
             <MagneticButton>
               <Link
                 href="/quote"
