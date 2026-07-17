@@ -244,9 +244,12 @@ h1, h2 {
    `both` fill keeps the final state painted.
 
    LCP note: the H1 is the LCP element, and an opacity-0 start defers when the
-   browser counts it as painted. Durations are kept deliberately tight (last
-   word fully visible by ~0.4s) so the cinematic effect doesn't regress LCP,
-   and the reduced-motion guard collapses it entirely for those users.
+   browser counts it as painted. The premium hero staggers lines at
+   0.3/0.45/0.6s (spec 2026-07-17-premium-hero-stage-design §5); Lighthouse
+   before/after gates this — if mobile LCP regresses, tighten the delays
+   (see the plan's Task 10 contingency). The reduced-motion guard (plus the
+   hero2 block in components/sections/hero/stage.css) collapses the stagger
+   entirely for reduced-motion users.
 */
 @keyframes word-rise {
   from { opacity: 0; transform: translateY(0.35em); }

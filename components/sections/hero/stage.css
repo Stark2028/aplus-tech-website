@@ -896,6 +896,140 @@
   border-color: rgba(103, 232, 249, 0.4);
 }
 
+/* ── hero shell (classes used by the server HeroSection) ──────────────────── */
+.hero2 {
+  background: #04060d;
+  isolation: isolate;
+}
+/* Pixel-grid dot field — the "display" identity motif. */
+.hero2-dots {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(148, 163, 184, 0.07) 1px, transparent 1.3px);
+  background-size: 26px 26px;
+}
+.hero2-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 120%, transparent 30%, rgba(0, 0, 0, 0.55) 100%);
+}
+/* Static film grain: one tiny inline SVG data-URI, per the perf budget. */
+.hero2-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="140" height="140"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2"/></filter><rect width="140" height="140" filter="url(%23n)" opacity="0.55"/></svg>');
+}
+/* Aurora blobs. Soft gradient stops replace the mockup's blur(70px). */
+.hero2-aur {
+  position: absolute;
+  width: 46%;
+  height: 52%;
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero2-aur-a {
+  left: -8%;
+  top: -14%;
+  background: radial-gradient(closest-side, rgba(37, 99, 235, 0.34), rgba(37, 99, 235, 0.12) 45%, transparent 72%);
+  animation: hero2-drift 16s ease-in-out infinite alternate;
+}
+.hero2-aur-b {
+  right: -10%;
+  bottom: -18%;
+  background: radial-gradient(closest-side, rgba(124, 58, 237, 0.27), rgba(124, 58, 237, 0.1) 45%, transparent 72%);
+  animation: hero2-drift 19s ease-in-out infinite alternate-reverse;
+}
+@keyframes hero2-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(40px, 26px) scale(1.15); }
+}
+/* Entrance rise for badge / subcopy / CTAs (H1 uses .hero-word). `both` fill
+   keeps elements hidden through their delay and painted after. */
+.hero2-rise {
+  animation: hero2-risein 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes hero2-risein {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* Mono badge with pulsing status dot (reuses stg-pulse from the NOC scene). */
+.hero2-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+  background: rgba(125, 211, 252, 0.07);
+  border: 1px solid rgba(125, 211, 252, 0.16);
+  padding: 7px 16px;
+  border-radius: 99px;
+}
+.hero2-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+  animation: stg-pulse 2.4s ease-in-out infinite;
+}
+@media (max-width: 420px) {
+  .hero2-badge { font-size: 10px; letter-spacing: 0.16em; }
+}
+/* Shimmering headline gradient (replaces the static bg-clip gradient). */
+.hero2-grad {
+  background: linear-gradient(100deg, #60a5fa 15%, #a5b4fc 38%, #f0f9ff 50%, #c4b5fd 62%, #818cf8 85%);
+  background-size: 230% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hero2-shimmer 7s ease-in-out infinite;
+}
+@keyframes hero2-shimmer {
+  0%, 100% { background-position: 0% 0; }
+  50% { background-position: 100% 0; }
+}
+.hero2-sub { color: #8b98ad; }
+.hero2-sub strong { color: #d3dbe6; }
+.hero2-disp { font-family: var(--font-display, system-ui, sans-serif); }
+/* CTA hover sheen sweep (MagneticButton still wraps the links). */
+.hero2-cta {
+  position: relative;
+  overflow: hidden;
+}
+.hero2-cta::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  bottom: -40%;
+  width: 30%;
+  left: -50%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.5s ease;
+}
+.hero2-cta:hover::after { left: 130%; }
+.hero2-cta2 {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  transition: border-color 0.3s, background-color 0.3s;
+}
+.hero2-cta2:hover {
+  border-color: rgba(125, 211, 252, 0.5);
+  background: rgba(125, 211, 252, 0.06);
+}
+
 /* ── reduced motion: everything static, CH·01 visible, copy visible ─────────
    The global guard in globals.css force-completes animations (0.001ms × 1
    iteration); the 20s loop has no fill, so without these overrides every
