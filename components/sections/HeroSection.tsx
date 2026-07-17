@@ -1,26 +1,16 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Space_Grotesk, IBM_Plex_Mono, Caveat } from "next/font/google";
+import { Caveat } from "next/font/google";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import MagneticButton from "@/components/MagneticButton";
 import DisplayStage from "@/components/sections/hero/DisplayStage";
+import { spaceGrotesk, plexMono } from "@/app/fonts-accent";
 
 // Hero-scoped premium type system (spec §4). Applied as CSS variables on the
 // <section>: --font-display intentionally shadows the site-wide Plus Jakarta
 // Sans inside the hero subtree (phase 2 decides the site-wide swap).
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "700"],
-  variable: "--font-display",
-  display: "swap",
-});
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-mono",
-  display: "swap",
-  preload: false,
-});
+// Space Grotesk + IBM Plex Mono live in app/fonts-accent (shared with the
+// product card); Caveat stays hero-only.
 const caveat = Caveat({
   subsets: ["latin"],
   weight: ["600"],
