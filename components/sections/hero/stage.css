@@ -1,0 +1,197 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Premium hero + display stage.
+   Design source of truth: brainstorm mockup hero-a-premium-v3.html (2026-07-17,
+   approved by user). Its CSS is translated here 1:1 with two production changes:
+   1. SCALE — the mockup was a fixed ~440px stage. All intra-stage dimensions
+      are em at (mockup px ÷ 10); .stg-scale sets the base via container-query
+      width, so the stage renders the mockup's exact proportions at any width.
+      Hairlines (1–3px borders/seams/boot) intentionally stay px.
+   2. PERF — no filter:blur() on large elements (soft radial-gradients instead);
+      loop animations use opacity/transform only (sheen + chip bars converted
+      from left/width to transforms).
+   Imported once, globally, by DisplayStage.tsx. Classes: hero2-* = hero shell
+   (used by the server HeroSection), stg-* = stage island.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── shared screen chrome ─────────────────────────────────────────────────── */
+.stg-screen {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+/* Glass sheen sweep, every 9s. Mockup animated `left`; converted to translateX
+   (element is 34% of parent width, so -45%/130% of parent ≈ -132%/382% of self). */
+.stg-screen::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: 0;
+  width: 34%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.09) 45%, rgba(255, 255, 255, 0.16) 50%, rgba(255, 255, 255, 0.09) 55%, transparent);
+  transform: translateX(-132%) skewX(-18deg);
+  animation: stg-sheen 9s ease-in-out infinite;
+  z-index: 6;
+  pointer-events: none;
+}
+@keyframes stg-sheen {
+  0%, 55% { transform: translateX(-132%) skewX(-18deg); }
+  75%, 100% { transform: translateX(382%) skewX(-18deg); }
+}
+/* Slow ken-burns push on photographic scene backdrops. */
+.stg-kb {
+  position: absolute;
+  inset: 0;
+  animation: stg-kbzoom 7s ease-in-out infinite alternate;
+}
+@keyframes stg-kbzoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.045); }
+}
+/* Mono caption pinned bottom-left of a screen. */
+.stg-cap {
+  position: absolute;
+  bottom: 0.8em;
+  left: 1.2em;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  color: #e0f2fe;
+  font-size: 0.85em;
+  letter-spacing: 0.16em;
+  font-weight: 500;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
+  z-index: 5;
+}
+/* Self-drawing SVG strokes (NOC chart, whiteboard marker). Elements must set
+   pathLength="100"; dasharray/offset are paint-only, allowed by the perf budget. */
+.stg-drawline {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: stg-draw 3.2s ease-out infinite;
+}
+.stg-drawline-slow { animation-duration: 4s; }
+.stg-drawline-delayed { animation-delay: 0.3s; }
+@keyframes stg-draw {
+  0% { stroke-dashoffset: 100; }
+  45%, 88% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* ── CH·01 · retail campaign on slim-bezel signage ────────────────────────── */
+.stg-sign {
+  width: 78%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.6em;
+  padding: 0.3em;
+  background: linear-gradient(160deg, #475569, #0f172a 30%, #1e293b 70%, #0b1120);
+  box-shadow: 0 2.4em 6em -1.8em rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(148, 163, 184, 0.15), 0 0 5.4em -0.8em rgba(37, 99, 235, 0.4);
+}
+.stg-sign .stg-screen {
+  border-radius: 0.4em;
+  height: 100%;
+}
+.stg-retail {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 0%, #1d4ed8 0%, #0b2b5e 45%, #04102a 100%);
+}
+.stg-retail::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.35));
+}
+.stg-ret-eyebrow {
+  position: absolute;
+  top: 12%;
+  left: 8%;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.75em;
+  letter-spacing: 0.24em;
+  color: #7dd3fc;
+}
+.stg-ret-big {
+  position: absolute;
+  top: 20%;
+  left: 8%;
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-weight: 700;
+  line-height: 0.95;
+  color: #fff;
+  font-size: 3.4em;
+  letter-spacing: -0.03em;
+}
+.stg-ret-big em {
+  font-style: normal;
+  background: linear-gradient(100deg, #22d3ee, #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.stg-ret-big small {
+  display: block;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.265em; /* 9px at mockup scale (parent is 34px) */
+  letter-spacing: 0.05em;
+  color: #93b8e8;
+  margin-top: 0.55em;
+}
+.stg-ret-shop {
+  position: absolute;
+  bottom: 16%;
+  left: 8%;
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-weight: 700;
+  background: #fff;
+  color: #0b2b5e;
+  font-size: 0.85em;
+  padding: 0.6em 1.5em;
+  border-radius: 99px;
+  letter-spacing: 0.02em;
+}
+.stg-minitv {
+  position: absolute;
+  right: 9%;
+  top: 22%;
+  width: 33%;
+}
+.stg-minitv .scr {
+  aspect-ratio: 16 / 9;
+  border-radius: 0.4em;
+  padding: 2px;
+  background: linear-gradient(160deg, #52525b, #18181b);
+  box-shadow: 0 1em 2.6em rgba(0, 0, 0, 0.6), 0 0 3em -0.4em rgba(34, 211, 238, 0.45);
+}
+.stg-minitv .scr > div {
+  height: 100%;
+  border-radius: 0.3em;
+  background: linear-gradient(120deg, #22d3ee, #6366f1 45%, #d946ef 90%);
+  background-size: 220% 220%;
+  animation: stg-qled 6s ease-in-out infinite alternate;
+}
+@keyframes stg-qled {
+  from { background-position: 0% 0%; }
+  to { background-position: 100% 100%; }
+}
+.stg-minitv .neck {
+  width: 1.6em;
+  height: 0.7em;
+  margin: 0 auto;
+  background: #18181b;
+  clip-path: polygon(25% 0, 75% 0, 100% 100%, 0 100%);
+}
+.stg-minitv .base {
+  width: 5.2em;
+  height: 0.3em;
+  margin: 0 auto;
+  border-radius: 99px;
+  background: #27272a;
+}
+.stg-minitv .price {
+  margin-top: 0.8em;
+  text-align: center;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.75em;
+  color: #bae6fd;
+  letter-spacing: 0.08em;
+}
