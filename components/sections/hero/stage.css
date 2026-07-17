@@ -523,3 +523,128 @@
   color: #e9d5ff;
   opacity: 0.85;
 }
+
+/* ── CH·04 · whiteboard on a Flip with easel legs + wheels ────────────────── */
+.stg-flip {
+  width: 46%;
+  aspect-ratio: 4 / 3;
+  border-radius: 1em;
+  padding: 0.7em;
+  background: linear-gradient(160deg, #f8fafc, #cbd5e1 60%, #e2e8f0);
+  box-shadow: 0 2.4em 6em -1.8em rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.25), 0 0 5.4em -0.8em rgba(148, 163, 184, 0.35);
+}
+.stg-flip .stg-screen {
+  border-radius: 0.5em;
+  height: 100%;
+  background: #f1f5f9;
+}
+.stg-board {
+  position: absolute;
+  inset: 0;
+  background: #fbfcfe;
+  background-image: radial-gradient(circle, rgba(100, 116, 139, 0.14) 1px, transparent 1.2px);
+  background-size: 1.6em 1.6em;
+}
+.stg-btitle {
+  position: absolute;
+  top: 6%;
+  left: 8%;
+  font-family: var(--font-hand, cursive);
+  font-weight: 600;
+  font-size: 1.9em;
+  color: #1e293b;
+  transform: rotate(-2deg);
+}
+.stg-btitle u {
+  text-decoration-color: #dc2626;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+/* Sticky notes pop in near the end of the 20s cycle (Flip's 15–20s window).
+   `scale` (the standalone property) is animated so the per-note rotate
+   transforms are preserved. */
+.stg-note {
+  position: absolute;
+  width: 4.4em;
+  height: 4em;
+  padding: 0.5em;
+  font-family: var(--font-hand, cursive);
+  font-weight: 600;
+  font-size: 0.95em;
+  line-height: 1.1;
+  color: #334155;
+  box-shadow: 0 0.3em 0.8em rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  animation: stg-note 20s ease-in-out infinite;
+}
+.stg-note.n1 { right: 10%; top: 9%; background: #fef08a; transform: rotate(4deg); animation-delay: 15.3s; }
+.stg-note.n2 { right: 26%; top: 13%; background: #fbcfe8; transform: rotate(-5deg); animation-delay: 15.6s; }
+.stg-note.n3 { right: 8%; top: 38%; background: #bae6fd; transform: rotate(2deg); animation-delay: 15.9s; }
+@keyframes stg-note {
+  0% { opacity: 0; scale: 0.5; }
+  1.6% { opacity: 1; scale: 1.06; }
+  2.6% { scale: 1; }
+  25% { opacity: 1; }
+  28% { opacity: 0; }
+  100% { opacity: 0; }
+}
+.stg-axes {
+  position: absolute;
+  left: 9%;
+  bottom: 14%;
+  width: 56%;
+  height: 52%;
+  border-left: 1.5px solid #94a3b8;
+  border-bottom: 1.5px solid #94a3b8;
+}
+.stg-palette {
+  position: absolute;
+  bottom: 7%;
+  right: 8%;
+  display: flex;
+  gap: 0.4em;
+  z-index: 5;
+}
+.stg-palette i {
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.stg-capdark {
+  position: absolute;
+  bottom: 7%;
+  left: 9%;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  color: #64748b;
+  font-size: 0.8em;
+  letter-spacing: 0.14em;
+  z-index: 5;
+}
+.stg-legs {
+  display: flex;
+  justify-content: center;
+  gap: 5.2em;
+  margin-top: -2px;
+}
+.stg-legs i {
+  width: 0.4em;
+  height: 3.2em;
+  background: linear-gradient(180deg, #475569, #1e293b);
+  border-radius: 3px;
+}
+.stg-legs i:first-child { transform: rotate(9deg); }
+.stg-legs i:last-child { transform: rotate(-9deg); }
+.stg-wheels {
+  display: flex;
+  justify-content: center;
+  gap: 6.8em;
+  margin-top: -0.4em;
+}
+.stg-wheels i {
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 50%;
+  background: #334155;
+  box-shadow: 0 0.3em 0.6em rgba(0, 0, 0, 0.5);
+}
