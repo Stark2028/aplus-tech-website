@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { spaceGroteskCard, plexMonoCard } from "@/app/fonts-accent";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -105,7 +106,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${inter.className} ${jakartaSans.variable} bg-background text-foreground`}>
+      <body className={`${inter.className} ${jakartaSans.variable} ${spaceGroteskCard.variable} ${plexMonoCard.variable} bg-background text-foreground`}>
         <ScrollProgress />
         <Toaster richColors position="bottom-right" />
         <Analytics gaId={GA_ID} />

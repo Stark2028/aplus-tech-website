@@ -7,7 +7,6 @@ import Image from "next/image";
 import { ArrowRight, ShoppingBag, Scale, Clock, Check } from "lucide-react";
 import { Product } from "@/data/products";
 import { formatSkuLine } from "@/lib/productSku";
-import { spaceGrotesk, plexMono } from "@/app/fonts-accent";
 import { useQuote } from "@/context/QuoteContext";
 import { useComparison } from "@/context/ComparisonContext";
 import { getProductBadge } from "@/lib/productBadges";
@@ -142,10 +141,19 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Content */}
       <div className="spotlight-content p-6 flex flex-col grow">
         <div className="mb-5">
-          <p className={`${plexMono.className} text-[11px] tracking-[0.12em] text-slate-500 mb-2`}>
+          {/* Accent fonts come from the --font-card-* variables app/layout.tsx
+              sets on <body> — this client file must not import next/font
+              (Turbopack + .browserslistrc bug; see app/fonts-accent.ts). */}
+          <p
+            className="text-[11px] tracking-[0.12em] text-slate-500 mb-2"
+            style={{ fontFamily: "var(--font-card-mono)" }}
+          >
             {formatSkuLine(product)}
           </p>
-          <h3 className={`${spaceGrotesk.className} text-[1.15rem] font-bold text-slate-900 mt-1 mb-2.5 leading-snug tracking-tight line-clamp-2`}>
+          <h3
+            className="text-[1.15rem] font-bold text-slate-900 mt-1 mb-2.5 leading-snug tracking-tight line-clamp-2"
+            style={{ fontFamily: "var(--font-card-display)" }}
+          >
             <Link href={`/products/${product.id}`} className="hover:text-blue-600 transition-colors">
               {product.name}
             </Link>
