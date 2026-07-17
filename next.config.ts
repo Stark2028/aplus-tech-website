@@ -40,7 +40,10 @@ const securityHeaders = [
       // Firebase: Firestore streams over *.googleapis.com; auth uses
       // identitytoolkit + securetoken; Storage serves attachments. FCM is
       // listed now so Phase 2 does not need a CSP change of its own.
-      "img-src 'self' data: blob: https://images.unsplash.com https://plus.unsplash.com https://www.aplustechsol.com https://www.google-analytics.com https://www.googletagmanager.com https://stats.g.doubleclick.net https://firebasestorage.googleapis.com",
+      // www.google.com / www.google.co.in: gtag's connectivity + Google Signals
+      // pixels (images/cleardot.gif, /ads/ga-audiences) — image beacons only,
+      // deliberately NOT added to script-src or connect-src.
+      "img-src 'self' data: blob: https://images.unsplash.com https://plus.unsplash.com https://www.aplustechsol.com https://www.google-analytics.com https://www.googletagmanager.com https://stats.g.doubleclick.net https://www.google.com https://www.google.co.in https://firebasestorage.googleapis.com",
       "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://stats.g.doubleclick.net https://us.i.posthog.com https://us-assets.i.posthog.com https://*.googleapis.com https://firestore.googleapis.com https://fcm.googleapis.com https://firebaseinstallations.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebasestorage.googleapis.com https://*.gstatic.com",
       "worker-src 'self' blob:",
       "frame-src https://www.google.com https://maps.google.com",
