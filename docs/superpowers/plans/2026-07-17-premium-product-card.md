@@ -1,5 +1,7 @@
 # Premium Product Card (Bezel Display + Hover Theatre) Implementation Plan
 
+> **Executed 2026-07-17** — all five tasks complete on `feat/premium-product-card`. One deviation from Task 3/4 as written: with `.browserslistrc` present, Turbopack fails to compile any `next/font` module imported from a `"use client"` file ("Font loader calls must be assigned to a const", vercel/next.js#86792), so ProductCard cannot import font instances. Instead `app/fonts-accent.ts` (server-graph only) also exports card-scoped instances under `--font-card-display` / `--font-card-mono` (preload: false), `app/layout.tsx` puts those variables on `<body>`, and the card uses `font-family: var(--font-card-*)`. Verified at runtime: SKU/name fonts resolve to IBM Plex Mono / Space Grotesk; Lighthouse mobile on `/categories/digital-signage` is statistically unchanged vs master (0.68–0.70 vs 0.67–0.71, TBT/CLS equal).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Rework the ProductCard image area into a thin metal-bezel "display" framing a uniform light mat with a CSS-only hover/focus theatre (glow, sheen, rim light), plus a new mono SKU line and Space Grotesk product name.
