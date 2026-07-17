@@ -122,6 +122,7 @@ export default function DisplayStage() {
             <button
               type="button"
               className="stg-chip stg-chip-auto"
+              aria-label="Resume automatic channel cycling"
               onClick={() => {
                 resumeAuto();
                 posthog?.capture("hero_stage_auto_resume");
