@@ -30,11 +30,15 @@ export const plexMono = IBM_Plex_Mono({
 // names, applied on <body> so ProductCard (client) can use
 // font-family: var(--font-card-*) without importing next/font. Identical
 // font config means the self-hosted font files are shared, not re-downloaded.
+// preload:false on both card instances: they ride the root layout's <body>,
+// so preloading would add font preload links to every page site-wide, cards
+// or not. display:swap covers the brief fallback flash on card pages.
 export const spaceGroteskCard = Space_Grotesk({
   subsets: ["latin"],
   weight: ["500", "700"],
   variable: "--font-card-display",
   display: "swap",
+  preload: false,
 });
 
 export const plexMonoCard = IBM_Plex_Mono({
