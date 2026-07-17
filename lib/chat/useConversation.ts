@@ -19,7 +19,7 @@ import { getAuthClient, getDb } from "@/lib/firebase/client";
 import { isFirebaseConfigured } from "@/lib/firebase/config";
 import { trackEvent } from "@/lib/analytics";
 import { setCachedLead } from "@/lib/leadGate";
-import { COL, toMillis, type ChatCustomer, type ChatMessage, type Conversation } from "./types";
+import { COL, mapConversation, mapMessage, type ChatCustomer, type ChatMessage, type Conversation } from "./types";
 import { buildPreview } from "./messages";
 import { shouldEscalate } from "./escalation";
 
@@ -45,7 +45,7 @@ interface StartInput {
  * of §6 is that the LEAD EXISTS BEFORE ANYONE REPLIES — a Firebase outage must
  * cost us the live chat, not the customer.
  */
-export function useConversation() {
+export function useConversation(engaged = false) {
   // isFirebaseConfigured() reads build-time env, so it never changes across
   // renders — deciding "unavailable" via a lazy initializer (rather than an
   // effect that calls setState) is both correct and avoids a wasted render.
@@ -83,9 +83,20 @@ export function useConversation() {
   // pre-chat form rather than the blocking `error` screen (spec §6.2 — a resume
   // that fails must never strand them on a WhatsApp-only fallback).
   const [resumeExpired, setResumeExpired] = useState(false);
+  // Ref guard so StrictMode's dev double-invoke doesn't strip the hash before
+  // the async signInWithCustomToken resolves (see the resume effect below).
+  const hasResumed = useRef(false);
 
   useEffect(() => {
     if (!resuming || !isFirebaseConfigured()) return;
+
+    // #8 fix: StrictMode double-invoke guard.
+    // React StrictMode intentionally runs effects twice in development. Without
+    // this guard the second run sees resuming === true but the hash was already
+    // stripped by the first run — signInWithCustomToken("") rejects and a valid
+    // resume link appears as "expired".
+    if (hasResumed.current) return;
+    hasResumed.current = true;
 
     const customToken = decodeURIComponent(window.location.hash.slice(3));
     // Strip the token from the URL immediately — it must not survive into a
@@ -105,19 +116,39 @@ export function useConversation() {
       setUid(user?.uid ?? null);
       setReady(true);
     });
-    // Anonymous sign-in is idempotent — an existing session is reused, which is
-    // what lets a returning visitor land back in their own thread. Skipped
-    // while a resume token is being redeemed above, so the two never race.
-    if (!auth.currentUser && !resuming) {
+    // A persisted anonymous session is ALWAYS reused (onAuthStateChanged above
+    // picks it up), so a returning visitor lands back in their own thread — and
+    // their unanswered timer resumes — on page load without any new account.
+    // But we only MINT a fresh anonymous account once the visitor actually
+    // ENGAGES (opens the panel). Signing in eagerly for every visitor would
+    // create an anonymous user + a Firestore listener on every page view before
+    // anyone touches the chat. Skipped while a resume token is being redeemed
+    // above, so the two never race.
+    if (engaged && !auth.currentUser && !resuming) {
       void signInAnonymously(auth).catch(() => {
         setError("Chat is unavailable right now.");
         setReady(true);
       });
     }
     return unsubscribe;
-  }, [resuming]);
+  }, [resuming, engaged]);
 
-  // ── find this visitor's open conversation ─────────────────────────────────
+  // ── find this visitor's open conversation ───────────────────────────────────────────
+  // This listener only ever RUNS ONCE per uid, and its sole job is to DISCOVER an
+  // existing open thread on load (and keep its metadata fresh). It must never
+  // DESTROY the active thread: a brand-new conversation is not immediately
+  // returned by this compound (ownerUid, status, lastMessageAt) query — its
+  // lastMessageAt serverTimestamp hasn't resolved on the server yet — so the
+  // query emits an empty snapshot for a beat right after startConversation()
+  // created the doc. Nulling conversationId there wiped the thread (the
+  // reset-during-render guard clears `messages` and the stream detaches),
+  // dropping the customer's own first message AND the agent's reply until a full
+  // refresh re-ran the query against the now-settled doc. So: an empty snapshot
+  // clears the id ONLY when we do not already hold one. A genuine close is driven
+  // by the agent setting status:'closed', which the widget does not need to react
+  // to mid-session.
+  const conversationIdRef = useRef<string | null>(conversationId);
+  conversationIdRef.current = conversationId;
   useEffect(() => {
     if (!uid) return;
     const q = query(
@@ -132,27 +163,16 @@ export function useConversation() {
       (snap) => {
         const first = snap.docs[0];
         if (!first) {
+          // Transient empty for a freshly-created (or just-written) thread —
+          // ignore it while we already have one. Only a visitor who genuinely
+          // has no open thread (never started one) falls through to null.
+          if (conversationIdRef.current) return;
           setConversationId(null);
           setConversation(null);
           return;
         }
-        const data = first.data();
         setConversationId(first.id);
-        setConversation({
-          id: first.id,
-          visitorId: data.visitorId,
-          ownerUid: data.ownerUid,
-          customer: data.customer,
-          startedBy: data.startedBy,
-          page: data.page,
-          status: data.status,
-          needsFollowUp: Boolean(data.needsFollowUp),
-          createdAt: toMillis(data.createdAt),
-          lastMessageAt: toMillis(data.lastMessageAt),
-          lastPreview: data.lastPreview ?? "",
-          lastSender: data.lastSender ?? "customer",
-          unreadForAgent: data.unreadForAgent ?? 0,
-        });
+        setConversation(mapConversation(first.id, first.data() as Record<string, unknown>));
       },
       () => setError("Chat is unavailable right now.")
     );
@@ -170,35 +190,38 @@ export function useConversation() {
       q,
       (snap) => {
         setMessages(
-          snap.docs.map((d) => {
-            const data = d.data();
-            return {
-              id: d.id,
-              sender: data.sender,
-              text: data.text ?? "",
-              createdAt: toMillis(data.createdAt),
-              emailedAt: data.emailedAt ? toMillis(data.emailedAt) : undefined,
-              attachment: data.attachment,
-              link: data.link,
-            };
-          })
+          snap.docs.map((d) => mapMessage(d.id, d.data() as Record<string, unknown>))
         );
       },
       () => setError("We lost the connection. Try WhatsApp or call us.")
     );
   }, [conversationId]);
 
-  // ── the 3-minute unanswered timer (spec §6.1) ─────────────────────────────
+  // ── the 3-minute unanswered timer (spec §6.1) ──────────────────────────────────
   // Runs in the WAITING CUSTOMER'S OWN BROWSER, which is exactly why the safety
   // net fires when no console is open anywhere: no cron, no paid plan.
-  const escalating = useRef(false);
+  // Two SEPARATE guards, deliberately not one. `noticePosted` stops the "team is
+  // tied up" apology being written to the thread more than once; `escalated`
+  // stops re-escalating only AFTER the server has actually accepted the alert.
+  // Collapsing them (the old single `escalating` latch) meant a transient 500
+  // from /api/chat/escalate latched escalation shut with no email ever sent —
+  // the client never retried because the guard was already flipped.
+  const noticePosted = useRef(false);
+  const escalated = useRef(false);
   useEffect(() => {
     if (!conversationId || !conversation) return;
 
-    const lastCustomerMessageAt =
-      [...messages].reverse().find((m) => m.sender === "customer")?.createdAt ?? null;
-    const lastAgentMessageAt =
-      [...messages].reverse().find((m) => m.sender === "agent")?.createdAt ?? null;
+    // C4 fix: single backward scan instead of two reverse().find() calls.
+    // Previously the array was cloned and reversed twice per effect run
+    // (keyed on messages, so runs on every new message).
+    let lastCustomerMessageAt: number | null = null;
+    let lastAgentMessageAt: number | null = null;
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const m = messages[i];
+      if (lastCustomerMessageAt === null && m.sender === "customer") lastCustomerMessageAt = m.createdAt;
+      if (lastAgentMessageAt === null && m.sender === "agent") lastAgentMessageAt = m.createdAt;
+      if (lastCustomerMessageAt !== null && lastAgentMessageAt !== null) break;
+    }
 
     const check = async () => {
       const due = shouldEscalate({
@@ -207,31 +230,42 @@ export function useConversation() {
         needsFollowUp: conversation.needsFollowUp,
         now: Date.now(),
       });
-      if (!due || escalating.current) return;
-      escalating.current = true;
+      if (!due || escalated.current) return;
 
       const db = getDb();
-      // The apology lands in the thread even if the route below fails.
-      await addDoc(collection(db, COL.conversations, conversationId, COL.messages), {
-        sender: "system",
-        text: TIMEOUT_NOTICE,
-        createdAt: serverTimestamp(),
-      }).catch(() => {});
+      // The apology lands in the thread even if the route below fails — but only
+      // once, no matter how many times we retry the escalation.
+      if (!noticePosted.current) {
+        noticePosted.current = true;
+        await addDoc(collection(db, COL.conversations, conversationId, COL.messages), {
+          sender: "system",
+          text: TIMEOUT_NOTICE,
+          createdAt: serverTimestamp(),
+        }).catch(() => {});
+      }
 
-      const idToken = await getAuthClient().currentUser?.getIdToken();
-      await fetch("/api/chat/escalate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
-        },
-        body: JSON.stringify({ conversationId }),
-      }).catch(() => {
-        // Non-fatal (spec §11): the message is stored, and the chat-start email
-        // + Zoho lead already landed. The flag is a convenience, not the record.
-      });
-
-      trackEvent("chat_unanswered", { conversationId });
+      // Only latch `escalated` on a 2xx. A non-2xx (e.g. a transient Resend
+      // failure surfaced as 500) leaves it false so the next 20s tick retries —
+      // and the server no longer sets needsFollowUp before a successful send, so
+      // the retry is genuinely re-attempted rather than short-circuited.
+      try {
+        const idToken = await getAuthClient().currentUser?.getIdToken();
+        const res = await fetch("/api/chat/escalate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
+          },
+          body: JSON.stringify({ conversationId }),
+        });
+        if (res.ok) {
+          escalated.current = true;
+          trackEvent("chat_unanswered", { conversationId });
+        }
+      } catch {
+        // Network error — non-fatal (spec §11): the notice is stored and the
+        // chat-start email + Zoho lead already landed. Retry on the next tick.
+      }
     };
 
     void check();
@@ -312,8 +346,11 @@ export function useConversation() {
         unreadForAgent: increment(1),
       });
 
-      // A fresh customer message re-arms the timer.
-      escalating.current = false;
+      // A fresh customer message re-arms the timer: a new unanswered message may
+      // post another apology and escalate again (the server de-dupes via
+      // needsFollowUp, so a still-flagged thread just returns alreadyFlagged).
+      noticePosted.current = false;
+      escalated.current = false;
       trackEvent("chat_message_sent", { conversationId });
     },
     [conversationId]

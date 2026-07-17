@@ -24,9 +24,13 @@ export default function ChatThread({
   const [uploadError, setUploadError] = useState("");
   const end = useRef<HTMLDivElement>(null);
 
+  // #5 fix: include messages.length in deps so markRead re-fires whenever a new
+  // customer message arrives while the agent is actively viewing the thread.
+  // Previously the deps were [conversation.id, markRead] — both stable while a
+  // thread is open — so the unread badge never cleared on new arrivals.
   useEffect(() => {
     void markRead();
-  }, [conversation.id, markRead]);
+  }, [conversation.id, markRead, messages.length]);
 
   useEffect(() => {
     end.current?.scrollIntoView({ behavior: "smooth" });

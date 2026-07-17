@@ -93,3 +93,41 @@ export function toMillis(value: unknown): number {
   }
   return 0;
 }
+
+/**
+ * Map a raw Firestore conversation document to the typed `Conversation` model.
+ * Single canonical implementation — used by both useConversation and useInbox
+ * so the field mapping never drifts between the customer widget and agent console.
+ */
+export function mapConversation(id: string, data: Record<string, unknown>): Conversation {
+  return {
+    id,
+    visitorId: data.visitorId as string,
+    ownerUid: data.ownerUid as string,
+    customer: (data.customer ?? { name: "", email: "", phone: "" }) as ChatCustomer,
+    startedBy: (data.startedBy ?? "customer") as "customer" | "agent",
+    page: (data.page ?? "") as string,
+    status: (data.status ?? "open") as "open" | "closed",
+    needsFollowUp: Boolean(data.needsFollowUp),
+    createdAt: toMillis(data.createdAt),
+    lastMessageAt: toMillis(data.lastMessageAt),
+    lastPreview: (data.lastPreview ?? "") as string,
+    lastSender: (data.lastSender ?? "customer") as Sender,
+    unreadForAgent: (data.unreadForAgent as number) ?? 0,
+  };
+}
+
+/**
+ * Map a raw Firestore message document to the typed `ChatMessage` model.
+ */
+export function mapMessage(id: string, data: Record<string, unknown>): ChatMessage {
+  return {
+    id,
+    sender: data.sender as Sender,
+    text: (data.text ?? "") as string,
+    createdAt: toMillis(data.createdAt),
+    emailedAt: data.emailedAt ? toMillis(data.emailedAt) : undefined,
+    attachment: data.attachment as ChatAttachment | undefined,
+    link: data.link as ChatLink | undefined,
+  };
+}

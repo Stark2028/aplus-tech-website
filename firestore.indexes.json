@@ -4,14 +4,18 @@
       "collectionGroup": "conversations",
       "queryScope": "COLLECTION",
       "fields": [
+        { "fieldPath": "ownerUid", "order": "ASCENDING" },
         { "fieldPath": "status", "order": "ASCENDING" },
         { "fieldPath": "lastMessageAt", "order": "DESCENDING" }
       ]
     },
     {
-      "collectionGroup": "visitors",
+      "collectionGroup": "conversations",
       "queryScope": "COLLECTION",
-      "fields": [{ "fieldPath": "lastSeenAt", "order": "DESCENDING" }]
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "lastMessageAt", "order": "DESCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

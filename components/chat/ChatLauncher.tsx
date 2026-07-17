@@ -29,9 +29,16 @@ export default function ChatLauncher() {
 
   // Arriving from a "reply in the chat" email — open straight into the thread
   // instead of leaving them to notice the launcher bubble on their own.
+  // #11 fix: also handle chat=expired (server-side redirect for a token that
+  // failed the /api/chat/resume verification). We open silently into the live
+  // view — the resumeExpired notice in LiveChat will surface once the client
+  // also tries (and fails) the token redemption, giving the customer a
+  // contextual "start a new chat" prompt without confirming to a hostile probe
+  // that the link ever existed.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get("chat") === "resume") openChat("live");
+    const chatParam = params.get("chat");
+    if (chatParam === "resume" || chatParam === "expired") openChat("live");
   }, [openChat]);
 
   return (

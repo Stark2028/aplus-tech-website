@@ -7,6 +7,7 @@ import { COL, toMillis } from "@/lib/chat/types";
 import { shouldEmailReply } from "@/lib/chat/replyEmail";
 import { buildResumeUrl } from "@/lib/chat/resumeToken";
 import { safeHttpUrl } from "@/lib/chat/safeUrl";
+import { esc } from "@/lib/chat/htmlEsc";
 
 /**
  * Email an agent reply to a customer who has left (spec §6.3).
@@ -111,6 +112,16 @@ export async function POST(req: Request) {
     const attachmentUrl: string | undefined = safeHttpUrl(message.attachment?.url ?? message.link?.url);
     const attachmentLabel: string | undefined = message.attachment?.name ?? message.link?.label;
 
+    // #4 fix: Stamp emailedAt BEFORE calling Resend (optimistic) so that any
+    // concurrent call for the same conversation reads a recent emailedAt from the
+    // orderBy("emailedAt","desc").limit(1) query and correctly bails out early.
+    // Without this, two agent messages firing within the Resend round-trip both
+    // read lastEmailedAt === null and both pass shouldEmailReply — the customer
+    // gets two emails, defeating the "burst → ONE email" invariant.
+    // On Resend failure we clear the stamp so the next genuine attempt is not
+    // permanently suppressed.
+    await messageRef.update({ emailedAt: FieldValue.serverTimestamp() });
+
     const resend = new Resend(process.env.RESEND_API_KEY);
     const { error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev",
@@ -130,11 +141,11 @@ export async function POST(req: Request) {
         <div style="background:#f8fafc;border:1px solid #e5e7eb;border-left:3px solid #2563eb;border-radius:8px;padding:16px;font-size:14px;color:#374151;line-height:1.7;white-space:pre-wrap">${esc(message.text ?? "")}</div>
         ${
           attachmentUrl
-            ? `<p style="margin:16px 0 0"><a href="${esc(attachmentUrl)}" style="font-size:13px;color:#2563eb;font-weight:600">📎 ${esc(attachmentLabel ?? "Attachment")}</a></p>`
+            ? `<p style="margin:16px 0 0"><a href="${esc(attachmentUrl)}" style="font-size:13px;color:#2563eb;font-weight:600">&#128206; ${esc(attachmentLabel ?? "Attachment")}</a></p>`
             : ""
         }
         <p style="margin:24px 0 0">
-          <a href="${resumeUrl}" style="display:inline-block;background:#2563eb;color:#fff;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:8px">Reply in the chat →</a>
+          <a href="${resumeUrl}" style="display:inline-block;background:#2563eb;color:#fff;font-weight:700;font-size:14px;text-decoration:none;padding:12px 22px;border-radius:8px">Reply in the chat &#8594;</a>
         </p>
         <p style="font-size:12px;color:#9ca3af;margin:16px 0 0">Or just reply to this email — it reaches the same team.</p>
       </td></tr>
@@ -145,10 +156,10 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error("[chat/reply-email][resend]", error);
+      // Roll back the optimistic stamp so the next attempt is not suppressed.
+      await messageRef.update({ emailedAt: FieldValue.delete() }).catch(() => {});
       return NextResponse.json({ success: false }, { status: 500 });
     }
-
-    await messageRef.update({ emailedAt: FieldValue.serverTimestamp() });
 
     return NextResponse.json({ success: true, emailed: true });
   } catch (err) {
@@ -157,12 +168,3 @@ export async function POST(req: Request) {
   }
 }
 
-/** Escape user-supplied text before interpolating into the HTML email body. */
-function esc(value: string): string {
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}

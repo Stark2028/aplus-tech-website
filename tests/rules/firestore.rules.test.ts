@@ -93,6 +93,38 @@ describe("conversations", () => {
   it("blocks a customer from reassigning ownerUid", async () => {
     await assertFails(updateDoc(doc(asCustomer(), "conversations", CONV), { ownerUid: OTHER_CUSTOMER }));
   });
+
+  // Repro: the returning-visitor sendMessage() update (useConversation.ts).
+  // A returning owner posts a follow-up message; the client updates only the
+  // preview/last-message fields. This is the exact write the widget makes.
+  it("lets the owner post a follow-up message update (fresh thread)", async () => {
+    await assertSucceeds(
+      updateDoc(doc(asCustomer(), "conversations", CONV), {
+        lastMessageAt: Date.now(),
+        lastPreview: "another question",
+        lastSender: "customer",
+        unreadForAgent: 2,
+      })
+    );
+  });
+
+  // Repro of the reported bug: after the 3-min timer escalates, the escalate
+  // route stamps needsFollowUp:true. On the visitor's NEXT visit, the same
+  // sendMessage() update must still succeed — the owner never touches
+  // needsFollowUp, so the pinned-value check should hold.
+  it("lets the owner post a follow-up AFTER escalation flipped needsFollowUp", async () => {
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await updateDoc(doc(ctx.firestore(), "conversations", CONV), { needsFollowUp: true });
+    });
+    await assertSucceeds(
+      updateDoc(doc(asCustomer(), "conversations", CONV), {
+        lastMessageAt: Date.now(),
+        lastPreview: "still there?",
+        lastSender: "customer",
+        unreadForAgent: 2,
+      })
+    );
+  });
 });
 
 describe("messages", () => {

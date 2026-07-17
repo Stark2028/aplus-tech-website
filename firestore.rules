@@ -44,7 +44,10 @@ service cloud.firestore {
 
     match /conversations/{conversationId} {
       function owned() {
-        return isSignedIn() && resource.data.ownerUid == request.auth.uid;
+        return isSignedIn()
+          && resource != null
+          && resource.data != null
+          && resource.data.ownerUid == request.auth.uid;
       }
 
       allow read: if isAgent() || owned();
@@ -57,14 +60,24 @@ service cloud.firestore {
         && request.resource.data.status == 'open'
       );
 
-      // A customer may update their own conversation, but may NOT reassign it
-      // or clear the follow-up flag — that flag is the safety net (spec §6) and
-      // is cleared only by an agent reply or the Admin SDK.
+      // A customer may update their own conversation, but may NOT reassign it,
+      // clear the follow-up flag, or change the status. status is pinned to its
+      // existing value so a visitor cannot close their own thread (which would
+      // drop it from the agent inbox that filters status == 'open') — spec §9.
+      // needsFollowUp is the safety-net flag — only /api/chat/escalate (Admin SDK)
+      // or an agent may set it.
+      function getExisting(field, fallback) {
+        return resource != null && resource.data != null && field in resource.data
+          ? resource.data[field]
+          : fallback;
+      }
+
       allow update: if isAgent() || (
         owned()
-        && request.resource.data.ownerUid == resource.data.ownerUid
-        && request.resource.data.visitorId == resource.data.visitorId
-        && request.resource.data.needsFollowUp == resource.data.needsFollowUp
+        && request.resource.data.ownerUid == getExisting('ownerUid', '')
+        && request.resource.data.visitorId == getExisting('visitorId', '')
+        && request.resource.data.needsFollowUp == getExisting('needsFollowUp', false)
+        && request.resource.data.status == getExisting('status', 'open')
       );
 
       allow delete: if isAgent();
@@ -91,6 +104,16 @@ service cloud.firestore {
         // with the SDK could otherwise plant a `javascript:` URI in a link card
         // and aim it at the salesperson. The renderer refuses the scheme too
         // (lib/chat/safeUrl.ts); this is the layer that stops it being stored.
+        //
+        // #6 security: the 'system' sender is the §6.1 timeout notice only.
+        // Pinning the text to the known constant prevents a visitor using the SDK
+        // from planting attacker-authored text that renders in the agent console
+        // as an official amber "platform statement" notice box.
+        //
+        // #7 security: `emailedAt` is stamped only by the reply-email server
+        // route. A customer writing a future emailedAt would cause the route's
+        // orderBy("emailedAt","desc").limit(1) to return that forged time as
+        // lastEmailedAt and permanently suppress future agent reply-emails.
         allow create: if isAgent()
           ? request.resource.data.sender in ['agent', 'system']
           : (
@@ -100,6 +123,11 @@ service cloud.firestore {
               && request.resource.data.text.size() <= 2000
               && !('attachment' in request.resource.data)
               && !('link' in request.resource.data)
+              && !('emailedAt' in request.resource.data)
+              && (
+                   request.resource.data.sender != 'system'
+                   || request.resource.data.text == 'Sorry — our team is tied up. We have your details and will reply on WhatsApp/email shortly.'
+                 )
             );
 
         // Messages are an append-only log. Only an agent may amend one (the

@@ -17,6 +17,8 @@ import { getAuthClient, getDb } from "@/lib/firebase/client";
 import {
   COL,
   toMillis,
+  mapConversation,
+  mapMessage,
   type ChatAttachment,
   type ChatLink,
   type ChatMessage,
@@ -47,24 +49,9 @@ export function useInbox() {
     return onSnapshot(
       q,
       (snap) => {
-        const rows = snap.docs.map((d) => {
-          const data = d.data();
-          return {
-            id: d.id,
-            visitorId: data.visitorId,
-            ownerUid: data.ownerUid,
-            customer: data.customer ?? { name: "", email: "", phone: "" },
-            startedBy: data.startedBy ?? "customer",
-            page: data.page ?? "",
-            status: data.status ?? "open",
-            needsFollowUp: Boolean(data.needsFollowUp),
-            createdAt: toMillis(data.createdAt),
-            lastMessageAt: toMillis(data.lastMessageAt),
-            lastPreview: data.lastPreview ?? "",
-            lastSender: data.lastSender ?? "customer",
-            unreadForAgent: data.unreadForAgent ?? 0,
-          } satisfies Conversation;
-        });
+        const rows = snap.docs.map((d) =>
+          mapConversation(d.id, d.data() as Record<string, unknown>)
+        );
 
         rows.sort((a, b) => {
           if (a.needsFollowUp !== b.needsFollowUp) return a.needsFollowUp ? -1 : 1;
@@ -130,18 +117,7 @@ export function useThread(conversationId: string | null) {
       ),
       (snap) => {
         setMessages(
-          snap.docs.map((d) => {
-            const data = d.data();
-            return {
-              id: d.id,
-              sender: data.sender,
-              text: data.text ?? "",
-              createdAt: toMillis(data.createdAt),
-              emailedAt: data.emailedAt ? toMillis(data.emailedAt) : undefined,
-              attachment: data.attachment,
-              link: data.link,
-            };
-          })
+          snap.docs.map((d) => mapMessage(d.id, d.data() as Record<string, unknown>))
         );
       }
     );

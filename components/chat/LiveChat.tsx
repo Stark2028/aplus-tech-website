@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Send, Phone, Loader2 } from "lucide-react";
-import { useConversation } from "@/lib/chat/useConversation";
+import { useChat } from "@/context/ChatContext";
 import { isSendable, MAX_MESSAGE_LEN } from "@/lib/chat/messages";
 import MessageAttachment from "./MessageAttachment";
 import { getCachedLead } from "@/lib/leadGate";
@@ -28,7 +28,7 @@ const FIELDS = [
  */
 export default function LiveChat({ onWhatsApp }: { onWhatsApp: () => void }) {
   const pathname = usePathname();
-  const { ready, conversationId, messages, error, resumeExpired, startConversation, sendMessage } = useConversation();
+  const { ready, conversationId, messages, error, resumeExpired, startConversation, sendMessage } = useChat();
 
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
@@ -251,9 +251,12 @@ function Fallbacks({ onWhatsApp }: { onWhatsApp: () => void }) {
       </button>
       <a
         href={PHONE_TEL}
-        className="flex-1 flex items-center justify-center gap-1.5 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-3 py-2 rounded-lg font-semibold text-xs transition-all"
+        className="flex-1 flex items-center justify-center gap-1.5 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-2 py-2 rounded-lg font-semibold text-xs transition-all"
       >
-        <Phone size={13} /> Call {PHONE_DISPLAY}
+        {/* Keep the icon fixed and the number on one line — it was wrapping
+            mid-number ("09909" dropping to a second row) in the narrow button. */}
+        <Phone size={13} className="shrink-0" />
+        <span className="whitespace-nowrap">Call {PHONE_DISPLAY}</span>
       </a>
     </div>
   );

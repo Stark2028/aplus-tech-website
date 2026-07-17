@@ -5,6 +5,7 @@ import { getAdminDb } from "@/lib/firebase/admin";
 import { guardRequest, verifyOwner } from "@/lib/chat/apiGuards";
 import { COL } from "@/lib/chat/types";
 import { siteUrl } from "@/lib/chat/links";
+import { esc, headerSafe } from "@/lib/chat/htmlEsc";
 
 /**
  * "Nobody replied" (spec §6.1).
@@ -47,11 +48,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, alreadyFlagged: true });
     }
 
-    await getAdminDb().collection(COL.conversations).doc(conversationId).update({
-      needsFollowUp: true,
-      escalatedAt: FieldValue.serverTimestamp(),
-    });
-
     const customer = conversation.customer ?? {};
     const consoleUrl = `${siteUrl()}/admin/chat?c=${encodeURIComponent(conversationId)}`;
 
@@ -59,7 +55,11 @@ export async function POST(req: Request) {
     const { error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev",
       to: TO_EMAIL,
-      subject: `⚠️ Unanswered chat — ${esc(customer.name ?? "a visitor")}`,
+      // #10 fix: Subject is a plain-text header, not HTML — use headerSafe() to
+      // strip newlines and length-cap, NOT esc() which HTML-encodes & < > etc.
+      // A name like "O'Brien & Sons" would otherwise appear as
+      // "O'Brien &amp; Sons" in the subject line.
+      subject: headerSafe(`⚠️ Unanswered chat — ${customer.name ?? "a visitor"}`),
       html: `<!DOCTYPE html><html><head><meta charset="utf-8"/></head>
 <body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
   <table width="100%" cellpadding="0" cellspacing="0" style="padding:32px 16px"><tr><td align="center">
@@ -80,7 +80,20 @@ export async function POST(req: Request) {
 </body></html>`,
     });
 
-    if (error) console.error("[chat/escalate][resend]", error);
+    // #2 fix: Only stamp needsFollowUp AFTER a successful Resend send.
+    // The old code wrote it BEFORE, so a transient Resend failure permanently
+    // blocked all retries via the idempotency guard at the top of this route.
+    // Now: a failed send returns a 500, the timer fires again in 20 s, and the
+    // next attempt re-reads needsFollowUp === false and retries.
+    if (error) {
+      console.error("[chat/escalate][resend]", error);
+      return NextResponse.json({ success: false, message: "Email send failed." }, { status: 500 });
+    }
+
+    await getAdminDb().collection(COL.conversations).doc(conversationId).update({
+      needsFollowUp: true,
+      escalatedAt: FieldValue.serverTimestamp(),
+    });
 
     return NextResponse.json({ success: true });
   } catch (err) {
@@ -89,12 +102,3 @@ export async function POST(req: Request) {
   }
 }
 
-/** Escape user-supplied text before interpolating into the HTML email body. */
-function esc(value: string): string {
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}

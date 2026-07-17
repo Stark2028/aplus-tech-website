@@ -86,13 +86,12 @@ function Header({ teamOnline, onClose }: { teamOnline: boolean; onClose: () => v
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-white font-bold text-sm truncate">Aplus Technology Solutions</div>
-        <div className="flex items-center gap-1.5">
-          <span className={`w-1.5 h-1.5 rounded-full ${teamOnline ? "bg-green-300" : "bg-gray-300"}`} />
-          <span className="text-blue-100 text-xs">
-            {teamOnline
-              ? "Sales team is online — replies in minutes"
-              : "Team is away — we'll reply on WhatsApp/email"}
-          </span>
+        {/* Presence is already shown by the dot on the avatar above — a second
+            inline dot here was redundant, so the status is text-only. */}
+        <div className="text-blue-100 text-xs">
+          {teamOnline
+            ? "Sales team is online — replies in minutes"
+            : "Team is away — we'll reply on WhatsApp/email"}
         </div>
       </div>
       <button onClick={onClose} className="text-blue-200 hover:text-white transition-colors" aria-label="Close chat">
