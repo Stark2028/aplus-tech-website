@@ -648,3 +648,280 @@
   background: #334155;
   box-shadow: 0 0.3em 0.6em rgba(0, 0, 0, 0.5);
 }
+
+/* ── stage chrome: scale, tilt, loop machinery, chips ─────────────────────── */
+/* Column = container; .stg-scale turns container width into the em base:
+   10px at the mockup's 440px design width (10/440 = 2.28cqw), clamped so
+   very narrow/wide layouts stay sane. */
+.stg-col {
+  container-type: inline-size;
+  position: relative;
+  z-index: 2;
+}
+.stg-scale {
+  font-size: clamp(7px, 2.28cqw, 13px);
+}
+.stg-persp {
+  perspective: 1200px;
+  position: relative;
+}
+.stg-tilt {
+  transition: transform 0.18s ease-out;
+  transform-style: preserve-3d;
+}
+.stg-float {
+  animation: stg-float 8s ease-in-out infinite;
+}
+@keyframes stg-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.stg-stagebox {
+  position: relative;
+  height: 29.5em;
+}
+/* Dust motes at different translateZ depths. Depth uses the standalone
+   `translate` property so the keyframe's transform doesn't clobber it
+   (mockup animated margin-top; converted to transform per perf budget). */
+.stg-dust {
+  position: absolute;
+  border-radius: 50%;
+  background: #93c5fd;
+  pointer-events: none;
+  animation: stg-dustf 11s ease-in-out infinite alternate;
+}
+.stg-dust.d1 { width: 3px; height: 3px; left: 6%; top: 18%; opacity: 0.3; translate: 0 0 60px; }
+.stg-dust.d2 { width: 2px; height: 2px; right: 10%; top: 30%; opacity: 0.25; translate: 0 0 -50px; animation-duration: 14s; animation-direction: alternate-reverse; }
+.stg-dust.d3 { width: 4px; height: 4px; left: 14%; bottom: 22%; opacity: 0.2; translate: 0 0 30px; animation-duration: 17s; }
+.stg-dust.d4 { width: 2px; height: 2px; right: 18%; bottom: 14%; opacity: 0.3; translate: 0 0 -30px; animation-duration: 13s; animation-direction: alternate-reverse; }
+@keyframes stg-dustf {
+  from { transform: translateY(0); }
+  to { transform: translateY(-16px); }
+}
+/* ── the 20s master clock: 4 channels × 5s, staggered delays ── */
+.stg-prod {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: stg-chan 20s ease-in-out infinite;
+}
+.stg-prod.p2 { animation-delay: 5s; }
+.stg-prod.p3 { animation-delay: 10s; }
+.stg-prod.p4 { animation-delay: 15s; }
+@keyframes stg-chan {
+  0% { opacity: 0; transform: scale(0.965); }
+  2.6% { opacity: 1; transform: scale(1); }
+  25% { opacity: 1; transform: scale(1); }
+  28% { opacity: 0; transform: scale(0.98); }
+  100% { opacity: 0; }
+}
+/* Broadcast OSD tag, top-right, flashes ~2.6s at each channel start. */
+.stg-osd {
+  position: absolute;
+  top: -0.4em;
+  right: 0;
+  z-index: 8;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.95em;
+  letter-spacing: 0.14em;
+  color: #bae6fd;
+  background: rgba(2, 6, 17, 0.72);
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  border-radius: 4px;
+  padding: 0.4em 0.9em;
+  opacity: 0;
+  transform: translateY(-6px);
+  animation: stg-osdk 20s ease-in-out infinite;
+}
+.stg-osd b { color: #fff; font-weight: 500; }
+.stg-osd.o2 { animation-delay: 5s; }
+.stg-osd.o3 { animation-delay: 10s; }
+.stg-osd.o4 { animation-delay: 15s; }
+@keyframes stg-osdk {
+  0% { opacity: 0; transform: translateY(-6px); }
+  2% { opacity: 1; transform: translateY(0); }
+  13% { opacity: 1; }
+  17% { opacity: 0; transform: translateY(-2px); }
+  100% { opacity: 0; }
+}
+/* Power-on: bright line expands then fades, once, 1.15s after load. */
+.stg-boot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: #e0f2fe;
+  box-shadow: 0 0 26px 5px rgba(224, 242, 254, 0.95);
+  z-index: 7;
+  transform: scaleX(0);
+  animation: stg-poweron 1.1s ease-out 1.15s forwards;
+}
+@keyframes stg-poweron {
+  0% { transform: scaleX(0); opacity: 1; }
+  55% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+.stg-reveal {
+  opacity: 0;
+  animation: stg-revl 0.9s ease-out 1.95s forwards;
+}
+@keyframes stg-revl {
+  to { opacity: 1; }
+}
+/* ── floor: contact shadow + per-channel light pools ── */
+.stg-floor {
+  position: relative;
+  height: 4.4em;
+  margin-top: 0.6em;
+}
+.stg-shadow {
+  position: absolute;
+  left: 50%;
+  top: 0.4em;
+  transform: translateX(-50%);
+  width: 52%;
+  height: 2em;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.25) 45%, transparent 72%);
+}
+/* Pools are positioned with left/right (not translateX) so the stg-chan
+   keyframe's transform doesn't shift them off-center. Soft gradient stops
+   replace the mockup's blur(12px). */
+.stg-pool {
+  position: absolute;
+  left: 13%;
+  right: 13%;
+  top: 0;
+  height: 3em;
+  opacity: 0;
+  animation: stg-chan 20s ease-in-out infinite;
+}
+.stg-pool.g1 { background: radial-gradient(ellipse, rgba(59, 130, 246, 0.4), rgba(59, 130, 246, 0.15) 45%, transparent 72%); }
+.stg-pool.g2 { background: radial-gradient(ellipse, rgba(45, 212, 191, 0.36), rgba(45, 212, 191, 0.13) 45%, transparent 72%); animation-delay: 5s; }
+.stg-pool.g3 { background: radial-gradient(ellipse, rgba(251, 191, 36, 0.32), rgba(251, 191, 36, 0.12) 45%, transparent 72%); animation-delay: 10s; }
+.stg-pool.g4 { background: radial-gradient(ellipse, rgba(203, 213, 225, 0.32), rgba(203, 213, 225, 0.12) 45%, transparent 72%); animation-delay: 15s; }
+/* Ambient rim-light glow behind the whole stage, re-colored per channel.
+   Soft gradient stops replace the mockup's blur(52px). */
+.stg-glow {
+  position: absolute;
+  inset: -18%;
+  opacity: 0;
+  animation: stg-chan 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+.stg-glow.g1 { background: radial-gradient(closest-side, rgba(30, 64, 175, 0.38), rgba(30, 64, 175, 0.14) 45%, transparent 72%); }
+.stg-glow.g2 { background: radial-gradient(closest-side, rgba(19, 78, 74, 0.42), rgba(19, 78, 74, 0.16) 45%, transparent 72%); animation-delay: 5s; }
+.stg-glow.g3 { background: radial-gradient(closest-side, rgba(146, 64, 14, 0.32), rgba(146, 64, 14, 0.12) 45%, transparent 72%); animation-delay: 10s; }
+.stg-glow.g4 { background: radial-gradient(closest-side, rgba(148, 163, 184, 0.26), rgba(148, 163, 184, 0.1) 45%, transparent 72%); animation-delay: 15s; }
+/* ── manual mode: chips pin a channel, loop visuals freeze ── */
+.stg-manual .stg-prod,
+.stg-manual .stg-glow,
+.stg-manual .stg-pool,
+.stg-manual .stg-osd {
+  animation: none !important;
+  opacity: 0 !important;
+}
+.stg-manual .stg-prod.on { opacity: 1 !important; transform: scale(1); }
+.stg-manual .stg-glow.on { opacity: 1 !important; }
+.stg-manual .stg-pool.on { opacity: 0.85 !important; }
+.stg-manual .stg-osd.on { opacity: 1 !important; transform: translateY(0) !important; }
+/* Sticky notes ride the 20s clock; when Flip is pinned, show them statically. */
+.stg-manual .stg-note { animation: none !important; opacity: 1 !important; }
+/* ── chips: real buttons, real UI — fixed px type, not stage-scaled ── */
+.stg-chips {
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+  margin-top: 8px;
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+}
+.stg-chip {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #94a3b8; /* ≥4.5:1 on the near-black hero */
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  padding: 6px 12px;
+  min-height: 30px;
+  border-radius: 99px;
+  position: relative;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.5);
+  cursor: pointer;
+  transition: border-color 0.25s, color 0.25s;
+}
+.stg-chip:hover {
+  border-color: rgba(125, 211, 252, 0.45);
+  color: #cbd5e1;
+}
+.stg-chip[aria-pressed="true"] {
+  border-color: rgba(56, 189, 248, 0.65);
+  color: #e0f2fe;
+}
+/* Per-chip progress bar synced to the 20s clock. Mockup animated width;
+   converted to scaleX per perf budget. */
+.stg-chip-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  animation: stg-chipbar 20s linear infinite;
+}
+.stg-chip.c2 .stg-chip-bar { animation-delay: 5s; }
+.stg-chip.c3 .stg-chip-bar { animation-delay: 10s; }
+.stg-chip.c4 .stg-chip-bar { animation-delay: 15s; }
+@keyframes stg-chipbar {
+  0% { transform: scaleX(0); opacity: 1; }
+  25% { transform: scaleX(1); opacity: 1; }
+  26% { transform: scaleX(1); opacity: 0; }
+  100% { transform: scaleX(0); opacity: 0; }
+}
+.stg-manual .stg-chip-bar {
+  animation: none !important;
+  transform: scaleX(0);
+}
+.stg-chip-auto {
+  color: #67e8f9;
+  border-color: rgba(103, 232, 249, 0.4);
+}
+
+/* ── reduced motion: everything static, CH·01 visible, copy visible ─────────
+   The global guard in globals.css force-completes animations (0.001ms × 1
+   iteration); the 20s loop has no fill, so without these overrides every
+   channel would land at opacity 0. This block loads after globals.css
+   (component CSS ordering) and pins the exact static frame we want. */
+@media (prefers-reduced-motion: reduce) {
+  .hero2 *,
+  .hero2 *::before,
+  .hero2 *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .hero2-rise,
+  .hero2 .hero-word,
+  .stg-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .stg-boot { display: none; }
+  .stg-prod, .stg-glow, .stg-pool, .stg-osd { opacity: 0; }
+  .stg-prod.p1 { opacity: 1; }
+  .stg-glow.g1 { opacity: 1; }
+  .stg-pool.g1 { opacity: 0.85; }
+  .stg-osd.o1 { opacity: 1; transform: translateY(0); }
+  .stg-note { opacity: 1; }
+  .stg-chip-bar, .stg-screen::after { display: none; }
+  .stg-htype { max-width: 17ch; border-right-color: transparent; }
+  .stg-drawline { stroke-dashoffset: 0 !important; }
+}
