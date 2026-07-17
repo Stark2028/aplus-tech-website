@@ -56,6 +56,9 @@ export default function WhyChooseUs() {
               {[...ADVANTAGES, ...ADVANTAGES].map(({ icon: Icon, title, desc }, index) => (
                 <div
                   key={`${title}-${index}`}
+                  // Second copy exists only for the seamless marquee loop —
+                  // hide it from assistive tech so cards aren't announced twice.
+                  aria-hidden={index >= ADVANTAGES.length || undefined}
                   className="inline-flex flex-col bg-white border border-gray-200/80 rounded-2xl p-6 w-[250px] shrink-0 shadow-sm whitespace-normal group"
                 >
                   <IconTile className="mb-4">

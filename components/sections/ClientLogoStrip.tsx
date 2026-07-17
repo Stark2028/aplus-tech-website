@@ -42,6 +42,9 @@ export default function ClientLogoStrip() {
           {[...CLIENT_SECTORS, ...CLIENT_SECTORS].map((c, i) => (
             <div
               key={i}
+              // Second copy exists only for the seamless marquee loop —
+              // hide it from assistive tech so names aren't announced twice.
+              aria-hidden={i >= CLIENT_SECTORS.length || undefined}
               className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-5 py-2.5 shadow-sm shrink-0"
             >
               <span className="text-gray-800 font-semibold text-sm">{c.name}</span>

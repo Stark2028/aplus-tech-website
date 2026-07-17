@@ -77,7 +77,13 @@ export default function HowItWorks() {
           <div className="absolute right-0 top-0 h-full w-8 bg-linear-to-l from-white to-transparent z-10 pointer-events-none" />
           <div className="animate-marquee-steps gap-4 py-1">
             {[...PROCESS_STEPS, ...PROCESS_STEPS].map((step, i) => (
-              <div key={i} className="shrink-0 w-[72vw] max-w-[260px]">
+              // Second copy exists only for the seamless marquee loop —
+              // hide it from assistive tech so steps aren't announced twice.
+              <div
+                key={i}
+                aria-hidden={i >= PROCESS_STEPS.length || undefined}
+                className="shrink-0 w-[72vw] max-w-[260px]"
+              >
                 <StepCard step={step} i={i % PROCESS_STEPS.length} />
               </div>
             ))}
