@@ -32,16 +32,32 @@ export async function generateMetadata({
   const category = getCategoryById(slug);
   if (!category) return {};
   const url = `${SITE}/categories/${slug}`;
+  // The Video Conferencing category is Logitech, not Samsung — its metadata must
+  // carry no Samsung/authorized/certified wording (positioning rule). Every other
+  // category is Samsung-led and keeps its historical copy verbatim.
+  const isVc = category.id === "video-conferencing";
   return {
-    title: `Samsung ${category.navLabel} — Price, Models & Specs`,
-    description: `${category.description} Authorized Samsung distributor in India — B2B pricing, certified installation & AMC.`,
-    keywords: [
-      `Samsung ${category.navLabel}`,
-      `${category.navLabel} price India`,
-      `${category.navLabel} dealer`,
-      "Samsung B2B",
-      "Aplus Technology Solutions",
-    ],
+    title: isVc
+      ? `${category.navLabel} — Price, Models & Specs`
+      : `Samsung ${category.navLabel} — Price, Models & Specs`,
+    description: isVc
+      ? `${category.description} B2B pricing, installation and AMC support across India.`
+      : `${category.description} Authorized Samsung distributor in India — B2B pricing, certified installation & AMC.`,
+    keywords: isVc
+      ? [
+          `Logitech ${category.navLabel}`,
+          `${category.navLabel} price India`,
+          `${category.navLabel} dealer`,
+          "video conferencing systems",
+          "Aplus Technology Solutions",
+        ]
+      : [
+          `Samsung ${category.navLabel}`,
+          `${category.navLabel} price India`,
+          `${category.navLabel} dealer`,
+          "Samsung B2B",
+          "Aplus Technology Solutions",
+        ],
     alternates: { canonical: url },
     openGraph: {
       type: "website",
