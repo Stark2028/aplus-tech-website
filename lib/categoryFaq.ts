@@ -35,6 +35,10 @@ export function buildCategoryFaqs(
   const sizeRange = categorySizeRange(productsInCategory);
   const count = productsInCategory.length;
 
+  if (category.id === "video-conferencing") {
+    return buildVideoConferencingCategoryFaqs(category, ucList, count);
+  }
+
   const faqs: Faq[] = [
     {
       q: `What is Samsung ${category.navLabel} used for?`,
@@ -63,4 +67,32 @@ export function buildCategoryFaqs(
   );
 
   return faqs;
+}
+
+/** VC category FAQs — Logitech naming, Aplus supply/install/AMC trust story,
+ *  no Samsung/authorized/partner/certified wording. Size-band questions don't
+ *  apply (VC products carry no screen-size diagonals). */
+function buildVideoConferencingCategoryFaqs(
+  category: ProductCategory,
+  ucList: string,
+  count: number
+): Faq[] {
+  return [
+    {
+      q: `What is Logitech ${category.navLabel} used for?`,
+      a: `Logitech ${category.navLabel} equips ${ucList.toLowerCase()} with video bars, PTZ cameras, tap controllers and room compute for Microsoft Teams Rooms and Zoom Rooms. ${category.description}`,
+    },
+    {
+      q: `Which Logitech ${category.navLabel} system fits my room size?`,
+      a: `Aplus supplies the full Logitech range across ${count} product families — from huddle-room bars to modular boardroom systems. Tell us your room size and platform (Teams or Zoom) and we'll recommend the right bar, camera and controller.`,
+    },
+    {
+      q: `How do I get pricing for Logitech ${category.navLabel} in India?`,
+      a: `Aplus Technology Solutions supplies Logitech ${category.navLabel} with project and bulk pricing on quote. Request a quote on this page, message us on WhatsApp, or call ${PHONE_DISPLAY} for pricing within 24 hours — GST invoice included.`,
+    },
+    {
+      q: `Does Aplus provide installation and support for Logitech ${category.navLabel} across India?`,
+      a: `Yes. Aplus supplies, installs and maintains Logitech room systems across India, with professional installation and AMC support, including a free site assessment for every order.`,
+    },
+  ];
 }
