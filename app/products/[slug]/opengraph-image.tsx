@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 import { products } from "@/data/products";
 import { formatSizeRange } from "@/lib/formatSize";
+import { ogBadgeLabel } from "./ogBadge";
 
 export const alt = "Samsung Commercial Display — Aplus Technology Solutions";
 export const size = { width: 1200, height: 630 };
@@ -87,7 +88,7 @@ export default async function Image({
             alignItems: "center",
           }}
         >
-          Authorized Samsung Partner
+          {ogBadgeLabel(product)}
         </div>
         <div
           style={{
