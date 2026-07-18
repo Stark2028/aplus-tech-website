@@ -9,6 +9,7 @@ import {
   PhoneIcon,
   MailIcon,
   ShieldCheckIcon,
+  BadgeCheckIcon,
   TimerIcon,
 } from "@/components/icons";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
@@ -106,18 +107,33 @@ export default function Footer() {
               </p>
             </div>
 
-            {/* Authorized badge */}
-            <div className="inline-flex items-center gap-3 bg-slate-800/40 border border-slate-700/50 rounded-xl px-4 py-3">
-              <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
-                <ShieldCheckIcon size={16} className="text-slate-200" accentClassName="text-blue-400" />
+            {/* Trust badges */}
+            <div className="flex flex-wrap gap-3">
+              <div className="inline-flex items-center gap-3 bg-slate-800/40 border border-slate-700/50 rounded-xl px-4 py-3">
+                <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+                  <ShieldCheckIcon size={16} className="text-slate-200" accentClassName="text-blue-400" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-slate-200 leading-tight">
+                    Samsung Authorized
+                  </p>
+                  <p className="text-[11px] text-slate-400 leading-tight mt-0.5">
+                    Business Display Partner
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs font-semibold text-slate-200 leading-tight">
-                  Samsung Authorized
-                </p>
-                <p className="text-[11px] text-slate-400 leading-tight mt-0.5">
-                  Business Display Partner
-                </p>
+              <div className="inline-flex items-center gap-3 bg-slate-800/40 border border-slate-700/50 rounded-xl px-4 py-3">
+                <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+                  <BadgeCheckIcon size={16} className="text-slate-200" accentClassName="text-blue-400" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-slate-200 leading-tight">
+                    ISO 9001:2015
+                  </p>
+                  <p className="text-[11px] text-slate-400 leading-tight mt-0.5">
+                    Certified Quality Management
+                  </p>
+                </div>
               </div>
             </div>
           </div>
