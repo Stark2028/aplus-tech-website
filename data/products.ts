@@ -37,6 +37,8 @@ export interface Product {
   subCategory?: string;
 }
 
+import { videoConferencingProducts } from "@/data/videoConferencing";
+
 export const products: Product[] = [
 
   // ── DIGITAL SIGNAGE ──────────────────────────────────────────────────────────
@@ -3663,4 +3665,7 @@ An optimised half-width 4:9 cabinet enables flawless curved installations with s
       "/products/led-signage/samsung-the-wall-mpf/3.jpg",
     ],
   },
+
+  // ── VIDEO CONFERENCING (Logitech) ────────────────────────────────────────
+  ...videoConferencingProducts,
 ];
