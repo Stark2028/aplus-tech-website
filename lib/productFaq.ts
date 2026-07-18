@@ -37,7 +37,11 @@ export function buildProductFaqs(product: Product): Faq[] {
     });
   }
 
-  if (modelCode) {
+  // Model-code FAQ is Samsung-worded ("Samsung order codes"); gate it on brand
+  // so it can never surface on a Logitech product even if a Logitech model code
+  // is added to lib/modelCodes.ts later. Logitech products have no model-code
+  // FAQ (there is no Logitech order-code system to explain).
+  if (modelCode && !isLogitech(product)) {
     faqs.push({
       q: `What is the model number of the ${product.name}?`,
       a: `The base model code is ${modelCode} (${product.series}). Larger sizes in the series carry matching Samsung order codes — share your preferred size and we'll confirm the exact model number and availability.`,

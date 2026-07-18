@@ -59,4 +59,11 @@ describe("buildProductFaqs — Logitech (no banned wording)", () => {
     const faqs = buildProductFaqs(logitech);
     expect(faqs.some((f) => /screen sizes/i.test(f.q))).toBe(false);
   });
+
+  it("emits no model-number FAQ even if a Logitech product had a model code", () => {
+    // The model-code FAQ is Samsung-worded; a Logitech product must never show it.
+    // (No Logitech code exists today; this guards against one being added later.)
+    const faqs = buildProductFaqs(logitech);
+    expect(faqs.some((f) => /model number/i.test(f.q))).toBe(false);
+  });
 });
