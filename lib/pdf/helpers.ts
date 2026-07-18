@@ -42,6 +42,8 @@ export const C = {
   blue700: rgb(0.11, 0.31, 0.78),
   blue600: rgb(0.15, 0.39, 0.92),       // #2563eb
   blue50:  rgb(0.94, 0.96, 1.00),       // #eff6ff
+  blueLight: rgb(0.576, 0.773, 0.988),  // #93c5fd — links on the navy band
+  navy: rgb(0.059, 0.086, 0.165),       // #0f172a — contact band
   slate50: rgb(0.97, 0.98, 0.99),       // #f8fafc
   white: rgb(1, 1, 1),
 };
@@ -188,7 +190,15 @@ export function drawHr(
   });
 }
 
-/** Render a Latin-1 safe string (pdf-lib WinAnsi font can't encode em-dashes etc.). */
+/**
+ * Render a string the pdf-lib WinAnsi StandardFonts can encode.
+ *
+ * StandardFonts (Helvetica) throw on any character outside WinAnsi/Latin-1,
+ * which silently fails PDF generation. We first transliterate common offenders
+ * to readable ASCII, then strip zero-width/direction marks, and finally replace
+ * ANY remaining non-Latin-1 character with "?" as a catch-all — so a future
+ * glyph in product data (₹, →, €, an emoji, …) can never crash generation.
+ */
 export function safe(text: string): string {
   return text
     .replace(/—/g, "-")
@@ -201,7 +211,21 @@ export function safe(text: string): string {
     .replace(/≥/g, ">=")
     .replace(/≤/g, "<=")
     .replace(/Ω/g, "Ohm")
-    .replace(/[​-‏‪-‮﻿]/g, ""); // strip zero-width / direction marks
+    .replace(/₹/g, "Rs.")
+    .replace(/→/g, "->")
+    .replace(/[​-‏‪-‮﻿]/g, "") // strip zero-width / direction marks
+    // WinAnsi is NOT Latin-1: inside \x00-\xFF it leaves \x81 \x8D \x8F \x90
+    // \x9D undefined and cannot encode DEL (\x7F) or C0 controls (except \t \n
+    // \r, which pdf-lib cleans itself). Any of those reaching drawText throws
+    // "WinAnsi cannot encode", so replace them here before the catch-all.
+    .replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f\x81\x8d\x8f\x90\x9d]/g, "?")
+    // Catch-all: replace anything still outside what pdf-lib's WinAnsi font can
+    // encode. WinAnsi covers Latin-1 (\x00-\xFF, minus the gaps handled above)
+    // plus a handful of higher code points (bullet, curly quotes, dashes, €, ™,
+    // …) that we keep so existing bullet separators etc. still render;
+    // everything else (→, ₹, emoji, non-Latin scripts) becomes "?" instead of
+    // throwing and aborting generation.
+    .replace(/[^\x00-\xFF•–—‘’“”…€™]/g, "?");
 }
 
 /**
@@ -245,6 +269,21 @@ export async function imageToPngBytes(src: string): Promise<Uint8Array | null> {
     });
   } catch (err) {
     console.warn("[pdf] imageToPngBytes failed", err);
+    return null;
+  }
+}
+
+/**
+ * Fetch a PNG (or any bytes) from a same-origin URL. Resolves null on ANY
+ * failure — HTTP error, network error, or non-browser environment — so PDF
+ * generation can degrade (skip logo/watermark) instead of throwing.
+ */
+export async function fetchPngBytes(url: string): Promise<Uint8Array | null> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return new Uint8Array(await res.arrayBuffer());
+  } catch {
     return null;
   }
 }

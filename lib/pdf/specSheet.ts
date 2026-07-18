@@ -1,47 +1,84 @@
 /**
- * Spec Sheet PDF generator (pdf-lib).
+ * Spec Sheet PDF generator — "Manufacturer Pro" commercial datasheet.
  *
- * Clean two-column tabular layout — no hero image.
- * Sections rendered with alternating row shading and blue group headers.
+ * Two-page A4 layout: brand bar + logo header, title block with product
+ * photo, KPI strip, features checklist, dense two-column spec tables
+ * (planned by lib/pdf/specLayout.ts), product overview, trust strip, navy
+ * contact band, logo watermark on every page, Page N of M footers.
+ *
+ * Design spec: docs/superpowers/specs/2026-07-18-spec-sheet-redesign-design.md
  */
 
 import type { Product } from "@/data/products";
 import { formatSize } from "@/lib/formatSize";
+import { CONTACT_EMAIL, PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 
 import {
   A4_HEIGHT,
   A4_WIDTH,
   C,
   CONTENT_WIDTH,
-  MARGIN_BOTTOM,
-  MARGIN_TOP,
   MARGIN_X,
   addLinkAnnotation,
   drawHr,
   drawSpacedText,
+  fetchPngBytes,
+  imageToPngBytes,
   safe,
   widthOfSpacedText,
   wrapText,
 } from "./helpers";
+import {
+  type MeasuredGroup,
+  type PlacedChunk,
+  flowGroups,
+  rowHeight,
+} from "./specLayout";
+
+type PDFDocument = import("pdf-lib").PDFDocument;
+type PDFPage = import("pdf-lib").PDFPage;
+type PDFFont = import("pdf-lib").PDFFont;
+type PDFImage = import("pdf-lib").PDFImage;
+
+// ── Layout constants (pt) ─────────────────────────────────────────────────
+const BAR_H = 6;                       // blue brand bar across the page top
+const FOOT_FLOOR = 52;                 // content never drawn below this y
+const CONT_TOP = A4_HEIGHT - 64;       // content top on continuation pages
+
+const ROW_FONT = 8.5;
+const ROW_LINE_H = 11;
+const ROW_PAD_V = 4;
+const GROUP_HEADER_H = 18;
+const GROUP_GAP = 10;
+const SPEC_COL_GAP = 14;
+const SPEC_COL_W = (CONTENT_WIDTH - SPEC_COL_GAP) / 2;
+const SPEC_LABEL_W = Math.round(SPEC_COL_W * 0.47);
+
+const IMG_PANEL_W = 190;
+const IMG_PANEL_H = 120;
+
+const BAND_H = 58;                     // navy contact band height
+
+const TRUST_CARDS: ReadonlyArray<readonly [string, string]> = [
+  ["Samsung Authorized", "Genuine India-spec units with full Samsung warranty."],
+  ["Pan-India Installation", "Site survey, mounting and commissioning across India."],
+  ["ISO 9001:2015", "Certified quality management, GST invoicing, bulk pricing."],
+];
 
 interface Ctx {
-  doc: import("pdf-lib").PDFDocument;
-  page: import("pdf-lib").PDFPage;
-  fonts: {
-    regular: import("pdf-lib").PDFFont;
-    bold: import("pdf-lib").PDFFont;
-  };
+  doc: PDFDocument;
+  page: PDFPage;
+  pages: PDFPage[];
+  fonts: { regular: PDFFont; bold: PDFFont };
   y: number;
+  logo: PDFImage | null;
+  productName: string;
 }
 
-// Column layout for the two-column spec table
-const LABEL_W = CONTENT_WIDTH * 0.40;       // 40% for labels
-const COL_GAP = 14;                          // gap between columns
-const VALUE_X = MARGIN_X + LABEL_W + COL_GAP;
-const VALUE_W = CONTENT_WIDTH - LABEL_W - COL_GAP;
-const ROW_FONT_SIZE = 9;
-const ROW_LINE_H = 15;                       // generous line-height (was 13)
-const ROW_PAD_V = 7;                         // vertical padding — must exceed ascender height (~6.5pt for 9pt Helvetica)
+/** "VMB-U" → "VMB-U Series"; "QET Series" → "QET Series" (no doubling). */
+function seriesLabel(series: string): string {
+  return /series\s*$/i.test(series) ? series : `${series} Series`;
+}
 
 export async function buildSpecSheetPdf(product: Product): Promise<Uint8Array> {
   const { PDFDocument, StandardFonts } = await import("pdf-lib");
@@ -49,19 +86,43 @@ export async function buildSpecSheetPdf(product: Product): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
   doc.setTitle(`${product.name} — Spec Sheet`);
   doc.setAuthor("Aplus Technology Solutions Pvt. Ltd.");
-  doc.setSubject(`${product.series} Series specifications`);
+  doc.setSubject(`${seriesLabel(product.series)} specifications`);
   doc.setProducer("aplustechsol.com");
   doc.setCreator("aplustechsol.com");
 
   const regular = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
 
-  const page = doc.addPage([A4_WIDTH, A4_HEIGHT]);
+  // Brand + product images. Every failure degrades to null — generation
+  // must never fail because an asset didn't load.
+  let logo: PDFImage | null = null;
+  const logoBytes = await fetchPngBytes("/logo.png");
+  if (logoBytes) {
+    try {
+      logo = await doc.embedPng(logoBytes);
+    } catch {
+      logo = null;
+    }
+  }
+
+  let productImg: PDFImage | null = null;
+  const imgBytes = product.images[0] ? await imageToPngBytes(product.images[0]) : null;
+  if (imgBytes) {
+    try {
+      productImg = await doc.embedPng(imgBytes);
+    } catch {
+      productImg = null;
+    }
+  }
+
   const ctx: Ctx = {
     doc,
-    page,
+    page: undefined as unknown as PDFPage,
+    pages: [],
     fonts: { regular, bold },
-    y: A4_HEIGHT - MARGIN_TOP,
+    y: 0,
+    logo,
+    productName: safe(product.name),
   };
 
   const docDate = new Date().toLocaleDateString("en-IN", {
@@ -70,160 +131,191 @@ export async function buildSpecSheetPdf(product: Product): Promise<Uint8Array> {
     year: "numeric",
   });
 
-  drawHeader(ctx, product, docDate);
-  drawTitleBlock(ctx, product);
-  drawStatsStrip(ctx, product);
-
-  if (product.specGroups) {
-    drawSpecsGrouped(ctx, product);
-  } else {
-    drawSpecsFlat(ctx, product);
-  }
-
-  if (product.features.length > 0) {
-    drawFeatures(ctx, product);
-  }
-
-  if (product.longDescription) {
-    drawOverview(ctx, product);
-  }
-
-  drawContactAndFooter(ctx);
+  addFirstPage(ctx, product, docDate);
+  drawTitleBlock(ctx, product, productImg);
+  drawKpiStrip(ctx, product);
+  if (product.features.length > 0) drawFeatures(ctx, product);
+  drawSpecSection(ctx, product);
+  if (product.longDescription) drawOverview(ctx, product);
+  drawTrustStrip(ctx);
+  drawContactBand(ctx);
+  drawFootersAndLegal(ctx);
 
   return doc.save();
 }
 
-// ── Header ────────────────────────────────────────────────────────────────
+// ── Page infrastructure ───────────────────────────────────────────────────
 
-function drawHeader(ctx: Ctx, product: Product, docDate: string) {
-  const { page, fonts } = ctx;
-  const yTop = ctx.y;
-
-  drawSpacedText(page, safe("APLUS TECHNOLOGY SOLUTIONS"), {
-    x: MARGIN_X,
-    y: yTop,
-    size: 9,
-    font: fonts.bold,
-    color: C.black,
-    characterSpacing: 1.4,
-  });
-  page.drawText(
-    safe("Authorized Samsung Commercial Display Distributor · Noida, India"),
-    { x: MARGIN_X, y: yTop - 12, size: 7.5, font: fonts.regular, color: C.gray500 }
-  );
-
-  const metaLines: { text: string; bold?: boolean }[] = [
-    { text: "SPEC SHEET", bold: true },
-    { text: safe(product.series) },
-    { text: docDate },
-  ];
-  metaLines.forEach((line, i) => {
-    const font = line.bold ? fonts.bold : fonts.regular;
-    const size = 7.5;
-    const tracking = line.bold ? 1.4 : 0;
-    const w = widthOfSpacedText(line.text, font, size, tracking);
-    drawSpacedText(page, line.text, {
-      x: A4_WIDTH - MARGIN_X - w,
-      y: yTop - i * 11,
-      size,
-      font,
-      color: line.bold ? C.black : C.gray500,
-      characterSpacing: tracking,
+/** Watermark + brand bar. MUST run first on every page so content sits above. */
+function paintPageChrome(ctx: Ctx) {
+  if (ctx.logo) {
+    const w = 300;
+    const h = (ctx.logo.height / ctx.logo.width) * w;
+    ctx.page.drawImage(ctx.logo, {
+      x: (A4_WIDTH - w) / 2,
+      y: (A4_HEIGHT - h) / 2,
+      width: w,
+      height: h,
+      opacity: 0.1,
     });
+  }
+  ctx.page.drawRectangle({
+    x: 0,
+    y: A4_HEIGHT - BAR_H,
+    width: A4_WIDTH,
+    height: BAR_H,
+    color: C.blue600,
   });
-
-  drawHr(page, MARGIN_X, A4_WIDTH - MARGIN_X, yTop - 28, 0.75, C.black);
-  ctx.y = yTop - 44;
 }
 
-// ── Title block ───────────────────────────────────────────────────────────
-
-function drawTitleBlock(ctx: Ctx, product: Product) {
+function addFirstPage(ctx: Ctx, product: Product, docDate: string) {
+  ctx.page = ctx.doc.addPage([A4_WIDTH, A4_HEIGHT]);
+  ctx.pages.push(ctx.page);
+  paintPageChrome(ctx);
   const { page, fonts } = ctx;
 
-  // Eyebrow
-  const eyebrow = safe(
-    `${product.category}${product.subCategory ? ` · ${product.subCategory}` : ""}`
-  ).toUpperCase();
-  drawSpacedText(page, eyebrow, {
-    x: MARGIN_X,
-    y: ctx.y,
-    size: 7.5,
-    font: fonts.bold,
-    color: C.blue600,
-    characterSpacing: 1.8,
+  const textX = ctx.logo ? MARGIN_X + 40 : MARGIN_X;
+  if (ctx.logo) {
+    page.drawImage(ctx.logo, { x: MARGIN_X, y: A4_HEIGHT - 48, width: 30, height: 30 });
+  }
+  drawSpacedText(page, "APLUS TECHNOLOGY SOLUTIONS", {
+    x: textX, y: A4_HEIGHT - 30, size: 11, font: fonts.bold, color: C.black, characterSpacing: 1.6,
   });
-  ctx.y -= 16;
+  page.drawText(safe("Authorized Samsung Commercial Display Distributor · India"), {
+    x: textX, y: A4_HEIGHT - 43, size: 7.5, font: fonts.regular, color: C.gray500,
+  });
 
-  // Product name
-  const titleLines = wrapText(safe(product.name), fonts.bold, 20, CONTENT_WIDTH);
-  for (const line of titleLines) {
+  const rightX = A4_WIDTH - MARGIN_X;
+  const sheetW = widthOfSpacedText("SPEC SHEET", fonts.bold, 8.5, 1.6);
+  drawSpacedText(page, "SPEC SHEET", {
+    x: rightX - sheetW, y: A4_HEIGHT - 30, size: 8.5, font: fonts.bold, color: C.black, characterSpacing: 1.6,
+  });
+  const seriesTxt = safe(seriesLabel(product.series));
+  page.drawText(seriesTxt, {
+    x: rightX - fonts.regular.widthOfTextAtSize(seriesTxt, 7.5),
+    y: A4_HEIGHT - 42, size: 7.5, font: fonts.regular, color: C.gray500,
+  });
+  page.drawText(docDate, {
+    x: rightX - fonts.regular.widthOfTextAtSize(docDate, 7.5),
+    y: A4_HEIGHT - 53, size: 7.5, font: fonts.regular, color: C.gray500,
+  });
+
+  drawHr(page, MARGIN_X, rightX, A4_HEIGHT - 62, 1.5, C.black);
+  ctx.y = A4_HEIGHT - 80;
+}
+
+function addContinuationPage(ctx: Ctx) {
+  ctx.page = ctx.doc.addPage([A4_WIDTH, A4_HEIGHT]);
+  ctx.pages.push(ctx.page);
+  paintPageChrome(ctx);
+  const { page, fonts } = ctx;
+
+  const textX = ctx.logo ? MARGIN_X + 22 : MARGIN_X;
+  if (ctx.logo) {
+    page.drawImage(ctx.logo, { x: MARGIN_X, y: A4_HEIGHT - 38, width: 16, height: 16 });
+  }
+  drawSpacedText(page, "APLUS TECHNOLOGY SOLUTIONS", {
+    x: textX, y: A4_HEIGHT - 33, size: 8.5, font: fonts.bold, color: C.black, characterSpacing: 1.6,
+  });
+  const rightTxt = safe(`SPEC SHEET · ${ctx.productName}`);
+  const rightX = A4_WIDTH - MARGIN_X;
+  page.drawText(rightTxt, {
+    x: rightX - fonts.regular.widthOfTextAtSize(rightTxt, 7.5),
+    y: A4_HEIGHT - 33, size: 7.5, font: fonts.regular, color: C.gray500,
+  });
+  drawHr(page, MARGIN_X, rightX, A4_HEIGHT - 46, 0.5, C.gray200);
+  ctx.y = CONT_TOP;
+}
+
+function ensureSpace(ctx: Ctx, needed: number) {
+  if (ctx.y - needed < FOOT_FLOOR) addContinuationPage(ctx);
+}
+
+/** Bold tracked caps + heavy rule. */
+function sectionHeader(ctx: Ctx, label: string) {
+  ensureSpace(ctx, 34);
+  drawSpacedText(ctx.page, safe(label).toUpperCase(), {
+    x: MARGIN_X, y: ctx.y, size: 9.5, font: ctx.fonts.bold, color: C.black, characterSpacing: 2,
+  });
+  drawHr(ctx.page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y - 7, 1.5, C.black);
+  ctx.y -= 22;
+}
+
+// ── Page 1 sections ───────────────────────────────────────────────────────
+
+function drawTitleBlock(ctx: Ctx, product: Product, productImg: PDFImage | null) {
+  const { page, fonts } = ctx;
+  const topY = ctx.y;
+  const titleW = productImg ? CONTENT_WIDTH - IMG_PANEL_W - 16 : CONTENT_WIDTH;
+
+  const eyebrow = safe(`${product.category} · ${seriesLabel(product.series)}`).toUpperCase();
+  drawSpacedText(page, eyebrow, {
+    x: MARGIN_X, y: ctx.y, size: 8, font: fonts.bold, color: C.blue600, characterSpacing: 2.2,
+  });
+  ctx.y -= 18;
+
+  for (const line of wrapText(safe(product.name), fonts.bold, 20, titleW)) {
     page.drawText(line, { x: MARGIN_X, y: ctx.y, size: 20, font: fonts.bold, color: C.black });
     ctx.y -= 24;
   }
+  ctx.y -= 2;
 
-  // Series subtitle
-  page.drawText(safe(`${product.series} Series`), {
-    x: MARGIN_X, y: ctx.y, size: 9.5, font: fonts.regular, color: C.gray500,
-  });
-  ctx.y -= 20;
-
-  // Short description
-  const descLines = wrapText(safe(product.description), fonts.regular, 9, CONTENT_WIDTH);
-  for (const line of descLines) {
+  for (const line of wrapText(safe(product.description), fonts.regular, 9, titleW)) {
     page.drawText(line, { x: MARGIN_X, y: ctx.y, size: 9, font: fonts.regular, color: C.gray700 });
     ctx.y -= 13;
   }
-  ctx.y -= 10;
+
+  if (productImg) {
+    const panelX = A4_WIDTH - MARGIN_X - IMG_PANEL_W;
+    const panelTop = topY + 8;
+    page.drawRectangle({
+      x: panelX, y: panelTop - IMG_PANEL_H, width: IMG_PANEL_W, height: IMG_PANEL_H,
+      color: C.gray50, borderWidth: 0.5, borderColor: C.gray200,
+    });
+    const maxW = IMG_PANEL_W - 16;
+    const maxH = IMG_PANEL_H - 16;
+    const s = Math.min(maxW / productImg.width, maxH / productImg.height);
+    const w = productImg.width * s;
+    const h = productImg.height * s;
+    page.drawImage(productImg, {
+      x: panelX + (IMG_PANEL_W - w) / 2,
+      y: panelTop - IMG_PANEL_H + (IMG_PANEL_H - h) / 2,
+      width: w,
+      height: h,
+    });
+    ctx.y = Math.min(ctx.y, panelTop - IMG_PANEL_H - 6);
+  }
+  ctx.y -= 14;
 }
 
-// ── Stats strip ───────────────────────────────────────────────────────────
-
-function drawStatsStrip(ctx: Ctx, product: Product) {
+function drawKpiStrip(ctx: Ctx, product: Product) {
   const { page, fonts } = ctx;
+  const stripH = 44;
   const top = ctx.y;
-  const stripH = 42;
-
   const stats = [
     { label: "RESOLUTION", value: safe(product.specs.resolution.split("(")[0].trim()) },
     { label: "BRIGHTNESS", value: safe(product.specs.brightness) },
     { label: "OPERATION", value: safe(product.specs.operationTime) },
-    { label: "SIZES", value: safe(product.specs.screenSizes.map(formatSize).join(" • ")) },
+    { label: "SIZES", value: safe(product.specs.screenSizes.map(formatSize).join(" · ")) },
   ];
 
-  // Background fill
   page.drawRectangle({
-    x: MARGIN_X, y: top - stripH,
-    width: CONTENT_WIDTH, height: stripH,
-    color: C.gray50,
-    borderWidth: 0.5, borderColor: C.gray200,
+    x: MARGIN_X, y: top - stripH, width: CONTENT_WIDTH, height: stripH,
+    color: C.gray50, borderWidth: 0.5, borderColor: C.gray200,
   });
 
   const colW = CONTENT_WIDTH / 4;
-  const colPadX = 10;
-  const innerW = colW - colPadX * 2;
-
   stats.forEach((stat, i) => {
-    const colX = MARGIN_X + i * colW + colPadX;
+    const colX = MARGIN_X + i * colW + 10;
     drawSpacedText(page, stat.label, {
-      x: colX, y: top - 14,
-      size: 7, font: fonts.bold, color: C.gray400, characterSpacing: 1.2,
+      x: colX, y: top - 15, size: 7, font: fonts.bold, color: C.gray400, characterSpacing: 1.4,
     });
-
-    // Auto-fit value: shrink font size until it fits the column
-    let valueSize = 10;
-    while (
-      valueSize > 6.5 &&
-      fonts.bold.widthOfTextAtSize(stat.value, valueSize) > innerW
-    ) {
-      valueSize -= 0.5;
+    let size = 11;
+    const innerW = colW - 20;
+    while (size > 6.5 && fonts.bold.widthOfTextAtSize(stat.value, size) > innerW) {
+      size -= 0.5;
     }
-
-    page.drawText(stat.value, {
-      x: colX, y: top - 30,
-      size: valueSize, font: fonts.bold, color: C.black,
-    });
-
+    page.drawText(stat.value, { x: colX, y: top - 32, size, font: fonts.bold, color: C.black });
     if (i > 0) {
       page.drawLine({
         start: { x: MARGIN_X + i * colW, y: top - 6 },
@@ -233,170 +325,46 @@ function drawStatsStrip(ctx: Ctx, product: Product) {
     }
   });
 
-  ctx.y = top - stripH - 22;
+  ctx.y = top - stripH - 20;
 }
-
-// ── Product overview ──────────────────────────────────────────────────────
-
-function drawOverview(ctx: Ctx, product: Product) {
-  sectionHeader(ctx, "Product Overview");
-  const { page, fonts } = ctx;
-  const fontSize = 9;
-  const lineH = 14;
-  const paragraphs = (product.longDescription ?? "").split("\n\n").filter(Boolean);
-  for (const para of paragraphs) {
-    const lines = wrapText(safe(para), fonts.regular, fontSize, CONTENT_WIDTH);
-    ensureSpace(ctx, lines.length * lineH + 10);
-    for (const line of lines) {
-      page.drawText(line, { x: MARGIN_X, y: ctx.y, size: fontSize, font: fonts.regular, color: C.gray700 });
-      ctx.y -= lineH;
-    }
-    ctx.y -= 6;
-  }
-  ctx.y -= 8;
-}
-
-// ── Key features ──────────────────────────────────────────────────────────
 
 function drawFeatures(ctx: Ctx, product: Product) {
-  sectionHeader(ctx, "Key Features");
-  const { page, fonts } = ctx;
-  const colW = CONTENT_WIDTH / 2 - 12;
-  const fontSize = 9;
-  const lineH = 13;
-
+  const { fonts } = ctx;
+  const colW = (CONTENT_WIDTH - 24) / 2;
   const half = Math.ceil(product.features.length / 2);
   const cols = [product.features.slice(0, half), product.features.slice(half)];
+  const colHeight = (col: string[]) =>
+    col.reduce((s, f) => s + wrapText(safe(f), fonts.regular, 9, colW - 12).length * 12 + 5, 0);
+  ensureSpace(ctx, 34 + Math.max(colHeight(cols[0]), colHeight(cols[1])));
+
+  sectionHeader(ctx, "Key Features");
+  const page = ctx.page;
   const startY = ctx.y;
   let minY = startY;
-
   cols.forEach((col, ci) => {
     let cy = startY;
     const x = MARGIN_X + ci * (colW + 24);
     for (const feat of col) {
-      const lines = wrapText(safe(feat), fonts.regular, fontSize, colW - 14);
-      ensureSpace(ctx, lines.length * lineH + 4);
-      page.drawRectangle({ x: x + 3, y: cy + 3, width: 4, height: 1, color: C.blue600 });
+      const lines = wrapText(safe(feat), fonts.regular, 9, colW - 12);
+      page.drawRectangle({ x, y: cy + 2.2, width: 3, height: 3, color: C.blue600 });
       lines.forEach((line, li) => {
-        page.drawText(line, { x: x + 14, y: cy - li * lineH, size: fontSize, font: fonts.regular, color: C.gray700 });
+        page.drawText(line, { x: x + 10, y: cy - li * 12, size: 9, font: fonts.regular, color: C.gray700 });
       });
-      cy -= lines.length * lineH + 5;
+      cy -= lines.length * 12 + 5;
     }
     if (cy < minY) minY = cy;
   });
-
-  ctx.y = minY - 16;
+  ctx.y = minY - 14;
 }
 
-// ── Spec table helpers ────────────────────────────────────────────────────
+// ── Technical specifications (two-column flow) ────────────────────────────
 
-function drawSpecRow(
-  ctx: Ctx,
-  label: string,
-  value: string,
-  shaded: boolean
-) {
-  const { fonts } = ctx;
-  const labelLines = wrapText(safe(label), fonts.regular, ROW_FONT_SIZE, LABEL_W - 6);
-  const valueLines = wrapText(safe(value), fonts.bold, ROW_FONT_SIZE, VALUE_W - 4);
-  const contentLines = Math.max(labelLines.length, valueLines.length);
-  const rowH = contentLines * ROW_LINE_H + ROW_PAD_V * 2;
-
-  ensureSpace(ctx, rowH + 2);
-
-  if (shaded) {
-    ctx.page.drawRectangle({
-      x: MARGIN_X, y: ctx.y - rowH,
-      width: CONTENT_WIDTH, height: rowH,
-      color: C.gray50,
-    });
+function specGroupsOf(product: Product): { title: string; rows: [string, string][] }[] {
+  if (product.specGroups) {
+    return Object.entries(product.specGroups)
+      .map(([title, rows]) => ({ title, rows: Object.entries(rows) as [string, string][] }))
+      .filter((g) => g.rows.length > 0);
   }
-
-  // Vertical separator between label and value columns
-  ctx.page.drawLine({
-    start: { x: MARGIN_X + LABEL_W + COL_GAP / 2, y: ctx.y },
-    end:   { x: MARGIN_X + LABEL_W + COL_GAP / 2, y: ctx.y - rowH },
-    thickness: 0.4,
-    color: C.gray200,
-  });
-
-  // Vertically center shorter column when lines differ
-  const labelOffset = Math.round((contentLines - labelLines.length) * ROW_LINE_H / 2);
-  const valueOffset = Math.round((contentLines - valueLines.length) * ROW_LINE_H / 2);
-
-  labelLines.forEach((line, i) => {
-    ctx.page.drawText(line, {
-      x: MARGIN_X + 6,
-      y: ctx.y - ROW_PAD_V - labelOffset - i * ROW_LINE_H,
-      size: ROW_FONT_SIZE, font: fonts.regular, color: C.gray600,
-    });
-  });
-  valueLines.forEach((line, i) => {
-    ctx.page.drawText(line, {
-      x: VALUE_X,
-      y: ctx.y - ROW_PAD_V - valueOffset - i * ROW_LINE_H,
-      size: ROW_FONT_SIZE, font: fonts.bold, color: C.black,
-    });
-  });
-
-  // Bottom divider — full width
-  drawHr(ctx.page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y - rowH, 0.4, C.gray200);
-  ctx.y -= rowH;
-}
-
-function drawGroupHeader(ctx: Ctx, label: string) {
-  ensureSpace(ctx, 46);
-  const { fonts } = ctx;
-
-  ctx.page.drawRectangle({
-    x: MARGIN_X, y: ctx.y - 22,
-    width: CONTENT_WIDTH, height: 22,
-    color: C.blue50,
-  });
-  // Left accent bar
-  ctx.page.drawRectangle({
-    x: MARGIN_X, y: ctx.y - 22,
-    width: 3, height: 22,
-    color: C.blue600,
-  });
-  drawSpacedText(ctx.page, safe(label).toUpperCase(), {
-    x: MARGIN_X + 10, y: ctx.y - 14,
-    size: 7.5, font: fonts.bold, color: C.blue700, characterSpacing: 1.4,
-  });
-  ctx.y -= 22;
-}
-
-// ── Technical specs — grouped ─────────────────────────────────────────────
-
-function drawSpecsGrouped(ctx: Ctx, product: Product) {
-  sectionHeader(ctx, "Technical Specifications");
-
-  // Outer border around entire table
-  const tableTopY = ctx.y;
-
-  let rowIndex = 0;
-  for (const [group, rows] of Object.entries(product.specGroups!)) {
-    const rowEntries = Object.entries(rows);
-    if (rowEntries.length === 0) continue;
-
-    drawGroupHeader(ctx, group);
-
-    for (const [label, value] of rowEntries) {
-      drawSpecRow(ctx, label, value, rowIndex % 2 === 0);
-      rowIndex++;
-    }
-  }
-
-  // Draw outer border retroactively is complex in pdf-lib; draw a left + right rule instead
-  void tableTopY;
-  ctx.y -= 8;
-}
-
-// ── Technical specs — flat fallback ──────────────────────────────────────
-
-function drawSpecsFlat(ctx: Ctx, product: Product) {
-  sectionHeader(ctx, "Technical Specifications");
-
   const rows: [string, string][] = [
     ["Resolution", product.specs.resolution],
     ["Brightness", product.specs.brightness],
@@ -404,98 +372,219 @@ function drawSpecsFlat(ctx: Ctx, product: Product) {
     ["Operation Hours", product.specs.operationTime],
     ["Series", product.series],
   ];
-
   if (product.additionalSpecs) {
     const seen = new Set(rows.map(([l]) => l.toLowerCase()));
     for (const [label, value] of Object.entries(product.additionalSpecs)) {
       if (!seen.has(label.toLowerCase())) rows.push([label, value]);
     }
   }
-
-  rows.forEach(([label, value], i) => drawSpecRow(ctx, label, value, i % 2 === 0));
-  ctx.y -= 8;
+  return [{ title: "Specifications", rows }];
 }
 
-// ── Section header (bold label + heavy rule) ──────────────────────────────
+function drawSpecSection(ctx: Ctx, product: Product) {
+  const { fonts } = ctx;
+  // Keep the section header attached to at least a group header + 3 rows.
+  ensureSpace(ctx, 34 + GROUP_HEADER_H + 3 * (ROW_LINE_H + ROW_PAD_V * 2));
+  sectionHeader(ctx, "Technical Specifications");
 
-function sectionHeader(ctx: Ctx, label: string) {
-  ensureSpace(ctx, 28);
-  const { page, fonts } = ctx;
-  drawSpacedText(page, safe(label).toUpperCase(), {
-    x: MARGIN_X, y: ctx.y,
-    size: 8.5, font: fonts.bold, color: C.black, characterSpacing: 1.6,
+  const labelMax = SPEC_LABEL_W - 10;
+  const valueMax = SPEC_COL_W - SPEC_LABEL_W - 10;
+  const measured: MeasuredGroup[] = specGroupsOf(product).map((g) => ({
+    title: g.title,
+    rows: g.rows.map(([label, value]) => {
+      const labelLines = wrapText(safe(label), fonts.regular, ROW_FONT, labelMax);
+      const valueLines = wrapText(safe(value), fonts.bold, ROW_FONT, valueMax);
+      return {
+        labelLines,
+        valueLines,
+        height: rowHeight(labelLines.length, valueLines.length, ROW_LINE_H, ROW_PAD_V),
+      };
+    }),
+  }));
+
+  const sectionTops: number[] = [ctx.y];
+  const placements = flowGroups(measured, {
+    firstColH: ctx.y - FOOT_FLOOR,
+    contColH: CONT_TOP - FOOT_FLOOR,
+    headerH: GROUP_HEADER_H,
+    groupGap: GROUP_GAP,
   });
-  drawHr(page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y - 7, 0.75, C.black);
-  ctx.y -= 20;
-}
 
-// ── Pagination ────────────────────────────────────────────────────────────
-
-function ensureSpace(ctx: Ctx, needed: number) {
-  if (ctx.y - needed < MARGIN_BOTTOM + 60) {
-    ctx.page = ctx.doc.addPage([A4_WIDTH, A4_HEIGHT]);
-    ctx.y = A4_HEIGHT - MARGIN_TOP;
+  let curPage = 0;
+  let bottomY = ctx.y;
+  for (const chunk of placements) {
+    while (chunk.page > curPage) {
+      addContinuationPage(ctx);
+      sectionTops.push(CONT_TOP);
+      curPage += 1;
+      bottomY = CONT_TOP;
+    }
+    const x = MARGIN_X + chunk.col * (SPEC_COL_W + SPEC_COL_GAP);
+    const yEnd = drawGroupChunk(ctx, chunk, x, sectionTops[chunk.page] - chunk.y);
+    if (yEnd < bottomY) bottomY = yEnd;
   }
+  ctx.y = bottomY - 18;
 }
 
-// ── Contact + footer ──────────────────────────────────────────────────────
+/** Draw one group header band + rows at (x, topY). Returns the bottom y. */
+function drawGroupChunk(ctx: Ctx, chunk: PlacedChunk, x: number, topY: number): number {
+  const { page, fonts } = ctx;
 
-function drawContactAndFooter(ctx: Ctx) {
-  ensureSpace(ctx, 90);
+  page.drawRectangle({
+    x, y: topY - GROUP_HEADER_H, width: SPEC_COL_W, height: GROUP_HEADER_H, color: C.blue50,
+  });
+  page.drawRectangle({
+    x, y: topY - GROUP_HEADER_H, width: 3, height: GROUP_HEADER_H, color: C.blue600,
+  });
+  drawSpacedText(page, safe(chunk.title).toUpperCase(), {
+    x: x + 9, y: topY - 12.5, size: 7.5, font: fonts.bold, color: C.blue700, characterSpacing: 1.6,
+  });
+
+  let y = topY - GROUP_HEADER_H;
+  chunk.rows.forEach((row, i) => {
+    if (i % 2 === 0) {
+      page.drawRectangle({ x, y: y - row.height, width: SPEC_COL_W, height: row.height, color: C.gray50 });
+    }
+    const contentLines = Math.max(row.labelLines.length, row.valueLines.length, 1);
+    const labelOffset = ((contentLines - row.labelLines.length) * ROW_LINE_H) / 2;
+    const valueOffset = ((contentLines - row.valueLines.length) * ROW_LINE_H) / 2;
+    // First baseline sits ROW_PAD_V + 8 below the row top (8 ≈ 8.5pt ascender).
+    row.labelLines.forEach((line, li) => {
+      page.drawText(line, {
+        x: x + 5, y: y - ROW_PAD_V - 8 - labelOffset - li * ROW_LINE_H,
+        size: ROW_FONT, font: fonts.regular, color: C.gray600,
+      });
+    });
+    row.valueLines.forEach((line, li) => {
+      page.drawText(line, {
+        x: x + SPEC_LABEL_W + 5, y: y - ROW_PAD_V - 8 - valueOffset - li * ROW_LINE_H,
+        size: ROW_FONT, font: fonts.bold, color: C.black,
+      });
+    });
+    drawHr(page, x, x + SPEC_COL_W, y - row.height, 0.4, C.gray200);
+    y -= row.height;
+  });
+  return y;
+}
+
+// ── Page 2 sections ───────────────────────────────────────────────────────
+
+function drawOverview(ctx: Ctx, product: Product) {
+  sectionHeader(ctx, "Product Overview");
+  const { fonts } = ctx;
+  const paragraphs = (product.longDescription ?? "").split("\n\n").filter(Boolean);
+  for (const para of paragraphs) {
+    const lines = wrapText(safe(para), fonts.regular, 9, CONTENT_WIDTH);
+    ensureSpace(ctx, lines.length * 14 + 8);
+    for (const line of lines) {
+      ctx.page.drawText(line, { x: MARGIN_X, y: ctx.y, size: 9, font: fonts.regular, color: C.gray700 });
+      ctx.y -= 14;
+    }
+    ctx.y -= 6;
+  }
+  ctx.y -= 6;
+}
+
+function drawTrustStrip(ctx: Ctx) {
+  const { fonts } = ctx;
+  const cardGap = 10;
+  const cardW = (CONTENT_WIDTH - cardGap * 2) / 3;
+  const bodies = TRUST_CARDS.map(([, body]) => wrapText(safe(body), fonts.regular, 7.5, cardW - 20));
+  const cardH = 26 + Math.max(...bodies.map((b) => b.length)) * 10;
+  ensureSpace(ctx, 34 + cardH);
+
+  sectionHeader(ctx, "Why Buy From Aplus");
+  const top = ctx.y;
+  TRUST_CARDS.forEach(([title], i) => {
+    const x = MARGIN_X + i * (cardW + cardGap);
+    ctx.page.drawRectangle({
+      x, y: top - cardH, width: cardW, height: cardH, borderWidth: 0.5, borderColor: C.gray200,
+    });
+    ctx.page.drawText(safe(title), { x: x + 10, y: top - 16, size: 9, font: fonts.bold, color: C.black });
+    bodies[i].forEach((line, li) => {
+      ctx.page.drawText(line, {
+        x: x + 10, y: top - 28 - li * 10, size: 7.5, font: fonts.regular, color: C.gray500,
+      });
+    });
+  });
+  ctx.y = top - cardH - 16;
+}
+
+// ── Contact band + footers ────────────────────────────────────────────────
+
+function drawContactBand(ctx: Ctx) {
+  // Anchored to the bottom of the last page, just above the legal line.
+  if (ctx.y < FOOT_FLOOR + BAND_H + 10) addContinuationPage(ctx);
   const { doc, page, fonts } = ctx;
+  const bandY = FOOT_FLOOR;
 
-  drawHr(page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y, 0.75, C.black);
-  ctx.y -= 14;
+  page.drawRectangle({
+    x: MARGIN_X, y: bandY, width: CONTENT_WIDTH, height: BAND_H, color: C.navy,
+  });
 
   drawSpacedText(page, "CONTACT SALES", {
-    x: MARGIN_X, y: ctx.y,
-    size: 7.5, font: fonts.bold, color: C.gray500, characterSpacing: 1.6,
+    x: MARGIN_X + 16, y: bandY + BAND_H - 18, size: 7, font: fonts.bold,
+    color: C.gray400, characterSpacing: 1.8,
   });
-  page.drawText(safe("Bulk pricing • GST invoice • Pan-India installation"), {
-    x: MARGIN_X, y: ctx.y - 14, size: 10, font: fonts.bold, color: C.black,
+  page.drawText(safe("Bulk pricing · GST invoice · Pan-India installation"), {
+    x: MARGIN_X + 16, y: bandY + BAND_H - 36, size: 10, font: fonts.bold, color: C.white,
   });
 
-  const rightX = A4_WIDTH - MARGIN_X;
-  drawRightAlignedLink(doc, page, fonts.bold, "+91 93105 09909", rightX, ctx.y, 10.5, C.black, "tel:+919310509909");
-  drawRightAlignedLink(doc, page, fonts.regular, "info@aplustechsol.com", rightX, ctx.y - 14, 9, C.blue600, "mailto:info@aplustechsol.com");
-  drawRightAlignedLink(doc, page, fonts.regular, "aplustechsol.com", rightX, ctx.y - 27, 9, C.blue600, "https://www.aplustechsol.com");
+  const rightX = A4_WIDTH - MARGIN_X - 16;
+  const phoneW = fonts.bold.widthOfTextAtSize(PHONE_DISPLAY, 11.5);
+  page.drawText(PHONE_DISPLAY, {
+    x: rightX - phoneW, y: bandY + BAND_H - 22, size: 11.5, font: fonts.bold, color: C.white,
+  });
+  addLinkAnnotation(doc, page, PHONE_TEL, {
+    x: rightX - phoneW, y: bandY + BAND_H - 25, width: phoneW, height: 15,
+  });
 
-  ctx.y -= 50;
-
-  drawHr(page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y, 0.4, C.gray200);
-  ctx.y -= 14;
-
-  // CIN / GSTIN
-  drawSpacedText(page, "CIN", { x: MARGIN_X, y: ctx.y, size: 7, font: fonts.bold, color: C.gray500, characterSpacing: 1 });
-  page.drawText("U72900DL2020PTC374888", { x: MARGIN_X + 22, y: ctx.y, size: 7.5, font: fonts.regular, color: C.gray500 });
-  drawSpacedText(page, "GSTIN", { x: MARGIN_X, y: ctx.y - 11, size: 7, font: fonts.bold, color: C.gray500, characterSpacing: 1 });
-  page.drawText("07AAUCA5631L1Z6", { x: MARGIN_X + 32, y: ctx.y - 11, size: 7.5, font: fonts.regular, color: C.gray500 });
-
-  // Copyright
-  const copyR1 = safe(`© ${new Date().getFullYear()} Aplus Technology Solutions Pvt. Ltd.`);
-  const copyR2 = "All specifications subject to change without notice.";
-  drawRightText(page, fonts.regular, copyR1, rightX, ctx.y, 7.5, C.gray400);
-  drawRightText(page, fonts.regular, copyR2, rightX, ctx.y - 11, 7.5, C.gray400);
+  const contactLine = safe(`${CONTACT_EMAIL} · aplustechsol.com`);
+  const lineW = fonts.regular.widthOfTextAtSize(contactLine, 8);
+  const lineX = rightX - lineW;
+  page.drawText(contactLine, {
+    x: lineX, y: bandY + BAND_H - 38, size: 8, font: fonts.regular, color: C.blueLight,
+  });
+  const emailW = fonts.regular.widthOfTextAtSize(CONTACT_EMAIL, 8);
+  addLinkAnnotation(doc, page, `mailto:${CONTACT_EMAIL}`, {
+    x: lineX, y: bandY + BAND_H - 41, width: emailW, height: 12,
+  });
+  const siteW = fonts.regular.widthOfTextAtSize("aplustechsol.com", 8);
+  addLinkAnnotation(doc, page, "https://www.aplustechsol.com", {
+    x: rightX - siteW, y: bandY + BAND_H - 41, width: siteW, height: 12,
+  });
 }
 
-// ── Drawing utilities ─────────────────────────────────────────────────────
+function drawFootersAndLegal(ctx: Ctx) {
+  const { fonts } = ctx;
+  const total = ctx.pages.length;
+  const year = new Date().getFullYear();
 
-function drawRightText(
-  page: Ctx["page"], font: import("pdf-lib").PDFFont,
-  text: string, rightX: number, y: number, size: number,
-  color: import("pdf-lib").RGB
-) {
-  page.drawText(text, { x: rightX - font.widthOfTextAtSize(text, size), y, size, font, color });
-}
-
-function drawRightAlignedLink(
-  doc: Ctx["doc"], page: Ctx["page"], font: import("pdf-lib").PDFFont,
-  text: string, rightX: number, y: number, size: number,
-  color: import("pdf-lib").RGB, url: string
-) {
-  const w = font.widthOfTextAtSize(text, size);
-  const x = rightX - w;
-  page.drawText(text, { x, y, size, font, color });
-  page.drawLine({ start: { x, y: y - 1 }, end: { x: rightX, y: y - 1 }, thickness: 0.4, color });
-  addLinkAnnotation(doc, page, url, { x, y: y - 2, width: w, height: size + 4 });
+  ctx.pages.forEach((page, i) => {
+    const n = i + 1;
+    const rightX = A4_WIDTH - MARGIN_X;
+    if (n < total) {
+      drawHr(page, MARGIN_X, rightX, 38, 0.4, C.gray200);
+      page.drawText(safe("Aplus Technology Solutions · aplustechsol.com"), {
+        x: MARGIN_X, y: 28, size: 7, font: fonts.regular, color: C.gray400,
+      });
+      const pn = `Page ${n} of ${total}`;
+      page.drawText(pn, {
+        x: rightX - fonts.regular.widthOfTextAtSize(pn, 7),
+        y: 28, size: 7, font: fonts.regular, color: C.gray400,
+      });
+    } else {
+      // Legal line replaces the standard footer on the last page.
+      page.drawText(safe("CIN U72900DL2020PTC374888 · GSTIN 07AAUCA5631L1Z6"), {
+        x: MARGIN_X, y: 30, size: 7, font: fonts.regular, color: C.gray500,
+      });
+      const legal = safe(
+        `© ${year} Aplus Technology Solutions Pvt. Ltd. · Specifications subject to change · Page ${n} of ${total}`
+      );
+      page.drawText(legal, {
+        x: rightX - fonts.regular.widthOfTextAtSize(legal, 7),
+        y: 30, size: 7, font: fonts.regular, color: C.gray400,
+      });
+    }
+  });
 }

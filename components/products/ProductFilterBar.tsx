@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
 import {
   BRIGHTNESS_BANDS,
-  MIN_SIZE_OPTIONS,
+  SIZE_BUCKETS,
   OPERATION_OPTIONS,
   RESOLUTION_OPTIONS,
   type Filters,
@@ -107,7 +107,7 @@ export default function ProductFilterBar({
   }, [filtersOpen, setFiltersOpen]);
 
   return (
-    <div ref={containerRef} className="sticky top-16 z-30 bg-white border-b border-gray-100 shadow-sm">
+    <div ref={containerRef} className="sticky top-34 z-30 bg-white border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center gap-3 flex-wrap">
         <button
           onClick={() => setFiltersOpen((o) => !o)}
@@ -150,10 +150,10 @@ export default function ProductFilterBar({
                 onRemove={() => setFilters((f) => ({ ...f, operation: null }))}
               />
             )}
-            {filters.minSize > 0 && (
+            {filters.sizeBucket && (
               <ActivePill
-                label={`≥${filters.minSize}" screens`}
-                onRemove={() => setFilters((f) => ({ ...f, minSize: 0 }))}
+                label={filters.sizeBucket === 'Below 43"' ? 'Below 43"' : `${filters.sizeBucket} screens`}
+                onRemove={() => setFilters((f) => ({ ...f, sizeBucket: null }))}
               />
             )}
             <button
@@ -209,14 +209,17 @@ export default function ProductFilterBar({
               ))}
             </FilterGroup>
 
-            <FilterGroup title="Min Screen Size">
-              {MIN_SIZE_OPTIONS.map((sz) => (
+            <FilterGroup title="Screen Size">
+              {SIZE_BUCKETS.map((b) => (
                 <FilterChip
-                  key={sz}
-                  label={`${sz}" +`}
-                  active={filters.minSize === sz}
+                  key={b.label}
+                  label={b.label}
+                  active={filters.sizeBucket === b.label}
                   onClick={() =>
-                    setFilters((f) => ({ ...f, minSize: f.minSize === sz ? 0 : sz }))
+                    setFilters((f) => ({
+                      ...f,
+                      sizeBucket: f.sizeBucket === b.label ? null : b.label,
+                    }))
                   }
                 />
               ))}

@@ -1,55 +1,70 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import {
-  ArrowRight,
-  Monitor,
-  LayoutGrid,
-  MousePointerClick,
-  Tv,
-} from "lucide-react";
+  MonitorIcon,
+  LayoutGridIcon,
+  InteractiveIcon,
+  TvIcon,
+  LedIcon,
+  IconTile,
+} from "@/components/icons";
 import { products } from "@/data/products";
+import { getCategoryById, type CategorySlug } from "@/data/categories";
 import AnimatedSection from "@/components/AnimatedSection";
 import MobileProductScroller from "@/components/MobileProductScroller";
 
-const CATEGORY_CARDS = [
+// Desktop shows all five categories in a single horizontal row
+// (lg:grid-cols-5). On sm (2-col) the last card spans full width so no
+// card sits orphaned.
+const CATEGORY_CARDS: {
+  id: CategorySlug;
+  Icon: typeof MonitorIcon;
+  // Split across two lines so every card title occupies the same two-line
+  // height, matching how "Interactive Displays" / "Commercial & Hotel TV" wrap.
+  title: [string, string];
+  iconColor: string;
+  accentClass: string;
+  span: string;
+}[] = [
   {
     id: "digital-signage",
-    Icon: Monitor,
-    title: "Digital Signage",
-    tagline: "Lobbies, retail & campuses",
-    href: "/products?category=digital-signage",
+    Icon: MonitorIcon,
+    title: ["Digital", "Signage"],
     iconColor: "#2563eb",
-    iconColorLight: "rgba(37, 99, 235, 0.1)",
-    count: products.filter((p) => p.category === "Digital Signage").length,
+    accentClass: "text-blue-600",
+    span: "",
   },
   {
     id: "video-walls",
-    Icon: LayoutGrid,
-    title: "Video Walls",
-    tagline: "Seamless large-format impact",
-    href: "/products?category=video-walls",
+    Icon: LayoutGridIcon,
+    title: ["Video", "Walls"],
     iconColor: "#4f46e5",
-    iconColorLight: "rgba(79, 70, 229, 0.1)",
-    count: products.filter((p) => p.category === "Video Wall").length,
+    accentClass: "text-indigo-600",
+    span: "",
   },
   {
     id: "interactive",
-    Icon: MousePointerClick,
-    title: "Interactive Displays",
-    tagline: "Collaboration & smart classrooms",
-    href: "/products?category=interactive",
+    Icon: InteractiveIcon,
+    title: ["Interactive", "Displays"],
     iconColor: "#7c3aed",
-    iconColorLight: "rgba(124, 58, 237, 0.1)",
-    count: products.filter((p) => p.category === "Interactive Display").length,
+    accentClass: "text-violet-600",
+    span: "",
   },
   {
     id: "commercial-tv",
-    Icon: Tv,
-    title: "Commercial & Hotel TV",
-    tagline: "Hotel rooms, offices & lobbies",
-    href: "/products?category=commercial-tv",
+    Icon: TvIcon,
+    title: ["Commercial &", "Hotel TV"],
     iconColor: "#0e7490",
-    iconColorLight: "rgba(14, 116, 144, 0.1)",
-    count: products.filter((p) => p.category === "Commercial TV").length,
+    accentClass: "text-cyan-700",
+    span: "",
+  },
+  {
+    id: "led-signage",
+    Icon: LedIcon,
+    title: ["LED", "Signage"],
+    iconColor: "#0891b2",
+    accentClass: "text-cyan-600",
+    span: "sm:col-span-2 lg:col-span-1",
   },
 ];
 
@@ -63,38 +78,62 @@ export default function CategoryGrid() {
           </h2>
         </AnimatedSection>
 
-        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-4" autoPlay={true} autoPlayInterval={3200} initialDelay={1800}>
-          {CATEGORY_CARDS.map((cat) => (
-            <Link
-              key={cat.id}
-              href={cat.href}
-              className="group relative bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 block h-full"
-            >
-              <div className="h-1" style={{ backgroundColor: cat.iconColor }} />
+        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-5" autoPlay={true} autoPlayInterval={3200} initialDelay={1800}>
+          {CATEGORY_CARDS.map((card) => {
+            const category = getCategoryById(card.id);
+            const count = category
+              ? products.filter((p) => p.category === category.name).length
+              : 0;
+            return (
+              <Link
+                key={card.id}
+                href={`/products?category=${card.id}`}
+                className={`group relative bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 block h-full ${card.span}`}
+              >
+                <div className="h-1" style={{ backgroundColor: card.iconColor }} />
 
-              <div className="p-7 flex flex-col h-full justify-between">
-                  <div className="flex items-start justify-between mb-6">
-                    <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                      style={{ backgroundColor: cat.iconColorLight }}
-                    >
-                      <cat.Icon size={26} style={{ color: cat.iconColor }} />
-                    </div>
-                  </div>
+                <div className="p-6 flex flex-col h-full">
+                  <IconTile size="lg" className="mb-5">
+                    <card.Icon
+                      size={26}
+                      className="text-current"
+                      accentClassName={card.accentClass}
+                    />
+                  </IconTile>
 
-                  <h3 className="text-xl font-bold text-gray-900 mb-6">{cat.title}</h3>
-
-                <div className="flex items-center justify-end pt-4 border-t border-gray-100 mt-auto">
-                  <span
-                    className="flex items-center gap-1 text-sm font-semibold group-hover:gap-2 transition-all"
-                    style={{ color: cat.iconColor }}
+                  {/* Every title spans two lines so all taglines start level.
+                      The <br/> would otherwise join the two words into one
+                      accessible name ("DigitalSignage"), so aria-label restores
+                      the spaced form for screen readers. */}
+                  <h3
+                    aria-label={`${card.title[0]} ${card.title[1]}`}
+                    className="text-xl font-bold text-gray-900 mb-1.5"
                   >
-                    Browse <ArrowRight size={14} />
-                  </span>
+                    {card.title[0]}
+                    <br />
+                    {card.title[1]}
+                  </h3>
+                  {category && (
+                    <p className="text-sm text-gray-500 leading-relaxed mb-5">
+                      {category.tagline}
+                    </p>
+                  )}
+
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+                    <span className="text-sm font-medium text-gray-400">
+                      {count} {count === 1 ? "product" : "products"}
+                    </span>
+                    <span
+                      className="flex items-center gap-1 text-sm font-semibold group-hover:gap-2 transition-all"
+                      style={{ color: card.iconColor }}
+                    >
+                      Browse <ArrowRight size={14} />
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </MobileProductScroller>
       </div>
     </section>

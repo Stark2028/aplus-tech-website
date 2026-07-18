@@ -6,57 +6,63 @@ import Image from "next/image";
 import {
   ArrowRight,
   RotateCcw,
-  Monitor,
-  LayoutGrid,
-  MousePointerClick,
-  Tv,
-  Building2,
-  GraduationCap,
-  Store,
-  Hotel,
   CheckCircle2,
   Sparkles,
   ShoppingBag,
   Check,
 } from "lucide-react";
+import {
+  MonitorIcon,
+  LayoutGridIcon,
+  InteractiveIcon,
+  TvIcon,
+  LedIcon,
+  BuildingIcon,
+  GraduationCapIcon,
+  StoreIcon,
+  HotelIcon,
+} from "@/components/icons";
 import { products, Product } from "@/data/products";
 import { useQuote } from "@/context/QuoteContext";
 import { trackEvent } from "@/lib/analytics";
+import {
+  DISPLAY_TYPES as DISPLAY_TYPE_DATA,
+  SIZE_RANGES,
+  INDUSTRY_CATEGORY_SCORE,
+  availableSizeRangeIds,
+  categoryEnabledForIndustry,
+  finderCategoryHref,
+  sizeInRange,
+} from "@/components/finderConfig";
 
 type Step = 1 | 2 | 3 | "results";
 
 type IndustryId = "hospitality" | "corporate" | "education" | "retail" | "any";
 
-const INDUSTRIES: { id: IndustryId; label: string; sub: string; Icon: React.ComponentType<{ size?: number; className?: string }> }[] = [
-  { id: "hospitality", label: "Hospitality", sub: "Hotels & Resorts", Icon: Hotel },
-  { id: "corporate", label: "Corporate", sub: "Offices & Boardrooms", Icon: Building2 },
-  { id: "education", label: "Education", sub: "Schools & Universities", Icon: GraduationCap },
-  { id: "retail", label: "Retail", sub: "Stores & Malls", Icon: Store },
+type FinderIcon = React.ComponentType<{
+  size?: number;
+  className?: string;
+  accentClassName?: string;
+}>;
+
+const INDUSTRIES: { id: IndustryId; label: string; sub: string; Icon: FinderIcon }[] = [
+  { id: "hospitality", label: "Hospitality", sub: "Hotels & Resorts", Icon: HotelIcon },
+  { id: "corporate", label: "Corporate", sub: "Offices & Boardrooms", Icon: BuildingIcon },
+  { id: "education", label: "Education", sub: "Schools & Universities", Icon: GraduationCapIcon },
+  { id: "retail", label: "Retail", sub: "Stores & Malls", Icon: StoreIcon },
 ];
 
-const DISPLAY_TYPES = [
-  { id: "Digital Signage", label: "Digital Signage", sub: "Lobbies & public areas", Icon: Monitor },
-  { id: "Video Wall", label: "Video Wall", sub: "Large-format impact", Icon: LayoutGrid },
-  { id: "Interactive Display", label: "Interactive Display", sub: "Touch & collaboration", Icon: MousePointerClick },
-  { id: "Commercial TV", label: "Commercial TV", sub: "Hotel rooms & offices", Icon: Tv },
-];
-
-const SIZE_RANGES = [
-  { id: "small",  label: "Compact",     sub: 'Under 50"',      min: 0,   max: 49  },
-  { id: "medium", label: "Standard",    sub: '50" – 75"',      min: 50,  max: 75  },
-  { id: "large",  label: "Large",       sub: '75" – 100"',     min: 75,  max: 100 },
-  { id: "xlarge", label: "Extra Large", sub: '100" and above', min: 100, max: 999 },
-];
-
-// Per-industry preference scores by display category. Higher = stronger fit.
-// Used to (a) rank results when an industry is picked and (b) suggest
-// alternatives in the empty state.
-const INDUSTRY_CATEGORY_SCORE: Record<Exclude<IndustryId, "any">, Record<string, number>> = {
-  hospitality: { "Commercial TV": 3, "Digital Signage": 2, "Interactive Display": 1, "Video Wall": 1 },
-  corporate:   { "Interactive Display": 3, "Digital Signage": 2, "Video Wall": 2, "Commercial TV": 1 },
-  education:   { "Interactive Display": 3, "Digital Signage": 1, "Video Wall": 1, "Commercial TV": 0 },
-  retail:      { "Digital Signage": 3, "Video Wall": 3, "Interactive Display": 1, "Commercial TV": 0 },
+// Re-attach icons to the shared, test-covered display-type data (keyed by the
+// category name in DISPLAY_TYPE_DATA[].id). SIZE_RANGES + the URL/size helpers
+// live in finderConfig.ts so their logic is unit-testable.
+const DISPLAY_TYPE_ICONS: Record<string, FinderIcon> = {
+  "Digital Signage": MonitorIcon,
+  "Video Wall": LayoutGridIcon,
+  "Interactive Display": InteractiveIcon,
+  "Commercial TV": TvIcon,
+  "LED Signage": LedIcon,
 };
+const DISPLAY_TYPES = DISPLAY_TYPE_DATA.map((d) => ({ ...d, Icon: DISPLAY_TYPE_ICONS[d.id] }));
 
 type ScoredProduct = { product: Product; score: number; sizeFit: "exact" | "near" | "any" };
 
@@ -69,6 +75,7 @@ export default function ProductFinderSection() {
   const { addItem } = useQuote();
 
   const sizeConfig = SIZE_RANGES.find((s) => s.id === sizeRangeId);
+  const availableSizes = step === 3 ? availableSizeRangeIds(displayType) : null;
 
   const { primary, fallbackKind, fallbackProducts } = useMemo(() => {
     if (step !== "results") {
@@ -82,10 +89,7 @@ export default function ProductFinderSection() {
 
     const inSize = (p: Product) => {
       if (!sizeConfig) return true;
-      return p.specs.screenSizes.some((s) => {
-        const n = parseInt(s);
-        return n >= sizeConfig.min && n <= sizeConfig.max;
-      });
+      return p.specs.screenSizes.some((s) => sizeInRange(parseInt(s), sizeConfig));
     };
 
     // Primary: must match category exactly; size matters if chosen.
@@ -197,7 +201,11 @@ export default function ProductFinderSection() {
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <Monitor size={40} className="text-gray-200" />
+              <MonitorIcon
+                size={40}
+                className="text-gray-200"
+                accentClassName="text-gray-200"
+              />
             </div>
           )}
         </div>
@@ -308,7 +316,7 @@ export default function ProductFinderSection() {
                   onClick={() => { setIndustry(id); setStep(2); }}
                   className="group p-6 rounded-2xl border-2 border-gray-200 bg-white text-left hover:border-blue-400 hover:bg-blue-50 transition-all duration-200"
                 >
-                  <Icon size={28} className="mb-3 text-gray-400 group-hover:text-blue-500 transition-colors" />
+                  <Icon size={28} className="mb-3 text-slate-500 group-hover:text-blue-600 transition-colors" />
                   <div className="font-bold text-gray-900 text-sm">{label}</div>
                   <div className="text-gray-400 text-xs mt-0.5">{sub}</div>
                 </button>
@@ -326,18 +334,35 @@ export default function ProductFinderSection() {
         {/* Step 2: Display Type */}
         {step === 2 && (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {DISPLAY_TYPES.map(({ id, label, sub, Icon }) => (
-                <button
-                  key={id}
-                  onClick={() => { setDisplayType(id); setStep(3); }}
-                  className="group p-6 rounded-2xl border-2 border-gray-200 bg-white text-left hover:border-blue-400 hover:bg-blue-50 transition-all duration-200"
-                >
-                  <Icon size={28} className="mb-3 text-gray-400 group-hover:text-blue-500 transition-colors" />
-                  <div className="font-bold text-gray-900 text-sm">{label}</div>
-                  <div className="text-gray-400 text-xs mt-0.5">{sub}</div>
-                </button>
-              ))}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              {DISPLAY_TYPES.map(({ id, label, sub, Icon }) => {
+                const enabled = categoryEnabledForIndustry(id, industry);
+                return (
+                  <button
+                    key={id}
+                    onClick={() => { setDisplayType(id); setStep(3); }}
+                    disabled={!enabled}
+                    aria-disabled={!enabled}
+                    className={`group p-6 rounded-2xl border-2 text-left transition-all duration-200 ${
+                      enabled
+                        ? "border-gray-200 bg-white hover:border-blue-400 hover:bg-blue-50"
+                        : "border-gray-100 bg-gray-50 opacity-60 cursor-not-allowed"
+                    }`}
+                  >
+                    <Icon
+                      size={28}
+                      className={`mb-3 transition-colors ${
+                        enabled ? "text-slate-500 group-hover:text-blue-600" : "text-gray-300"
+                      }`}
+                      accentClassName={enabled ? undefined : "text-gray-300"}
+                    />
+                    <div className={`font-bold text-sm ${enabled ? "text-gray-900" : "text-gray-400"}`}>{label}</div>
+                    <div className="text-gray-400 text-xs mt-0.5">
+                      {enabled ? sub : `Not typical for ${industryLabel ?? "your industry"}`}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
             <button onClick={() => setStep(1)} className="mt-5 text-sm text-gray-400 hover:text-gray-600 transition-colors block mx-auto">
               ← Back
@@ -349,19 +374,34 @@ export default function ProductFinderSection() {
         {step === 3 && (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {SIZE_RANGES.map(({ id, label, sub }) => (
-                <button
-                  key={id}
-                  onClick={() => { setSizeRangeId(id); goToResults(); }}
-                  className="group p-6 rounded-2xl border-2 border-gray-200 bg-white text-left hover:border-blue-400 hover:bg-blue-50 transition-all duration-200"
-                >
-                  <div className="text-2xl font-black text-gray-200 group-hover:text-blue-100 mb-2 transition-colors">
-                    {id === "small" ? "S" : id === "medium" ? "M" : id === "large" ? "L" : "XL"}
-                  </div>
-                  <div className="font-bold text-gray-900 text-sm">{label}</div>
-                  <div className="text-gray-400 text-xs mt-0.5">{sub}</div>
-                </button>
-              ))}
+              {SIZE_RANGES.map(({ id, label, sub }) => {
+                const enabled = availableSizes?.has(id) ?? true;
+                return (
+                  <button
+                    key={id}
+                    onClick={() => { setSizeRangeId(id); goToResults(); }}
+                    disabled={!enabled}
+                    aria-disabled={!enabled}
+                    className={`group p-6 rounded-2xl border-2 text-left transition-all duration-200 ${
+                      enabled
+                        ? "border-gray-200 bg-white hover:border-blue-400 hover:bg-blue-50"
+                        : "border-gray-100 bg-gray-50 opacity-60 cursor-not-allowed"
+                    }`}
+                  >
+                    <div
+                      className={`text-2xl font-black mb-2 transition-colors ${
+                        enabled ? "text-gray-200 group-hover:text-blue-100" : "text-gray-100"
+                      }`}
+                    >
+                      {id === "small" ? "S" : id === "medium" ? "M" : id === "large" ? "L" : "XL"}
+                    </div>
+                    <div className={`font-bold text-sm ${enabled ? "text-gray-900" : "text-gray-400"}`}>{label}</div>
+                    <div className="text-gray-400 text-xs mt-0.5">
+                      {enabled ? sub : `Not available in ${displayType}`}
+                    </div>
+                  </button>
+                );
+              })}
             </div>
             <div className="mt-5 flex flex-col items-center gap-2">
               <button
@@ -411,7 +451,7 @@ export default function ProductFinderSection() {
                 </div>
                 <div className="mt-6 text-center">
                   <Link
-                    href={`/products?category=${encodeURIComponent(displayType)}`}
+                    href={finderCategoryHref(displayType)}
                     className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm transition-colors"
                   >
                     View all {displayType} products <ArrowRight size={14} />

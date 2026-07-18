@@ -2,14 +2,22 @@ import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
 import { notFound } from "next/navigation";
 import { getCategoryById, productCategories, CategorySlug } from "@/data/categories";
+import { byLatestThenPopularity } from "@/lib/productSort";
 import { solutions } from "@/data/solutions";
 import { useCaseCombos } from "@/data/useCaseCombos";
 import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
-import { SITE, breadcrumbLd, categoryCollectionLd, jsonLdString } from "@/lib/jsonLd";
+import { SITE, breadcrumbLd, categoryCollectionLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
+import { buildCategoryFaqs, categorySizeRange } from "@/lib/categoryFaq";
 
 export const revalidate = 3600;
+
+// Category slugs are a fixed, fully-enumerated set (generateStaticParams below),
+// so any other slug must 404 at the routing layer. Without this, unknown slugs
+// stream through loading.tsx + ISR and notFound() returns a soft 200 instead of
+// a real 404 (vercel/next.js#63478, #76501).
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return productCategories.map((c) => ({ slug: c.id }));
@@ -25,8 +33,15 @@ export async function generateMetadata({
   if (!category) return {};
   const url = `${SITE}/categories/${slug}`;
   return {
-    title: `${category.navLabel} — Aplus Technology Solutions`,
-    description: category.description,
+    title: `Samsung ${category.navLabel} — Price, Models & Specs`,
+    description: `${category.description} Authorized Samsung distributor in India — B2B pricing, certified installation & AMC.`,
+    keywords: [
+      `Samsung ${category.navLabel}`,
+      `${category.navLabel} price India`,
+      `${category.navLabel} dealer`,
+      "Samsung B2B",
+      "Aplus Technology Solutions",
+    ],
     alternates: { canonical: url },
     openGraph: {
       type: "website",
@@ -56,7 +71,7 @@ export default async function CategoryPage({
 
   const categoryProducts = products.filter(
     (p) => p.category === category.name
-  ).sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+  ).sort(byLatestThenPopularity);
 
   // Group by subCategory when present (e.g. Commercial TV → Hotel TV / Business TV)
   const subCategories = Array.from(
@@ -65,6 +80,9 @@ export default async function CategoryPage({
 
   const hasSubCategories = subCategories.length > 1;
 
+  const sizeRange = categorySizeRange(categoryProducts);
+  const faqs = buildCategoryFaqs(category, categoryProducts);
+
   const jsonLd = [
     categoryCollectionLd(category, categoryProducts),
     breadcrumbLd([
@@ -72,6 +90,7 @@ export default async function CategoryPage({
       { name: "Products", url: "/products" },
       { name: category.navLabel, url: `/categories/${slug}` },
     ]),
+    faqPageLd(faqs.map((f) => ({ question: f.q, answer: f.a }))),
   ];
 
   return (
@@ -83,33 +102,62 @@ export default async function CategoryPage({
 
       {/* Hero banner */}
       <div className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 md:py-10">
 
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-2">
-                Samsung Authorized Distributor
-              </p>
+          {/* Breadcrumb — own line on mobile (wraps), floats right on md+ */}
+          <nav className="flex flex-wrap items-center gap-1.5 text-xs text-gray-400 mb-4 md:mb-0 md:float-right md:pt-1">
+            <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
+            <ChevronRight size={12} className="text-gray-300 shrink-0" />
+            <Link href="/products" className="hover:text-blue-600 transition-colors">Products</Link>
+            <ChevronRight size={12} className="text-gray-300 shrink-0" />
+            <span className="text-gray-600 font-medium">{category.navLabel}</span>
+          </nav>
 
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                {category.navLabel}
-              </h1>
+          <div className="min-w-0">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-2">
+              Samsung Authorized Distributor
+            </p>
+
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+              Samsung {category.navLabel}
+            </h1>
+
+            <p className="mt-3 max-w-2xl text-gray-500 text-sm md:text-base leading-relaxed">
+              {category.subtitle}
+            </p>
+
+            {/* Quick facts + use cases (indexable, keyword-rich) */}
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">
+                {categoryProducts.length} Samsung series
+              </span>
+              {sizeRange && (
+                <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">
+                  Sizes {sizeRange}
+                </span>
+              )}
+              {category.useCases.slice(0, 4).map((uc) => (
+                <span
+                  key={uc}
+                  className="inline-flex items-center px-3 py-1 rounded-full bg-slate-50 border border-slate-100 text-slate-500 text-xs font-medium"
+                >
+                  {uc}
+                </span>
+              ))}
             </div>
-
-            {/* Breadcrumb */}
-            <nav className="flex items-center justify-end gap-1.5 text-xs text-gray-400 shrink-0 pt-1">
-              <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
-              <ChevronRight size={12} className="text-gray-300" />
-              <Link href="/products" className="hover:text-blue-600 transition-colors">Products</Link>
-              <ChevronRight size={12} className="text-gray-300" />
-              <span className="text-gray-600 font-medium">{category.navLabel}</span>
-            </nav>
           </div>
 
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12">
+        {/* Overview — indexable landing-page copy */}
+        <div className="mb-10">
+          <p className="text-gray-600 text-[15px] leading-normal">
+            {category.overview}
+          </p>
+        </div>
+
         {categoryProducts.length === 0 ? (
           <div className="text-center py-24 bg-white rounded-2xl border border-dashed border-gray-300">
             <p className="text-lg font-medium text-gray-500">
@@ -208,6 +256,42 @@ export default async function CategoryPage({
           </section>
         );
       })()}
+
+      {/* ── FAQ ────────────────────────────────────────────────────────── */}
+      {faqs.length > 0 && (
+        <section
+          className="border-t border-gray-100"
+          aria-labelledby="category-faq-heading"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <h2
+              id="category-faq-heading"
+              className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 text-center"
+            >
+              Frequently asked questions
+            </h2>
+            <div className="max-w-3xl mx-auto space-y-3">
+              {faqs.map((faq, i) => (
+                <details
+                  key={i}
+                  className="group bg-white rounded-2xl border border-gray-100 shadow-sm open:shadow-md transition-shadow"
+                >
+                  <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 text-[15px] font-semibold text-gray-900">
+                    {faq.q}
+                    <ChevronRight
+                      size={18}
+                      className="shrink-0 text-blue-600 transition-transform group-open:rotate-90"
+                    />
+                  </summary>
+                  <div className="px-6 pb-5 -mt-1 text-sm text-gray-600 leading-relaxed">
+                    {faq.a}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

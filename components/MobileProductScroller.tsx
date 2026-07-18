@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface MobileProductScrollerProps {
@@ -27,31 +27,53 @@ export default function MobileProductScroller({
   initialDelay = 0,
 }: MobileProductScrollerProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isPaused, setIsPaused] = useState(false);
+  // Paused state lives in a ref (read at interval fire-time), NOT in the effect
+  // deps — so hovering/touching the carousel suspends advancing without tearing
+  // down and re-arming the `initialDelay` timer on every interaction.
+  const pausedRef = useRef(false);
 
   const scroll = (dir: "left" | "right") => {
     const el = scrollRef.current;
     if (!el) return;
     const amount = el.clientWidth * 0.78;
+    // The last slide carries a trailing `mr-[28vw]` margin, so `scrollWidth`
+    // overshoots the position the track actually snaps to at the end. Use the
+    // last slide's own offset (where it snaps left-aligned) as the true end
+    // instead — otherwise the wrap condition can never be reached.
+    const lastSlide = el.lastElementChild as HTMLElement | null;
+    const endScroll = lastSlide ? lastSlide.offsetLeft - el.offsetLeft : el.scrollWidth - el.clientWidth;
+    // Loop the carousel: → at the last slide jumps back to the first, and ←
+    // at the first slide jumps to the last. The 25px tolerance absorbs
+    // sub-pixel rounding and snap settling so "near the edge" still wraps.
+    if (dir === "right") {
+      if (el.scrollLeft >= endScroll - 25) {
+        el.scrollTo({ left: 0, behavior: "smooth" });
+        return;
+      }
+    } else if (el.scrollLeft <= 25) {
+      el.scrollTo({ left: endScroll, behavior: "smooth" });
+      return;
+    }
     el.scrollBy({ left: dir === "right" ? amount : -amount, behavior: "smooth" });
   };
 
   useEffect(() => {
     if (!autoPlay) return;
 
+    // Honour the OS "reduce motion" setting — read live at each tick (like
+    // pausedRef) so it reacts to changes the same way the CSS marquees do,
+    // which stay frozen for these users via the global reduced-motion guard.
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
     let interval: ReturnType<typeof setInterval>;
 
     const start = () => {
       interval = setInterval(() => {
-        if (isPaused) return;
+        if (pausedRef.current || reduceMotion.matches) return;
         const el = scrollRef.current;
         if (!el || el.clientWidth === 0) return;
-        const maxScroll = el.scrollWidth - el.clientWidth;
-        if (el.scrollLeft >= maxScroll - 25) {
-          el.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-          scroll("right");
-        }
+        // scroll() handles the end→start wrap itself, so auto-play just advances.
+        scroll("right");
       }, autoPlayInterval);
     };
 
@@ -60,17 +82,17 @@ export default function MobileProductScroller({
       clearTimeout(timeout);
       clearInterval(interval);
     };
-  }, [autoPlay, autoPlayInterval, initialDelay, isPaused]);
+  }, [autoPlay, autoPlayInterval, initialDelay]);
 
   return (
     <>
       {/* ── MOBILE: horizontal snap carousel ─────────────────────── */}
       <div 
         className={`relative sm:hidden`}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onTouchStart={() => setIsPaused(true)}
-        onTouchEnd={() => setIsPaused(false)}
+        onMouseEnter={() => { pausedRef.current = true; }}
+        onMouseLeave={() => { pausedRef.current = false; }}
+        onTouchStart={() => { pausedRef.current = true; }}
+        onTouchEnd={() => { pausedRef.current = false; }}
       >
         {/* Prev arrow */}
         <button
@@ -106,10 +128,11 @@ export default function MobileProductScroller({
         {/* Next arrow */}
         <button
           aria-label="Scroll right"
+          aria-controls="mobile-scroller-track"
           onClick={() => scroll("right")}
           className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-10 bg-white border border-gray-200 shadow-md rounded-full p-1.5 text-gray-500 hover:text-blue-600 transition-colors"
         >
-          <ChevronRight size={16} />
+          <ChevronRight size={16} aria-hidden="true" />
         </button>
       </div>
 

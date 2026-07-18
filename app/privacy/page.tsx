@@ -58,6 +58,22 @@ All third parties are bound by confidentiality obligations.`,
 You can disable cookies through your browser settings. Disabling cookies will not affect your ability to contact us or request a quote.`,
   },
   {
+    title: "Live Chat",
+    content: `When you use the live chat on our website, we collect:
+• The name, email address, and phone number you enter in the chat form
+• The messages you send us
+• The page you are viewing and whether the chat window is open
+• A random anonymous identifier stored in your browser, so your conversation is still yours if you return later
+
+We use this information only to reply to you and for sales follow-up — it is never sold, and it is not shared beyond the providers listed below.
+
+Your chat data is handled by the same trusted providers as our contact form: Google Firebase (Firestore and Storage) for the live conversation, Resend for email notifications, and Zoho for our CRM records.
+
+We keep chat conversations for as long as we are doing business with you. The short-lived presence record — whether you are currently online — is not retained.
+
+To have your chat data deleted, email info@aplustechsol.com.`,
+  },
+  {
     title: "Data Security",
     content: `We implement appropriate technical and organizational measures to protect your information against unauthorized access, alteration, disclosure, or destruction. All form submissions are transmitted over HTTPS encryption. We retain your data only as long as necessary to fulfil the purpose for which it was collected, or as required by applicable law.`,
   },

@@ -24,7 +24,7 @@ export default function BackToTop() {
       aria-label="Back to top"
       aria-hidden={!visible}
     >
-      <ChevronUp size={18} strokeWidth={2.5} />
+      <ChevronUp size={18} />
     </button>
   );
 }

@@ -11,6 +11,22 @@ const CLIENT_SECTORS = [
   { name: "Phoenix Mall", sector: "Retail" },
   { name: "Shoppers Stop", sector: "Retail" },
   { name: "AIIMS Delhi", sector: "Healthcare" },
+  { name: "TATA Advanced Systems", sector: "Defense" },
+  { name: "Asian Paints", sector: "Manufacturing" },
+  { name: "Godrej & Boyce", sector: "Manufacturing" },
+  { name: "Essar", sector: "Enterprise" },
+  { name: "Atlas Copco", sector: "Industrial" },
+  { name: "Ministry of Home Affairs", sector: "Government" },
+  { name: "Ministry of Defence", sector: "Government" },
+  { name: "St. Xavier's College, Calcutta", sector: "Education" },
+  { name: "Tamralipta Mahavidyalaya", sector: "Education" },
+  { name: "Directorate of AYUSH, Chandigarh", sector: "Government" },
+  { name: "Banchharam's", sector: "Retail" },
+  { name: "Actis", sector: "Enterprise" },
+  { name: "Hathway", sector: "Telecom" },
+  { name: "IIT Guwahati", sector: "Education" },
+  { name: "Indogulf Group", sector: "Enterprise" },
+  { name: "EbixCash", sector: "Fintech" },
 ];
 
 export default function ClientLogoStrip() {
@@ -26,6 +42,9 @@ export default function ClientLogoStrip() {
           {[...CLIENT_SECTORS, ...CLIENT_SECTORS].map((c, i) => (
             <div
               key={i}
+              // Second copy exists only for the seamless marquee loop —
+              // hide it from assistive tech so names aren't announced twice.
+              aria-hidden={i >= CLIENT_SECTORS.length || undefined}
               className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-5 py-2.5 shadow-sm shrink-0"
             >
               <span className="text-gray-800 font-semibold text-sm">{c.name}</span>

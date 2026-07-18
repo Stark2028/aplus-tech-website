@@ -4,14 +4,14 @@ export interface Filters {
   brightness: string | null;
   resolution: string | null;
   operation: string | null;
-  minSize: number;
+  sizeBucket: string | null;
 }
 
 export const DEFAULT_FILTERS: Filters = {
   brightness: null,
   resolution: null,
   operation: null,
-  minSize: 0,
+  sizeBucket: null,
 };
 
 export const RESOLUTION_OPTIONS = [
@@ -20,21 +20,38 @@ export const RESOLUTION_OPTIONS = [
   { label: "Custom / LED", match: (r: string) => r.includes("Custom") },
 ];
 
+// Bands are half-open [min, max): each boundary value (350/500/700) belongs to
+// exactly one band — the one whose label names it. A product reading "500 nit"
+// lands in "500–700 nit", and "700 nit" lands in "700 nit +".
 export const BRIGHTNESS_BANDS = [
-  { label: "Under 350 nit", min: 0, max: 349 },
+  { label: "Under 350 nit", min: 0, max: 350 },
   { label: "350–500 nit", min: 350, max: 500 },
-  { label: "500–700 nit", min: 501, max: 700 },
-  { label: "700 nit +", min: 701, max: Infinity },
+  { label: "500–700 nit", min: 500, max: 700 },
+  { label: "700 nit +", min: 700, max: Infinity },
 ];
 
 export const OPERATION_OPTIONS = ["16/7", "24/7"];
 
-export const MIN_SIZE_OPTIONS = [32, 43, 55, 75];
+// Single-select size buckets, half-open [min, max): each boundary inch belongs
+// to exactly one bucket (a 55" panel is '55"+', not also '43"+'). A product's
+// size is its LARGEST offered diagonal. Mirrors BRIGHTNESS_BANDS.
+export const SIZE_BUCKETS = [
+  { label: 'Below 43"', min: 0,  max: 43 },
+  { label: '43"+',      min: 43, max: 55 },
+  { label: '55"+',      min: 55, max: 75 },
+  { label: '75"+',      min: 75, max: 98 },
+  { label: '98"+',      min: 98, max: Infinity },
+];
 
-function parseBrightnessNit(brightness: string): number {
+/**
+ * Parse a nit value from a brightness string, or null when it carries no number
+ * (e.g. "HDR", "Standard"). Null products are excluded from numeric brightness
+ * bands rather than being treated as 0 and bucketed into "Under 350 nit".
+ */
+function parseBrightnessNit(brightness: string): number | null {
   const cleaned = brightness.replace(/,/g, "");
   const nums = cleaned.match(/\d+/g);
-  if (!nums) return 0;
+  if (!nums) return null;
   if (nums.length === 1) return parseInt(nums[0]);
   return Math.round((parseInt(nums[0]) + parseInt(nums[nums.length - 1])) / 2);
 }
@@ -58,7 +75,10 @@ export function applyFilters(products: Product[], filters: Filters): Product[] {
       const band = BRIGHTNESS_BANDS.find((b) => b.label === filters.brightness);
       if (band) {
         const nit = parseBrightnessNit(p.specs.brightness);
-        if (nit < band.min || nit > band.max) return false;
+        // Unparseable brightness ("HDR"/"Standard") matches no numeric band.
+        if (nit === null) return false;
+        // Half-open [min, max): boundary value belongs to the band it names.
+        if (nit < band.min || nit >= band.max) return false;
       }
     }
 
@@ -66,9 +86,17 @@ export function applyFilters(products: Product[], filters: Filters): Product[] {
       if (!p.specs.operationTime.includes(filters.operation)) return false;
     }
 
-    if (filters.minSize > 0) {
-      const max = parseMaxSize(p.specs.screenSizes);
-      if (max < filters.minSize && max !== 0) return false;
+    if (filters.sizeBucket) {
+      const bucket = SIZE_BUCKETS.find((b) => b.label === filters.sizeBucket);
+      if (bucket) {
+        const max = parseMaxSize(p.specs.screenSizes);
+        // A product with no numeric size (parseMaxSize → 0, e.g. "Custom") can't
+        // satisfy a size bucket, so it's excluded whenever one is selected —
+        // including 'Below 43"' (min 0), which the max===0 guard rules out first.
+        if (max === 0) return false;
+        // Half-open [min, max): boundary inch belongs to the bucket it names.
+        if (max < bucket.min || max >= bucket.max) return false;
+      }
     }
 
     return true;

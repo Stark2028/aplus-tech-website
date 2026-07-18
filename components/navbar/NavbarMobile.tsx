@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
+import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, Phone, Search, ShoppingBag, X } from "lucide-react";
 import { productCategories } from "@/data/categories";
 import { PHONE_NUMBER, PHONE_TEL, SOLUTIONS } from "./navConfig";
@@ -17,12 +19,31 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
   const [solutionsOpen, setSolutionsOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  // Portals need the DOM; gate on mount so SSR output stays stable.
+  const [mounted, setMounted] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setMounted(true), []);
 
   const close = () => {
     setIsOpen(false);
+    setProductsOpen(false);
+    setSolutionsOpen(false);
     // Return focus to the hamburger button when menu closes
     toggleRef.current?.focus();
   };
+
+  // Auto-close on navigation. Covers every route change — link taps,
+  // back/forward, programmatic — so the menu never lingers over a new page.
+  // Skips the focus() call from close() since the user is moving away.
+  // Synchronizing with an external system (the URL), so setState here is
+  // intentional.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsOpen(false);
+    setProductsOpen(false);
+    setSolutionsOpen(false);
+  }, [pathname]);
 
   // Close on Escape + trap focus within the open menu (Tab / Shift+Tab cycle)
   useEffect(() => {
@@ -70,7 +91,7 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
           className="relative p-2"
           aria-label={cartCount > 0 ? `View quote cart, ${cartCount} items` : "View quote cart"}
         >
-          <ShoppingBag size={22} className="text-gray-700" strokeWidth={1.8} aria-hidden="true" />
+          <ShoppingBag size={22} className="text-gray-700" aria-hidden="true" />
           {cartCount > 0 && (
             <span className="absolute top-1 right-0 bg-blue-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
               {cartCount}
@@ -92,11 +113,20 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
 
       {isOpen && (
         <>
-          <div
-            className="xl:hidden fixed inset-0 top-full z-40"
-            onClick={close}
-            aria-hidden="true"
-          />
+          {/* Full-screen tap-to-close backdrop. Portaled to <body> because the
+              navbar uses backdrop-blur, which makes the nav a containing block
+              for fixed-positioned descendants — keeping the backdrop inside the
+              nav would clamp `inset-0` to the 72px nav box instead of the
+              viewport, so taps below the bar never closed the menu. */}
+          {mounted &&
+            createPortal(
+              <div
+                className="xl:hidden fixed inset-0 z-40"
+                onClick={close}
+                aria-hidden="true"
+              />,
+              document.body
+            )}
           <div
             ref={menuRef}
             id="mobile-menu"
@@ -108,7 +138,7 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
             <Link
               href="/"
               onClick={(e) => { onHomeClick?.(e); close(); }}
-              className="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
+              className="block px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
             >
               Home
             </Link>
@@ -119,7 +149,7 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
                 onClick={() => setProductsOpen((v) => !v)}
                 aria-expanded={productsOpen}
                 aria-controls="mobile-products-panel"
-                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
               >
                 Products
                 <ChevronDown
@@ -157,7 +187,7 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
                 onClick={() => setSolutionsOpen((v) => !v)}
                 aria-expanded={solutionsOpen}
                 aria-controls="mobile-solutions-panel"
-                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
               >
                 Solutions
                 <ChevronDown
@@ -185,14 +215,14 @@ export default function NavbarMobile({ cartCount, onHomeClick }: Props) {
             <Link
               href="/about"
               onClick={close}
-              className="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
+              className="block px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
             >
               About
             </Link>
             <Link
               href="/contact"
               onClick={close}
-              className="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all"
+              className="block px-4 py-3 rounded-xl text-base font-semibold text-gray-800 hover:text-blue-600 hover:bg-blue-50 transition-all"
             >
               Contact
             </Link>

@@ -5,8 +5,10 @@ import type { Metadata } from "next";
 import { solutions } from "@/data/solutions";
 import { products } from "@/data/products";
 import { getCategoryById, type CategorySlug } from "@/data/categories";
+import { byLatestThenPopularity } from "@/lib/productSort";
 import { useCaseCombos, getCombo } from "@/data/useCaseCombos";
 import ProductCard from "@/components/ProductCard";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 import {
   SITE,
   breadcrumbLd,
@@ -16,6 +18,13 @@ import {
 } from "@/lib/jsonLd";
 
 export const revalidate = 3600;
+
+// Valid industry+category pairs are the fixed set of useCaseCombos enumerated in
+// generateStaticParams below. Any other pair (unknown industry, unknown category,
+// or a valid-but-uncombined pair) must 404 at the routing layer. Without this,
+// unknown pairs stream through loading.tsx + ISR and notFound() returns a soft
+// 200 instead of a real 404 (vercel/next.js#63478, #76501).
+export const dynamicParams = false;
 
 interface PageParams {
   industry: string;
@@ -86,13 +95,13 @@ export default async function IndustryCategoryPage({
     (p) =>
       p.category === categoryObj.name &&
       solution.recommendedSeries.some((series) => p.series.includes(series))
-  ).sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+  ).sort(byLatestThenPopularity);
 
   // Fallback: if the combo has no recommended-series matches, show top products in the category.
   const featuredProducts =
     matchingProducts.length > 0
       ? matchingProducts.slice(0, 8)
-      : products.filter((p) => p.category === categoryObj.name).sort((a, b) => (b.popularity || 0) - (a.popularity || 0)).slice(0, 4);
+      : products.filter((p) => p.category === categoryObj.name).sort(byLatestThenPopularity).slice(0, 4);
 
   const showingFallback = matchingProducts.length === 0;
   const accentGradient = GRADIENTS[industry] || "from-blue-900 via-blue-950 to-slate-900";
@@ -157,10 +166,10 @@ export default async function IndustryCategoryPage({
               Request a Quote <ArrowRight size={16} aria-hidden="true" />
             </Link>
             <a
-              href="tel:+919310509909"
+              href={PHONE_TEL}
               className="inline-flex items-center gap-2 border border-white/30 text-white font-semibold px-6 py-3 rounded-lg hover:bg-white/10 transition-colors"
             >
-              <Phone size={16} aria-hidden="true" /> +91 93105 09909
+              <Phone size={16} aria-hidden="true" /> {PHONE_DISPLAY}
             </a>
           </div>
         </div>
@@ -185,7 +194,7 @@ export default async function IndustryCategoryPage({
                 className="bg-gray-50 border border-gray-100 rounded-2xl p-6 hover:shadow-md hover:border-blue-100 transition-all"
               >
                 <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
-                  <Check size={18} className="text-blue-600" strokeWidth={3} />
+                  <Check size={18} className="text-blue-600" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">{uc.title}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">{uc.description}</p>

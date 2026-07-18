@@ -6,6 +6,8 @@ import ReadingProgress from "@/components/ReadingProgress";
 import ShareButtons from "@/components/ShareButtons";
 import { Calendar, Clock, ArrowRight, Tag } from "lucide-react";
 import { SITE, breadcrumbLd, jsonLdString } from "@/lib/jsonLd";
+import { formatBlogDate } from "@/lib/formatDate";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -16,6 +18,12 @@ interface BlogPageParams {
 }
 
 export const revalidate = 3600;
+
+// All blog slugs come from static data (generateStaticParams below), so an
+// unknown slug should be a real 404 at the routing layer. Without this it
+// streams through loading.tsx + ISR and notFound() returns a soft 200
+// (vercel/next.js#63478, #76501), letting junk URLs get indexed.
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
@@ -75,7 +83,6 @@ export default async function BlogDetailPage({
   const relatedFinal =
     related.length >= 2 ? related : fallback.slice(0, 3);
 
-  const publishedDate = new Date(post.date);
   const pageUrl = `${SITE}/blogs/${post.slug}`;
 
   const wordCount = post.body.trim().split(/\s+/).filter(Boolean).length;
@@ -160,11 +167,7 @@ export default async function BlogDetailPage({
               <span className="flex items-center gap-1.5">
                 <Calendar size={13} />
                 <time dateTime={post.date}>
-                  {publishedDate.toLocaleDateString("en-IN", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
+                  {formatBlogDate(post.date)}
                 </time>
               </span>
               <span className="flex items-center gap-1.5">
@@ -208,10 +211,10 @@ export default async function BlogDetailPage({
                 <ArrowRight size={15} />
               </Link>
               <a
-                href="tel:+919310509909"
+                href={PHONE_TEL}
                 className="inline-flex items-center justify-center gap-2 border border-white/30 text-white font-medium px-6 py-3 rounded-xl text-sm hover:bg-white/10 transition-colors"
               >
-                Call +91 93105 09909
+                Call {PHONE_DISPLAY}
               </a>
             </div>
           </div>

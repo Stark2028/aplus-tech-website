@@ -16,9 +16,16 @@ interface QuoteContextType {
     clearQuote: () => void;
     isQuoteOpen: boolean;
     toggleQuote: () => void;
+    limitReached: boolean;
 }
 
 const QuoteContext = createContext<QuoteContextType | undefined>(undefined);
+
+// Cap distinct line items so a quote can never grow an unbounded payload. The
+// contact API rejects bodies whose serialized fields exceed 5000 chars (~45
+// items); 30 stays comfortably under that while exceeding any realistic B2B
+// cart. Adding more quantity to an existing item is always allowed.
+const MAX_QUOTE_ITEMS = 30;
 
 /** Runtime shape guard — ensures localStorage data matches QuoteItem[] before use. */
 function isValidQuoteItems(data: unknown): data is QuoteItem[] {
@@ -37,6 +44,8 @@ function isValidQuoteItems(data: unknown): data is QuoteItem[] {
 export function QuoteProvider({ children }: { children: React.ReactNode }) {
     const [quoteItems, setQuoteItems] = useState<QuoteItem[]>([]);
     const [isQuoteOpen, setIsQuoteOpen] = useState(false);
+    const [limitReached, setLimitReached] = useState(false);
+    const limitTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         const savedQuote = localStorage.getItem("b2b_quote_cart");
@@ -71,6 +80,15 @@ export function QuoteProvider({ children }: { children: React.ReactNode }) {
                         : item
                 );
             }
+            // Adding a new distinct product would exceed the cap: flash a notice
+            // and leave the cart unchanged rather than building an oversized
+            // payload the contact API would later reject with an opaque error.
+            if (prev.length >= MAX_QUOTE_ITEMS) {
+                setLimitReached(true);
+                if (limitTimerRef.current) clearTimeout(limitTimerRef.current);
+                limitTimerRef.current = setTimeout(() => setLimitReached(false), 2500);
+                return prev;
+            }
             return [...prev, { product, quantity }];
         });
         setIsQuoteOpen(true);
@@ -104,8 +122,9 @@ export function QuoteProvider({ children }: { children: React.ReactNode }) {
             clearQuote,
             isQuoteOpen,
             toggleQuote,
+            limitReached,
         }),
-        [quoteItems, isQuoteOpen, addItem, removeItem, updateQuantity, clearQuote, toggleQuote]
+        [quoteItems, isQuoteOpen, addItem, removeItem, updateQuantity, clearQuote, toggleQuote, limitReached]
     );
 
     return <QuoteContext.Provider value={value}>{children}</QuoteContext.Provider>;

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 import { blogPosts } from "@/data/blogs";
+import { formatBlogDate } from "@/lib/formatDate";
 
 export default function LatestBlogsSection() {
   // Get the latest 3 posts based on date
@@ -62,11 +63,7 @@ export default function LatestBlogsSection() {
                   <div className="flex items-center gap-4 text-xs text-gray-400 font-medium">
                     <span className="flex items-center gap-1.5">
                       <Calendar size={14} />
-                      {new Date(post.date).toLocaleDateString("en-IN", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
+                      {formatBlogDate(post.date)}
                     </span>
                     <span className="flex items-center gap-1.5">
                       <Clock size={14} />

@@ -100,6 +100,10 @@ export default async function Image({
       {/* Breadcrumb-style context */}
       <div
         style={{
+          // `{industry} · {category}` is three child nodes; Satori requires an
+          // explicit display on any element with >1 child or the OG image fails
+          // to render entirely.
+          display: "flex",
           color: "#60a5fa",
           fontSize: 15,
           fontWeight: 700,

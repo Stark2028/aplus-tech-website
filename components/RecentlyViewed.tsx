@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Monitor, Clock, Scale } from "lucide-react";
+import { Clock, Scale } from "lucide-react";
+import { MonitorIcon } from "@/components/icons";
 import { products } from "@/data/products";
 import { useComparison } from "@/context/ComparisonContext";
 import MobileProductScroller from "@/components/MobileProductScroller";
+import { readRecentIds } from "@/components/recentViewed";
 
 const STORAGE_KEY = "aplus_recently_viewed";
 const MAX_STORED = 8;
@@ -30,17 +32,13 @@ export default function RecentlyViewed({ currentProductId }: RecentlyViewedProps
   };
 
   useEffect(() => {
-    let stored: string[] = [];
+    let raw: string | null = null;
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) stored = JSON.parse(raw);
+      raw = localStorage.getItem(STORAGE_KEY);
     } catch {}
 
-    // Prepend current, dedupe, cap
-    const updated = [currentProductId, ...stored.filter((id) => id !== currentProductId)].slice(
-      0,
-      MAX_STORED
-    );
+    // Prepend current, dedupe, cap — tolerant of corrupt/non-array stored data.
+    const updated = readRecentIds(raw, currentProductId, MAX_STORED);
 
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
@@ -95,7 +93,11 @@ export default function RecentlyViewed({ currentProductId }: RecentlyViewedProps
                 />
               ) : (
                 <div className="h-full flex items-center justify-center">
-                  <Monitor size={28} className="text-gray-300" />
+                  <MonitorIcon
+                    size={28}
+                    className="text-gray-300"
+                    accentClassName="text-gray-300"
+                  />
                 </div>
               )}
             </div>

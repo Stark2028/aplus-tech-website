@@ -4,6 +4,7 @@ import { ArrowRight, ChevronRight, Phone } from "lucide-react";
 import { solutions } from "@/data/solutions";
 import { products } from "@/data/products";
 import { getCategoryById } from "@/data/categories";
+import { byLatestThenPopularity } from "@/lib/productSort";
 import { useCaseCombos } from "@/data/useCaseCombos";
 import ProductCard from "@/components/ProductCard";
 import MobileProductScroller from "@/components/MobileProductScroller";
@@ -11,6 +12,12 @@ import type { Metadata } from "next";
 import { SITE, breadcrumbLd, solutionServiceLd, jsonLdString } from "@/lib/jsonLd";
 
 export const revalidate = 3600;
+
+// Industry slugs are a fixed, fully-enumerated set (generateStaticParams below),
+// so any other slug must 404 at the routing layer. Without this, unknown slugs
+// stream through loading.tsx + ISR and notFound() returns a soft 200 instead of
+// a real 404 (vercel/next.js#63478, #76501).
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
     return solutions.map((s) => ({ industry: s.slug }));
@@ -55,7 +62,7 @@ const GRADIENTS: Record<string, string> = {
 };
 
 const STATS = [
-    { value: "7+", label: "Years Experience" },
+    { value: "5+", label: "Years Experience" },
     { value: "500+", label: "Deployments" },
     { value: "Pan-India", label: "Service Coverage" },
     { value: "Samsung", label: "Authorized Partner" },
@@ -71,7 +78,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
 
     const recommendedProducts = products.filter((p) =>
         solution.recommendedSeries.some((series) => p.series.includes(series))
-    ).sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+    ).sort(byLatestThenPopularity);
 
     const combosForIndustry = useCaseCombos.filter((c) => c.industry === industry);
 

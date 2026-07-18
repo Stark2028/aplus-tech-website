@@ -1,0 +1,41 @@
+rules_version = '2';
+
+// Attachment storage (spec §4.1, §9).
+//
+// This is the ONLY inbound file path in the product, so it is the malware
+// surface. Deny by default; the size cap and the MIME allow-list live HERE, not
+// only in the UI — lib/chat/attachments.ts is a kindness, this is the control.
+// Keep the list in exact sync with ALLOWED_ATTACHMENT_MIME.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    match /chat-attachments/{conversationId}/{allPaths=**} {
+
+      // The customer who owns the conversation may open what was sent to them;
+      // any agent may read. Cross-read into Firestore for the ownership check.
+      // Guarded with `'agent' in token`: a customer's token has no `agent`
+      // claim at all, and the Storage rules engine does not tolerate an
+      // undefined-map-key error inside an `||` the way Firestore's does — it
+      // would otherwise deny even the true (ownerUid) branch.
+      allow read: if request.auth != null && (
+        (('agent' in request.auth.token) && request.auth.token.agent == true)
+        || firestore.get(/databases/(default)/documents/conversations/$(conversationId)).data.ownerUid == request.auth.uid
+      );
+
+      // AGENT-ONLY WRITE. An anonymous visitor cannot upload at all (spec §14):
+      // that would be an unauthenticated write surface with no scanning story.
+      allow write: if request.auth != null
+        && ('agent' in request.auth.token)
+        && request.auth.token.agent == true
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType in [
+             'application/pdf', 'image/png', 'image/jpeg', 'image/webp'
+           ];
+    }
+
+    // Everything outside chat-attachments/ is closed.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { spaceGroteskCard, plexMonoCard } from "@/app/fonts-accent";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { QuoteProvider } from "@/context/QuoteContext";
 import { ComparisonProvider } from "@/context/ComparisonContext";
+import { ChatProvider } from "@/context/ChatContext";
 import Analytics from "@/components/Analytics";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
 import PostHogProvider from "@/components/PostHogProvider";
@@ -105,7 +107,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${inter.className} ${jakartaSans.variable} bg-background text-foreground`}>
+      <body className={`${inter.className} ${jakartaSans.variable} ${spaceGroteskCard.variable} ${plexMonoCard.variable} bg-background text-foreground`}>
         <ScrollProgress />
         <Toaster richColors position="bottom-right" />
         <Analytics gaId={GA_ID} />
@@ -122,17 +124,19 @@ export default function RootLayout({
         <PostHogProvider>
           <QuoteProvider>
             <ComparisonProvider>
-              <div className="min-h-screen flex flex-col">
-                <Navbar />
-                <main
-                  id="main-content"
-                  className="flex-1 bg-white"
-                >
-                  <PageTransition>{children}</PageTransition>
-                </main>
-                <Footer />
-              </div>
-              <ClientFloats />
+              <ChatProvider>
+                <div className="min-h-screen flex flex-col">
+                  <Navbar />
+                  <main
+                    id="main-content"
+                    className="flex-1 bg-white"
+                  >
+                    <PageTransition>{children}</PageTransition>
+                  </main>
+                  <Footer />
+                </div>
+                <ClientFloats />
+              </ChatProvider>
             </ComparisonProvider>
           </QuoteProvider>
         </PostHogProvider>

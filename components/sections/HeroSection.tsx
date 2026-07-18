@@ -1,111 +1,59 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { Caveat } from "next/font/google";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import MagneticButton from "@/components/MagneticButton";
+import DisplayStage from "@/components/sections/hero/DisplayStage";
+import { spaceGrotesk, plexMono } from "@/app/fonts-accent";
+
+// Hero-scoped premium type system (spec §4). Applied as CSS variables on the
+// <section>: --font-display intentionally shadows the site-wide Plus Jakarta
+// Sans inside the hero subtree (phase 2 decides the site-wide swap).
+// Space Grotesk + IBM Plex Mono live in app/fonts-accent (shared with the
+// product card); Caveat stays hero-only.
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["600"],
+  variable: "--font-hand",
+  display: "swap",
+  preload: false,
+});
 
 const STATS = [
   { value: "500+", label: "Enterprise Clients" },
-  { value: "7+", label: "Years in Business" },
-  { value: "1,000+", label: "Installations Done" },
+  { value: "5+", label: "Years in Business" },
+  { value: "10,000+", label: "Installations Done" },
   { value: "100%", label: "Genuine Samsung" },
 ];
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-[88vh] flex flex-col overflow-hidden bg-[#050b15]">
-      {/* Background image of real digital signage. `priority` makes Next.js
-          preload it at high fetch priority — it's behind the dark gradient,
-          so a moderate WebP quality keeps it light without visible loss. */}
-      {/* Desktop Background Image (Hidden on mobile for LCP optimization) */}
-      <div className="hidden md:block absolute inset-0">
-        <Image
-          src="/images/hero-signage.webp"
-          alt="Digital signage displays in a modern commercial space"
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          className="object-cover"
-        />
-      </div>
+    <section
+      className={`${spaceGrotesk.variable} ${plexMono.variable} ${caveat.variable} hero2 relative min-h-[88vh] flex flex-col overflow-hidden`}
+    >
+      {/* Layered backdrop: pixel-dot field, drifting auroras, film grain,
+          bottom vignette — all CSS, no images (stage.css `hero2-*`). */}
+      <div className="hero2-dots" aria-hidden="true" />
+      <div className="hero2-aur hero2-aur-a" aria-hidden="true" />
+      <div className="hero2-aur hero2-aur-b" aria-hidden="true" />
+      <div className="hero2-noise" aria-hidden="true" />
+      <div className="hero2-vignette" aria-hidden="true" />
 
-      {/* Premium Mobile Background — orbs mirror the headline's blue→violet gradient */}
-      <div className="md:hidden absolute inset-0 overflow-hidden bg-[#080d1a]">
-        {/* Primary orb: deep royal blue — matches headline blue start */}
-        <div className="absolute top-[-8%] left-[5%] w-96 h-96 bg-blue-700 rounded-full filter blur-[110px] animate-slow-glow pointer-events-none" />
-        {/* Secondary orb: rich violet — matches headline gradient end (#c4b5fd) */}
-        <div className="absolute bottom-[5%] right-[2%] w-80 h-80 bg-violet-600 rounded-full filter blur-[110px] animate-slow-glow-delayed pointer-events-none" />
-        {/* Faint indigo mid-layer for depth */}
-        <div className="absolute top-[40%] right-[20%] w-64 h-64 bg-indigo-700 rounded-full filter blur-[130px] opacity-50 pointer-events-none" />
-      </div>
-
-      {/* Primary left-to-right gradient anchors the white headline on the
-          dark left side; kept darker on the right (0.55) so the busy kiosk /
-          wayfinding signage recedes instead of competing with the CTAs. */}
-      {/* Desktop-only: dark gradient overlay — cranked up for a darker, moodier look */}
-      <div
-        className="hidden md:block absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(110deg, rgba(5,11,21,0.98) 0%, rgba(5,11,21,0.97) 40%, rgba(5,11,21,0.92) 65%, rgba(5,11,21,0.82) 100%)",
-        }}
-      />
-      {/* Desktop-only: bottom-right vignette — heavier to darken the image corner */}
-      <div
-        className="hidden md:block absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(120% 120% at 100% 100%, rgba(5,11,21,0.88) 0%, rgba(5,11,21,0) 60%)",
-        }}
-      />
-      <div className="hidden md:block absolute inset-0 bg-blue-950/40" />
-
-      {/* ── Desktop premium gradient effects ────────────────────────────── */}
-      {/* Top-edge aurora sweep: a wide band of colour along the very top */}
-      <div
-        className="hidden md:block absolute top-0 left-0 right-0 h-[420px] pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(37,99,235,0.18) 0%, rgba(79,70,229,0.10) 40%, transparent 100%)",
-        }}
-      />
-      {/* Primary blue orb — behind the text, acts like a key light */}
-      <div className="hidden md:block absolute top-[-5%] left-[-4%] w-[36rem] h-[36rem] bg-blue-600 rounded-full blur-[160px] opacity-30 animate-slow-glow pointer-events-none" />
-      {/* Violet accent — bottom-centre creates depth under the CTA buttons */}
-      <div className="hidden md:block absolute bottom-[-10%] left-[25%] w-[28rem] h-[28rem] bg-violet-600 rounded-full blur-[180px] opacity-20 animate-slow-glow-delayed pointer-events-none" />
-      {/* Cyan glint — top-right edge, subtle highlight that catches the eye */}
-      <div className="hidden md:block absolute top-[10%] right-[8%] w-72 h-72 bg-cyan-500 rounded-full blur-[140px] opacity-15 animate-slow-glow pointer-events-none" />
-
-      <div className="relative flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center py-10 md:py-24">
+      <div className="relative z-[2] flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-10 md:py-16 grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,560px)]">
         <div className="max-w-2xl">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 mb-5 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0" />
-            <span className="text-gray-300 text-xs font-semibold tracking-[0.18em] uppercase">
-              Authorized Samsung Business Partner
-            </span>
+          <div className="hero2-badge hero2-rise mb-5" style={{ animationDelay: "0.1s" }}>
+            Authorized Samsung Business Partner
           </div>
 
-          <h1
-            className="font-black text-white tracking-tight mb-6"
-            style={{
-              fontSize: "clamp(36px, 4.8vw, 72px)",
-              lineHeight: "1.05",
-            }}
-          >
-            {/* Added a text-shadow drop for desktop only to improve mobile LCP */}
+          <h1 className="hero2-h1 font-bold text-white mb-6">
             <span className="md:drop-shadow-[0_0_80px_rgba(0,0,0,0.9)] drop-shadow-[0_4px_10px_rgba(0,0,0,0.8)]">
-              <span className="hero-word" style={{ animationDelay: "0s" }}>India&apos;s</span>{" "}
-              <span className="hero-word" style={{ animationDelay: "0.04s" }}>Premier</span>
+              <span className="hero-word" style={{ animationDelay: "0.12s" }}>India&apos;s Premier</span>
               <br />
               <span
-                className="hero-word text-transparent bg-clip-text"
+                className="hero-word hero2-grad sm:whitespace-nowrap"
                 style={{
-                  backgroundImage:
-                    "linear-gradient(90deg, #3b82f6 0%, #60a5fa 45%, #c4b5fd 100%)",
-                  whiteSpace: "nowrap",
-                  animationDelay: "0.08s",
+                  animationDelay: "0.2s",
                   // bg-clip-text + tight line-height clips descenders (p, y, g).
                   // Add a little vertical room and offset it so line spacing
                   // stays visually unchanged.
@@ -117,7 +65,7 @@ export default function HeroSection() {
                 Display Technology
               </span>
               <br />
-              <span className="hero-word" style={{ animationDelay: "0.12s" }}>Partner</span>
+              <span className="hero-word" style={{ animationDelay: "0.28s" }}>Partner</span>
             </span>
             {/* Keyword-rich context for crawlers without altering the visual headline. */}
             <span className="sr-only">
@@ -128,20 +76,23 @@ export default function HeroSection() {
 
           {/* Visible supporting paragraph: gives the hero indexable body copy
               with the primary keywords search engines rank this page on. */}
-          <p className="text-base md:text-lg text-gray-300 mb-7 max-w-xl leading-relaxed">
+          <p
+            className="hero2-sub hero2-rise text-base md:text-lg mb-7 max-w-xl leading-relaxed"
+            style={{ animationDelay: "0.4s" }}
+          >
             Authorized Samsung distributor for{" "}
-            <strong className="font-semibold text-white">Smart Signage</strong>,{" "}
-            <strong className="font-semibold text-white">Video Walls</strong>,{" "}
-            <strong className="font-semibold text-white">Interactive Displays</strong>, and{" "}
-            <strong className="font-semibold text-white">Hospitality TVs</strong> —
+            <strong className="font-semibold">Smart Signage</strong>,{" "}
+            <strong className="font-semibold">Video Walls</strong>,{" "}
+            <strong className="font-semibold">Interactive Displays</strong>, and{" "}
+            <strong className="font-semibold">Hospitality TVs</strong> —
             with certified installation and support across India.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="hero2-rise flex flex-col sm:flex-row gap-3" style={{ animationDelay: "0.5s" }}>
             <MagneticButton>
               <Link
                 href="/quote"
-                className="inline-flex items-center justify-center gap-2.5 bg-blue-600 hover:bg-blue-500 text-white px-7 py-3.5 rounded-xl font-bold text-base transition-colors"
+                className="hero2-cta hero2-disp inline-flex items-center justify-center gap-2.5 bg-blue-600 hover:bg-blue-500 text-white px-7 py-3.5 rounded-full font-bold text-base transition-colors"
                 style={{ boxShadow: "0 8px 32px rgba(37,99,235,0.45)" }}
               >
                 Request a Free Quote
@@ -151,8 +102,7 @@ export default function HeroSection() {
             <MagneticButton>
               <Link
                 href="/products"
-                className="inline-flex items-center justify-center gap-2.5 text-white px-7 py-3.5 rounded-xl font-bold text-base transition-all hover:bg-white/10"
-                style={{ border: "1px solid rgba(255,255,255,0.15)" }}
+                className="hero2-cta2 hero2-disp inline-flex items-center justify-center gap-2.5 text-white px-7 py-3.5 rounded-full font-bold text-base"
               >
                 Browse Products
                 <ArrowRight size={18} style={{ opacity: 0.45 }} />
@@ -160,12 +110,14 @@ export default function HeroSection() {
             </MagneticButton>
           </div>
         </div>
+
+        {/* The stage: renders beside the copy on lg+, below the CTAs on
+            smaller viewports (single-column grid flow). */}
+        <DisplayStage />
       </div>
 
       {/* Stats bar — horizontal scroll pill strip on mobile, even 4-col row on desktop */}
-      <div
-        className="relative bg-[#050b15]/90 md:bg-[#050b15]/65 md:backdrop-blur-md border-t border-white/5"
-      >
+      <div className="relative z-[2] bg-[#04060d]/90 md:bg-[#04060d]/65 md:backdrop-blur-md border-t border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex">
             {STATS.map((s, i) => (

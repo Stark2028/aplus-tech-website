@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Check, Monitor, ShoppingBag, Scale } from "lucide-react";
+import { ArrowRight, Check, ShoppingBag, Scale } from "lucide-react";
+import { MonitorIcon } from "@/components/icons";
 import { products, Product } from "@/data/products";
 import { productCategories } from "@/data/categories";
 import { useQuote } from "@/context/QuoteContext";
@@ -12,6 +13,7 @@ import { trackEvent } from "@/lib/analytics";
 import MobileProductScroller from "@/components/MobileProductScroller";
 import { declusterByImage } from "@/lib/declusterImages";
 import { formatSizeRange } from "@/lib/formatSize";
+import { byLatestThenPopularity } from "@/lib/productSort";
 
 export default function ProductCatalogSection() {
   const [activeTab, setActiveTab] = useState(productCategories[0].name);
@@ -22,7 +24,7 @@ export default function ProductCatalogSection() {
   const filtered = declusterByImage(
     products
       .filter((p) => p.category === activeTab)
-      .sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+      .sort(byLatestThenPopularity)
   );
 
   const handleCompareToggle = (e: React.MouseEvent, product: Product) => {
@@ -90,7 +92,21 @@ export default function ProductCatalogSection() {
 
         <div className="mt-4 mb-8" />
 
-        {/* Product grid */}
+        {/* Product grid — or a coming-soon placeholder when the active tab
+            (e.g. LED Signage before Phase 2) has no products yet. */}
+        {filtered.length === 0 ? (
+          <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-gray-200">
+            <p className="text-lg font-medium text-gray-500">
+              Products coming soon — contact us for availability.
+            </p>
+            <Link
+              href="/contact"
+              className="mt-4 inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold"
+            >
+              Contact Sales
+            </Link>
+          </div>
+        ) : (
         <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" autoPlay={true} autoPlayInterval={3900} initialDelay={3300}>
           {filtered.map((product, index) => (
             <div
@@ -112,7 +128,11 @@ export default function ProductCatalogSection() {
                     />
                   </div>
                 ) : (
-                  <Monitor className="text-gray-300 absolute inset-0 m-auto" size={56} />
+                  <MonitorIcon
+                    className="text-gray-300 absolute inset-0 m-auto"
+                    accentClassName="text-gray-300"
+                    size={56}
+                  />
                 )}
 
                 {product.subCategory && (
@@ -139,7 +159,7 @@ export default function ProductCatalogSection() {
 
               {/* Content */}
               <div className="p-5 flex flex-col flex-1">
-                <h3 className="text-sm font-bold text-gray-900 mb-1 line-clamp-2 leading-snug">
+                <h3 className="text-sm font-bold text-gray-900 mb-1 line-clamp-2 leading-snug min-h-10">
                   <Link
                     href={`/products/${product.id}`}
                     className="before:absolute before:inset-0 before:content-[''] before:cursor-pointer focus:outline-none"
@@ -201,6 +221,7 @@ export default function ProductCatalogSection() {
             </div>
           ))}
         </MobileProductScroller>
+        )}
 
         {/* Bottom CTA */}
         <div className="mt-6 md:mt-10 text-center">

@@ -1,4 +1,9 @@
-import { Zap, Monitor, LayoutGrid, Award } from "lucide-react";
+import {
+  ZapIcon as Zap,
+  MonitorIcon as Monitor,
+  LayoutGridIcon as LayoutGrid,
+  AwardIcon as Award,
+} from "@/components/icons";
 import { ElementType } from "react";
 
 export interface Solution {
@@ -40,7 +45,7 @@ export const solutions: Solution[] = [
                 icon: Award,
             },
         ],
-        recommendedSeries: ["HBU", "HGU", "HG75", "AU", "BEFX", "BEA", "BEC", "BED", "QHC", "QMC", "QH115"],
+        recommendedSeries: ["HBU", "HGU", "HG75", "AU", "BEFX", "BEA", "BEC", "BED", "QHC", "QMC", "QH115", "VM", "VH", "WAC", "WAD"],
     },
     {
         id: "corporate",
@@ -65,7 +70,7 @@ export const solutions: Solution[] = [
                 icon: LayoutGrid,
             },
         ],
-        recommendedSeries: ["Flip", "WAC", "WAD", "WAFX", "WAF", "QHC", "QMC", "QH115", "VMB", "VMC", "VHC", "VHB", "MP016"],
+        recommendedSeries: ["Flip", "WAC", "WAD", "WAFX", "WAF", "QHC", "QMC", "QH115", "VMB", "VMC", "VHC", "VHB", "MP016", "BE"],
     },
     {
         id: "education",
@@ -90,7 +95,7 @@ export const solutions: Solution[] = [
                 icon: LayoutGrid,
             },
         ],
-        recommendedSeries: ["Flip", "WAC", "WAD", "WAFX", "WAF", "QBC", "QBR", "QMR", "QMB"],
+        recommendedSeries: ["Flip", "WAC", "WAD", "WAFX", "WAF", "QBC", "QBR", "QMR", "QMB", "VM", "VH", "BE"],
     },
     {
         id: "retail",
@@ -115,6 +120,6 @@ export const solutions: Solution[] = [
                 icon: LayoutGrid,
             },
         ],
-        recommendedSeries: ["QHC", "QMC", "QBC", "QBR", "QH115", "QPDX", "QET", "QMR", "QMB", "MP016", "VMB", "VMC", "VHC", "VHB", "VH55R"],
+        recommendedSeries: ["QHC", "QMC", "QBC", "QBR", "QH115", "QPDX", "QET", "QMR", "QMB", "MP016", "VMB", "VMC", "VHC", "VHB", "VH55R", "BE"],
     },
 ];

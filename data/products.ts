@@ -1,6 +1,13 @@
-export interface Product {
+
+export interface Product {
   id: string;
   popularity?: number;
+  /** True for products in the current (2026) Samsung catalog.
+   *  Sole source of truth for the "latest first" sort. */
+  catalog2026?: boolean;
+  /** Hide from the /products "View All Products" listing while keeping the
+   *  product live on its category page, detail page, and search. */
+  hideFromAllProducts?: boolean;
   name: string;
   /** Must match ProductCategory.name exactly */
   category: string;
@@ -102,6 +109,7 @@ With a 16/7 operation rating and a size range from 43" to 82", the QET Series ad
   {
     id: "samsung-signage-qbc",
     popularity: 81,
+    catalog2026: true,
     name: "Samsung Crystal UHD Signage QBC Series",
     category: "Digital Signage",
     series: "QBC",
@@ -182,6 +190,7 @@ With Smart Calibration via the Samsung mobile app, teams can guarantee brand col
   {
     id: "samsung-signage-qhc",
     popularity: 70,
+    catalog2026: true,
     name: "Samsung Signage QHC Series — High Brightness",
     category: "Digital Signage",
     series: "QHC",
@@ -243,7 +252,7 @@ The QHC's 4K UHD resolution combined with Samsung's Crystal Display technology p
         "Anti-Glare": "Yes (non-glare coating)",
       },
       "SoC": {
-        "OS Version": "Tizen 6.5",
+        "OS Version": "Tizen 7.0",
         "Processor": "Quad-core 1.5 GHz",
         "RAM": "2.5 GB",
         "Flash Memory Size": "16 GB",
@@ -254,6 +263,7 @@ The QHC's 4K UHD resolution combined with Samsung's Crystal Display technology p
   {
     id: "samsung-signage-qmc",
     popularity: 95,
+    catalog2026: true,
     name: "Samsung Crystal UHD Signage QMC Series",
     category: "Digital Signage",
     series: "QMC",
@@ -456,9 +466,9 @@ The QBR-B's 16/7 operation rating and robust industrial design ensure dependable
     ],
     specs: {
       resolution: "FHD (32\") / 4K UHD (43\", 55\")",
-      brightness: "300 nit",
+      brightness: "300 nit (32\") / up to 500 nit (43\", 55\", w/o glass)",
       screenSizes: ["32", "43", "55"],
-      operationTime: "16/7",
+      operationTime: "16/7 (32\") / 24/7 (43\", 55\")",
     },
     images: [
       "/products/digital-signage/samsung-touch-qmr-t/1.webp",
@@ -482,9 +492,9 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
       "Display": {
         "Diagonal Size": "32\" / 43\" / 55\"",
         "Resolution": "1,920 × 1,080 FHD (32\") / 3,840 × 2,160 4K UHD (43\", 55\")",
-        "Brightness (Type)": "300 nit",
+        "Brightness (Type)": "300 nit (32\", w/ glass) / up to 500 nit (43\", 55\", w/o glass)",
         "Viewing Angle (H/V)": "178° / 178°",
-        "Operation Time Support": "16/7",
+        "Operation Time Support": "16/7 (32\") / 24/7 (43\", 55\")",
       },
       "Connectivity": {
         "HDMI In": "2 × HDMI",
@@ -509,6 +519,7 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
   {
     id: "samsung-touch-qbc-t",
     popularity: 97,
+    catalog2026: true,
     name: "Samsung Interactive Signage QMB-T Series",
     category: "Digital Signage",
     subCategory: "Touch Signage",
@@ -523,18 +534,18 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "300 nit",
+      brightness: "500 nit (w/o touch glass)",
       screenSizes: ["43", "55"],
-      operationTime: "16/7",
+      operationTime: "24/7",
     },
     specGroups: {
       "Display": {
         "Diagonal Size": "43\" / 55\"",
         "Panel Type": "IPS (capacitive touch overlay)",
         "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "300 nit",
+        "Brightness (Type)": "500 nit (w/o touch glass)",
         "Viewing Angle (H/V)": "178° / 178°",
-        "Operation Time Support": "16/7",
+        "Operation Time Support": "24/7",
       },
       "Connectivity": {
         "HDMI In": "2 × HDMI",
@@ -573,11 +584,11 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
       "Pixel pitch 1.6 mm for crisp close-range viewing",
       "HDR support",
       "Magnetic service access for easy maintenance",
-      "1,200 nit brightness for indoor impact",
+      "1,400 nit peak brightness for indoor impact",
     ],
     specs: {
       resolution: "Custom",
-      brightness: "1,200 nit",
+      brightness: "1,400 nit (peak)",
       screenSizes: ["Custom"],
       operationTime: "24/7",
     },
@@ -589,14 +600,14 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
   
     longDescription: `The Samsung MP016F fine-pitch LED module opens the door to custom large-format displays that command attention in high-traffic venues — corporate atriums, flagship retail spaces, concert stages, and sports arenas. At 1.6 mm pixel pitch, the MP016F delivers cinema-quality resolution from close viewing distances while maintaining impact at distance, allowing viewers to enjoy seamless content whether they're 3 feet away or 30 feet away.
 
-The modular MP016F architecture enables virtually unlimited scaling, from intimate 2×2 arrays to massive installation walls covering entire building facades. HDR support ensures content retains highlight detail and shadow depth even in extreme brightness environments, while the 1,200-nit brightness dominates interior spaces without requiring specialized dark rooms or controlled lighting.
+The modular MP016F architecture enables virtually unlimited scaling, from intimate 2×2 arrays to massive installation walls covering entire building facades. HDR support ensures content retains highlight detail and shadow depth even in extreme brightness environments, while the 1,400-nit peak brightness dominates interior spaces without requiring specialized dark rooms or controlled lighting.
 
 Magnetic service access design allows technicians to swap panels or perform maintenance without disassembling the entire installation, dramatically reducing downtime and maintenance costs. 24/7 operation rating makes the MP016F ideal for command centers, entertainment venues, and 24-hour retail environments where reliability and visual impact are equally critical to business success.`,
     specGroups: {
       "Display": {
         "Pixel Pitch": "1.6 mm",
         "Resolution": "Custom (modular scalable)",
-        "Brightness (Type)": "1,200 nit",
+        "Brightness (Type)": "1,400 nit (peak)",
         "Contrast Ratio": "5,000:1 (typical)",
         "Viewing Angle (H/V)": "160° / 160°",
         "Color Depth": "16.7M colors (8-bit per channel)",
@@ -623,275 +634,9 @@ Magnetic service access design allows technicians to swap panels or perform main
   // ── VIDEO WALLS ──────────────────────────────────────────────────────────────
 
   {
-    id: "samsung-vm55c-r",
-    popularity: 62,
-    name: "Samsung VM55C-R Razor-Thin Bezel Video Wall",
-    category: "Video Wall",
-    series: "VM55C-R",
-    description:
-      "Seamless video walls with a razor-thin 0.44 mm bezel for an immersive 24/7 viewing experience in control rooms and atriums.",
-    longDescription: `The Samsung VM55C-R sets the benchmark for LCD video wall performance with its razor-thin 0.44 mm bezel-to-bezel specification — the narrowest gap achievable in an LCD tile format. Designed for 24/7 environments such as security control rooms, network operations centers, airport information displays, and corporate command centers, the VM55C-R delivers uninterrupted visual continuity across large multi-screen arrays.
-
-Image Enhancement Technology ensures accurate color reproduction and picture uniformity across all tiles in an array, eliminating the color and brightness drift that can occur during extended operation. The 178°/178° wide viewing angles mean content remains visible and accurate from virtually any position in the room.
-
-UHD Daisy Chain support allows up to a 5×5 (25-tile) array to be driven without an external video processor, dramatically reducing installation complexity and cost. The display integrates natively with Samsung's MagicINFO S6 platform for centralized content scheduling and remote monitoring across the entire installation.`,
-    features: [
-      "0.44 mm bezel-to-bezel for near-seamless imagery",
-      "178°/178° wide viewing angles",
-      "Image Enhancement Technology for vibrant colors",
-      "UHD Daisy Chain up to 5×5 without extra hardware",
-    ],
-    specs: {
-      resolution: "1,920 × 1,080 (FHD)",
-      brightness: "500 nit",
-      screenSizes: ["55"],
-      operationTime: "24/7",
-    },
-    specGroups: {
-      "Display": {
-        "Diagonal Size": "55\"",
-        "Panel Type": "S-PVA",
-        "Resolution": "1,920 × 1,080 (FHD)",
-        "Brightness (Type)": "500 nit",
-        "Contrast Ratio": "4,000:1 (typical)",
-        "Viewing Angle (H/V)": "178° / 178°",
-        "Bezel-to-Bezel": "0.44 mm (all sides)",
-        "Operation Time Support": "24/7",
-      },
-      "Connectivity": {
-        "HDMI In": "2 (HDMI 1.4)",
-        "DP In": "1 (DisplayPort 1.2)",
-        "DVI-D": "1",
-        "RS-232C": "Yes",
-        "RJ45 In": "Yes",
-        "Daisy Chain": "UHD Daisy Chain (up to 5×5)",
-      },
-      "Power": {
-        "Power Supply": "AC 100–240 V, 50/60 Hz",
-        "Power Consumption (On Mode, W)": "~100 W (typical)",
-      },
-      "Dimension": {
-        "Set Dimension (W×H×D, mm)": "1,209.6 × 680.4 × 77.6 mm",
-      },
-      "Weight": {
-        "Set Weight": "~19.6 kg (without stand)",
-      },
-      "Mechanical Specification": {
-        "VESA Mount (mm)": "400 × 400",
-      },
-    },
-    images: [
-      "/products/video-walls/vm55c-r/1.avif",
-      "/products/video-walls/vm55c-r/2.avif",
-      "/products/video-walls/vm55c-r/3.avif",
-      "/products/video-walls/vm55c-r/4.avif",
-      "/products/video-walls/vm55c-r/5.avif",
-      "/products/video-walls/vm55c-r/6.avif",
-      "/products/video-walls/vm55c-r/7.avif",
-      "/products/video-walls/vm55c-r/8.avif",
-      "/products/video-walls/vm55c-r/9.avif",
-    ],
-  },
-  {
-    id: "samsung-vh55c-r",
-    popularity: 81,
-    name: "Samsung VH55C-R Razor-Thin Bezel Video Wall",
-    category: "Video Wall",
-    series: "VH55C-R",
-    description:
-      "High-brightness razor-thin bezel video wall with non-glare panel, ideal for broadcast studios and command centers.",
-    features: [
-      "0.088 cm bezel-to-bezel (0.88 mm)",
-      "700 nit high brightness",
-      "Non-glare panel",
-      "Wide viewing angle",
-    ],
-    specs: {
-      resolution: "1,920 × 1,080 (FHD)",
-      brightness: "700 nit",
-      screenSizes: ["55"],
-      operationTime: "24/7",
-    },
-    images: [
-      "/products/video-walls/vh55c-r/1.avif",
-      "/products/video-walls/vh55c-r/2.avif",
-      "/products/video-walls/vh55c-r/3.avif",
-      "/products/video-walls/vh55c-r/4.avif",
-      "/products/video-walls/vh55c-r/5.avif",
-      "/products/video-walls/vh55c-r/6.avif",
-      "/products/video-walls/vh55c-r/7.avif",
-      "/products/video-walls/vh55c-r/8.avif",
-    ],
-  
-    longDescription: `The Samsung VH55C-R sets the performance benchmark for high-brightness video walls with its razor-thin 0.88 mm bezel-to-bezel specification combined with class-leading 700-nit brightness. Engineered for broadcast studios, command centers, and security control rooms where lighting is controlled yet visibility across large multi-tile arrays is absolutely critical, the VH55C-R delivers professional-grade picture uniformity and color accuracy.
-
-The non-glare panel eliminates reflections that would otherwise create hot spots across the video wall surface, ensuring content remains readable from any position within the control room. The 178°/178° wide viewing angles mean operators and observers positioned to the side of the installation see the same accurate colors and brightness as those viewing head-on, a critical requirement in emergency response and surveillance operations.
-
-Image Enhancement Technology ensures each tile in a multi-screen array maintains identical brightness, color saturation, and contrast — eliminating the visual "seams" that occur when tiles age at different rates or experience uneven ambient lighting exposure. With daisy chain support, up to 25 tiles (5×5) can operate as a unified canvas without an external video processor, simplifying installation and reducing overall system cost.`,
-    specGroups: {
-      "Display": {
-        "Diagonal Size": "55\"",
-        "Panel Type": "S-PVA (non-glare)",
-        "Resolution": "1,920 × 1,080 (FHD)",
-        "Brightness (Type)": "700 nit",
-        "Contrast Ratio": "4,500:1 (typical)",
-        "Viewing Angle (H/V)": "178° / 178°",
-        "Response Time": "8 ms (typical)",
-        "Bezel-to-Bezel": "0.88 mm (all sides)",
-        "Operation Time Support": "24/7",
-      },
-      "Connectivity": {
-        "HDMI In": "2 (HDMI 1.4)",
-        "DP In": "1 (DisplayPort 1.2)",
-        "DVI-D": "1",
-        "RS-232C": "Yes",
-        "RJ45 In": "Yes",
-        "Daisy Chain": "Daisy Chain support (5×5 max)",
-      },
-      "Power": {
-        "Power Supply": "AC 100–240 V, 50/60 Hz",
-        "Power Consumption (On Mode, W)": "~120 W (typical)",
-      },
-      "Mechanical Specification": {
-        "VESA Mount (mm)": "400 × 400",
-      },
-    },
-  },
-  {
-    id: "samsung-vh55c-e",
-    popularity: 60,
-    name: "Samsung VH55C-E Extreme Narrow Bezel Video Wall",
-    category: "Video Wall",
-    series: "VH55C-E",
-    description:
-      "Extreme narrow bezel video wall with 0.174 cm bezel-to-bezel for demanding seamless display installations.",
-    features: [
-      "0.174 cm bezel-to-bezel",
-      "Non-glare panel",
-      "700 nit brightness",
-      "Wide viewing angle",
-    ],
-    specs: {
-      resolution: "1,920 × 1,080 (FHD)",
-      brightness: "700 nit",
-      screenSizes: ["55"],
-      operationTime: "24/7",
-    },
-    images: [
-      "/products/video-walls/vh55c-e/1.avif",
-      "/products/video-walls/vh55c-e/2.avif",
-      "/products/video-walls/vh55c-e/3.avif",
-      "/products/video-walls/vh55c-e/4.avif",
-      "/products/video-walls/vh55c-e/5.avif",
-      "/products/video-walls/vh55c-e/6.avif",
-      "/products/video-walls/vh55c-e/7.avif",
-      "/products/video-walls/vh55c-e/8.avif",
-    ],
-  
-    longDescription: `The Samsung VH55C-E achieves extreme narrow bezel performance with its 0.174 cm (1.74 mm) bezel-to-bezel specification — pushing the boundaries of LCD video wall seamlessness while maintaining the 700-nit brightness that high-ambient environments demand. Designed for demanding seamless display installations in sports arenas, broadcast facilities, and luxury retail environments, the VH55C-E creates near-invisible tile boundaries that pull audiences into immersive content experiences.
-
-The non-glare panel coating reduces reflections and ambient light washout, ensuring vibrant, detailed imagery remains visible even when video walls are positioned near windows or bright architectural lighting. The exceptional picture quality and minimal bezel presence combine to create installations where viewers forget they're watching tiled displays and instead experience unified, continuous storytelling.
-
-With 24/7 operation certification and Samsung's Image Enhancement Technology, each tile in a multi-screen VH55C-E array maintains pixel-perfect alignment and color uniformity — critical for applications like weather radar displays, sports statistics walls, and immersive retail brand experiences where content continuity drives customer engagement.`,
-    specGroups: {
-      "Display": {
-        "Diagonal Size": "55\"",
-        "Panel Type": "S-PVA (non-glare coating)",
-        "Resolution": "1,920 × 1,080 (FHD)",
-        "Brightness (Type)": "700 nit",
-        "Contrast Ratio": "4,500:1 (typical)",
-        "Viewing Angle (H/V)": "178° / 178°",
-        "Color Gamut": "72% NTSC (typical)",
-        "Response Time": "8 ms (typical)",
-        "Bezel-to-Bezel": "1.74 mm (extreme narrow)",
-        "Operation Time Support": "24/7",
-      },
-      "Connectivity": {
-        "HDMI In": "2 (HDMI 1.4)",
-        "DP In": "1 (DisplayPort 1.2)",
-        "DVI-D": "1",
-        "RS-232C": "Yes",
-        "RJ45 In": "Yes",
-      },
-      "Power": {
-        "Power Supply": "AC 100–240 V, 50/60 Hz",
-        "Power Consumption (On Mode, W)": "~115 W (typical)",
-      },
-      "Mechanical Specification": {
-        "VESA Mount (mm)": "400 × 400",
-      },
-    },
-  },
-  {
-    id: "samsung-vm55c-e",
-    popularity: 77,
-    name: "Samsung VM55C-E Extreme Narrow Bezel Video Wall",
-    category: "Video Wall",
-    series: "VM55C-E",
-    description:
-      "Extreme narrow bezel video wall with non-glare panel for immersive seamless displays.",
-    features: [
-      "0.174 cm bezel-to-bezel (1.74 mm)",
-      "Non-glare panel",
-      "Wide viewing angle",
-      "500 nit brightness",
-    ],
-    specs: {
-      resolution: "1,920 × 1,080 (FHD)",
-      brightness: "500 nit",
-      screenSizes: ["55"],
-      operationTime: "24/7",
-    },
-    images: [
-      "/products/video-walls/vm55c-e/1.avif",
-      "/products/video-walls/vm55c-e/2.avif",
-      "/products/video-walls/vm55c-e/3.avif",
-      "/products/video-walls/vm55c-e/4.avif",
-      "/products/video-walls/vm55c-e/5.avif",
-      "/products/video-walls/vm55c-e/6.avif",
-      "/products/video-walls/vm55c-e/7.avif",
-      "/products/video-walls/vm55c-e/8.avif",
-      "/products/video-walls/vm55c-e/9.avif",
-    ],
-  
-    longDescription: `The Samsung VM55C-E delivers extreme narrow bezel performance at a mid-range brightness level, making it ideal for climate-controlled control rooms, broadcast studios, and indoor retail environments where bright ambient light is not a challenge. The 1.74 mm bezel-to-bezel specification combined with 500-nit brightness creates an exceptional price-to-performance ratio for organizations deploying large video wall installations.
-
-The non-glare panel technology prevents light reflections from sources like fluorescent ceiling fixtures and monitor backlighting that would otherwise create visual distractions across the video wall canvas. The result is a seamless, immersive viewing experience where content appears to float on an invisible panel rather than being divided into distinct LCD tiles.
-
-With full daisy chain support and Samsung's Image Enhancement Technology ensuring color uniformity across all tiles, the VM55C-E scales seamlessly from compact 2×2 arrays to massive installations spanning entire control room walls. MagicINFO S6 integration enables centralized content scheduling, monitoring, and management across fleets of video walls, making the VM55C-E a scalable solution for organizations with multiple facilities.`,
-    specGroups: {
-      "Display": {
-        "Diagonal Size": "55\"",
-        "Panel Type": "S-PVA (non-glare)",
-        "Resolution": "1,920 × 1,080 (FHD)",
-        "Brightness (Type)": "500 nit",
-        "Contrast Ratio": "4,000:1 (typical)",
-        "Viewing Angle (H/V)": "178° / 178°",
-        "Color Gamut": "72% NTSC (typical)",
-        "Response Time": "8 ms (typical)",
-        "Bezel-to-Bezel": "1.74 mm (extreme narrow)",
-        "Operation Time Support": "24/7",
-      },
-      "Connectivity": {
-        "HDMI In": "2 (HDMI 1.4)",
-        "DP In": "1 (DisplayPort 1.2)",
-        "DVI-D": "1",
-        "RS-232C": "Yes",
-        "RJ45 In": "Yes",
-        "Daisy Chain": "Daisy Chain support (5×5 max)",
-      },
-      "Power": {
-        "Power Supply": "AC 100–240 V, 50/60 Hz",
-        "Power Consumption (On Mode, W)": "~100 W (typical)",
-      },
-      "Mechanical Specification": {
-        "VESA Mount (mm)": "400 × 400",
-      },
-    },
-  },
-  {
     id: "samsung-vmb-u-46",
     popularity: 97,
+    catalog2026: true,
     name: "Samsung VMB-U 46\" Ultra Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VMB-U",
@@ -961,6 +706,7 @@ Built-in daisy chain connectivity simplifies multi-display wiring, allowing sign
   {
     id: "samsung-vmb-u-55",
     popularity: 98,
+    catalog2026: true,
     name: "Samsung VMB-U 55\" Ultra Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VMB-U",
@@ -1091,6 +837,7 @@ With 24/7 operation certification and wide 178°/178° viewing angles, the VMB-R
   {
     id: "samsung-videowall-vmc-r",
     popularity: 62,
+    catalog2026: true,
     name: "Samsung VMC-R Series Video Wall",
     category: "Video Wall",
     series: "VMC-R",
@@ -1136,7 +883,7 @@ DP 1.2 daisy chain support allows up to 4K content to be driven through a single
         "Viewing Angle (H/V)": "178° / 178°",
         "Color Gamut": "72% NTSC (typical)",
         "Response Time": "8 ms",
-        "Bezel-to-Bezel": "5.5 mm (ultra-narrow)",
+        "Bezel-to-Bezel": "0.44 mm (all sides)",
         "Operation Time Support": "24/7",
       },
       "Connectivity": {
@@ -1153,6 +900,78 @@ DP 1.2 daisy chain support allows up to 4K content to be driven through a single
       },
       "Mechanical Specification": {
         "Factory Calibration": "Yes (color factory-matched)",
+      },
+    },
+  },
+  {
+    id: "samsung-vmc-e",
+    popularity: 63,
+    catalog2026: true,
+    name: "Samsung VMC-E Extreme Narrow Bezel Video Wall",
+    category: "Video Wall",
+    series: "VMC-E",
+    description:
+      "Extreme narrow 1.74 mm bezel FHD video wall on a non-glare IPS panel — for near-seamless multi-screen walls in retail, lobbies, and control rooms.",
+    features: [
+      "Extreme narrow 1.74 mm bezel-to-bezel",
+      "Non-glare IPS panel",
+      "Picture Enhancer & Black Equalizer",
+      "24/7 operation with 500 nit brightness",
+    ],
+    specs: {
+      resolution: "1,920 × 1,080 (FHD)",
+      brightness: "500 nit",
+      screenSizes: ["55"],
+      operationTime: "24/7",
+    },
+    images: [
+      "/products/video-walls/samsung-vmc-e/1.webp",
+      "/products/video-walls/samsung-vmc-e/2.webp",
+      "/products/video-walls/samsung-vmc-e/3.webp",
+      "/products/video-walls/samsung-vmc-e/4.png",
+      "/products/video-walls/samsung-vmc-e/5.png",
+      "/products/video-walls/samsung-vmc-e/6.png",
+      "/products/video-walls/samsung-vmc-e/7.png",
+      "/products/video-walls/samsung-vmc-e/8.png",
+      "/products/video-walls/samsung-vmc-e/9.png",
+      "/products/video-walls/samsung-vmc-e/10.png",
+    ],
+    longDescription: `The Samsung VMC-E pushes bezel width down to an extreme 1.74 mm, producing a near-seamless canvas across tiled installations where the visual break between panels needs to all but disappear. Built on a non-glare IPS panel, the VMC-E holds color and contrast across wide 178°/178° viewing angles, making it well suited to retail flagship walls, corporate lobbies, broadcast backdrops, and 24/7 control-room environments.
+
+With 500-nit brightness and Samsung's Picture Enhancer and Black Equalizer processing, the VMC-E keeps content vivid and legible even in brightly lit public spaces, while the non-glare surface reduces reflections that would otherwise wash out a large array. Each 55" tile runs FHD (1,920 × 1,080) at a 0.63 mm pixel pitch for crisp text and imagery at typical viewing distances.
+
+DisplayPort 1.2 and dual HDMI 2.0 inputs, plus DVI and RS-232C/RJ45 control, allow the VMC-E to slot into existing AV infrastructure and be centrally managed. Rated for 24/7 continuous operation, it is engineered for installations that never power down.`,
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "IPS (non-glare)",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit",
+        "Contrast Ratio": "1,000:1 (typical) / 100,000:1 (dynamic)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Color Gamut": "72% NTSC (typical)",
+        "Response Time": "8 ms",
+        "Pixel Pitch": "0.63 × 0.63 mm",
+        "Bezel-to-Bezel": "1.74 mm (extreme narrow)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 (HDMI 2.0)",
+        "DP In": "1 (DisplayPort 1.2)",
+        "DVI-D": "1",
+        "USB": "1",
+        "RS-232C": "In/Out",
+        "RJ45 In": "Yes",
+        "IR / Audio": "IR In, Audio In/Out",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+        "Power Consumption (On Mode, W)": "~220 W (typical)",
+        "Power Consumption (Sleep)": "0.5 W",
+      },
+      "Mechanical Specification": {
+        "Set Dimensions (W×H×D)": "1,212.2 × 683.0 × 70.4 mm",
+        "Model Code": "LH55VMCEBGBXXL",
       },
     },
   },
@@ -1242,7 +1061,7 @@ The Flip Pro runs on Tizen OS with Samsung Knox security built in, ensuring sess
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "350 nit",
-      screenSizes: ["75", "85"],
+      screenSizes: ["55", "65", "75", "85"],
       operationTime: "16/7",
     },
     images: [
@@ -1265,13 +1084,19 @@ Built with antimicrobial coating that inhibits bacterial growth on the touchscre
 With a single USB-C connection delivering power, data, and high-bandwidth content streaming, the Flip 3 simplifies installation and eliminates cable clutter in modern meeting rooms. Dual-stack resolution support (portrait and landscape) and intuitive gesture controls enable natural interaction patterns that match how humans naturally communicate — drawing, writing, gesturing, pointing.`,
     specGroups: {
       "Display": {
-        "Diagonal Size": "75\" / 85\"",
-        "Panel Type": "IPS with antimicrobial coating",
+        "Diagonal Size": "55\" / 65\" / 75\" / 85\" (WMA series)",
+        "Panel Type": "New Edge with antimicrobial coating",
         "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "350 nit",
+        "Brightness (Type)": "350 nit (w/o glass)",
+        "Contrast Ratio": "4,000:1 (w/o glass)",
         "Color Gamut": "99% sRGB",
         "Viewing Angle (H/V)": "178° / 178°",
         "Operation Time Support": "16/7",
+      },
+      "Writing & Interaction": {
+        "Latency": "34 ms",
+        "Pressure Levels": "2,048",
+        "Touch": "Electromagnetic stylus + 10-point multi-touch",
       },
       "Connectivity": {
         "USB-C": "USB-C 3.1 Gen1 × 1 (65 W Power Delivery)",
@@ -1280,7 +1105,7 @@ With a single USB-C connection delivering power, data, and high-bandwidth conten
         "Screen Share": "AirPlay, Miracast, Screen Mirroring",
       },
       "Mechanical Specification": {
-        "VESA Mount (mm)": "400 × 400 (75\") / 600 × 400 (85\")",
+        "VESA Mount (mm)": "200 × 200 (55\") / 400 × 400 (65\", 75\") / 600 × 400 (85\")",
       },
       "SoC": {
         "OS Version": "Tizen 6.0 (Samsung Knox)",
@@ -1293,6 +1118,7 @@ With a single USB-C connection delivering power, data, and high-bandwidth conten
   {
     id: "samsung-interactive-wac",
     popularity: 99,
+    hideFromAllProducts: true,
     name: "Samsung WAC Series Interactive Display",
     category: "Interactive Display",
     series: "WAC",
@@ -1307,8 +1133,8 @@ With a single USB-C connection delivering power, data, and high-bandwidth conten
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "390 cd/m²",
-      screenSizes: ["65", "75"],
+      brightness: "400 cd/m²",
+      screenSizes: ["65", "75", "86"],
       operationTime: "16/7",
     },
     images: [
@@ -1331,9 +1157,9 @@ Multi-touch capability supporting up to 20 simultaneous touch points enables who
 Powerful screen sharing supports up to nine simultaneous screens so content flows bidirectionally between the large display and individual student devices. Intelligent classroom apps such as timers and stopwatches, easily pinned to the home screen bar, help teachers keep lessons structured and engaging.`,
     specGroups: {
       "Display": {
-        "Diagonal Size": "65\" / 75\"",
+        "Diagonal Size": "65\" / 75\" / 86\"",
         "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "390 cd/m²",
+        "Brightness (Type)": "400 cd/m²",
         "Viewing Angle (H/V)": "178° / 178°",
         "Glass": "25% haze, 3.2T, ≥8H hardness",
         "Operation Time Support": "16/7",
@@ -1370,6 +1196,7 @@ Powerful screen sharing supports up to nine simultaneous screens so content flow
   {
     id: "samsung-interactive-wad",
     popularity: 92,
+    hideFromAllProducts: true,
     name: "Samsung WAD Series Interactive Display",
     category: "Interactive Display",
     series: "WAD",
@@ -1385,7 +1212,7 @@ Powerful screen sharing supports up to nine simultaneous screens so content flow
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "400 nit",
       screenSizes: ["65", "75", "86"],
-      operationTime: "16/7",
+      operationTime: "12/7",
     },
     images: [
       "/products/interactive/samsung-interactive-wad/1.webp",
@@ -1412,7 +1239,7 @@ The WAD's 4K UHD resolution, wide 178°/178° viewing angles, and 400-nit bright
         "Brightness (Type)": "400 nit",
         "Color Gamut": "99% sRGB",
         "Viewing Angle (H/V)": "178° / 178°",
-        "Operation Time Support": "16/7",
+        "Operation Time Support": "12/7",
       },
       "Connectivity": {
         "HDMI In": "2 × HDMI 2.0",
@@ -1869,6 +1696,7 @@ Slim Fit Wall Mount support ensures seamless integration with modern hospitality
   {
     id: "samsung-qpdx105",
     popularity: 77,
+    catalog2026: true,
     name: "Samsung Commercial Display QPDX 5K (105\")",
     category: "Digital Signage",
     subCategory: "Large Format",
@@ -1937,6 +1765,7 @@ With 24/7 operation certification and integrated MagicINFO S6 content management
   {
     id: "samsung-qh115fx",
     popularity: 97,
+    catalog2026: true,
     name: "Samsung Commercial Display QH115FX (115\")",
     category: "Digital Signage",
     subCategory: "Large Format",
@@ -2005,6 +1834,7 @@ With 24/7 operation certification and MagicINFO compatibility, the QH115FX becom
   {
     id: "samsung-vhc-e",
     popularity: 60,
+    catalog2026: true,
     name: "Samsung VHC-E FHD Video Wall Display",
     category: "Video Wall",
     series: "VHC-E",
@@ -2018,7 +1848,7 @@ With 24/7 operation certification and MagicINFO compatibility, the QH115FX becom
     ],
     specs: {
       resolution: "1,920 × 1,080 (FHD)",
-      brightness: "500 nit",
+      brightness: "700 nit",
       screenSizes: ["55"],
       operationTime: "24/7",
     },
@@ -2035,7 +1865,7 @@ With 24/7 operation certification and MagicINFO compatibility, the QH115FX becom
       "/products/video-walls/samsung-vhc-e/10.png",
     ],
   
-    longDescription: `The Samsung VHC-E represents the entry point into professional video wall deployments, combining standard narrow bezel performance with proven reliability that makes it ideal for organizations taking their first steps into multi-screen installations. With 500-nit brightness and FHD (1,920 × 1,080) resolution per 55" tile, the VHC-E delivers excellent visual impact for retail display walls, reception area installations, and smaller corporate video wall projects.
+    longDescription: `The Samsung VHC-E represents the entry point into professional video wall deployments, combining standard narrow bezel performance with proven reliability that makes it ideal for organizations taking their first steps into multi-screen installations. With 700-nit brightness and FHD (1,920 × 1,080) resolution per 55" tile, the VHC-E delivers excellent visual impact for retail display walls, reception area installations, and smaller corporate video wall projects.
 
 The 178°/178° wide viewing angles ensure content remains visible and accurately colored whether viewed head-on or from the side of the installation, a critical requirement for public-facing retail and hospitality environments. 24/7 operation certification confirms the VHC-E is engineered for installations that never power down — retail display walls that run during all business hours, casino gaming areas, and 24-hour information displays.
 
@@ -2045,12 +1875,12 @@ With factory-calibrated color performance and straightforward daisy chain connec
         "Diagonal Size": "55\"",
         "Panel Type": "S-PVA",
         "Resolution": "1,920 × 1,080 (FHD)",
-        "Brightness (Type)": "500 nit",
+        "Brightness (Type)": "700 nit",
         "Contrast Ratio": "4,000:1 (typical)",
         "Viewing Angle (H/V)": "178° / 178°",
         "Color Gamut": "72% NTSC (typical)",
         "Response Time": "8 ms",
-        "Bezel-to-Bezel": "8.5 mm (standard narrow)",
+        "Bezel-to-Bezel": "1.74 mm (extreme narrow)",
         "Operation Time Support": "24/7",
       },
       "Connectivity": {
@@ -2066,6 +1896,73 @@ With factory-calibrated color performance and straightforward daisy chain connec
       },
       "Mechanical Specification": {
         "VESA Mount (mm)": "400 × 400",
+      },
+    },
+  },
+  {
+    id: "samsung-vhc-r",
+    popularity: 61,
+    catalog2026: true,
+    name: "Samsung VHC-R Razor-Thin Bezel Video Wall",
+    category: "Video Wall",
+    series: "VHC-R",
+    description:
+      "High-brightness 700 nit FHD video wall with a razor-thin 0.88 mm bezel — built for control rooms, lobbies, retail, and transportation hubs.",
+    features: [
+      "Razor-thin 0.88 mm bezel-to-bezel (0.44 mm even bezel)",
+      "High 700 nit brightness for lit environments",
+      "Uniform color & brightness calibration",
+      "24/7 operation with slim, durable cabinet",
+    ],
+    specs: {
+      resolution: "1,920 × 1,080 (FHD)",
+      brightness: "700 nit",
+      screenSizes: ["55"],
+      operationTime: "24/7",
+    },
+    images: [
+      "/products/video-walls/samsung-vhc-r/1.webp",
+      "/products/video-walls/samsung-vhc-r/2.webp",
+      "/products/video-walls/samsung-vhc-r/3.webp",
+      "/products/video-walls/samsung-vhc-r/4.png",
+      "/products/video-walls/samsung-vhc-r/5.png",
+      "/products/video-walls/samsung-vhc-r/6.png",
+      "/products/video-walls/samsung-vhc-r/7.png",
+      "/products/video-walls/samsung-vhc-r/8.png",
+      "/products/video-walls/samsung-vhc-r/9.png",
+      "/products/video-walls/samsung-vhc-r/10.png",
+    ],
+    longDescription: `The Samsung VHC-R pairs a razor-thin 0.88 mm bezel-to-bezel with high 700-nit brightness, making it the choice when a video wall has to stay sharp and legible in demanding, brightly lit spaces. Its near-seamless tiling and even 0.44 mm bezel keep multi-screen content coherent across the array, while high brightness ensures visibility in daylight-facing lobbies, retail storefronts, and transportation hubs.
+
+Engineered for uninterrupted duty, the VHC-R is rated for 24/7 continuous operation and delivers uniform color and brightness calibration across every tile, so large walls render as one consistent surface rather than a grid of mismatched panels. The slim, durable cabinet simplifies mounting flush against walls and inside custom enclosures.
+
+Standard professional connectivity — dual HDMI 2.0, DisplayPort 1.2, DVI-D, and RS-232C/RJ45 control — lets the VHC-R integrate with existing processors and centralized management. At 55" FHD per tile and just 19.4 kg, it balances visual impact with practical installation for control rooms, corporate lobbies, and public-facing retail environments.`,
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\"",
+        "Panel Type": "Commercial-grade LCD",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "700 nit",
+        "Contrast Ratio": "500,000:1 (dynamic)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Response Time": "8 ms",
+        "Bezel-to-Bezel": "0.88 mm (0.44 mm even bezel)",
+        "Operation Time Support": "24/7",
+      },
+      "Connectivity": {
+        "HDMI In": "2 (HDMI 2.0)",
+        "DP In": "1 (DisplayPort 1.2)",
+        "DVI-D": "1",
+        "RS-232C": "In/Out",
+        "RJ45 In": "Yes",
+      },
+      "Power": {
+        "Power Supply": "AC 100–240 V, 50/60 Hz",
+      },
+      "Mechanical Specification": {
+        "Set Dimensions (W×H×D)": "1,211.5 × 682.3 × 70 mm",
+        "Weight": "19.4 kg",
+        "Model Code": "LH55VHCRBGBXXL",
       },
     },
   },
@@ -2280,6 +2177,7 @@ With 24/7 operation reliability and wide 178°/178° viewing angles, the VH55R s
   {
     id: "samsung-flip-2",
     popularity: 98,
+    hideFromAllProducts: true,
     name: "Samsung Flip 2 (WM55R) Interactive Display",
     category: "Interactive Display",
     series: "Flip 2",
@@ -2293,7 +2191,7 @@ With 24/7 operation reliability and wide 178°/178° viewing angles, the VH55R s
     ],
     specs: {
       resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "300 nit",
+      brightness: "350 nit",
       screenSizes: ["55"],
       operationTime: "16/7",
     },
@@ -2314,7 +2212,7 @@ Roll-and-view capability enables the Flip 2 to be used in either landscape or po
         "Diagonal Size": "55\"",
         "Panel Type": "IPS",
         "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "300 nit",
+        "Brightness (Type)": "350 nit (w/o glass)",
         "Color Gamut": "72% NTSC",
         "Viewing Angle (H/V)": "178° / 178°",
         "Operation Time Support": "16/7",
@@ -2340,6 +2238,7 @@ Roll-and-view capability enables the Flip 2 to be used in either landscape or po
   {
     id: "samsung-waf-series",
     popularity: 66,
+    catalog2026: true,
     name: "Samsung WAF Series Interactive Display",
     category: "Interactive Display",
     series: "WAF",
@@ -2355,7 +2254,7 @@ Roll-and-view capability enables the Flip 2 to be used in either landscape or po
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "400 nit",
       screenSizes: ["65", "75", "86"],
-      operationTime: "16/7",
+      operationTime: "12/7",
     },
     images: [
       "/products/interactive/samsung-waf-series/2.webp",
@@ -2382,7 +2281,7 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
         "Brightness (Type)": "400 nit",
         "Color Gamut": "99% sRGB",
         "Viewing Angle (H/V)": "178° / 178°",
-        "Operation Time Support": "16/7",
+        "Operation Time Support": "12/7",
       },
       "Connectivity": {
         "HDMI In": "2 × HDMI 2.0",
@@ -2404,21 +2303,22 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
   {
     id: "samsung-qbc-t",
     popularity: 64,
-    name: "Samsung QBC-T Interactive Touch Display",
+    catalog2026: true,
+    name: "Samsung QBC-T Small Signage Touch Display",
     category: "Interactive Display",
     series: "QBC-T",
     description:
-      "Compact touch-enabled display combining the slim QBC design with capacitive touch — ideal for reception desks, POS counters, and interactive information points.",
+      "Compact 13\" and 24\" Full HD capacitive touch signage — ideal for reception desks, POS counters, and interactive information points where space is constrained.",
     features: [
       "Capacitive multi-touch recognition",
-      "Ultra-slim 28.5 mm depth",
-      "Dynamic Crystal Color display",
-      "MagicINFO Player S6 built-in",
+      "Compact 13\" / 24\" form factor",
+      "Full HD 1080p display",
+      "Built-in media player",
     ],
     specs: {
-      resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "300 nit",
-      screenSizes: ["24", "43", "55"],
+      resolution: "1,920 × 1,080 (FHD)",
+      brightness: "500 nit (13\") / 250 nit (24\")",
+      screenSizes: ["13", "24"],
       operationTime: "16/7",
     },
     images: [
@@ -2434,17 +2334,17 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
       "/products/interactive/samsung-qbc-t/10.png",
     ],
   
-    longDescription: `The Samsung QBC-T represents the convergence of two Samsung display families — combining the ultra-slim 28.5 mm depth and Dynamic Crystal Color technology of the QBC Series with sophisticated capacitive multi-touch recognition. This hybrid design creates a compact interactive display perfect for reception desks, POS counters, information kiosks, and self-service check-in points where physical space is constrained.
+    longDescription: `The Samsung QBC-T is a compact small-signage touch display available in 13" and 24" sizes, purpose-built for reception desks, POS counters, information kiosks, and self-service check-in points where physical space is constrained. Its Full HD (1,920 × 1,080) panel delivers crisp, readable content at close viewing distances.
 
-Capacitive touch technology eliminates the need for protective glass overlays or external touch frame systems, maintaining the sleek aesthetic that professional environments demand. The 10-point multi-touch recognition enables complex gesture controls and simultaneous multi-user interaction, transforming mundane information displays into engaging interactive experiences.
+Capacitive touch technology eliminates the need for an external touch frame, maintaining the sleek aesthetic that professional environments demand. Multi-touch recognition enables gesture controls and interactive workflows, transforming static information displays into engaging touchpoints. The 13" model offers 500-nit brightness for bright counter-top settings, while the 24" model is rated at 250 nit.
 
-With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, reception desk counters, and modern interior designs where bulky displays would disrupt visual harmony. Integrated MagicINFO Player S6 enables content management without external computers, while the comprehensive 24" to 55" size range adapts to any installation scenario — from compact tabletop displays to wall-mounted larger formats.`,
+The compact form factor integrates seamlessly into built-in cabinetry, reception desk counters, and modern interiors where larger displays would be impractical. A built-in media player enables content management without an external computer, making the QBC-T a self-contained interactive solution for tight spaces.`,
     specGroups: {
       "Display": {
-        "Diagonal Size": "24\" / 43\" / 55\"",
-        "Panel Type": "IPS Dynamic Crystal Color",
-        "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "300 nit",
+        "Diagonal Size": "13\" / 24\"",
+        "Panel Type": "Full HD LED-LCD",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit (13\") / 250 nit (24\")",
         "Color Gamut": "72% NTSC",
         "Viewing Angle (H/V)": "178° / 178°",
         "Operation Time Support": "16/7",
@@ -2458,13 +2358,12 @@ With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, 
         "Bluetooth": "5.0",
       },
       "Mechanical Specification": {
-        "VESA Mount (mm)": "200 × 200 (24\") / 400 × 400 (43\", 55\")",
-        "Depth": "28.5 mm (ultra-slim)",
+        "VESA Mount (mm)": "75 × 75",
       },
       "SoC": {
-        "OS Version": "Tizen 6.5",
-        "Content Player": "MagicINFO Player S6",
-        "Touch Technology": "Capacitive multi-touch (10 points)",
+        "OS Version": "Tizen",
+        "Content Player": "Embedded media player",
+        "Touch Technology": "Capacitive multi-touch",
       },
     },
   },
@@ -2474,6 +2373,7 @@ With ultra-slim depth, the QBC-T integrates seamlessly into built-in cabinetry, 
   {
     id: "samsung-business-tv-befx-h2",
     popularity: 81,
+    catalog2026: true,
     name: "Samsung Business TV BEFX-H2 Series",
     category: "Commercial TV",
     subCategory: "Business TV",
@@ -2542,78 +2442,6 @@ Available in six sizes from 43" to 85", the BEFX-H2 adapts to any commercial spa
         "VXT CMS": "Yes (S Series plan)",
         "PlayLock": "Yes",
         "SmartThings Pro": "Yes",
-      },
-    },
-  },
-  {
-    id: "samsung-hotel-tv-hgu701f",
-    popularity: 65,
-    name: "Samsung Hotel TV HGU701F",
-    category: "Commercial TV",
-    subCategory: "Hotel TV",
-    series: "HGU701F",
-    description:
-      "Reliable entry-level hospitality TV with hotel-mode features and LYNK Cloud management for small and mid-scale hotel properties.",
-    features: [
-      "Hotel Mode for locked-down guest settings",
-      "LYNK Cloud remote management compatible",
-      "Multiple HDMI and USB ports",
-      "Slim wall-mount design",
-    ],
-    specs: {
-      resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "300 nit",
-      screenSizes: ["43", "50", "55"],
-      operationTime: "16/7",
-    },
-    images: [
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/1.jpg",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/2.jpg",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/3.jpg",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/4.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/5.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/6.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/7.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/8.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/9.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu701f/10.png",
-    ],
-  
-    longDescription: `The Samsung HGU701F provides reliable entry-level hospitality television for small and mid-scale hotel properties seeking to upgrade guest room experiences without premium pricing. With hotel-specific features like locked-down guest settings and simplified remote controls, the HGU701F ensures guests can enjoy entertainment while preventing accidental changes to critical settings.
-
-LYNK Cloud remote management compatibility enables hoteliers to monitor display status, manage firmware updates, and troubleshoot issues from a central operations dashboard — dramatically reducing on-site engineering overhead. The ability to push promotional content to guest rooms enables revenue optimization through targeted VOD suggestions, restaurant reservation options, and spa service promotions.
-
-With multiple HDMI and USB ports supporting diverse guest devices — from older set-top boxes to modern streaming appliances to personal USB media — the HGU701F accommodates the full spectrum of guest technology expectations. The slim wall-mount design adapts to modern hospitality room layouts where space efficiency and aesthetic integration are paramount.`,
-    specGroups: {
-      "Display": {
-        "Diagonal Size": "43\" / 50\" / 55\"",
-        "Panel Type": "IPS",
-        "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "300 nit",
-        "Color Gamut": "72% NTSC (typical)",
-        "Viewing Angle (H/V)": "178° / 178°",
-        "Operation Time Support": "16/7",
-      },
-      "Connectivity": {
-        "HDMI In": "2 × HDMI",
-        "USB": "2 × USB",
-        "RJ45 In": "Yes",
-        "RS-232C": "Yes",
-      },
-      "Power": {
-        "Power Supply": "AC 100–240 V, 50/60 Hz",
-      },
-      "Mechanical Specification": {
-        "VESA Mount (mm)": "200 × 200 (43\"–50\") / 300 × 300 (55\")",
-        "Slim Design": "Yes",
-      },
-      "SoC": {
-        "OS Version": "Tizen 5.5 (Hotel Edition)",
-        "Processor": "Quad-core 1.5 GHz",
-        "RAM": "1.5 GB",
-        "Flash Memory Size": "8 GB",
-        "Hotel Mode": "Yes",
-        "LYNK Cloud": "Compatible",
       },
     },
   },
@@ -2690,81 +2518,9 @@ Hotel Mode restricts guest access to critical settings while enabling easy strea
     },
   },
   {
-    id: "samsung-hotel-tv-hgu800f",
-    popularity: 78,
-    name: "Samsung Hotel TV HGU800F",
-    category: "Commercial TV",
-    subCategory: "Hotel TV",
-    series: "HGU800F",
-    description:
-      "Premium hotel TV series with Google Cast, LYNK Cloud management, and Dynamic Crystal Color for a superior guest experience.",
-    features: [
-      "Google Cast for seamless guest device mirroring",
-      "Dynamic Crystal Color 4K UHD",
-      "LYNK Cloud centralised room management",
-      "Slim Fit design for modern interiors",
-    ],
-    specs: {
-      resolution: "3,840 × 2,160 (4K UHD)",
-      brightness: "300 nit",
-      screenSizes: ["43", "50", "55", "65", "75", "85"],
-      operationTime: "16/7",
-    },
-    images: [
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/1.jpg",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/2.jpg",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/3.jpg",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/4.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/5.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/6.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/7.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/8.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/9.png",
-      "/products/commercial-tv/samsung-hotel-tv-hgu800f/10.png",
-    ],
-  
-    longDescription: `The Samsung HGU800F represents the premium tier of hospitality television, combining Google Cast seamless guest device mirroring with Dynamic Crystal Color vibrancy and LYNK Cloud centralized room management. Designed for luxury hotel properties and high-end resort destinations where guest expectations are highest and room revenues justify premium equipment investments, the HGU800F transforms guest rooms into premium entertainment sanctuaries.
-
-Google Cast integration enables guests to instantly stream content from their personal devices without pairing codes, authentication screens, or technical complexity. Whether guests want to mirror YouTube videos, share Netflix screens, or play personal music libraries, Google Cast makes it seamless.
-
-Dynamic Crystal Color technology delivers exceptional color saturation and vibrancy that makes standard cable broadcasts look stunning and transforms streaming content into cinema-quality experiences. The comprehensive 43" to 85" size range adapts to any property segment — from compact business hotel rooms to sprawling resort penthouse suites. LYNK Cloud enables centralized management of hundreds of displays across multiple properties from a single operations dashboard.`,
-    specGroups: {
-      "Display": {
-        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\" / 85\"",
-        "Panel Type": "IPS Dynamic Crystal Color",
-        "Resolution": "3,840 × 2,160 (4K UHD)",
-        "Brightness (Type)": "300 nit",
-        "HDR": "HDR standard",
-        "Color Gamut": "99% BT.709",
-        "Viewing Angle (H/V)": "178° / 178°",
-        "Operation Time Support": "16/7",
-      },
-      "Connectivity": {
-        "HDMI In": "2 × HDMI",
-        "USB": "2 × USB",
-        "RJ45 In": "Yes",
-        "RS-232C": "Yes",
-        "Google Cast": "Yes (built-in)",
-      },
-      "Power": {
-        "Power Supply": "AC 100–240 V, 50/60 Hz",
-      },
-      "Mechanical Specification": {
-        "VESA Mount (mm)": "300 × 300 (43\"–65\") / 400 × 400 (75\"–85\")",
-        "Slim Fit": "Yes",
-      },
-      "SoC": {
-        "OS Version": "Tizen 6.5 (Hotel Edition)",
-        "Processor": "Quad-core 1.5 GHz",
-        "RAM": "2 GB",
-        "Flash Memory Size": "8 GB",
-        "LYNK Cloud": "Compatible with centralized management",
-      },
-    },
-  },
-  {
     id: "samsung-interactive-wafx-p",
     popularity: 91,
+    catalog2026: true,
     name: "Samsung WAFX-P Series Interactive Display",
     category: "Interactive Display",
     series: "WAFX-P",
@@ -2782,7 +2538,7 @@ Dynamic Crystal Color technology delivers exceptional color saturation and vibra
       resolution: "3,840 × 2,160 (4K UHD)",
       brightness: "450 cd/m²",
       screenSizes: ["65", "75", "86"],
-      operationTime: "16/7",
+      operationTime: "12/7",
     },
     images: [
       "/products/interactive/samsung-interactive-wafx-p/5.png",
@@ -2812,7 +2568,7 @@ Embedded AI functions unlock AI Write & Search: simply circle handwritten notes 
         "Response Time (G-to-G)": "8 ms",
         "Glass Haze": "25%",
         "Backlight Life": "50,000 hrs",
-        "Operation Time Support": "16/7",
+        "Operation Time Support": "12/7",
       },
       "Connectivity": {
         "HDMI In": "3 (Rear 2, Front 1)",
@@ -2854,5 +2610,1052 @@ Embedded AI functions unlock AI Write & Search: simply circle handwritten notes 
         "Security": "WPA/WPA2/WPA3 Personal, WPS 2.0",
       },
     },
+  },
+
+  // ── LED SIGNAGE (2026 catalog) ──────────────────────────────────────────────
+
+  {
+    id: "samsung-the-wall-mpf",
+    popularity: 96,
+    catalog2026: true,
+    name: "Samsung The Wall (MPF)",
+    category: "LED Signage",
+    subCategory: "The Wall",
+    series: "MPF",
+    description:
+      "Premium micro-LED direct-view display with flip-chip RGB LEDs, Black Seal contrast, and modular any-size scalability — the flagship of Samsung's LED signage line.",
+    longDescription: `The Samsung The Wall (MPF) is the flagship of Samsung's direct-view LED lineup, built on flip-chip RGB micro-LED technology that places each red, green, and blue sub-pixel directly on the board for exceptional brightness, color purity, and longevity. Available in P0.8, P1.2, and P1.6 pixel pitches, it scales seamlessly from close-viewing lobby installations to expansive feature walls without bezels interrupting the image.
+
+Black Seal Technology delivers a uniform, ultra-black canvas that deepens contrast and reveals fine shadow detail, while PANTONE-validated color reproduction and 20-bit processing with Linear Grayscale ensure accurate, lifelike imagery. The NQM AI Gen2 processor analyses every frame in real time, upscaling content toward 8K and removing noise for consistently vivid results.
+
+Engineered for permanent commercial installation, The Wall MPF supports 24/7 operation, front-serviceable cabinets, and a one-body modular structure that simplifies large-scale builds. It is the definitive choice for corporate lobbies, experience centres, broadcast studios, and premium retail flagships.`,
+    features: [
+      "Flip-chip RGB micro-LED for deep blacks and wide color",
+      "Black Seal Technology for superior contrast",
+      "PANTONE-validated color, 20-bit processing, MICRO HDR",
+      "NQM AI Gen2 processor with up-to-8K scaling",
+      "Modular, bezel-free any-size installation",
+      "24/7 operation, front-serviceable",
+    ],
+    specs: {
+      resolution: "P0.8 / P1.2 / P1.6 pixel pitch",
+      brightness: "1,800 nit (peak)",
+      screenSizes: ["110", "130", "146"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Pixel Pitch": "P0.8 / P1.2 / P1.6",
+        "Diode Type": "Flip-chip RGB LED",
+        "Brightness (peak)": "1,800 nit (P0.8, P1.2) / 1,600 nit (P1.6)",
+        "Contrast Ratio": "29,000:1 (P0.8) / 41,000:1 (P1.2) / 43,000:1 (P1.6)",
+        "Model Codes": "LH012MPFAAA (P1.2), LH016MPFAAA (P1.6)",
+      },
+      "Processing & Picture": {
+        "Processor": "NQM AI Gen2",
+        "Color": "20-bit processing, Linear Grayscale, MICRO HDR",
+        "Contrast Enhancement": "Black Seal Technology",
+        "Color Validation": "PANTONE Validated",
+      },
+      "Mechanical & Operation": {
+        "Service": "Front",
+        "IP Rating": "IP40 / IP20 (Front / Rear)",
+        "Operation Time Support": "24/7",
+        "Design": "One-body modular, bezel-free",
+      },
+      "Certification": {
+        "EMC": "EMC Class B",
+        "Eye Comfort": "TUV Eye Comfort",
+        "Safety": "IEC 62368-1 / 60950-1",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-the-wall-mpf/1.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/2.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/3.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/4.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/5.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/6.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/7.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/8.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/9.jpg",
+    ],
+  },
+  {
+    id: "samsung-the-wall-mmf",
+    popularity: 90,
+    catalog2026: true,
+    name: "Samsung The Wall (MMF)",
+    category: "LED Signage",
+    subCategory: "The Wall",
+    series: "MMF",
+    description:
+      "Modular flip-chip RGB LED display delivering The Wall's signature deep blacks and seamless canvas at an accessible brightness tier for indoor commercial spaces.",
+    longDescription: `The Samsung The Wall (MMF) brings the design language and picture quality of Samsung's flagship LED line to a broader range of indoor commercial environments. Built on flip-chip RGB LED technology in P0.9, P1.2, and P1.5 pixel pitches, it produces a seamless, bezel-free canvas with the deep blacks and smooth grayscale that define The Wall family.
+
+Rated at 600 nits, the MMF is tuned for controlled indoor lighting — corporate lobbies, meeting spaces, broadcast sets, and retail interiors — where its high contrast (up to 10,000:1) and modular scalability let designers build displays to any dimension. TUV Eye Comfort certification supports comfortable long-duration viewing.
+
+As part of The Wall ecosystem, the MMF offers a simple modular structure for straightforward installation and maintenance, making premium direct-view LED accessible for everyday commercial signage.`,
+    features: [
+      "Flip-chip RGB LED, seamless bezel-free canvas",
+      "Deep blacks and smooth Linear Grayscale",
+      "Up to 10,000:1 contrast (P1.5)",
+      "Modular any-size installation",
+      "TUV Eye Comfort certified",
+      "24/7 operation",
+    ],
+    specs: {
+      resolution: "P0.9 / P1.2 / P1.5 pixel pitch",
+      brightness: "600 nit",
+      screenSizes: ["110", "130", "146"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Pixel Pitch": "P0.9 / P1.2 / P1.5",
+        "Diode Type": "Flip-chip RGB LED",
+        "Brightness": "600 nit",
+        "Contrast Ratio": "8,000:1 (P0.9, P1.2) / 10,000:1 (P1.5)",
+        "Model Codes": "LH012MMFRGS (P1.2) / LH015MMFRGS (P1.5)",
+      },
+      "Picture": {
+        "Color": "20-bit processing, Linear Grayscale",
+        "Contrast Enhancement": "Black Seal Technology",
+      },
+      "Mechanical & Operation": {
+        "Operation Time Support": "24/7",
+        "Design": "Modular, bezel-free",
+      },
+      "Certification": {
+        "EMC": "EMC Class A",
+        "Eye Comfort": "TUV Eye Comfort",
+        "Safety": "IEC 62368-1 / 60950-1",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-the-wall-mmf/1.webp",
+      "/products/led-signage/samsung-the-wall-mmf/2.webp",
+      "/products/led-signage/samsung-the-wall-mmf/3.webp",
+      "/products/led-signage/samsung-the-wall-mmf/4.webp",
+      "/products/led-signage/samsung-the-wall-mmf/5.webp",
+    ],
+  },
+  {
+    id: "samsung-indoor-led-ie",
+    popularity: 88,
+    catalog2026: true,
+    name: "Samsung Indoor LED Signage (IE Series)",
+    category: "LED Signage",
+    subCategory: "Indoor LED",
+    series: "IEA/IEF",
+    description:
+      "Versatile indoor direct-view LED signage with HDR10/10+ picture quality, GoB durability, and flexible curved, L-shaped, and ceiling installation across a wide pixel-pitch range.",
+    longDescription: `Samsung Indoor LED Signage (IE Series) delivers best-in-class direct-view LED picture quality for retail stores, corporate spaces, and public venues. Available across P1.2, P1.5, P2.0, P2.5, and P4.0 pixel pitches, the range spans fine-pitch close-viewing walls to larger-format displays for wider viewing distances — all driven by Samsung's LED HDR technology for accurate color and sharp detail without additional metadata.
+
+The NQM AI Processor with 4K AI upscaling optimises brightness and contrast while suppressing glare, and HDR10/10+ support preserves highlight and shadow detail across content types. GoB (Glue-on-Board) technology adds a protective layer over the LED surface, guarding against water droplets, electrical shock, and physical impact while improving handling during installation.
+
+Advanced modular design supports portrait, landscape, curved, L-shaped, and ceiling installations, giving businesses full control to build the ideal display for their space. Managed via LED Signage Manager 2 and Samsung VXT, the IE Series pairs striking visuals with straightforward, centralised operation.`,
+    features: [
+      "LED HDR with HDR10/10+ support",
+      "NQM AI Processor with 4K AI upscaling",
+      "GoB technology for surface durability",
+      "Curved, L-shaped, portrait & ceiling installation",
+      "Wide pixel-pitch range (P1.2–P4.0)",
+      "24/7 operation",
+    ],
+    specs: {
+      resolution: "P1.2 / P1.5 / P2.0 / P2.5 / P4.0 pixel pitch",
+      brightness: "1,000 nit",
+      screenSizes: ["110", "130", "146", "165"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Pixel Pitch": "P1.2 (IEF) / P1.5 / P2.0 / P2.5 / P4.0 (IEA)",
+        "Diode Type": "Surface Mount Device (SMD)",
+        "Brightness": "1,000 nit (P1.5–P2.5) / 800 nit (P4.0) / 600 nit (P1.2 IEF)",
+        "Contrast Ratio": "6,000:1 (P1.5) / 7,500:1 (P2.0) / 5,000:1 (P2.5, P4.0) / 4,000:1 (P1.2 IEF)",
+        "Model Codes": "LH015IEACLS (P1.5) / LH020IEACLS (P2.0) / LH025IEACLS (P2.5); IEF: LH015IEACFS (P1.2)",
+      },
+      "Picture & Processing": {
+        "Processor": "NQM AI Processor",
+        "HDR": "HDR10 / HDR10+",
+        "Upscaling": "4K AI upscaling",
+        "Durability": "GoB (Glue-on-Board) technology",
+      },
+      "Installation & Management": {
+        "Orientations": "Portrait, landscape, curved, L-shaped, ceiling",
+        "Management": "LED Signage Manager 2, Samsung VXT, Signage Setup Assistant",
+        "Operation Time Support": "24/7",
+      },
+      "Certification": {
+        "EMC": "EMC Class A",
+        "Safety": "IEC 62368-1 / 60950-1",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-indoor-led-ie/1.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/2.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/3.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/4.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/5.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/6.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/7.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/8.jpg",
+      "/products/led-signage/samsung-indoor-led-ie/9.jpg",
+    ],
+  },
+  {
+    id: "samsung-all-in-one-led-iab",
+    popularity: 92,
+    catalog2026: true,
+    name: "Samsung All-in-One LED (IAB)",
+    category: "LED Signage",
+    subCategory: "All-in-One LED",
+    series: "IAB",
+    description:
+      "146-inch all-in-one direct-view LED display with Quick Build installation, built-in control box, and everything needed to deploy a big-impact wall in hours.",
+    longDescription: `The Samsung All-in-One LED (IAB) is a true all-in-one direct-view LED solution engineered for fast, high-impact installation. At 146 inches (P0.8 / P1.6) and 110 inches (P1.2), it delivers a bold, seamless canvas backed by flip-chip RGB LEDs, MICRO HDR, and the NQM AI Processor for vivid color and deep, Black-Seal blacks.
+
+Exclusive Quick Build technology lets integrators complete a large-scale display in just a few hours: combine the two background plates and attach four preset modules. The control box is built directly into the display, streamlining configuration and eliminating the external processing hardware conventional LED walls require.
+
+Every component needed for operation ships in one package — control box, wall brackets, speakers, and decorative bezels — with no additional purchases. Rated for 24/7 operation, the IAB is ideal for corporate lobbies, retail flagships, auditoriums, and experience centres that need a premium LED wall without the complexity of a custom build.`,
+    features: [
+      "146\" (up to 4K) & 110\" all-in-one LED",
+      "Quick Build — installs in hours",
+      "Built-in control box (no external processor)",
+      "All-inclusive: brackets, speakers, décor bezels",
+      "MICRO HDR, NQM AI Processor, 20-bit, Black Seal",
+      "24/7 operation",
+    ],
+    specs: {
+      resolution: "P0.8 / P1.2 / P1.6 pixel pitch",
+      brightness: "1,600 nit (peak)",
+      screenSizes: ["110", "146"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Diagonal": "3.70 m (146\") / 2.79 m (110\")",
+        "Pixel Pitch": "P0.8 / P1.6 (146\") · P1.2 (110\")",
+        "Diode Type": "Flip-chip RGB LED",
+        "Brightness (peak)": "1,600 nit (146\" P0.8 / 110\" P1.2) / 1,400 nit (146\" P1.6)",
+        "Contrast Ratio": "24,000:1 (146\" P0.8 / 110\" P1.2) / 22,000:1 (146\" P1.6)",
+        "Model Codes": "LH008IABMUS (146\" 4K) / LH012IABMHS (110\") / LH016IABMHS (146\" 2K)",
+      },
+      "All-in-One & Installation": {
+        "Installation": "Quick Build (background plates + 4 preset modules)",
+        "Control Box": "Built-in",
+        "Included": "Control box, wall brackets, speakers, décor bezels",
+        "Weight": "~160 kg",
+        "Service": "Front",
+      },
+      "Picture & Processing": {
+        "Processor": "NQM AI Processor",
+        "Color": "20-bit processing, Linear Grayscale, MICRO HDR",
+        "Contrast Enhancement": "Black Seal / True Black Presentation",
+      },
+      "Certification & Operation": {
+        "IP Rating": "IP20",
+        "EMC": "EMC Class A",
+        "Eye Comfort": "TUV Eye Comfort",
+        "Operation Time Support": "24/7",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-all-in-one-led-iab/1.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iab/2.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iab/3.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iab/4.jpg",
+    ],
+  },
+  {
+    id: "samsung-all-in-one-led-iac",
+    popularity: 89,
+    catalog2026: true,
+    name: "Samsung All-in-One LED (IAC)",
+    category: "LED Signage",
+    subCategory: "All-in-One LED",
+    series: "IAC",
+    description:
+      "130-inch 2K all-in-one direct-view LED display with Quick Build installation and an all-inclusive package — big-screen impact deployed fast, out of the box.",
+    longDescription: `The Samsung All-in-One LED (IAC) packages a 130-inch 2K (Full HD) direct-view LED display into a complete, ready-to-install solution. With a P1.5 pixel pitch and a 6,000:1 contrast ratio, it produces vivid color expression, reduced noise, and a full range of grays and blacks — a genuine big-screen alternative to projection and tiled LCD.
+
+Quick Build structure simplifies installation: dock the two background plates and hang four preset modules to complete the wall in hours rather than days. The control box is integrated into the display, and a 3,840 Hz refresh rate keeps motion smooth and camera-capture flicker-free.
+
+Everything needed to begin operating is in one package — control box, wall brackets, speakers, and decorative bezels — so there are no extra components to source. Rated for 24/7 operation, the IAC suits meeting spaces, lobbies, showrooms, and retail environments that want a premium LED display without a bespoke integration project.`,
+    features: [
+      "130\" 2K (Full HD) all-in-one LED",
+      "P1.5 pixel pitch, 6,000:1 contrast",
+      "3,840 Hz refresh for smooth, flicker-free capture",
+      "Quick Build — installs in hours",
+      "All-inclusive: control box, brackets, speakers, bezels",
+      "24/7 operation",
+    ],
+    specs: {
+      resolution: "P1.5 pixel pitch (2K / FHD)",
+      brightness: "1,000 nit",
+      screenSizes: ["130"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Diagonal": "3.30 m (130\")",
+        "Pixel Pitch": "P1.5",
+        "Diode Type": "Surface Mount Device (SMD)",
+        "Resolution": "2K (Full HD)",
+        "Brightness": "1,000 nit",
+        "Contrast Ratio": "6,000:1",
+        "Refresh Rate": "3,840 Hz",
+        "Model Code": "LH015IACCHS",
+      },
+      "All-in-One & Installation": {
+        "Installation": "Quick Build (background plates + 4 preset modules)",
+        "Control Box": "Built-in",
+        "Included": "Control box, wall brackets, speakers, décor bezels",
+        "Service": "Front",
+      },
+      "Certification & Operation": {
+        "IP Rating": "IP20",
+        "EMC": "EMC Class A",
+        "Eye Comfort": "TUV Eye Comfort",
+        "Operation Time Support": "24/7",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-all-in-one-led-iac/1.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iac/2.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iac/3.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iac/4.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iac/5.jpg",
+    ],
+  },
+
+  // ── SMART SIGNAGE — SPECIALTY & NEXT-GEN (2026 catalog) ──────────────────────
+
+  {
+    id: "samsung-spatial-smhx",
+    popularity: 95,
+    catalog2026: true,
+    name: "Samsung Spatial Signage (SMHX)",
+    category: "Digital Signage",
+    subCategory: "Spatial",
+    series: "SMHX",
+    description:
+      "Glasses-free 3D signage powered by patented 3D Plate technology — turns ordinary content into striking, lifelike depth in a slim 5.2 cm profile.",
+    longDescription: `The Samsung Spatial Signage (SMHX) delivers an immersive glasses-free 3D experience using Samsung's patented 3D Plate technology, which applies binocular parallax to send a different image to each eye — creating cinematic depth and 360° product rotation without special glasses or separately authored 3D content.
+
+At 85 inches with 4K UHD clarity, Spatial Signage combines a striking visual with an UltraThin 5.2 cm profile that integrates cleanly into retail, lobby, and experience-centre environments. A 500-nit panel with anti-glare treatment keeps content vivid under commercial lighting.
+
+Samsung VXT with the AI Studio app makes 3D content creation simple: upload an image and write a prompt to generate dynamic 3D video, then manage and monitor devices remotely. Recognised as a CES 2026 Innovation Award honoree, Spatial Signage redefines attention-grabbing display for premium commercial spaces.`,
+    features: [
+      "Glasses-free Virtual 3D via patented 3D Plate technology",
+      "UltraThin 5.2 cm profile",
+      "4K UHD (85\")",
+      "AI Studio 3D content generation in Samsung VXT",
+      "Quantum Processor, anti-glare",
+      "24/7 operation",
+    ],
+    specs: {
+      resolution: "3,840 × 2,160 (4K UHD)",
+      brightness: "500 nit",
+      screenSizes: ["85"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "85\" (4K UHD)",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "500 nit",
+        "3D Technology": "Patented 3D Plate (glasses-free binocular parallax)",
+        "Depth": "52 mm (UltraThin)",
+        "Operation Time Support": "24/7",
+      },
+      "Processing & Software": {
+        "Processor": "Quantum Processor",
+        "Panel": "Anti-glare",
+        "Content": "Samsung VXT with AI Studio (image-to-3D-video)",
+        "Platform": "Tizen 7.0",
+      },
+      "Recognition": {
+        "Award": "CES 2026 Innovation Award honoree",
+        "Model Code": "LH85SMHPBGCXXL (SM85HX-P)",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-spatial-smhx/1.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/2.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/3.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/4.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/5.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/6.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/7.jpg",
+      "/products/digital-signage/samsung-spatial-smhx/8.jpg",
+    ],
+  },
+  {
+    id: "samsung-color-epaper-emdx",
+    popularity: 90,
+    catalog2026: true,
+    name: "Samsung Color E-Paper (EMDX)",
+    category: "Digital Signage",
+    subCategory: "Color E-Paper",
+    series: "EMDX",
+    description:
+      "Paper-thin colour e-paper signage with a built-in battery and near-zero power draw — digitises posters and notices without cabling or daily charging.",
+    longDescription: `The Samsung Color E-Paper (EMDX) is a lightweight, paper-thin display that brings printed communication into the digital realm. Its 32-inch WQHD (2,560 × 1,440) E-Ink Spectra 6 panel reproduces rich, natural colour while preserving the calm, glare-free readability of paper — ideal for retail shelf edges, restaurant menus, transit notices, and office signage.
+
+Because e-paper only draws power when the image changes, the EMDX consumes zero watts while displaying a static image, and its built-in 4,600 mAh battery can run for up to ~200 days on a single charge at one update per day. A 17.9 mm profile, Wi-Fi/Bluetooth/USB-C connectivity, and a dedicated mobile app mean it can be placed almost anywhere without dedicated infrastructure.
+
+Managed through Samsung VXT and the Tizen Enterprise Platform, and built with recycled materials, Color E-Paper is a practical, energy-conscious way to replace static paper with dynamic, remotely-updatable content. A compact 13-inch model is also available.`,
+    features: [
+      "E-Ink Spectra 6 colour e-paper, paper-like readability",
+      "Zero-watt power on static images",
+      "Built-in 4,600 mAh battery (~200 days / update-a-day)",
+      "Paper-thin 17.9 mm design",
+      "Wi-Fi, Bluetooth, USB-C; Samsung VXT + E-Paper app",
+      "Made with recycled materials",
+    ],
+    specs: {
+      resolution: "2,560 × 1,440 (WQHD)",
+      brightness: "Reflective e-paper (0 W on static image)",
+      screenSizes: ["13", "32"],
+      operationTime: "Always-on (battery)",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "32\" (also 13\")",
+        "Panel Type": "E-Ink Spectra 6 colour e-paper",
+        "Resolution": "2,560 × 1,440 (WQHD)",
+        "Colours": "Up to 77K (with dithering)",
+        "Viewing Angle (H/V)": "178° / 178°",
+        "Depth": "17.9 mm",
+      },
+      "Power & Battery": {
+        "Battery": "4,600 mAh Li-ion (built-in)",
+        "Battery Life": "~200 days at 1 update/day",
+        "Static Power": "0 W (image unchanged)",
+      },
+      "Connectivity & Platform": {
+        "Wireless": "Wi-Fi, Bluetooth",
+        "Wired": "USB-C (data/power)",
+        "Platform": "Tizen 8.0, Samsung VXT + E-Paper app",
+        "IP Rating": "IP5X",
+      },
+      "Eco": {
+        "Materials": "Recycled plastics (bio-resin on 13\" model)",
+        "Model Code": "LH32EMDIBGBXZA (EM32DX)",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-color-epaper-emdx/1.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/2.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/3.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/4.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/5.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/6.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/7.jpg",
+      "/products/digital-signage/samsung-color-epaper-emdx/8.jpg",
+    ],
+  },
+  {
+    id: "samsung-outdoor-oh",
+    popularity: 87,
+    catalog2026: true,
+    name: "Samsung Outdoor Signage (OH Series)",
+    category: "Digital Signage",
+    subCategory: "Outdoor",
+    series: "OHA/OHDX/OHB",
+    description:
+      "Weatherproof high-brightness outdoor signage — UL-verified for outdoor visibility at 3,500 nits (peak 4,000) with IP56 and IK10 durability for 24/7 storefront and street-facing use.",
+    longDescription: `The Samsung Outdoor Signage (OH Series) is engineered to deliver clear, vivid messaging in the harshest environments — direct sunlight, rain, dust, and wide temperature swings. With 3,500-nit brightness (peak 4,000 nit) and UL-verified outdoor visibility, content stays legible around the clock, while an advanced heat-dissipation structure keeps the panel stable under load.
+
+The range spans the 75-inch 4K OHA, the 46-/55-inch FHD OHDX with a 6,000:1 contrast ratio, and the compact OHB — covering everything from drive-thru menu boards to building-mounted brand displays. IP56-rated protection and IK10 impact resistance mean the displays shrug off water jets, dust, and physical knocks, and an auto-brightness sensor adapts output to ambient light.
+
+Managed through Samsung VXT with support for additional protective glass installation, the OH Series lets businesses take impactful digital signage confidently outdoors, 24/7.`,
+    features: [
+      "UL-verified outdoor visibility, 3,500 nit (peak 4,000)",
+      "IP56 dust/water protection, IK10 impact resistance",
+      "Advanced heat-dissipation structure",
+      "Auto brightness sensor",
+      "Additional-glass-installable structure",
+      "24/7 operation, Samsung VXT",
+    ],
+    specs: {
+      resolution: "3,840 × 2,160 (4K) / FHD by model",
+      brightness: "3,500 nit (peak 4,000)",
+      screenSizes: ["24", "46", "55", "75"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "Display": {
+        "OHA": "75\" (1.90 m), 4K UHD, 3,500 nit (peak 4,000), 1,200:1",
+        "OHDX": "46\"/55\" (1.16 m/1.39 m), FHD, 3,500 nit (peak 4,000), 6,000:1, UL-verified outdoor visibility",
+        "OHB": "24\" (61 cm), FHD, 1,500 nit, 1,000:1",
+        "Operation Time Support": "24/7",
+      },
+      "Durability": {
+        "IP Rating": "IP56 (dust & water)",
+        "Impact": "IK10-certified",
+        "Cooling": "Heat-dissipation structure (OHDX)",
+        "Brightness Control": "Auto brightness sensor",
+        "Glass": "Additional glass installable",
+      },
+      "Software": {
+        "Management": "Samsung VXT",
+        "Model Code": "LH75OHAEBGBXXL (OH75A)",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-outdoor-oh/1.jpg",
+      "/products/digital-signage/samsung-outdoor-oh/2.jpg",
+      "/products/digital-signage/samsung-outdoor-oh/3.jpg",
+      "/products/digital-signage/samsung-outdoor-oh/4.jpg",
+    ],
+  },
+  {
+    id: "samsung-window-om",
+    popularity: 86,
+    catalog2026: true,
+    name: "Samsung Window Signage (OM Series)",
+    category: "Digital Signage",
+    subCategory: "Window",
+    series: "OMA/OMN/OMB/OMDX",
+    description:
+      "High-brightness window-facing signage up to 4,000 nits with polarized-sunglass support and IP5X protection — cuts through sunlit storefront glass to attract passers-by.",
+    longDescription: `The Samsung Window Signage (OM Series) is built to command attention through glass, even against direct sunlight. With brightness up to 4,000 nits and polarized-sunglass support, storefront content stays vivid and legible to passers-by, while a slim profile preserves valuable window space.
+
+The lineup covers the 75-inch 4K OMA, the OMB (46-inch FHD at 4,000 nit / 55-inch 4K at 3,000 nit), the OMN/OMN-D (4,000 nit, with OMN-D offering a dual-sided 3,000/1,000-nit configuration for inside-and-out messaging), and the compact 32-inch OMDX with a 4.56 cm window-facing depth. IP5X dust protection and proprietary overheating-mitigation technology keep the displays reliable in demanding window installations.
+
+Auto brightness control, built-in Wi-Fi, and clean cable management make the OM Series a polished, low-maintenance way to turn any window into a high-impact advertising surface, 24/7.`,
+    features: [
+      "High brightness up to 4,000 nit",
+      "Polarized-sunglass support",
+      "IP5X dust protection + overheating mitigation",
+      "Dual-sided option (OMN-D)",
+      "Auto brightness control, built-in Wi-Fi",
+      "24/7 operation, slim window-facing design",
+    ],
+    specs: {
+      resolution: "4K UHD / FHD by model",
+      brightness: "up to 4,000 nit",
+      screenSizes: ["32", "46", "55", "75"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "Display": {
+        "OMA": "75\" (1.90 m), 4K UHD",
+        "OMB": "46\" FHD 4,000 nit / 55\" 4K 3,000 nit, 6,000:1",
+        "OMN / OMN-D": "FHD 4,000 nit (OMN-D dual-sided 3,000 / 1,000 nit)",
+        "OMDX": "32\" FHD 2,000 nit, 4.56 cm depth",
+        "Operation Time Support": "24/7",
+      },
+      "Durability & Features": {
+        "IP Rating": "IP5X (dust)",
+        "Overheating": "Proprietary overheating-mitigation technology",
+        "Brightness Control": "Auto brightness control",
+        "Sunglasses": "Polarized-sunglass support",
+        "Connectivity": "Built-in Wi-Fi, clean cable management",
+      },
+      "Model": {
+        "Model Code": "LH55OMBEBGBXZA (OM55B)",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-window-om/1.png",
+      "/products/digital-signage/samsung-window-om/2.webp",
+      "/products/digital-signage/samsung-window-om/3.jpg",
+      "/products/digital-signage/samsung-window-om/4.jpg",
+      "/products/digital-signage/samsung-window-om/5.jpg",
+    ],
+  },
+  {
+    id: "samsung-stretched-shc",
+    popularity: 82,
+    catalog2026: true,
+    name: "Samsung Stretched Signage (SHC)",
+    category: "Digital Signage",
+    subCategory: "Stretched",
+    series: "SHC",
+    description:
+      "Ultra-wide 16:4.5 stretched display for shelf edges, transit, and narrow spaces — communicates clearly at 700 nits where a standard panel won't fit.",
+    longDescription: `The Samsung Stretched Signage (SH37C) is a versatile, cost-effective display purpose-built for narrow spaces where conventional 16:9 panels don't fit. Its 37-inch 16:4.5 ultra-wide format (1,920 × 540) is ideal for shelf edges, above-door boards, transit information strips, and check-out lanes — turning otherwise unusable slivers of space into clear communication surfaces.
+
+A 700-nit, non-glare panel keeps messaging readable in bright retail lighting and from wide angles, and an embedded media player lets the display run content without an external PC. The SHC supports both horizontal and vertical installation, adapting to the shape of the space.
+
+Backed by ENERGY STAR 8.0 and EPEAT certification with recycled-plastic construction, the Stretched Signage pairs practical, space-savvy design with energy-conscious operation for 24/7 commercial use.`,
+    features: [
+      "16:4.5 ultra-wide stretched format",
+      "700-nit non-glare panel",
+      "Embedded media player (no external PC)",
+      "Horizontal or vertical installation",
+      "24/7 operation",
+      "ENERGY STAR 8.0 / EPEAT, recycled plastics",
+    ],
+    specs: {
+      resolution: "1,920 × 540 (16:4.5)",
+      brightness: "700 nit",
+      screenSizes: ["37"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "37\" (94 cm)",
+        "Aspect Ratio": "16:4.5 (stretched)",
+        "Resolution": "1,920 × 540",
+        "Brightness (Type)": "700 nit",
+        "Contrast Ratio": "4,000:1",
+        "Panel": "Anti-glare",
+        "Operation Time Support": "24/7",
+      },
+      "Features": {
+        "Media Player": "Embedded",
+        "Installation": "Horizontal / vertical",
+        "Platform": "Tizen 7.0",
+      },
+      "Eco & Model": {
+        "Certifications": "ENERGY STAR 8.0, EPEAT",
+        "Model Code": "LH37SHCEBGBXZA (SH37C)",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-stretched-shc/1.jpg",
+    ],
+  },
+  {
+    id: "samsung-small-qbc",
+    popularity: 84,
+    catalog2026: true,
+    name: "Samsung Small Signage (QBC)",
+    category: "Digital Signage",
+    subCategory: "Small Signage",
+    series: "QB13C/QB24C",
+    description:
+      "Compact 13\" and 24\" Full HD signage for close-range, space-constrained spots — reception desks, shelf edges, and information points where larger displays don't fit.",
+    longDescription: `The Samsung Small Signage (QBC) brings clear, effective communication to areas with limited space. Available in compact 13-inch (33 cm) and 24-inch (61 cm) Full HD formats, it is designed for close-range viewing — reception desks, counters, shelf edges, meeting-room name plates, and customer-facing information points where a large display would be impractical.
+
+The 13-inch model's slim 19.9 mm profile lets it slot into tight spaces and mount cleanly on a wall, while an intuitive Home UI keeps device setup, content playback, and settings simple. Dual-band Wi-Fi (2.4 GHz + 5 GHz) delivers faster, more reliable network connections — useful in busy, high-traffic environments.
+
+Managed through Samsung VXT, the Small Signage is a flexible, low-footprint way to add dynamic digital messaging exactly where it's needed. (This is the non-touch QBC small signage; a touch variant is available separately.)`,
+    features: [
+      "Compact 13\" / 24\" Full HD form factor",
+      "Slim 19.9 mm design (13\")",
+      "Intuitive Home UI",
+      "Dual Wi-Fi (2.4 GHz + 5 GHz)",
+      "Samsung VXT management",
+      "16/7 operation",
+    ],
+    specs: {
+      resolution: "1,920 × 1,080 (FHD)",
+      brightness: "500 nit (13\") / 250 nit (24\")",
+      screenSizes: ["13", "24"],
+      operationTime: "16/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "13\" (33 cm) / 24\" (61 cm)",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "500 nit (13\") / 250 nit (24\")",
+        "Contrast Ratio": "800:1 (13\") / 1,000:1 (24\")",
+        "Depth": "19.9 mm (13\")",
+        "Operation Time Support": "16/7",
+      },
+      "Features": {
+        "Interface": "Home UI",
+        "Wireless": "Dual Wi-Fi (2.4 GHz + 5 GHz)",
+        "Management": "Samsung VXT",
+        "Platform": "Tizen 7.0",
+      },
+      "Model": {
+        "Model Code": "LH13QBCEBGBXZA (QB13C) / QB24C",
+        "Note": "Non-touch small signage (touch variant sold separately)",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-small-qbc/1.jpg",
+    ],
+  },
+  {
+    id: "samsung-flip-wmfx",
+    popularity: 98,
+    catalog2026: true,
+    name: "Samsung Flip (WMFX)",
+    category: "Interactive Display",
+    subCategory: "Flip",
+    series: "WMFX",
+    description:
+      "The 2026 Samsung Flip — a 4K interactive whiteboard with natural 26 ms writing, an enhanced multi-window workspace on Tizen 9.0, and Samsung Knox security.",
+    longDescription: `The Samsung Flip (WMFX) is the latest generation of Samsung's interactive whiteboard, built for meeting rooms, classrooms, and collaborative spaces where ideas need to flow the moment inspiration strikes. Available in 55, 65, 75, and 85 inches with 4K UHD clarity and a 450-nit anti-glare panel, it delivers instant, natural writing at 26 ms response with 2,048 pressure levels and dual-pen support.
+
+Running on the enhanced Tizen 9.0 platform, the WMFX moves beyond a digital whiteboard to a PC-like workspace: multi-window multitasking, a taskbar, Annotation On over any content, and an integrated Workspace for direct access to remote PCs, network drives, and cloud apps like Microsoft 365. SmartView+ lets up to nine devices share content wirelessly at once.
+
+The Enhanced Whiteboard makes it easy to edit, move, and resize notes and turn handwriting into clean visuals, while a rotatable design adapts between portrait and landscape. Samsung Knox provides multi-layered security from power-on to shutdown, making the Flip a secure, versatile hub for modern collaboration.`,
+    features: [
+      "Natural writing — 26 ms response, 2,048 pressure levels, dual pen",
+      "Enhanced Whiteboard + Flip Home",
+      "Tizen 9.0 multi-window workspace & taskbar",
+      "SmartView+ — up to 9 devices share wirelessly",
+      "Rotatable design (portrait / landscape)",
+      "Samsung Knox security, USB-C Hub / HDMI Out / OPS",
+    ],
+    specs: {
+      resolution: "3,840 × 2,160 (4K UHD)",
+      brightness: "450 nit",
+      screenSizes: ["55", "65", "75", "85"],
+      operationTime: "16/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "55\" / 65\" / 75\" / 85\"",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "Brightness (Type)": "450 nit",
+        "Panel": "Anti-glare",
+        "Operation Time Support": "16/7",
+      },
+      "Writing & Interaction": {
+        "Response Time": "26 ms",
+        "Pressure Levels": "2,048",
+        "Pen": "Dual pen",
+        "Wireless Sharing": "SMARTVIEW+ (up to 9 devices)",
+      },
+      "Software & Security": {
+        "Platform": "Tizen 9.0",
+        "Workspace": "Multi-window, taskbar, Annotation On, Workspace (remote PC / M365)",
+        "Whiteboard": "Enhanced Whiteboard, Flip Home",
+        "Security": "Samsung Knox",
+      },
+      "Connectivity & Model": {
+        "Connectivity": "USB-C Hub, HDMI Out, OPS",
+        "Design": "Rotatable (portrait / landscape)",
+        "Model Code": "LH55WMFWBGCXXL (WM55F) … LH85WMFWLGCXXL (WM85F)",
+      },
+    },
+    images: [
+      "/products/interactive/samsung-flip-wmfx/1.jpg",
+      "/products/interactive/samsung-flip-wmfx/2.jpg",
+      "/products/interactive/samsung-flip-wmfx/3.jpg",
+    ],
+  },
+
+  // ── CRYSTAL UHD HOSPITALITY TV (2026 catalog) ───────────────────────────────
+
+  {
+    id: "samsung-hotel-tv-hu8000f",
+    popularity: 97,
+    catalog2026: true,
+    name: "Samsung Crystal UHD Hotel TV (HU8000F)",
+    category: "Commercial TV",
+    subCategory: "Hotel TV",
+    series: "HU8000F",
+    description:
+      "The 2026 Crystal UHD hospitality flagship — AirSlim 4K with LYNK Cloud management, Google Cast, Apple AirPlay, and Samsung Knox for a premium, home-like guest experience.",
+    longDescription: `The Samsung Crystal UHD Hotel TV (HU8000F) is the 2026 flagship of Samsung's hospitality lineup, giving guests a familiar, home-like 4K experience while giving hotel managers powerful centralized control. Powered by the Crystal Processor 4K with AI-driven 4K upscaling, HDR10+, and Dynamic Crystal Color, it renders content in over a billion shades with lifelike clarity, while adaptive sound tunes 20W stereo audio to whatever is on screen.
+
+Its AirSlim design creates an elegant, nearly bezel-free profile that complements any guest room. Guests can cast directly from their own devices via Google Cast and Apple AirPlay, or browse built-in apps — Netflix, Prime Video, and Samsung TV Plus — straight from the Tizen home screen, with no dongles or logins required.
+
+For operators, Samsung LYNK Cloud delivers remote, multi-property display management and guest-usage analytics that surface marketing insights and drive incremental revenue, while the Tizen Enterprise Platform, SmartThings Pro, and Samsung Knox provide enterprise-grade integration and security. Available from 43" to 85".`,
+    features: [
+      "AirSlim nearly bezel-free 4K design",
+      "Crystal Processor 4K with AI 4K upscaling, HDR10+, Dynamic Crystal Color",
+      "Google Cast + Apple AirPlay device casting",
+      "LYNK Cloud remote management & guest analytics",
+      "Built-in Netflix, Prime Video, Samsung TV Plus (Tizen)",
+      "Samsung Knox security, SmartThings Pro",
+    ],
+    specs: {
+      resolution: "3,840 × 2,160 (4K UHD)",
+      brightness: "300 nit",
+      screenSizes: ["43", "50", "55", "65", "75", "85"],
+      operationTime: "16/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\" / 85\"",
+        "Panel Type": "4K VA, direct backlight",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "HDR": "HDR10 / HDR10+",
+        "Processor": "Crystal Processor 4K",
+        "Picture": "AI 4K upscaling, Dynamic Crystal Color, Motion Xcelerator, Contrast Enhancer",
+        "Refresh Rate": "60 Hz",
+        "Design": "AirSlim",
+      },
+      "Hospitality Features": {
+        "Management": "LYNK Cloud, Tizen Enterprise Platform",
+        "Casting": "Google Cast, Apple AirPlay",
+        "Apps": "Smart Hub, Samsung TV Plus, Netflix, Prime Video",
+        "Control": "Multi-Code Remote, SmartThings Pro",
+        "Security": "Samsung Knox",
+      },
+      "Audio & Connectivity": {
+        "Speakers": "20 W stereo + adaptive sound",
+        "Wireless": "Wi-Fi 5, Bluetooth 5.2",
+        "HDMI": "3 × HDMI",
+        "USB": "2 × USB-A",
+      },
+      "Model": {
+        "Model Code": "HG43U800FAULXL (India; sizes 43\"–85\")",
+      },
+    },
+    images: [
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/1.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/2.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/3.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/4.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/5.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/6.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/7.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu8000f/8.jpg",
+    ],
+  },
+  {
+    id: "samsung-hotel-tv-hu7010f",
+    popularity: 93,
+    catalog2026: true,
+    name: "Samsung Crystal UHD Hotel TV (HU7010F)",
+    category: "Commercial TV",
+    subCategory: "Hotel TV",
+    series: "HU7010F",
+    description:
+      "2026 Crystal UHD hospitality TV for India — 4K with LYNK Cloud management, Google Cast, Apple AirPlay, and Samsung Knox, delivering a home-like guest experience at a smart price point.",
+    longDescription: `The Samsung Crystal UHD Hotel TV (HU7010F) brings the 2026 Crystal UHD guest experience to hotels across India. Driven by the Crystal Processor 4K with AI 4K upscaling, HDR, and Dynamic Crystal Color, it delivers crisp, vibrant 4K content that makes every guest room feel like home, complemented by Motion Xcelerator for smooth motion and a Contrast Enhancer for depth.
+
+Guests can cast their own content via Google Cast and Apple AirPlay or use built-in apps and Samsung TV Plus from the Tizen home screen. For operators, Samsung LYNK Cloud enables remote, centralized management across properties along with guest-usage analytics, while the Tizen Enterprise Platform, SmartThings Pro, and Samsung Knox provide secure integration into hotel systems.
+
+Positioned just below the AirSlim HU8000F flagship, the HU7010F focuses on core hospitality value and is launched in India. Available from 43" to 75".`,
+    features: [
+      "Crystal Processor 4K with AI 4K upscaling & HDR",
+      "Dynamic Crystal Color, Motion Xcelerator, Contrast Enhancer",
+      "Google Cast + Apple AirPlay device casting",
+      "LYNK Cloud remote management & guest analytics",
+      "Samsung TV Plus & Smart Hub (Tizen)",
+      "Samsung Knox security, SmartThings Pro — launched in India",
+    ],
+    specs: {
+      resolution: "3,840 × 2,160 (4K UHD)",
+      brightness: "300 nit",
+      screenSizes: ["43", "50", "55", "65", "75"],
+      operationTime: "16/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "43\" / 50\" / 55\" / 65\" / 75\"",
+        "Panel Type": "4K VA, direct backlight",
+        "Resolution": "3,840 × 2,160 (4K UHD)",
+        "HDR": "HDR",
+        "Processor": "Crystal Processor 4K",
+        "Picture": "AI 4K upscaling, Dynamic Crystal Color, Motion Xcelerator, Contrast Enhancer",
+        "Refresh Rate": "60 Hz",
+      },
+      "Hospitality Features": {
+        "Management": "LYNK Cloud, Tizen Enterprise Platform",
+        "Casting": "Google Cast, Apple AirPlay",
+        "Apps": "Smart Hub, Samsung TV Plus",
+        "Control": "Multi-Code Remote, SmartThings Pro",
+        "Security": "Samsung Knox",
+      },
+      "Audio & Connectivity": {
+        "Speakers": "20 W stereo + adaptive sound (Dolby Digital MS12)",
+        "Wireless": "Wi-Fi 5, Bluetooth 5.2",
+        "HDMI": "2 × HDMI",
+        "USB": "2 × USB-A",
+      },
+      "Availability": {
+        "Region": "Launched in India only",
+        "Model Code": "HG43U701FAULXL (India; U701F, 43\"–75\")",
+      },
+    },
+    images: [
+      "/products/commercial-tv/samsung-hotel-tv-hu7010f/1.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu7010f/2.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu7010f/3.jpg",
+      "/products/commercial-tv/samsung-hotel-tv-hu7010f/4.jpg",
+    ],
+  },
+
+  // ── 2026 CATALOG — ADDED FOR FULL CATALOG COVERAGE ──────────────────────────
+  // NOTE: images below reuse the closest sibling product's photos as placeholders
+  // until dedicated photography is added for QMC-T, MMF-A, and IVC.
+
+  {
+    id: "samsung-touch-qmc-t",
+    popularity: 80,
+    catalog2026: true,
+    name: "Samsung Touch Signage QMC-T Series (32\")",
+    category: "Digital Signage",
+    subCategory: "Touch Signage",
+    series: "QMC-T",
+    description:
+      "Compact 32\" all-in-one capacitive touch signage for close-range interactive points — self-service counters, wayfinding kiosks, and information desks.",
+    longDescription: `The Samsung Touch Signage QMC-T brings responsive, all-in-one capacitive touch interaction to compact 32-inch spaces where a large touch wall would be impractical. With Full HD (1,920 × 1,080) clarity and an optimised anti-glare, low-haze panel, content stays clear and readable under both indoor lighting and daylight.
+
+Touch works without external devices or a connected PC — interactive content is deployed and run from the display itself, simplifying setup at self-service counters, hospitality check-in points, and store directories. Center IR enables convenient remote control without an IR-receiver extension when wall-mounted, and built-in Wi-Fi supports wireless content and settings management.
+
+Rated for 16/7 operation with an IP5X-rated capacitive touch surface and running Tizen 7.0, the QMC-T is a durable, low-footprint way to add interactivity exactly where customers need it.`,
+    features: [
+      "All-in-one capacitive touch (no external PC)",
+      "Anti-glare, optimised low-haze panel",
+      "Center IR remote control + built-in Wi-Fi",
+      "IP5X-rated touch surface",
+      "16/7 operation",
+      "Tizen 7.0",
+    ],
+    specs: {
+      resolution: "1,920 × 1,080 (FHD)",
+      brightness: "300 nit (with touch glass) / 400 nit (without)",
+      screenSizes: ["32"],
+      operationTime: "16/7",
+    },
+    specGroups: {
+      "Display": {
+        "Diagonal Size": "32\" (81.2 cm)",
+        "Resolution": "1,920 × 1,080 (FHD)",
+        "Brightness (Type)": "300 nit (with touch glass) / 400 nit (without)",
+        "Contrast Ratio": "4,000:1 (w/o glass)",
+        "Panel": "Anti-glare",
+        "Operation Time Support": "16/7",
+      },
+      "Touch & Connectivity": {
+        "Touch Technology": "Capacitive multi-touch",
+        "HDMI In": "3 (HDMI 2.0)",
+        "USB": "2 × USB 2.0",
+        "Remote": "Center IR",
+        "Wireless": "Built-in Wi-Fi",
+        "RS-232C": "In/Out",
+        "RJ45 In": "Yes",
+        "IP Rating": "IP5X",
+      },
+      "Platform": {
+        "OS Version": "Tizen 7.0",
+        "Model Code": "LH32QMCTBGCXXL",
+      },
+    },
+    images: [
+      "/products/digital-signage/samsung-touch-qmr-t/1.webp",
+      "/products/digital-signage/samsung-touch-qmr-t/2.webp",
+      "/products/digital-signage/samsung-touch-qmr-t/3.webp",
+    ],
+  },
+  {
+    id: "samsung-all-in-one-led-mmf-a",
+    popularity: 85,
+    catalog2026: true,
+    name: "Samsung All-in-One LED (MMF-A)",
+    category: "LED Signage",
+    subCategory: "All-in-One LED",
+    series: "MMF-A",
+    description:
+      "All-in-One flip-chip RGB LED display in 108\" and 136\" — The Wall's picture quality in an integrated, all-inclusive package for fast indoor installation.",
+    longDescription: `The Samsung All-in-One LED (MMF-A) packages the flip-chip RGB LED picture quality of The Wall family into a complete, ready-to-install solution for indoor commercial spaces. Available in 2.74 m (108") with a P1.2 pixel pitch and 3.45 m (136") with a P1.5 pixel pitch, it delivers a seamless, bezel-free canvas with deep blacks and smooth Linear Grayscale.
+
+Rated at 500 nits with high contrast (8,000:1 on the 108" P1.2 and 10,000:1 on the 136" P1.5), the MMF-A is tuned for controlled indoor lighting in lobbies, meeting spaces, showrooms, and retail interiors. Everything needed to operate ships together, and the modular structure keeps installation and front-servicing straightforward.
+
+TUV Eye Comfort certification supports comfortable long-duration viewing, while EMC Class A and IEC safety certification make the MMF-A a dependable choice for premium always-on indoor LED signage.`,
+    features: [
+      "108\" (P1.2) and 136\" (P1.5) all-in-one LED",
+      "Flip-chip RGB LED, seamless bezel-free canvas",
+      "8,000:1 (108\") / 10,000:1 (136\") contrast",
+      "All-inclusive package, front-serviceable",
+      "TUV Eye Comfort certified",
+      "24/7 operation",
+    ],
+    specs: {
+      resolution: "P1.2 (108\") / P1.5 (136\") — 2K",
+      brightness: "500 nit",
+      screenSizes: ["108", "136"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Diagonal": "2.74 m (108\") / 3.45 m (136\")",
+        "Pixel Pitch": "P1.2 (108\") / P1.5 (136\")",
+        "Diode Type": "Flip-chip RGB LED",
+        "Resolution": "2K",
+        "Brightness": "500 nit",
+        "Contrast Ratio": "8,000:1 (108\" P1.2) / 10,000:1 (136\" P1.5)",
+        "Model Code": "LHA15MMFRHS (136\" P1.5)",
+      },
+      "Mechanical & Operation": {
+        "Cabinet Size (per cabinet)": "24.08 × 13.65 × 6.28 cm",
+        "Weight": "80.5 kg (108\") / 130 kg (136\")",
+        "Service": "Front",
+        "IP Rating": "IP40 / IP20 (Front / Rear)",
+        "Operation Time Support": "24/7",
+      },
+      "Certification": {
+        "EMC": "EMC Class A",
+        "Eye Comfort": "TUV Eye Comfort",
+        "Safety": "IEC 62368-1 / 60950-1",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-all-in-one-led-iac/1.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iac/2.jpg",
+      "/products/led-signage/samsung-all-in-one-led-iac/3.jpg",
+    ],
+  },
+  {
+    id: "samsung-the-wall-ivc",
+    popularity: 78,
+    catalog2026: true,
+    name: "Samsung The Wall for Virtual Production (IVC)",
+    category: "LED Signage",
+    subCategory: "The Wall",
+    series: "IVC",
+    description:
+      "The Wall built for virtual production — an industry-leading 12,288 Hz refresh rate with genlock and phase-offset for flicker-free, in-camera LED-volume shooting.",
+    longDescription: `The Samsung The Wall for Virtual Production (IVC) is engineered specifically for LED-volume film and broadcast sets, where the display itself becomes the shooting environment. Its industry-leading 12,288 Hz refresh rate minimises the flicker lines and moiré artefacts that appear when a camera captures a conventional LED wall, producing clean, broadcast-ready in-camera imagery.
+
+Genlock synchronises all system signals for perfect frame alignment, while a phase-offset function provides additional frame correction to match camera shutters exactly. Built on flip-chip RGB LEDs in P1.6 and P2.1 pixel pitches with Black Seal and Ultra Chroma technology, 20-bit processing, and Linear Grayscale, the IVC delivers the deep blacks and colour fidelity demanding productions require.
+
+An optimised half-width 4:9 cabinet enables flawless curved installations with smooth angles down to a 5,800 R radius, supporting both hanging and stacking. Paired with Virtual Production Manager, the IVC gives studios a precise, reliable canvas for immersive virtual sets.`,
+    features: [
+      "12,288 Hz refresh — minimises flicker & artefacts on camera",
+      "Genlock & phase-offset frame synchronisation",
+      "Flip-chip RGB LED, Black Seal & Ultra Chroma, 20-bit",
+      "Half-width 4:9 cabinet for curved installs (max 5,800 R)",
+      "Virtual Production Manager, hanging & stacking",
+      "P1.6 / P2.1 pixel pitch, 1,500 nit",
+    ],
+    specs: {
+      resolution: "P1.6 / P2.1 pixel pitch",
+      brightness: "1,500 nit",
+      screenSizes: ["Custom"],
+      operationTime: "24/7",
+    },
+    specGroups: {
+      "LED": {
+        "Pixel Pitch": "P1.6 / P2.1",
+        "Diode Type": "Flip-chip RGB LED",
+        "Brightness": "1,500 nit",
+        "Contrast Ratio": "31,000:1 (P1.6) / 35,000:1 (P2.1)",
+        "Model Codes": "LH016IVCMVS (P1.6) / LH021IVCMVS (P2.1)",
+      },
+      "Virtual Production": {
+        "Refresh Rate": "12,288 Hz",
+        "Synchronisation": "Genlock & phase offset",
+        "Management": "Virtual Production Manager",
+        "Installation": "Half-width 4:9 cabinet, curved to 5,800 R, hanging & stacking",
+      },
+      "Picture": {
+        "Color": "20-bit processing, Linear Grayscale, Ultra Chroma",
+        "Contrast Enhancement": "Black Seal Technology",
+      },
+      "Mechanical & Operation": {
+        "Cabinet Size (per cabinet)": "40.31 × 90.70 × 8.3 cm",
+        "Weight": "13.3 kg (per cabinet)",
+        "Service": "Front (Module/Tcon) / Rear (Tcon/SMPS)",
+        "IP Rating": "IP20",
+        "Operation Time Support": "24/7",
+      },
+      "Certification": {
+        "EMC": "EMC Class A",
+        "Safety": "IEC 62368-1 / 60950-1",
+      },
+    },
+    images: [
+      "/products/led-signage/samsung-the-wall-mpf/1.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/2.jpg",
+      "/products/led-signage/samsung-the-wall-mpf/3.jpg",
+    ],
   },
 ];

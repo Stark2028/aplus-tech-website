@@ -1,0 +1,1074 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Premium hero + display stage.
+   Design source of truth: brainstorm mockup hero-a-premium-v3.html (2026-07-17,
+   approved by user). Its CSS is translated here 1:1 with two production changes:
+   1. SCALE — the mockup was a fixed ~440px stage. All intra-stage dimensions
+      are em at (mockup px ÷ 10); .stg-scale sets the base via container-query
+      width, so the stage renders the mockup's exact proportions at any width.
+      Hairlines (1–3px borders/seams/boot) intentionally stay px.
+   2. PERF — no filter:blur() on large elements (soft radial-gradients instead);
+      loop animations use opacity/transform only (sheen + chip bars converted
+      from left/width to transforms).
+   Imported once, globally, by DisplayStage.tsx. Classes: hero2-* = hero shell
+   (used by the server HeroSection), stg-* = stage island.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── shared screen chrome ─────────────────────────────────────────────────── */
+.stg-screen {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+/* Glass sheen sweep, every 9s. Mockup animated `left`; converted to translateX
+   (element is 34% of parent width, so -45%/130% of parent ≈ -132%/382% of self). */
+.stg-screen::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: 0;
+  width: 34%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.09) 45%, rgba(255, 255, 255, 0.16) 50%, rgba(255, 255, 255, 0.09) 55%, transparent);
+  transform: translateX(-132%) skewX(-18deg);
+  animation: stg-sheen 9s ease-in-out infinite;
+  z-index: 6;
+  pointer-events: none;
+}
+@keyframes stg-sheen {
+  0%, 55% { transform: translateX(-132%) skewX(-18deg); }
+  75%, 100% { transform: translateX(382%) skewX(-18deg); }
+}
+/* Slow ken-burns push on photographic scene backdrops. */
+.stg-kb {
+  position: absolute;
+  inset: 0;
+  animation: stg-kbzoom 7s ease-in-out infinite alternate;
+}
+@keyframes stg-kbzoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.045); }
+}
+/* Mono caption pinned bottom-left of a screen. */
+.stg-cap {
+  position: absolute;
+  bottom: 0.8em;
+  left: 1.2em;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  color: #e0f2fe;
+  font-size: 0.85em;
+  letter-spacing: 0.16em;
+  font-weight: 500;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
+  z-index: 5;
+}
+/* Self-drawing SVG strokes (NOC chart, whiteboard marker). Elements must set
+   pathLength="100"; dasharray/offset are paint-only, allowed by the perf budget. */
+.stg-drawline {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: stg-draw 3.2s ease-out infinite;
+}
+.stg-drawline-slow { animation-duration: 4s; }
+.stg-drawline-delayed { animation-delay: 0.3s; }
+@keyframes stg-draw {
+  0% { stroke-dashoffset: 100; }
+  45%, 88% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* ── CH·01 · retail campaign on slim-bezel signage ────────────────────────── */
+.stg-sign {
+  width: 78%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.6em;
+  padding: 0.3em;
+  background: linear-gradient(160deg, #475569, #0f172a 30%, #1e293b 70%, #0b1120);
+  box-shadow: 0 2.4em 6em -1.8em rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(148, 163, 184, 0.15), 0 0 5.4em -0.8em rgba(37, 99, 235, 0.4);
+}
+.stg-sign .stg-screen {
+  border-radius: 0.4em;
+  height: 100%;
+}
+.stg-retail {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 0%, #1d4ed8 0%, #0b2b5e 45%, #04102a 100%);
+}
+.stg-retail::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.35));
+}
+.stg-ret-eyebrow {
+  position: absolute;
+  top: 12%;
+  left: 8%;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.75em;
+  letter-spacing: 0.24em;
+  color: #7dd3fc;
+}
+.stg-ret-big {
+  position: absolute;
+  top: 20%;
+  left: 8%;
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-weight: 700;
+  line-height: 0.95;
+  color: #fff;
+  font-size: 3.4em;
+  letter-spacing: -0.03em;
+}
+.stg-ret-big em {
+  font-style: normal;
+  background: linear-gradient(100deg, #22d3ee, #818cf8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.stg-ret-big small {
+  display: block;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.265em; /* 9px at mockup scale (parent is 34px) */
+  letter-spacing: 0.05em;
+  color: #93b8e8;
+  margin-top: 0.55em;
+}
+.stg-ret-shop {
+  position: absolute;
+  bottom: 16%;
+  left: 8%;
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-weight: 700;
+  background: #fff;
+  color: #0b2b5e;
+  font-size: 0.85em;
+  padding: 0.6em 1.5em;
+  border-radius: 99px;
+  letter-spacing: 0.02em;
+}
+.stg-minitv {
+  position: absolute;
+  right: 9%;
+  top: 22%;
+  width: 33%;
+}
+.stg-minitv .scr {
+  aspect-ratio: 16 / 9;
+  border-radius: 0.4em;
+  padding: 2px;
+  background: linear-gradient(160deg, #52525b, #18181b);
+  box-shadow: 0 1em 2.6em rgba(0, 0, 0, 0.6), 0 0 3em -0.4em rgba(34, 211, 238, 0.45);
+}
+.stg-minitv .scr > div {
+  height: 100%;
+  border-radius: 0.3em;
+  background: linear-gradient(120deg, #22d3ee, #6366f1 45%, #d946ef 90%);
+  background-size: 220% 220%;
+  animation: stg-qled 6s ease-in-out infinite alternate;
+}
+@keyframes stg-qled {
+  from { background-position: 0% 0%; }
+  to { background-position: 100% 100%; }
+}
+.stg-minitv .neck {
+  width: 1.6em;
+  height: 0.7em;
+  margin: 0 auto;
+  background: #18181b;
+  clip-path: polygon(25% 0, 75% 0, 100% 100%, 0 100%);
+}
+.stg-minitv .base {
+  width: 5.2em;
+  height: 0.3em;
+  margin: 0 auto;
+  border-radius: 99px;
+  background: #27272a;
+}
+.stg-minitv .price {
+  margin-top: 0.8em;
+  text-align: center;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.75em;
+  color: #bae6fd;
+  letter-spacing: 0.08em;
+}
+
+/* ── CH·02 · NOC dashboard on a 2×2 video wall ────────────────────────────── */
+.stg-vwall {
+  width: 78%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.3em;
+  padding: 2px;
+  background: linear-gradient(160deg, #334155, #0b1120 40%, #1e293b);
+  box-shadow: 0 2.4em 6em -1.8em rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(148, 163, 184, 0.14), 0 0 5.4em -0.8em rgba(20, 184, 166, 0.35);
+}
+.stg-vwall .stg-screen {
+  border-radius: 2px;
+  height: 100%;
+}
+.stg-ctrl {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #04211c 0%, #0a2f2a 50%, #0f172a 100%);
+}
+.stg-noc-head {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 16%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4%;
+  border-bottom: 1px solid rgba(45, 212, 191, 0.18);
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.7em;
+  letter-spacing: 0.2em;
+  color: #5eead4;
+  background: rgba(2, 10, 9, 0.4);
+  z-index: 3;
+}
+.stg-noc-live {
+  color: #4ade80;
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+}
+.stg-noc-live::before {
+  content: "";
+  width: 0.4em;
+  height: 0.4em;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px #4ade80;
+  animation: stg-pulse 1.6s ease-in-out infinite;
+}
+@keyframes stg-pulse {
+  50% { opacity: 0.4; }
+}
+.stg-noc-chart {
+  position: absolute;
+  left: 4%;
+  top: 24%;
+  width: 42%;
+  height: 34%;
+  border: 1px solid rgba(45, 212, 191, 0.16);
+  border-radius: 0.3em;
+  background: rgba(4, 32, 28, 0.45);
+}
+.stg-kpis {
+  position: absolute;
+  right: 4%;
+  top: 24%;
+  width: 44%;
+  display: flex;
+  gap: 0.4em;
+}
+.stg-kpi {
+  flex: 1;
+  border: 1px solid rgba(45, 212, 191, 0.16);
+  border-radius: 0.3em;
+  background: rgba(4, 32, 28, 0.45);
+  padding: 0.5em 0.6em;
+}
+.stg-kpi b {
+  display: block;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  color: #99f6e4;
+  font-size: 1.05em;
+  font-weight: 500;
+}
+.stg-kpi span {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  color: #3d8f84;
+  font-size: 0.56em;
+  letter-spacing: 0.14em;
+}
+.stg-map {
+  position: absolute;
+  right: 4%;
+  top: 47%;
+  width: 44%;
+  height: 32%;
+  border: 1px solid rgba(45, 212, 191, 0.16);
+  border-radius: 0.3em;
+  background: rgba(4, 32, 28, 0.45);
+}
+.stg-mdot {
+  position: absolute;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: #2dd4bf;
+}
+.stg-mdot::after {
+  content: "";
+  position: absolute;
+  inset: -0.5em;
+  border-radius: 50%;
+  border: 1px solid rgba(45, 212, 191, 0.7);
+  animation: stg-ring 2.4s ease-out infinite;
+}
+.stg-mdot.m2::after { animation-delay: 0.7s; }
+.stg-mdot.m3::after { animation-delay: 1.3s; }
+@keyframes stg-ring {
+  from { transform: scale(0.4); opacity: 1; }
+  to { transform: scale(2.1); opacity: 0; }
+}
+.stg-bars {
+  position: absolute;
+  left: 4%;
+  top: 63%;
+  width: 42%;
+  height: 16%;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.3em;
+}
+.stg-bars i {
+  flex: 1;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(180deg, #2dd4bf, rgba(45, 212, 191, 0.12));
+  /* transform-origin added vs mockup so pulsing bars stay planted on the baseline */
+  transform-origin: bottom;
+  animation: stg-bar 2.6s ease-in-out infinite;
+}
+.stg-bars i:nth-child(1) { height: 55%; }
+.stg-bars i:nth-child(2) { height: 70%; animation-delay: 0.3s; }
+.stg-bars i:nth-child(3) { height: 45%; animation-delay: 0.6s; }
+.stg-bars i:nth-child(4) { height: 85%; animation-delay: 0.9s; }
+.stg-bars i:nth-child(5) { height: 60%; animation-delay: 1.2s; }
+@keyframes stg-bar {
+  50% { transform: scaleY(0.72); }
+}
+.stg-ticker {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 13%;
+  background: rgba(2, 10, 9, 0.6);
+  border-top: 1px solid rgba(45, 212, 191, 0.18);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  z-index: 3;
+}
+.stg-ticker > div {
+  white-space: nowrap;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.65em;
+  letter-spacing: 0.12em;
+  color: #5eead4;
+  animation: stg-tick 14s linear infinite;
+}
+@keyframes stg-tick {
+  from { transform: translateX(30%); }
+  to { transform: translateX(-100%); }
+}
+/* Physical bezel seams of the 2×2 wall — hairlines, deliberately px. */
+.stg-seamv {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  margin-left: -1.5px;
+  background: linear-gradient(90deg, #04060d, #1e293b 50%, #04060d);
+  z-index: 4;
+}
+.stg-seamh {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  margin-top: -1.5px;
+  background: linear-gradient(180deg, #04060d, #1e293b 50%, #04060d);
+  z-index: 4;
+}
+
+/* ── CH·03 · hotel TV home UI on a TV with neck + base stand ──────────────── */
+.stg-tv {
+  width: 64%;
+  aspect-ratio: 16 / 9;
+  border-radius: 0.5em;
+  padding: 0.3em;
+  background: linear-gradient(160deg, #3f3f46, #09090b 35%, #18181b);
+  box-shadow: 0 2.4em 6em -1.8em rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(161, 161, 170, 0.16), 0 0 5.4em -0.8em rgba(217, 119, 6, 0.3);
+}
+.stg-tv .stg-screen {
+  border-radius: 0.3em;
+  height: 100%;
+}
+.stg-neck {
+  width: 3.6em;
+  height: 1.3em;
+  background: linear-gradient(180deg, #27272a, #09090b);
+  clip-path: polygon(28% 0, 72% 0, 100% 100%, 0 100%);
+}
+.stg-base {
+  width: 10em;
+  height: 0.6em;
+  border-radius: 99px;
+  background: linear-gradient(180deg, #3f3f46, #18181b);
+  box-shadow: 0 0.6em 1.4em rgba(0, 0, 0, 0.6);
+}
+.stg-hotel {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, #1e1035 0%, #4c1d95 55%, #7c2d12 130%);
+}
+/* Warm bedside-lamp light, upper right. */
+.stg-hotel::before {
+  content: "";
+  position: absolute;
+  right: -8%;
+  top: -30%;
+  width: 55%;
+  height: 110%;
+  background: radial-gradient(closest-side, rgba(251, 191, 36, 0.22), transparent);
+}
+.stg-hbrand {
+  position: absolute;
+  top: 9%;
+  left: 7%;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.7em;
+  letter-spacing: 0.3em;
+  color: #fcd34d;
+}
+.stg-hbrand small {
+  color: #fbbf24;
+  letter-spacing: 0.1em;
+}
+.stg-hgreet {
+  position: absolute;
+  top: 22%;
+  left: 7%;
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-weight: 500;
+  font-size: 0.9em;
+  letter-spacing: 0.06em;
+  color: #d8c9f7;
+}
+/* Typing welcome line. `max-width` steps() is a documented micro-exception to
+   the transform/opacity budget (17ch of text, repaints a few px per step). */
+.stg-htype {
+  display: block;
+  margin-top: 0.25em;
+  color: #fff;
+  font-family: var(--font-display, system-ui, sans-serif);
+  font-size: 1.78em; /* 16px at mockup scale (parent is 9px) */
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 17ch;
+  border-right: 2px solid rgba(255, 255, 255, 0.75);
+  animation: stg-type 3.6s steps(17) infinite;
+}
+@keyframes stg-type {
+  0% { max-width: 0; }
+  55%, 92% { max-width: 17ch; }
+  100% { max-width: 17ch; }
+}
+.stg-tiles {
+  position: absolute;
+  bottom: 23%;
+  left: 7%;
+  right: 7%;
+  display: flex;
+  gap: 0.6em;
+}
+/* Golden focus ring steps tile-to-tile like a real remote. box-shadow pulse is
+   a documented micro-exception (tiny tiles, paint-only). */
+.stg-tile {
+  flex: 1;
+  height: 3.8em;
+  border-radius: 0.5em;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  display: flex;
+  align-items: flex-end;
+  padding: 0.5em 0.7em;
+  font-weight: 600;
+  font-size: 0.7em;
+  color: #f5f3ff;
+  position: relative;
+  animation: stg-focus 5s linear infinite;
+}
+.stg-tile:nth-child(2) { animation-delay: 1s; }
+.stg-tile:nth-child(3) { animation-delay: 2s; }
+.stg-tile:nth-child(4) { animation-delay: 3s; }
+.stg-tile:nth-child(5) { animation-delay: 4s; }
+@keyframes stg-focus {
+  0%, 16% {
+    box-shadow: 0 0 0 1.5px #fbbf24, 0 0.4em 1.8em rgba(251, 191, 36, 0.35);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
+  }
+  20%, 100% { box-shadow: none; }
+}
+.stg-hinfo {
+  position: absolute;
+  bottom: 8%;
+  left: 7%;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.65em;
+  letter-spacing: 0.16em;
+  color: #e9d5ff;
+  opacity: 0.85;
+}
+
+/* ── CH·04 · whiteboard on a Flip with easel legs + wheels ────────────────── */
+.stg-flip {
+  width: 46%;
+  aspect-ratio: 4 / 3;
+  border-radius: 1em;
+  padding: 0.7em;
+  background: linear-gradient(160deg, #f8fafc, #cbd5e1 60%, #e2e8f0);
+  box-shadow: 0 2.4em 6em -1.8em rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.25), 0 0 5.4em -0.8em rgba(148, 163, 184, 0.35);
+}
+.stg-flip .stg-screen {
+  border-radius: 0.5em;
+  height: 100%;
+  background: #f1f5f9;
+}
+.stg-board {
+  position: absolute;
+  inset: 0;
+  background: #fbfcfe;
+  background-image: radial-gradient(circle, rgba(100, 116, 139, 0.14) 1px, transparent 1.2px);
+  background-size: 1.6em 1.6em;
+}
+.stg-btitle {
+  position: absolute;
+  top: 6%;
+  left: 8%;
+  font-family: var(--font-hand, cursive);
+  font-weight: 600;
+  font-size: 1.9em;
+  color: #1e293b;
+  transform: rotate(-2deg);
+}
+.stg-btitle u {
+  text-decoration-color: #dc2626;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+/* Sticky notes pop in near the end of the 20s cycle (Flip's 15–20s window).
+   `scale` (the standalone property) is animated so the per-note rotate
+   transforms are preserved. */
+.stg-note {
+  position: absolute;
+  width: 4.4em;
+  height: 4em;
+  padding: 0.5em;
+  font-family: var(--font-hand, cursive);
+  font-weight: 600;
+  font-size: 0.95em;
+  line-height: 1.1;
+  color: #334155;
+  box-shadow: 0 0.3em 0.8em rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  animation: stg-note 20s ease-in-out infinite;
+}
+.stg-note.n1 { right: 10%; top: 9%; background: #fef08a; transform: rotate(4deg); animation-delay: 15.3s; }
+.stg-note.n2 { right: 26%; top: 13%; background: #fbcfe8; transform: rotate(-5deg); animation-delay: 15.6s; }
+.stg-note.n3 { right: 8%; top: 38%; background: #bae6fd; transform: rotate(2deg); animation-delay: 15.9s; }
+@keyframes stg-note {
+  0% { opacity: 0; scale: 0.5; }
+  1.6% { opacity: 1; scale: 1.06; }
+  2.6% { scale: 1; }
+  25% { opacity: 1; }
+  28% { opacity: 0; }
+  100% { opacity: 0; }
+}
+.stg-axes {
+  position: absolute;
+  left: 9%;
+  bottom: 14%;
+  width: 56%;
+  height: 52%;
+  border-left: 1.5px solid #94a3b8;
+  border-bottom: 1.5px solid #94a3b8;
+}
+.stg-palette {
+  position: absolute;
+  bottom: 7%;
+  right: 8%;
+  display: flex;
+  gap: 0.4em;
+  z-index: 5;
+}
+.stg-palette i {
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.stg-capdark {
+  position: absolute;
+  bottom: 7%;
+  left: 9%;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  color: #64748b;
+  font-size: 0.8em;
+  letter-spacing: 0.14em;
+  z-index: 5;
+}
+.stg-legs {
+  display: flex;
+  justify-content: center;
+  gap: 5.2em;
+  margin-top: -2px;
+}
+.stg-legs i {
+  width: 0.4em;
+  height: 3.2em;
+  background: linear-gradient(180deg, #475569, #1e293b);
+  border-radius: 3px;
+}
+.stg-legs i:first-child { transform: rotate(9deg); }
+.stg-legs i:last-child { transform: rotate(-9deg); }
+.stg-wheels {
+  display: flex;
+  justify-content: center;
+  gap: 6.8em;
+  margin-top: -0.4em;
+}
+.stg-wheels i {
+  width: 0.8em;
+  height: 0.8em;
+  border-radius: 50%;
+  background: #334155;
+  box-shadow: 0 0.3em 0.6em rgba(0, 0, 0, 0.5);
+}
+
+/* ── stage chrome: scale, tilt, loop machinery, chips ─────────────────────── */
+/* Column = container; .stg-scale turns container width into the em base:
+   10px at the mockup's 440px design width (10/440 = 2.28cqw), clamped so
+   very narrow/wide layouts stay sane. */
+.stg-col {
+  container-type: inline-size;
+  position: relative;
+  z-index: 2;
+}
+.stg-scale {
+  font-size: clamp(7px, 2.28cqw, 13px);
+}
+.stg-persp {
+  perspective: 1200px;
+  position: relative;
+}
+.stg-tilt {
+  transition: transform 0.18s ease-out;
+  transform-style: preserve-3d;
+}
+.stg-float {
+  animation: stg-float 8s ease-in-out infinite;
+}
+@keyframes stg-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.stg-stagebox {
+  position: relative;
+  height: 29.5em;
+}
+/* Dust motes at different translateZ depths. Depth uses the standalone
+   `translate` property so the keyframe's transform doesn't clobber it
+   (mockup animated margin-top; converted to transform per perf budget). */
+.stg-dust {
+  position: absolute;
+  border-radius: 50%;
+  background: #93c5fd;
+  pointer-events: none;
+  animation: stg-dustf 11s ease-in-out infinite alternate;
+}
+.stg-dust.d1 { width: 3px; height: 3px; left: 6%; top: 18%; opacity: 0.3; translate: 0 0 60px; }
+.stg-dust.d2 { width: 2px; height: 2px; right: 10%; top: 30%; opacity: 0.25; translate: 0 0 -50px; animation-duration: 14s; animation-direction: alternate-reverse; }
+.stg-dust.d3 { width: 4px; height: 4px; left: 14%; bottom: 22%; opacity: 0.2; translate: 0 0 30px; animation-duration: 17s; }
+.stg-dust.d4 { width: 2px; height: 2px; right: 18%; bottom: 14%; opacity: 0.3; translate: 0 0 -30px; animation-duration: 13s; animation-direction: alternate-reverse; }
+@keyframes stg-dustf {
+  from { transform: translateY(0); }
+  to { transform: translateY(-16px); }
+}
+/* ── the 20s master clock: 4 channels × 5s, staggered delays ── */
+.stg-prod {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: stg-chan 20s ease-in-out infinite;
+}
+.stg-prod.p2 { animation-delay: 5s; }
+.stg-prod.p3 { animation-delay: 10s; }
+.stg-prod.p4 { animation-delay: 15s; }
+@keyframes stg-chan {
+  0% { opacity: 0; transform: scale(0.965); }
+  2.6% { opacity: 1; transform: scale(1); }
+  25% { opacity: 1; transform: scale(1); }
+  28% { opacity: 0; transform: scale(0.98); }
+  100% { opacity: 0; }
+}
+/* Broadcast OSD tag, top-right, flashes ~2.6s at each channel start. */
+.stg-osd {
+  position: absolute;
+  top: -0.4em;
+  right: 0;
+  z-index: 8;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 0.95em;
+  letter-spacing: 0.14em;
+  color: #bae6fd;
+  background: rgba(2, 6, 17, 0.72);
+  border: 1px solid rgba(125, 211, 252, 0.28);
+  border-radius: 4px;
+  padding: 0.4em 0.9em;
+  opacity: 0;
+  transform: translateY(-6px);
+  animation: stg-osdk 20s ease-in-out infinite;
+}
+.stg-osd b { color: #fff; font-weight: 500; }
+.stg-osd.o2 { animation-delay: 5s; }
+.stg-osd.o3 { animation-delay: 10s; }
+.stg-osd.o4 { animation-delay: 15s; }
+@keyframes stg-osdk {
+  0% { opacity: 0; transform: translateY(-6px); }
+  2% { opacity: 1; transform: translateY(0); }
+  13% { opacity: 1; }
+  17% { opacity: 0; transform: translateY(-2px); }
+  100% { opacity: 0; }
+}
+/* Power-on: bright line expands then fades, once, 1.15s after load. */
+.stg-boot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: #e0f2fe;
+  box-shadow: 0 0 26px 5px rgba(224, 242, 254, 0.95);
+  z-index: 7;
+  transform: scaleX(0);
+  animation: stg-poweron 1.1s ease-out 1.15s forwards;
+}
+@keyframes stg-poweron {
+  0% { transform: scaleX(0); opacity: 1; }
+  55% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+.stg-reveal {
+  opacity: 0;
+  animation: stg-revl 0.9s ease-out 1.95s forwards;
+}
+@keyframes stg-revl {
+  to { opacity: 1; }
+}
+/* ── floor: contact shadow + per-channel light pools ── */
+.stg-floor {
+  position: relative;
+  height: 4.4em;
+  margin-top: 0.6em;
+}
+.stg-shadow {
+  position: absolute;
+  left: 50%;
+  top: 0.4em;
+  transform: translateX(-50%);
+  width: 52%;
+  height: 2em;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.25) 45%, transparent 72%);
+}
+/* Pools are positioned with left/right (not translateX) so the stg-chan
+   keyframe's transform doesn't shift them off-center. Soft gradient stops
+   replace the mockup's blur(12px). */
+.stg-pool {
+  position: absolute;
+  left: 13%;
+  right: 13%;
+  top: 0;
+  height: 3em;
+  opacity: 0;
+  animation: stg-chan 20s ease-in-out infinite;
+}
+.stg-pool.g1 { background: radial-gradient(ellipse, rgba(59, 130, 246, 0.4), rgba(59, 130, 246, 0.15) 45%, transparent 72%); }
+.stg-pool.g2 { background: radial-gradient(ellipse, rgba(45, 212, 191, 0.36), rgba(45, 212, 191, 0.13) 45%, transparent 72%); animation-delay: 5s; }
+.stg-pool.g3 { background: radial-gradient(ellipse, rgba(251, 191, 36, 0.32), rgba(251, 191, 36, 0.12) 45%, transparent 72%); animation-delay: 10s; }
+.stg-pool.g4 { background: radial-gradient(ellipse, rgba(203, 213, 225, 0.32), rgba(203, 213, 225, 0.12) 45%, transparent 72%); animation-delay: 15s; }
+/* Ambient rim-light glow behind the whole stage, re-colored per channel.
+   Soft gradient stops replace the mockup's blur(52px). */
+.stg-glow {
+  position: absolute;
+  inset: -18%;
+  opacity: 0;
+  animation: stg-chan 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+.stg-glow.g1 { background: radial-gradient(closest-side, rgba(30, 64, 175, 0.38), rgba(30, 64, 175, 0.14) 45%, transparent 72%); }
+.stg-glow.g2 { background: radial-gradient(closest-side, rgba(19, 78, 74, 0.42), rgba(19, 78, 74, 0.16) 45%, transparent 72%); animation-delay: 5s; }
+.stg-glow.g3 { background: radial-gradient(closest-side, rgba(146, 64, 14, 0.32), rgba(146, 64, 14, 0.12) 45%, transparent 72%); animation-delay: 10s; }
+.stg-glow.g4 { background: radial-gradient(closest-side, rgba(148, 163, 184, 0.26), rgba(148, 163, 184, 0.1) 45%, transparent 72%); animation-delay: 15s; }
+/* ── manual mode: chips pin a channel, loop visuals freeze ── */
+.stg-manual .stg-prod,
+.stg-manual .stg-glow,
+.stg-manual .stg-pool,
+.stg-manual .stg-osd {
+  animation: none !important;
+  opacity: 0 !important;
+}
+.stg-manual .stg-prod.on { opacity: 1 !important; transform: scale(1); }
+.stg-manual .stg-glow.on { opacity: 1 !important; }
+.stg-manual .stg-pool.on { opacity: 0.85 !important; }
+.stg-manual .stg-osd.on { opacity: 1 !important; transform: translateY(0) !important; }
+/* Sticky notes ride the 20s clock; when Flip is pinned, show them statically. */
+.stg-manual .stg-note { animation: none !important; opacity: 1 !important; }
+/* ── chips: real buttons, real UI — fixed px type, not stage-scaled ── */
+.stg-chips {
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+  margin-top: 8px;
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+}
+.stg-chip {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #94a3b8; /* ≥4.5:1 on the near-black hero */
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  padding: 6px 12px;
+  min-height: 30px;
+  border-radius: 99px;
+  position: relative;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.5);
+  cursor: pointer;
+  transition: border-color 0.25s, color 0.25s;
+}
+.stg-chip:hover {
+  border-color: rgba(125, 211, 252, 0.45);
+  color: #cbd5e1;
+}
+.stg-chip[aria-pressed="true"] {
+  border-color: rgba(56, 189, 248, 0.65);
+  color: #e0f2fe;
+}
+/* Per-chip progress bar synced to the 20s clock. Mockup animated width;
+   converted to scaleX per perf budget. */
+.stg-chip-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  animation: stg-chipbar 20s linear infinite;
+}
+.stg-chip.c2 .stg-chip-bar { animation-delay: 5s; }
+.stg-chip.c3 .stg-chip-bar { animation-delay: 10s; }
+.stg-chip.c4 .stg-chip-bar { animation-delay: 15s; }
+@keyframes stg-chipbar {
+  0% { transform: scaleX(0); opacity: 1; }
+  25% { transform: scaleX(1); opacity: 1; }
+  26% { transform: scaleX(1); opacity: 0; }
+  100% { transform: scaleX(0); opacity: 0; }
+}
+.stg-manual .stg-chip-bar {
+  animation: none !important;
+  transform: scaleX(0);
+}
+.stg-chip-auto {
+  color: #67e8f9;
+  border-color: rgba(103, 232, 249, 0.4);
+}
+
+/* ── hero shell (classes used by the server HeroSection) ──────────────────── */
+.hero2 {
+  background: #04060d;
+  isolation: isolate;
+}
+/* Pixel-grid dot field — the "display" identity motif. */
+.hero2-dots {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(148, 163, 184, 0.07) 1px, transparent 1.3px);
+  background-size: 26px 26px;
+}
+.hero2-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 120%, transparent 30%, rgba(0, 0, 0, 0.55) 100%);
+}
+/* Static film grain: one tiny inline SVG data-URI, per the perf budget. */
+.hero2-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  /* Angle brackets URL-encoded: Firefox rejects raw <> in SVG data URIs. */
+  background-image: url('data:image/svg+xml;utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="140" height="140"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2"/%3E%3C/filter%3E%3Crect width="140" height="140" filter="url(%23n)" opacity="0.55"/%3E%3C/svg%3E');
+}
+/* Aurora blobs. Soft gradient stops replace the mockup's blur(70px). */
+.hero2-aur {
+  position: absolute;
+  width: 46%;
+  height: 52%;
+  opacity: 0.5;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero2-aur-a {
+  left: -8%;
+  top: -14%;
+  background: radial-gradient(closest-side, rgba(37, 99, 235, 0.34), rgba(37, 99, 235, 0.12) 45%, transparent 72%);
+  animation: hero2-drift 16s ease-in-out infinite alternate;
+}
+.hero2-aur-b {
+  right: -10%;
+  bottom: -18%;
+  background: radial-gradient(closest-side, rgba(124, 58, 237, 0.27), rgba(124, 58, 237, 0.1) 45%, transparent 72%);
+  animation: hero2-drift 19s ease-in-out infinite alternate-reverse;
+}
+@keyframes hero2-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(40px, 26px) scale(1.15); }
+}
+/* Entrance rise for badge / subcopy / CTAs (H1 uses .hero-word). `both` fill
+   keeps elements hidden through their delay and painted after. */
+.hero2-rise {
+  animation: hero2-risein 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes hero2-risein {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* Mono badge with pulsing status dot (reuses stg-pulse from the NOC scene). */
+.hero2-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+  background: rgba(125, 211, 252, 0.07);
+  border: 1px solid rgba(125, 211, 252, 0.16);
+  padding: 7px 16px;
+  border-radius: 99px;
+}
+.hero2-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+  animation: stg-pulse 2.4s ease-in-out infinite;
+}
+@media (max-width: 420px) {
+  .hero2-badge { font-size: 10px; letter-spacing: 0.16em; }
+}
+/* Shimmering headline gradient (replaces the static bg-clip gradient). */
+.hero2-grad {
+  background: linear-gradient(100deg, #60a5fa 15%, #a5b4fc 38%, #f0f9ff 50%, #c4b5fd 62%, #818cf8 85%);
+  background-size: 230% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: hero2-shimmer 7s ease-in-out infinite;
+}
+@keyframes hero2-shimmer {
+  0%, 100% { background-position: 0% 0; }
+  50% { background-position: 100% 0; }
+}
+/* H1 sizing. Today's full-width clamp collides with the stage in the narrow
+   two-column band (1024–1279px: left column is ~360–615px while 4.8vw text
+   runs wider — measured overlap at 1024px), so that band gets a tighter clamp.
+   ≥1280px keeps the original scale, where any spill stays inside the grid gap. */
+.hero2-h1 {
+  font-size: clamp(36px, 4.8vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+@media (min-width: 1024px) and (max-width: 1279.98px) {
+  .hero2-h1 { font-size: clamp(32px, 3.6vw, 46px); }
+}
+.hero2-sub { color: #8b98ad; }
+.hero2-sub strong { color: #d3dbe6; }
+.hero2-disp { font-family: var(--font-display, system-ui, sans-serif); }
+/* CTA hover sheen sweep (MagneticButton still wraps the links). */
+.hero2-cta {
+  position: relative;
+  overflow: hidden;
+}
+.hero2-cta::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  bottom: -40%;
+  width: 30%;
+  left: -50%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.5s ease;
+}
+.hero2-cta:hover::after { left: 130%; }
+.hero2-cta2 {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  transition: border-color 0.3s, background-color 0.3s;
+}
+.hero2-cta2:hover {
+  border-color: rgba(125, 211, 252, 0.5);
+  background: rgba(125, 211, 252, 0.06);
+}
+
+/* ── reduced motion: everything static, CH·01 visible, copy visible ─────────
+   The global guard in globals.css force-completes animations (0.001ms × 1
+   iteration); the 20s loop has no fill, so without these overrides every
+   channel would land at opacity 0. This block loads after globals.css
+   (component CSS ordering) and pins the exact static frame we want. */
+@media (prefers-reduced-motion: reduce) {
+  .hero2 *,
+  .hero2 *::before,
+  .hero2 *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .hero2-rise,
+  .hero2 .hero-word,
+  .stg-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .stg-boot { display: none; }
+  .stg-prod, .stg-glow, .stg-pool, .stg-osd { opacity: 0; }
+  .stg-prod.p1 { opacity: 1; }
+  .stg-glow.g1 { opacity: 1; }
+  .stg-pool.g1 { opacity: 0.85; }
+  .stg-osd.o1 { opacity: 1; transform: translateY(0); }
+  .stg-note { opacity: 1; }
+  .stg-chip-bar, .stg-screen::after { display: none; }
+  .stg-htype { max-width: 17ch; border-right-color: transparent; }
+  .stg-drawline { stroke-dashoffset: 0 !important; }
+}

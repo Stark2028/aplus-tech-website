@@ -27,15 +27,25 @@ const ALLOWED_ORIGINS = new Set([
 // accepted when NODE_ENV === "production".
 const ALLOW_LOCALHOST = process.env.NODE_ENV !== "production";
 
-// Vercel deployment URLs (production aliases + per-commit previews) are served
-// from *.vercel.app. Allow them so forms work on the Vercel domain before the
-// custom domain is attached. The subdomain space is controlled by Vercel, and
-// the per-IP rate limit + honeypot still apply, so this stays low-risk.
-const VERCEL_ORIGIN = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i;
+// Vercel deployment URLs (per-commit preview, branch alias, and the project's
+// production .vercel.app alias), taken from Vercel's own env vars rather than
+// a *.vercel.app wildcard — anyone can deploy an unrelated project to
+// some-name.vercel.app, so a wildcard would let any Vercel-hosted page pass
+// the Origin gate. These env vars are absent off-Vercel, leaving only the
+// custom domains above.
+const VERCEL_ORIGINS = new Set(
+  [
+    process.env.VERCEL_URL,
+    process.env.VERCEL_BRANCH_URL,
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+  ]
+    .filter((host): host is string => Boolean(host))
+    .map((host) => `https://${host.toLowerCase()}`)
+);
 
 function isOriginAllowed(origin: string): boolean {
   if (ALLOWED_ORIGINS.has(origin)) return true;
-  if (VERCEL_ORIGIN.test(origin)) return true;
+  if (VERCEL_ORIGINS.has(origin.toLowerCase())) return true;
   if (ALLOW_LOCALHOST && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return true;
   return false;
 }
@@ -201,7 +211,26 @@ export async function POST(req: Request) {
       );
     }
 
-    const body: Record<string, string> = await req.json();
+    const parsed: unknown = await req.json();
+
+    // Body must be a plain JSON object. A parseable-but-wrong-shape body
+    // (null, an array, a string, a number) would otherwise throw on the first
+    // property access below and surface as a noisy 500; reject it as a clean
+    // 400 instead. (typeof null === "object", so the null check is explicit.)
+    if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return NextResponse.json({ success: false, message: "Invalid request body." }, { status: 400 });
+    }
+
+    // Every field must be a string. The email builder interpolates values via
+    // esc(), which calls String.prototype.replace — a non-string value (object,
+    // array, number) would throw there and abort with a 500. Rejecting up front
+    // keeps the contract (Record<string, string>) honest and the failure clean.
+    for (const value of Object.values(parsed)) {
+      if (typeof value !== "string") {
+        return NextResponse.json({ success: false, message: "Invalid request body." }, { status: 400 });
+      }
+    }
+    const body = parsed as Record<string, string>;
 
     // Honeypot: bots fill hidden fields; humans leave them empty.
     // Silently accept (200) so bots don't learn the field is a trap.
@@ -241,7 +270,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, message: "Failed to send email." }, { status: 500 });
     }
 
-    if (isQuote && process.env.ZOHO_REFRESH_TOKEN) {
+    // Every submission becomes a CRM lead — quote carts, lead-gate downloads,
+    // per-product quote requests, and contact inquiries alike. Zoho failure is
+    // deliberately non-fatal: the email above already delivered the lead.
+    if (process.env.ZOHO_REFRESH_TOKEN) {
       await createZohoLead(body).catch((err) => console.error("[zoho]", err));
     }
 

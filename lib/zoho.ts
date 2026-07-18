@@ -1,13 +1,28 @@
 const TOKEN_URL = "https://accounts.zoho.in/oauth/v2/token";
 const LEADS_URL = "https://www.zohoapis.in/crm/v2/Leads";
 
+/** Transient HTTP statuses worth retrying: rate-limit + upstream/server errors. */
+function isRetryableStatus(status: number): boolean {
+  return status === 429 || status >= 500;
+}
+
 async function fetchWithRetry(url: string, options: RequestInit, retries = 3): Promise<Response> {
   let lastErr: unknown;
   for (let i = 0; i < retries; i++) {
+    const isLastAttempt = i === retries - 1;
     try {
-      return await fetch(url, options);
+      const res = await fetch(url, options);
+      // fetch() only throws on network-level failures; HTTP 5xx/429 come back as
+      // a non-ok Response. Treat those as retryable too, otherwise a transient
+      // Zoho outage bypasses the retry loop entirely and the lead is lost.
+      if (!res.ok && isRetryableStatus(res.status) && !isLastAttempt) {
+        await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
+        continue;
+      }
+      return res;
     } catch (err) {
       lastErr = err;
+      if (isLastAttempt) break;
       await new Promise((r) => setTimeout(r, 1000 * (i + 1)));
     }
   }
@@ -43,6 +58,11 @@ export async function createZohoLead(body: Record<string, string>): Promise<void
 
   const description = [
     body.items_list ? `Products Requested:\n${body.items_list}` : "",
+    body.product ? `Product: ${body.product}` : "",
+    body.inquiry_type ? `Inquiry Type: ${body.inquiry_type}` : "",
+    // Lead-gate submissions send the same text as both message and items_list;
+    // skip the duplicate so the description stays readable.
+    body.message && body.message !== body.items_list ? `Message: ${body.message}` : "",
     body.requirements ? `Notes: ${body.requirements}` : "",
     body.subject ? `Ref: ${body.subject}` : "",
   ]

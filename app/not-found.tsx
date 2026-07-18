@@ -2,19 +2,17 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Search, Phone, ArrowRight, Monitor } from "lucide-react";
+import { ArrowLeft, Search, Phone, ArrowRight } from "lucide-react";
+import { MonitorIcon } from "@/components/icons";
+import { useIsMac } from "@/hooks/usePlatform";
 import { products } from "@/data/products";
+import { productCategories } from "@/data/categories";
+import { PHONE_TEL } from "@/lib/contact";
 
 const POPULAR = products.slice(0, 4);
 
-const CATEGORIES = [
-  { label: "Digital Signage", href: "/categories/digital-signage" },
-  { label: "Video Walls", href: "/categories/video-walls" },
-  { label: "Interactive Displays", href: "/categories/interactive" },
-  { label: "Hospitality TV", href: "/categories/commercial-tv" },
-];
-
 export default function NotFound() {
+  const isMac = useIsMac();
   const openSearch = () =>
     window.dispatchEvent(new CustomEvent("aplus:search:open"));
 
@@ -42,19 +40,19 @@ export default function NotFound() {
             <Search size={16} className="shrink-0" />
             <span className="flex-1 text-left">Search products, guides…</span>
             <kbd className="text-[10px] bg-white border border-gray-200 rounded px-1.5 py-0.5 font-mono text-gray-400">
-              ⌘K
+              {isMac ? "⌘K" : "Ctrl K"}
             </kbd>
           </button>
 
           {/* Category pills */}
           <div className="flex flex-wrap justify-center gap-2 mb-8">
-            {CATEGORIES.map((cat) => (
+            {productCategories.map((cat) => (
               <Link
-                key={cat.href}
-                href={cat.href}
+                key={cat.id}
+                href={`/categories/${cat.id}`}
                 className="px-4 py-1.5 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-blue-300 hover:text-blue-700 hover:bg-blue-50 transition-all"
               >
-                {cat.label}
+                {cat.navLabel}
               </Link>
             ))}
           </div>
@@ -69,7 +67,7 @@ export default function NotFound() {
               Back to Home
             </Link>
             <a
-              href="tel:+919310509909"
+              href={PHONE_TEL}
               className="inline-flex items-center justify-center gap-2 bg-white border border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-700 px-7 py-3 rounded-xl font-semibold text-sm transition-all"
             >
               <Phone size={15} />
@@ -109,7 +107,11 @@ export default function NotFound() {
                   />
                 ) : (
                   <div className="h-full flex items-center justify-center">
-                    <Monitor size={28} className="text-gray-300" />
+                    <MonitorIcon
+                      size={28}
+                      className="text-gray-300"
+                      accentClassName="text-gray-300"
+                    />
                   </div>
                 )}
               </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { jsonLdString } from "@/lib/jsonLd";
+import { PHONE_E164 } from "@/lib/contact";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -38,7 +39,7 @@ const localBusinessSchema = {
   description:
     "Authorized Samsung distributor for Smart Signage, Video Walls, Interactive Displays, and Hospitality TVs. End-to-end supply, installation & AMC support across India.",
   url: "https://www.aplustechsol.com",
-  telephone: "+919310509909",
+  telephone: PHONE_E164,
   email: "info@aplustechsol.com",
   logo: "https://www.aplustechsol.com/logo.png",
   image: "https://www.aplustechsol.com/og-default.png",

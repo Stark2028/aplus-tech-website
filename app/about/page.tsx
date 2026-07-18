@@ -1,14 +1,13 @@
+import { ChevronRight, ArrowRight, Linkedin } from "lucide-react";
 import {
-  CheckCircle2,
-  Users,
-  Award,
-  Headphones,
-  Truck,
-  ShieldCheck,
-  ChevronRight,
-  ArrowRight,
-  Linkedin,
-} from "lucide-react";
+  CheckCircleIcon,
+  UsersIcon,
+  AwardIcon,
+  HeadphonesIcon,
+  TruckIcon,
+  ShieldCheckIcon,
+  IconTile,
+} from "@/components/icons";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
@@ -26,43 +25,43 @@ export const metadata: Metadata = {
     url: ABOUT_URL,
     title: "About Us | Aplus Technology Solutions",
     description:
-      "Authorized Samsung distributor with 7+ years of experience, 500+ enterprise clients, and 1,000+ installations across India.",
+      "Authorized Samsung distributor with 5+ years of experience, 500+ enterprise clients, and 10,000+ installations across India.",
     images: [{ url: "/og-default.png", width: 1200, height: 630, alt: "About Aplus Technology Solutions" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "About Us | Aplus Technology Solutions",
     description:
-      "Authorized Samsung distributor with 7+ years of experience, 500+ enterprise clients, and 1,000+ installations across India.",
+      "Authorized Samsung distributor with 5+ years of experience, 500+ enterprise clients, and 10,000+ installations across India.",
     images: ["/og-default.png"],
   },
 };
 
 const STATS = [
-  { value: "7+", label: "Years in Business" },
+  { value: "5+", label: "Years in Business" },
   { value: "500+", label: "Enterprise Clients" },
-  { value: "1,000+", label: "Installations" },
+  { value: "10,000+", label: "Installations" },
   { value: "50+", label: "Cities Served" },
 ];
 
 const VALUES = [
   {
-    icon: ShieldCheck,
+    icon: ShieldCheckIcon,
     title: "Authorized & Genuine",
-    desc: "Every product we supply is 100% genuine Samsung with full manufacturer warranty. We are an official Samsung Business Display partner.",
+    desc: "Every product we supply is 100% genuine Samsung with full manufacturer warranty. We are an official Samsung Business Display partner with an ISO 9001:2015-certified quality management system.",
   },
   {
-    icon: Users,
+    icon: UsersIcon,
     title: "Client-First Approach",
     desc: "We don't push products — we understand your space, use case, and budget, then recommend exactly what's right for you.",
   },
   {
-    icon: Truck,
+    icon: TruckIcon,
     title: "End-to-End Service",
     desc: "From pre-sales consultation to post-installation support, we manage the entire journey. One point of contact, zero headaches.",
   },
   {
-    icon: Headphones,
+    icon: HeadphonesIcon,
     title: "Always-On Support",
     desc: "Technical issues don't keep business hours. Our support team is available 24/7 with guaranteed response SLAs for enterprise accounts.",
   },
@@ -72,7 +71,7 @@ const TEAM = [
   {
     name: "Anurag Walia",
     role: "Director",
-    image: "/team/anurag-walia-v2.jpg",
+    image: "/team/anurag-walia-v3.jpg",
     linkedin: "https://www.linkedin.com/in/anurag-walia-bba9103/",
   },
   {
@@ -83,7 +82,7 @@ const TEAM = [
   {
     name: "Sunil Kumar",
     role: "Director",
-    image: "/team/sunil-kumar.png",
+    image: "/team/sunil-kumar.jpg",
     linkedin: "https://www.linkedin.com/in/sunil-kumar-a5850217/",
   },
   {
@@ -100,7 +99,7 @@ const MILESTONES = [
   { year: "2023", event: "Launched dedicated hospitality and education verticals." },
   { year: "2024", event: "500+ clients milestone; expanded to 50+ cities pan-India." },
   { year: "2025", event: "Introduced AMC contracts and 24/7 remote support program." },
-  { year: "2026", event: "Expanding into Tier-2 cities with a new national service partner network." },
+  { year: "2026", event: "Achieved ISO 9001:2015 certification; expanding into Tier-2 cities with a new national service partner network." },
 ];
 
 const STORY_PILLARS = [
@@ -201,7 +200,7 @@ export default function AboutPage() {
                 {STORY_PILLARS.map((item) => (
                   <div key={item} className="flex items-center gap-4 bg-slate-50 border border-slate-100 rounded-2xl p-4 hover:bg-blue-50/50 hover:border-blue-100/60 transition-colors">
                     <div className="w-10 h-10 shrink-0 rounded-full bg-blue-100/80 flex items-center justify-center">
-                      <CheckCircle2 className="text-blue-600" size={18} strokeWidth={2.5} />
+                      <CheckCircleIcon className="text-slate-700" size={18} />
                     </div>
                     <span className="text-slate-800 text-[14px] font-bold leading-snug block">{item}</span>
                   </div>
@@ -209,7 +208,7 @@ export default function AboutPage() {
                 <div className="flex items-center gap-4 bg-linear-to-br from-blue-50/50 to-white border border-blue-100/60 rounded-2xl p-4 hover:shadow-sm hover:border-blue-200 transition-all group relative overflow-hidden">
                   <div className="absolute right-0 top-0 w-24 h-24 bg-blue-100/50 rounded-full blur-2xl -mr-8 -mt-8 group-hover:bg-blue-200/60 transition-colors duration-500" />
                   <div className="w-10 h-10 shrink-0 rounded-full bg-blue-100/80 flex items-center justify-center relative z-10 group-hover:scale-105 transition-transform duration-500">
-                    <Award className="text-blue-600" size={18} strokeWidth={2.5} />
+                    <AwardIcon className="text-slate-700" size={18} />
                   </div>
                   <div className="relative z-10">
                     <span className="text-slate-900 text-[14px] font-extrabold leading-snug block mb-0.5">Best AV Distributor</span>
@@ -237,9 +236,10 @@ export default function AboutPage() {
                   <dl className="space-y-5">
                     {[
                       { k: "Certification", v: "Authorized Samsung B2B Partner" },
+                      { k: "Quality System", v: "ISO 9001:2015 Certified" },
                       { k: "Coverage", v: "Pan-India · 50+ cities" },
                       { k: "Support", v: "24 / 7 Technical Response" },
-                      { k: "Founded", v: "2020 · Noida, India" },
+                      { k: "Founded", v: "2020 · India" },
                       { k: "CIN", v: "U72900DL2020PTC374888" },
                       { k: "GSTIN", v: "07AAUCA5631L1Z6" },
                     ].map((row, i, arr) => (
@@ -280,9 +280,9 @@ export default function AboutPage() {
                 key={title}
                 className="group bg-white p-8 hover:bg-linear-to-br hover:from-white hover:to-blue-50/40 transition-colors"
               >
-                <div className="w-11 h-11 rounded-xl bg-blue-50 group-hover:bg-blue-600 flex items-center justify-center mb-6 transition-colors">
-                  <Icon className="text-blue-600 group-hover:text-white transition-colors" size={20} />
-                </div>
+                <IconTile className="mb-6">
+                  <Icon className="text-current" size={22} />
+                </IconTile>
                 <h3 className="font-bold text-gray-900 mb-2 tracking-tight">{title}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
               </div>
@@ -306,7 +306,7 @@ export default function AboutPage() {
           {/* Desktop: horizontal timeline */}
           <div className="hidden md:block">
             <div className="relative">
-              <div className="absolute left-[calc(100%/12)] right-[calc(100%/12)] top-6.5 h-px bg-gray-200" />
+              <div className="absolute left-[calc(100%/12)] right-[calc(100%/12)] top-[7px] h-px bg-gray-200" />
               <div className="grid grid-cols-6 gap-x-3 relative">
                 {MILESTONES.map((m) => (
                   <div key={m.year} className="relative">

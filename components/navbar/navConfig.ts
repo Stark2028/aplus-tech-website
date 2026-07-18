@@ -5,5 +5,6 @@ export const SOLUTIONS = [
   { label: "Retail & Public Spaces", href: "/solutions/retail" },
 ];
 
-export const PHONE_NUMBER = "+91 93105 09909";
-export const PHONE_TEL = "tel:+919310509909";
+// Re-exported from the canonical contact module so existing
+// `@/components/navbar/navConfig` imports keep working.
+export { PHONE_DISPLAY as PHONE_NUMBER, PHONE_TEL } from "@/lib/contact";

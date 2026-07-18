@@ -3,28 +3,37 @@ import { products } from "@/data/products";
 import { getCategoryByName } from "@/data/categories";
 import QuoteForm from "@/components/QuoteForm";
 import Link from "next/link";
+import { ChevronRight, Check, Phone, ArrowRight } from "lucide-react";
 import {
-  ChevronRight,
-  Check,
-  Monitor,
-  Phone,
-  ShieldCheck,
-  Truck,
-  Award,
-  ArrowRight,
-} from "lucide-react";
+  MonitorIcon,
+  ShieldCheckIcon,
+  TruckIcon,
+  AwardIcon,
+} from "@/components/icons";
 import ProductGallery from "@/components/ProductGallery";
 import ProductActions from "@/components/ProductActions";
 import SpecSheetButton from "@/components/SpecSheetButton";
 import CompareButton from "@/components/CompareButton";
+import WhatsAppIcon from "@/components/quote/WhatsAppIcon";
 import Image from "next/image";
 import { Metadata } from "next";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import MobileProductScroller from "@/components/MobileProductScroller";
-import { breadcrumbLd, productLd, jsonLdString } from "@/lib/jsonLd";
+import { breadcrumbLd, productLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
+import { buildProductFaqs } from "@/lib/productFaq";
+import { modelCodeFor } from "@/lib/modelCodes";
+import { formatSize, formatSizeRange } from "@/lib/formatSize";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 
 export const revalidate = 3600;
+
+// All product slugs are enumerated below from static data, so reject any param
+// outside that set at the routing layer. Without this, an unknown slug streams
+// through loading.tsx (Suspense) + ISR and Next serves the notFound() page with
+// a soft 200 instead of a real 404 (vercel/next.js#63478, #76501) — which lets
+// junk/typo URLs get indexed. dynamicParams=false makes unknown slugs a true 404.
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return products.map((p) => ({ slug: p.id }));
@@ -40,23 +49,31 @@ export async function generateMetadata({
   if (!product) return { title: "Product Not Found | Aplus Tech" };
   const url = `https://www.aplustechsol.com/products/${slug}`;
   const ogAlt = `${product.name} — ${product.series} ${product.category}`;
+  const modelCode = modelCodeFor(slug);
+  // Model code in the title captures exact model-number searches (common in B2B).
+  const title = modelCode ? `${product.name} (${modelCode})` : product.name;
+  const sizeRange = formatSizeRange(product.specs.screenSizes);
+  const metaDescription = `${product.description} Available in ${sizeRange} — B2B pricing from Aplus, an authorized Samsung distributor in India.`;
   return {
-    title: product.name,
-    description: product.description,
+    title,
+    description: metaDescription,
     keywords: [
       product.name,
       product.series,
+      ...(modelCode ? [modelCode] : []),
       product.category,
       "Samsung",
       "B2B",
+      "price",
+      "dealer India",
       "Aplus Technology Solutions",
     ],
     alternates: { canonical: url },
     openGraph: {
       type: "website",
       url,
-      title: product.name,
-      description: product.description,
+      title,
+      description: metaDescription,
       images: product.images?.[0]
         ? [{ url: product.images[0], width: 1200, height: 630, alt: ogAlt }]
         : [],
@@ -91,6 +108,9 @@ export default async function ProductPage({
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
+  const faqs = buildProductFaqs(product);
+  const modelCode = modelCodeFor(product.id);
+
   const jsonLd = [
     productLd(product),
     breadcrumbLd([
@@ -99,6 +119,7 @@ export default async function ProductPage({
       { name: product.category, url: `/categories/${categorySlug}` },
       { name: product.name, url: `/products/${product.id}` },
     ]),
+    faqPageLd(faqs.map((f) => ({ question: f.q, answer: f.a }))),
   ];
 
   return (
@@ -113,15 +134,15 @@ export default async function ProductPage({
         <span className="font-medium">Authorized Samsung Distributor</span>
         <span className="mx-2 opacity-50">·</span>
         Get B2B pricing in 24 hrs —{" "}
-        <a href="tel:+919310509909" className="underline font-semibold hover:no-underline">
-          Call +91 93105 09909
+        <a href={PHONE_TEL} className="underline font-semibold hover:no-underline">
+          Call {PHONE_DISPLAY}
         </a>
       </div>
 
       {/* ── BREADCRUMB ────────────────────────────────────────────── */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <nav className="flex items-center justify-end text-sm text-gray-500 flex-wrap gap-1">
+          <nav className="flex items-center text-sm text-gray-500 flex-wrap gap-1">
             <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
             <ChevronRight size={14} className="text-gray-300" />
             <Link href="/products" className="hover:text-blue-600 transition-colors">Products</Link>
@@ -149,6 +170,16 @@ export default async function ProductPage({
           <h1 className="text-2xl font-extrabold text-slate-900 mb-2 leading-snug tracking-tight">
             {product.name}
           </h1>
+          {modelCode && (
+            <p className="flex items-center gap-2 mb-3 text-[11px]">
+              <span className="font-semibold uppercase tracking-widest text-slate-400">
+                Model
+              </span>
+              <span className="font-mono text-[13px] font-semibold text-slate-900 bg-white border border-slate-300 shadow-sm rounded-lg px-2.5 py-1 tracking-wide">
+                {modelCode}
+              </span>
+            </p>
+          )}
           <p className="text-slate-500 text-sm leading-relaxed">
             {product.description}
           </p>
@@ -165,7 +196,7 @@ export default async function ProductPage({
                 <ProductGallery images={product.images} productName={product.name} />
               ) : (
                 <div className="h-72 flex flex-col items-center justify-center text-gray-300 gap-3">
-                  <Monitor size={64} strokeWidth={1} />
+                  <MonitorIcon size={64} accentClassName="text-current" />
                   <p className="text-sm">Product image coming soon</p>
                 </div>
               )}
@@ -184,7 +215,7 @@ export default async function ProductPage({
                   },
                   {
                     label: "Sizes",
-                    value: product.specs.screenSizes.length === 1 ? `${product.specs.screenSizes[0]}\"` : `${product.specs.screenSizes[0]}\"–${product.specs.screenSizes[product.specs.screenSizes.length - 1]}\"`,
+                    value: formatSizeRange(product.specs.screenSizes),
                   },
                 ].map(({ label, value }) => (
                   <div key={label} className="bg-slate-50/80 rounded-xl p-3 border border-slate-100">
@@ -208,7 +239,7 @@ export default async function ProductPage({
                         key={s}
                         className="px-3 py-1.5 bg-slate-50 border border-slate-200/80 rounded-lg text-xs font-semibold text-slate-700"
                       >
-                        {s}&quot;
+                        {formatSize(s)}
                       </span>
                     ))}
                   </div>
@@ -229,9 +260,7 @@ export default async function ProductPage({
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center gap-2 bg-linear-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-400 text-white py-3.5 rounded-xl font-semibold text-sm shadow-sm"
                 >
-                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white shrink-0">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                  </svg>
+                  <WhatsAppIcon />
                   WhatsApp
                 </a>
                 <a
@@ -314,7 +343,7 @@ export default async function ProductPage({
                       { label: "Brightness", value: product.specs.brightness },
                       {
                         label: "Available Sizes",
-                        value: product.specs.screenSizes.map((s) => `${s}"`).join(" · "),
+                        value: product.specs.screenSizes.map(formatSize).join(" · "),
                       },
                       { label: "Operation Hours", value: product.specs.operationTime },
                       { label: "Series", value: product.series },
@@ -343,15 +372,15 @@ export default async function ProductPage({
             {/* Trust badges */}
             <div className="grid grid-cols-3 gap-3">
               {[
-                { icon: ShieldCheck, label: "Authorized Samsung Distributor" },
-                { icon: Truck, label: "Pan-India Delivery" },
-                { icon: Award, label: "Certified Installation" },
+                { icon: ShieldCheckIcon, label: "Authorized Samsung Distributor" },
+                { icon: TruckIcon, label: "Pan-India Delivery" },
+                { icon: AwardIcon, label: "Certified Installation" },
               ].map(({ icon: Icon, label }) => (
                 <div
                   key={label}
                   className="bg-white border border-gray-100 rounded-xl p-4 flex flex-col items-center gap-2 text-center"
                 >
-                  <Icon size={22} className="text-blue-600" />
+                  <Icon size={22} className="text-slate-700" />
                   <span className="text-xs font-medium text-gray-600">{label}</span>
                 </div>
               ))}
@@ -374,6 +403,16 @@ export default async function ProductPage({
                 <h1 className="text-2xl font-extrabold text-slate-900 mb-3 leading-snug tracking-tight">
                   {product.name}
                 </h1>
+                {modelCode && (
+                  <p className="flex items-center gap-2 mb-4 text-[11px]">
+                    <span className="font-semibold uppercase tracking-widest text-slate-400">
+                      Model
+                    </span>
+                    <span className="font-mono text-[13px] font-semibold text-slate-900 bg-white border border-slate-300 shadow-sm rounded-lg px-2.5 py-1 tracking-wide">
+                      {modelCode}
+                    </span>
+                  </p>
+                )}
                 <p className="text-slate-500 text-[14px] leading-relaxed mb-6">
                   {product.description}
                 </p>
@@ -389,7 +428,7 @@ export default async function ProductPage({
                     },
                     {
                       label: "Sizes",
-                      value: product.specs.screenSizes.length === 1 ? `${product.specs.screenSizes[0]}\"` : `${product.specs.screenSizes[0]}\"–${product.specs.screenSizes[product.specs.screenSizes.length - 1]}\"`,
+                      value: formatSizeRange(product.specs.screenSizes),
                     },
                   ].map(({ label, value }) => (
                     <div key={label} className="bg-slate-50/80 rounded-xl p-3.5 border border-slate-100 transition-colors hover:bg-blue-50/30 hover:border-blue-100/50">
@@ -411,9 +450,9 @@ export default async function ProductPage({
                       {product.specs.screenSizes.map((s) => (
                         <span
                           key={s}
-                          className="px-3.5 py-1.5 bg-slate-50 border border-slate-200/80 hover:border-blue-300 rounded-lg text-[13px] font-semibold text-slate-700 cursor-default transition-all"
+                          className="px-3.5 py-1.5 bg-slate-50 border border-slate-200/80 rounded-lg text-[13px] font-semibold text-slate-700"
                         >
-                          {s}&quot;
+                          {formatSize(s)}
                         </span>
                       ))}
                     </div>
@@ -433,18 +472,16 @@ export default async function ProductPage({
                 {/* Direct contact */}
                 <div className="flex gap-3 mt-4">
                   <a
-                    href={`https://wa.me/919310509909?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(product.name)}.%20Please%20share%20pricing.`}
+                    href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(product.name)}.%20Please%20share%20pricing.`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 flex items-center justify-center gap-2 bg-linear-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-400 text-white py-3.5 rounded-xl font-semibold text-[14px] shadow-sm shadow-emerald-500/20 hover:shadow-md hover:shadow-emerald-500/20 hover:-translate-y-0.5 transition-all duration-300"
                   >
-                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white shrink-0">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                    </svg>
+                    <WhatsAppIcon />
                     WhatsApp
                   </a>
                   <a
-                    href="tel:+919310509909"
+                    href={PHONE_TEL}
                     className="flex-1 flex items-center justify-center gap-2 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 py-3.5 rounded-xl font-semibold text-[14px] shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
                   >
                     <Phone size={15} />
@@ -515,7 +552,11 @@ export default async function ProductPage({
                         className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <Monitor size={40} className="text-gray-300" />
+                      <MonitorIcon
+                        size={40}
+                        className="text-gray-300"
+                        accentClassName="text-gray-300"
+                      />
                     )}
                   </div>
                   <div className="p-4 relative z-10">
@@ -540,6 +581,37 @@ export default async function ProductPage({
                 </div>
               ))}
             </MobileProductScroller>
+          </section>
+        )}
+
+        {/* ── FAQ ──────────────────────────────────────────────────── */}
+        {faqs.length > 0 && (
+          <section className="mt-16" aria-labelledby="product-faq-heading">
+            <h2
+              id="product-faq-heading"
+              className="text-2xl font-bold text-gray-900 mb-8 text-center"
+            >
+              Frequently asked questions
+            </h2>
+            <div className="max-w-3xl mx-auto space-y-3">
+              {faqs.map((faq, i) => (
+                <details
+                  key={i}
+                  className="group bg-white rounded-2xl border border-gray-100 shadow-sm open:shadow-md transition-shadow"
+                >
+                  <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 text-[15px] font-semibold text-gray-900">
+                    {faq.q}
+                    <ChevronRight
+                      size={18}
+                      className="shrink-0 text-blue-600 transition-transform group-open:rotate-90"
+                    />
+                  </summary>
+                  <div className="px-6 pb-5 -mt-1 text-sm text-gray-600 leading-relaxed">
+                    {faq.a}
+                  </div>
+                </details>
+              ))}
+            </div>
           </section>
         )}
 

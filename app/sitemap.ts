@@ -7,7 +7,7 @@ import { useCaseCombos } from "@/data/useCaseCombos";
 import { SITE } from "@/lib/jsonLd";
 
 // Bump this date whenever you add or update products, categories, or solutions.
-const CATALOG_LAST_UPDATED = new Date("2026-05-22");
+const CATALOG_LAST_UPDATED = new Date("2026-07-11");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // NOTE: /quote and /compare are intentionally omitted — they are transactional

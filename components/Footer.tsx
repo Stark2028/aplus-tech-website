@@ -3,14 +3,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Phone, ArrowRight } from "lucide-react";
 import {
-  MapPin,
-  Phone,
-  Mail,
-  ArrowRight,
-  ShieldCheck,
-  Clock,
-} from "lucide-react";
+  MapPinIcon,
+  PhoneIcon,
+  MailIcon,
+  ShieldCheckIcon,
+  BadgeCheckIcon,
+  TimerIcon,
+} from "@/components/icons";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 
 const PRODUCT_LINKS = [
   { label: "Digital Signage", href: "/categories/digital-signage" },
@@ -60,17 +62,17 @@ export default function Footer() {
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-300 mb-2">
                 Get in touch
               </p>
-              <h3 className="text-white text-2xl md:text-2xl font-bold tracking-tight leading-tight">
-                Need Help Choosing The Right Display !
+              <h3 className="text-white text-2xl font-bold tracking-tight leading-tight">
+                Need help choosing the right display?
               </h3>
             </div>
             <div className="lg:col-span-5 flex flex-col sm:flex-row gap-3 lg:justify-end">
               <a
-                href="tel:+919310509909"
+                href={PHONE_TEL}
                 className="inline-flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 text-white px-5 py-3 rounded-xl text-sm font-medium transition-colors"
               >
                 <Phone size={15} className="text-blue-300" />
-                +91 93105 09909
+                {PHONE_DISPLAY}
               </a>
               <Link
                 href="/quote"
@@ -90,8 +92,8 @@ export default function Footer() {
 
           {/* Brand column */}
           <div className="col-span-2 lg:col-span-3 pr-4">
-            <div className="flex items-center gap-4 mb-6">
-              <Link href="/" onClick={handleHomeClick} className="inline-flex items-center justify-center bg-white p-2 rounded-lg shadow-sm shrink-0">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+              <Link href="/" onClick={handleHomeClick} className="inline-flex items-center justify-center bg-white p-2 rounded-lg shadow-sm shrink-0 self-start sm:self-auto">
                 <Image
                   src="/logo.png"
                   alt="Aplus Technology Solutions"
@@ -100,23 +102,38 @@ export default function Footer() {
                   className="h-12 w-auto object-contain"
                 />
               </Link>
-              <p className="text-xs sm:text-sm leading-relaxed text-slate-400">
+              <p className="text-sm leading-relaxed text-slate-400">
                 Authorized Samsung Display distributor providing end-to-end commercial solutions across India.
               </p>
             </div>
 
-            {/* Authorized badge */}
-            <div className="inline-flex items-center gap-3 bg-slate-800/40 border border-slate-700/50 rounded-xl px-4 py-3">
-              <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
-                <ShieldCheck size={16} className="text-blue-400" />
+            {/* Trust badges */}
+            <div className="flex flex-wrap gap-3">
+              <div className="inline-flex items-center gap-3 bg-slate-800/40 border border-slate-700/50 rounded-xl px-4 py-3">
+                <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+                  <ShieldCheckIcon size={16} className="text-slate-200" accentClassName="text-blue-400" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-slate-200 leading-tight">
+                    Samsung Authorized
+                  </p>
+                  <p className="text-[11px] text-slate-400 leading-tight mt-0.5">
+                    Business Display Partner
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-xs font-semibold text-slate-200 leading-tight">
-                  Samsung Authorized
-                </p>
-                <p className="text-[11px] text-slate-400 leading-tight mt-0.5">
-                  Business Display Partner
-                </p>
+              <div className="inline-flex items-center gap-3 bg-slate-800/40 border border-slate-700/50 rounded-xl px-4 py-3">
+                <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+                  <BadgeCheckIcon size={16} className="text-slate-200" accentClassName="text-blue-400" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-slate-200 leading-tight">
+                    ISO 9001:2015
+                  </p>
+                  <p className="text-[11px] text-slate-400 leading-tight mt-0.5">
+                    Certified Quality Management
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -187,7 +204,7 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0 mt-0.5">
-                  <MapPin size={14} className="text-blue-400" />
+                  <MapPinIcon size={14} className="text-slate-300" accentClassName="text-blue-400" />
                 </div>
                 <div className="text-sm leading-relaxed text-slate-400">
                   Office No. 855, 8th Floor,<br />
@@ -197,18 +214,18 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
-                  <Phone size={14} className="text-blue-400" />
+                  <PhoneIcon size={14} className="text-slate-300" accentClassName="text-blue-400" />
                 </div>
                 <a
-                  href="tel:+919310509909"
+                  href={PHONE_TEL}
                   className="text-sm text-slate-300 hover:text-white transition-colors"
                 >
-                  +91 93105 09909
+                  {PHONE_DISPLAY}
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
-                  <Mail size={14} className="text-blue-400" />
+                  <MailIcon size={14} className="text-slate-300" accentClassName="text-blue-400" />
                 </div>
                 <a
                   href="mailto:info@aplustechsol.com"
@@ -219,7 +236,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-slate-800/50 border border-slate-700/50 flex items-center justify-center shrink-0">
-                  <Clock size={14} className="text-blue-400" />
+                  <TimerIcon size={14} className="text-slate-300" accentClassName="text-blue-400" />
                 </div>
                 <div className="text-sm text-slate-400">
                   Mon – Sat : 10:00 – 18:00 IST
@@ -231,17 +248,23 @@ export default function Footer() {
       </div>
 
       {/* ───────────────── Bottom bar ───────────────── */}
-      <div className="relative border-t border-slate-800 pb-20 md:pb-0">
-        {/* On md+ the "Find Your Display" floating button sits at bottom-left,
-            so reserve space below the bar to keep it clear of the CIN line. */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:pb-24 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
-          <div className="flex flex-col gap-1 text-center sm:text-left">
+      <div className="relative border-t border-slate-800 pb-28 md:pb-0">
+        {/* Reserve generous space below the bar on every breakpoint so the
+            fixed floating buttons (Back-to-Top on mobile bottom-right, "Find
+            Your Display" on md+ bottom-left) never overlap the legal links. */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:pb-24 flex flex-col sm:flex-row justify-between items-center gap-5 sm:gap-4 text-xs text-slate-400">
+          <div className="flex flex-col gap-1.5 text-center sm:text-left">
             <p>
               &copy; {new Date().getFullYear()} Aplus Technology Solutions Pvt. Ltd. All rights reserved.
             </p>
-            <p className="text-xs text-slate-400">
-              CIN: U72900DL2020PTC374888 <span className="mx-2 text-slate-600">|</span> GSTIN: 07AAUCA5631L1Z6
-            </p>
+            {/* CIN + GSTIN: each value kept whole (whitespace-nowrap) so it never
+                splits mid-string on narrow phones. Stacked on mobile, inline with
+                a divider from sm up. */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-0 text-slate-500">
+              <span className="whitespace-nowrap">CIN: U72900DL2020PTC374888</span>
+              <span className="hidden sm:inline mx-2 text-slate-600">|</span>
+              <span className="whitespace-nowrap">GSTIN: 07AAUCA5631L1Z6</span>
+            </div>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center">
             <Link href="/privacy" className="hover:text-white transition-colors">

@@ -37,7 +37,7 @@ export default function Navbar() {
 
   return (
     <>
-    <nav
+    <header
       className={`sticky top-0 z-50 transition-all duration-300 print:hidden ${
         scrolled 
           ? "bg-white/80 backdrop-blur-xl shadow-glass border-b border-gray-200/50" 
@@ -56,7 +56,7 @@ export default function Navbar() {
               priority
             />
             <span
-              style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#1e3a5f", lineHeight: "1.35" }}
+              style={{ display: "block", fontSize: "13px", fontWeight: 700, color: "#1e3a5f", lineHeight: "1.35" }}
             >
               Aplus Technology<br />Solutions Pvt. Ltd.
             </span>
@@ -66,7 +66,7 @@ export default function Navbar() {
           <NavbarMobile cartCount={cartCount} onHomeClick={handleHomeClick} />
         </div>
       </div>
-    </nav>
+    </header>
     {/* SearchModal is rendered globally here so it works on ALL breakpoints (mobile + desktop) */}
     <SearchModal />
     </>

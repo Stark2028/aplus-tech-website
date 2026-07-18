@@ -3,6 +3,8 @@ import type { ProductCategory } from "@/data/categories";
 import type { Solution } from "@/data/solutions";
 import type { UseCaseCombo } from "@/data/useCaseCombos";
 import { formatSize } from "@/lib/formatSize";
+import { PHONE_SCHEMA } from "@/lib/contact";
+import { modelCodeFor } from "@/lib/modelCodes";
 
 export const SITE = "https://www.aplustechsol.com";
 
@@ -33,7 +35,7 @@ export function organizationLd() {
     url: SITE,
     logo: { "@type": "ImageObject", url: `${SITE}/logo.png` },
     image: `${SITE}/og-default.png`,
-    telephone: "+91-9310509909",
+    telephone: PHONE_SCHEMA,
     email: "info@aplustechsol.com",
     address: {
       "@type": "PostalAddress",
@@ -45,7 +47,7 @@ export function organizationLd() {
     },
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: "+91-9310509909",
+      telephone: PHONE_SCHEMA,
       contactType: "sales",
       areaServed: "IN",
       availableLanguage: "en",
@@ -108,6 +110,10 @@ export function productLd(product: Product) {
     .filter(([, v]) => v && v.trim().length > 0)
     .map(([name, value]) => ({ "@type": "PropertyValue", name, value }));
 
+  // Real Samsung model code where known — a meaningful mpn helps this page rank
+  // for exact model-number searches. Omit entirely rather than fabricate one.
+  const modelCode = modelCodeFor(product.id);
+
   return {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -115,8 +121,8 @@ export function productLd(product: Product) {
     name: product.name,
     description: product.description,
     url,
-    sku: product.id,
-    mpn: product.id.toUpperCase(),
+    sku: modelCode ?? product.id,
+    ...(modelCode ? { mpn: modelCode } : {}),
     category: product.category,
     brand: { "@type": "Brand", name: "Samsung" },
     manufacturer: {

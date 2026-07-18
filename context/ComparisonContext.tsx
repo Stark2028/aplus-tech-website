@@ -50,8 +50,14 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
         if (saved) {
             try {
                 const cleaned = sanitizeCompareList(JSON.parse(saved));
-                // eslint-disable-next-line react-hooks/set-state-in-effect
-                if (cleaned.length > 0) setSelectedProducts(cleaned);
+                // Functional update: child effects run before this provider
+                // effect, so /compare?ids=… may have already loaded a shared
+                // list — a direct set here would clobber it with the persisted
+                // one. Restore from storage only when nothing was added yet.
+                if (cleaned.length > 0) {
+                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    setSelectedProducts((prev) => (prev.length > 0 ? prev : cleaned));
+                }
             } catch (e) {
                 console.error("Failed to parse compare list", e);
             }

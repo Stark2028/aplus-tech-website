@@ -64,6 +64,10 @@ export default function LeadGateModal({
     "idle" | "submitting" | "success" | "error"
   >("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  // Whether the lead was actually captured server-side. When false, the success
+  // screen must NOT claim the details reached our sales team — the resource is
+  // still delivered (client-side PDF), but the lead itself was lost.
+  const [captured, setCaptured] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -188,11 +192,15 @@ export default function LeadGateModal({
       setCachedLead(lead);
 
       if (res.ok && data.success) {
+        setCaptured(true);
         trackEvent(`${analyticsKey}_submitted`, {});
       } else {
         // Lead capture failed (e.g. email service misconfigured) — log it so the
         // failure is visible in analytics, but still deliver the resource: the
-        // PDF is generated client-side and the user came here to get it.
+        // PDF is generated client-side and the user came here to get it. Mark it
+        // uncaptured so the success screen doesn't falsely claim the lead reached
+        // our team.
+        setCaptured(false);
         console.error("[lead-gate] capture failed", res.status);
         trackEvent(`${analyticsKey}_capture_failed`, { status: res.status });
       }
@@ -203,8 +211,10 @@ export default function LeadGateModal({
         onUnlock(lead);
       }, 400);
     } catch (err) {
-      // Network failure: still deliver the client-side PDF, but record the loss.
+      // Network failure: still deliver the client-side PDF, but record the loss
+      // and don't claim the lead was captured.
       console.error(err);
+      setCaptured(false);
       setCachedLead(lead);
       trackEvent(`${analyticsKey}_capture_failed`, { status: "network" });
       setStatus("success");
@@ -273,8 +283,9 @@ export default function LeadGateModal({
                 Your download is starting
               </h3>
               <p className="text-sm text-gray-500">
-                A copy has been logged with our sales team — we&apos;ll follow up
-                with pricing within 24 hours.
+                {captured
+                  ? "A copy has been logged with our sales team — we'll follow up with pricing within 24 hours."
+                  : "Your download is ready. For pricing, email info@aplustechsol.com or message us on WhatsApp and our team will follow up."}
               </p>
               <button
                 onClick={() => onUnlock({ name: getValues("name"), email: getValues("email"), phone: getValues("phone"), company: getValues("company") ?? "" })}

@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ShoppingBag, Scale, Clock, Check } from "lucide-react";
 import { Product } from "@/data/products";
+import { formatSkuLine } from "@/lib/productSku";
 import { useQuote } from "@/context/QuoteContext";
 import { useComparison } from "@/context/ComparisonContext";
 import { getProductBadge } from "@/lib/productBadges";
@@ -78,7 +79,13 @@ export default function ProductCard({ product }: ProductCardProps) {
         <Scale size={16} strokeWidth={isComparing ? 2.5 : 2} aria-hidden="true" />
       </button>
 
-      {/* Product Image Area */}
+      {/* Bezel display (spec 2026-07-17): thin dark frame around a uniform
+          light mat. A real CSS border (not a gradient padding-ring) because
+          two stacked rounded gradients anti-alias each other away at the
+          corners — a border rasterizes crisply around the curve. Light mat —
+          not the dark "display" panel — because 27 of 50 primary images are
+          opaque white JPEGs; mix-blend-multiply only melts them into a light
+          surface. */}
       <div
         onClick={handleImageClick}
         role="link"
@@ -90,19 +97,28 @@ export default function ProductCard({ product }: ProductCardProps) {
           }
         }}
         aria-label={`View details for ${product.name}`}
-        className="spotlight-content h-64 bg-linear-to-b from-slate-50 to-white flex items-center justify-center overflow-hidden cursor-pointer focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 border-b border-slate-100/50 px-6 py-8"
+        className="spotlight-content relative mx-2.5 mt-2.5 h-64 rounded-lg overflow-hidden border-[1.5px] border-[#26324a] flex items-center justify-center cursor-pointer px-4 py-6 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 transition-shadow duration-500 group-hover:shadow-[0_0_30px_-6px_rgba(37,99,235,0.45)] group-focus-within:shadow-[0_0_30px_-6px_rgba(37,99,235,0.45)]"
+        style={{ background: "linear-gradient(160deg, #f6f8fb, #eef2f7 60%, #f2f5fa)" }}
       >
+        {/* Backlight glow — fades in on hover/focus; under reduced motion it
+            still appears, just without the transition. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-[20%] opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none"
+          style={{ background: "radial-gradient(closest-side, rgba(37,99,235,0.16), transparent 70%)" }}
+        />
+
         {/* Fixed-height image box normalises display size across sources:
             some product shots fill edge-to-edge, others float with whitespace.
             Capping the height keeps every card's display visually consistent. */}
-        <div className="relative w-full h-[170px] mix-blend-multiply">
+        <div className="relative w-[92%] h-[190px] mix-blend-multiply">
           {primaryImage ? (
             <Image
               src={primaryImage}
               alt={`${product.name} — Samsung ${product.series} ${product.category}`}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-contain transition-transform duration-500 group-hover:scale-105"
+              className="object-contain transition-transform duration-500 group-hover:scale-105 group-focus-within:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-within:scale-100"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-sm text-slate-300 font-medium">
@@ -110,17 +126,32 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
         </div>
+
+        {/* Sheen sweep — one pass across the panel; transform-driven so it
+            stays compositor-only. Hidden under reduced motion. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-[-30%] left-[-45%] w-[30%] -skew-x-[18deg] transition-transform duration-700 ease-out group-hover:translate-x-[585%] group-focus-within:translate-x-[585%] motion-reduce:hidden"
+          style={{ background: "linear-gradient(105deg, transparent, rgba(37,99,235,0.08) 50%, transparent)" }}
+        />
       </div>
 
       {/* Content */}
       <div className="spotlight-content p-6 flex flex-col grow">
         <div className="mb-5">
-          <div className="flex items-center mb-3">
-            <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold bg-blue-50/80 text-blue-600 uppercase tracking-widest">
-              {product.series}
-            </span>
-          </div>
-          <h3 className="text-[1.15rem] font-bold text-slate-900 mt-1 mb-2.5 leading-snug tracking-tight line-clamp-2">
+          {/* Accent fonts come from the --font-card-* variables app/layout.tsx
+              sets on <body> — this client file must not import next/font
+              (Turbopack + .browserslistrc bug; see app/fonts-accent.ts). */}
+          <p
+            className="text-[11px] tracking-[0.12em] text-slate-500 mb-2"
+            style={{ fontFamily: "var(--font-card-mono)" }}
+          >
+            {formatSkuLine(product)}
+          </p>
+          <h3
+            className="text-[1.15rem] font-bold text-slate-900 mt-1 mb-2.5 leading-snug tracking-tight line-clamp-2"
+            style={{ fontFamily: "var(--font-card-display)" }}
+          >
             <Link href={`/products/${product.id}`} className="hover:text-blue-600 transition-colors">
               {product.name}
             </Link>
@@ -142,16 +173,18 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         </div>
 
-        {/* Operation Rating */}
-        <div className="flex items-center gap-2 mb-6 text-[13px] text-slate-500 bg-blue-50/50 rounded-lg py-2.5 px-3.5 border border-blue-100/30">
-          <Clock size={14} className="text-blue-500 shrink-0" strokeWidth={2.5} />
+        {/* Operation Rating — mt-auto pins this row (and the buttons below it)
+            to the card bottom so both stay horizontally aligned across a grid
+            row even when neighbouring titles/specs wrap to different heights. */}
+        <div className="mt-auto flex items-center gap-2 mb-6 text-[13px] text-slate-500 bg-blue-50/50 rounded-lg py-2.5 px-3.5 border border-blue-100/30">
+          <Clock size={14} className="text-blue-500 shrink-0" />
           <span className="truncate">
             Rated for <strong className="text-slate-700 font-bold">{product.specs.operationTime}</strong> continuous operation
           </span>
         </div>
 
         {/* Footer Buttons */}
-        <div className="mt-auto flex gap-2">
+        <div className="flex gap-2">
           <button
             type="button"
             onClick={handleQuoteAdd}
@@ -163,7 +196,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 : "bg-slate-900 text-white hover:bg-blue-600 hover:shadow-md hover:shadow-blue-600/20 hover:-translate-y-0.5"
             }`}
           >
-            {added ? <Check size={16} strokeWidth={2.5} aria-hidden="true" /> : <ShoppingBag size={16} aria-hidden="true" />}
+            {added ? <Check size={16} aria-hidden="true" /> : <ShoppingBag size={16} aria-hidden="true" />}
             {added ? "Added!" : "Add to Quote"}
           </button>
 

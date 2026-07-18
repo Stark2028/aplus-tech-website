@@ -31,7 +31,10 @@ export function formatSizeRange(sizes: string[]): string {
 
   const allNumeric = sizes.every(isNumericSize);
   if (allNumeric) {
-    return `${formatSize(sizes[0])} – ${formatSize(sizes[sizes.length - 1])}`;
+    // Sort numerically so the range reads low → high regardless of source order
+    // (e.g. ["55","43","32"] still renders `32″ – 55″`, not `55″ – 32″`).
+    const sorted = [...sizes].sort((a, b) => parseFloat(a) - parseFloat(b));
+    return `${formatSize(sorted[0])} – ${formatSize(sorted[sorted.length - 1])}`;
   }
   return sizes.map(formatSize).join(", ");
 }

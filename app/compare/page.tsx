@@ -16,6 +16,7 @@ import {
 import { trackEvent } from "@/lib/analytics";
 import LeadGateModal from "@/components/LeadGateModal";
 import { hasGated } from "@/lib/leadGate";
+import { toast } from "sonner";
 
 const CORE_SPEC_ROWS: { label: string; getValue: (p: Product) => string }[] = [
   { label: "Category", getValue: (p) => p.category },
@@ -34,6 +35,7 @@ const CORE_SPEC_ROWS: { label: string; getValue: (p: Product) => string }[] = [
 /** Returns all extra spec keys present across the given products, deduplicated.
  *  Prefers flattening specGroups (ignoring group headers) over additionalSpecs. */
 function getExtraSpecKeys(products: Product[]): string[] {
+  const coreLabels = new Set(CORE_SPEC_ROWS.map((r) => r.label.toLowerCase()));
   return Array.from(
     new Set(
       products.flatMap((p) => {
@@ -43,7 +45,7 @@ function getExtraSpecKeys(products: Product[]): string[] {
         return p.additionalSpecs ? Object.keys(p.additionalSpecs) : [];
       })
     )
-  );
+  ).filter((key) => !coreLabels.has(key.toLowerCase()));
 }
 
 function getExtraSpecValue(p: Product, key: string): string {
@@ -77,6 +79,28 @@ function EmptyState() {
   );
 }
 
+function NeedMoreState({ productName }: { productName: string }) {
+  return (
+    <div className="min-h-[70vh] flex flex-col items-center justify-center py-20 px-4 text-center">
+      <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mb-6">
+        <Plus size={36} className="text-blue-400" />
+      </div>
+      <h1 className="text-2xl font-bold text-gray-900 mb-3">Add one more to compare</h1>
+      <p className="text-gray-500 mb-8 max-w-sm">
+        You&apos;ve added <span className="font-semibold text-gray-700">{productName}</span>. Pick at least
+        one more product to see them side by side.
+      </p>
+      <Link
+        href="/products"
+        className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold text-sm transition-all shadow-lg shadow-blue-600/20"
+      >
+        <Plus size={15} />
+        Add another product
+      </Link>
+    </div>
+  );
+}
+
 function ComparePageInner() {
   const { selectedProducts, removeFromCompare, addToCompare } = useComparison();
   const { addItem } = useQuote();
@@ -86,7 +110,7 @@ function ComparePageInner() {
   const [gate, setGate] = useState<null | "excel" | "print">(null);
 
   const exportExcelNow = async () => {
-    const ExcelJS = await import("exceljs");
+    const ExcelJS = (await import("exceljs")).default;
     const headers = ["Specification", ...selectedProducts.map((p) => p.name)];
 
     const extraSpecKeys = getExtraSpecKeys(selectedProducts);
@@ -109,6 +133,10 @@ function ComparePageInner() {
       ]),
       // Features — all of them
       ["Key Features", ...selectedProducts.map((p) => p.features.join("; "))],
+      // Product overview — mirrors the on-screen table's conditional row
+      ...(selectedProducts.some((p) => p.longDescription)
+        ? [["Product Overview", ...selectedProducts.map((p) => p.longDescription ?? "—")]]
+        : []),
     ];
 
     const workbook = new ExcelJS.Workbook();
@@ -132,12 +160,19 @@ function ComparePageInner() {
     trackEvent("compare_export_excel", { product_count: selectedProducts.length });
   };
 
+  const runExcelExport = () => {
+    exportExcelNow().catch((err) => {
+      console.error("[compare excel]", err);
+      toast.error("Couldn't generate the spreadsheet. Please try again.");
+    });
+  };
+
   const handleExportExcel = () => {
     if (hasGated()) {
       trackEvent("compare_export_excel_cached", {
         product_count: selectedProducts.length,
       });
-      exportExcelNow();
+      runExcelExport();
       return;
     }
     setGate("excel");
@@ -192,6 +227,7 @@ function ComparePageInner() {
     .join("\n");
 
   if (selectedProducts.length === 0) return <EmptyState />;
+  if (selectedProducts.length === 1) return <NeedMoreState productName={selectedProducts[0].name} />;
 
   const fillerCount = Math.max(0, 3 - selectedProducts.length);
 
@@ -440,7 +476,7 @@ function ComparePageInner() {
           const action = gate;
           setGate(null);
           if (action === "excel") {
-            exportExcelNow();
+            runExcelExport();
           } else if (action === "print") {
             printNow();
           }

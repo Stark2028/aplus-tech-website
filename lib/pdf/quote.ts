@@ -7,6 +7,7 @@
 
 import type { QuoteItem } from "@/context/QuoteContext";
 import { formatSize } from "@/lib/formatSize";
+import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 
 import {
   A4_HEIGHT,
@@ -104,7 +105,7 @@ function drawHeader(ctx: Ctx) {
   });
 
   // Phone + email clickable
-  const phone = "+91 93105 09909";
+  const phone = PHONE_DISPLAY;
   const email = "info@aplustechsol.com";
   const sep = " • ";
   const fontSize = 8;
@@ -127,7 +128,7 @@ function drawHeader(ctx: Ctx) {
     thickness: 0.4,
     color: C.gray400,
   });
-  addLinkAnnotation(ctx.doc, page, "tel:+919310509909", {
+  addLinkAnnotation(ctx.doc, page, PHONE_TEL, {
     x: MARGIN_X,
     y: lineY - 2,
     width: phoneW,
@@ -355,7 +356,12 @@ function drawItemRow(ctx: Ctx, item: QuoteItem, idx: number) {
   const metaText = safe(
     `${item.product.series} · ${item.product.category}`
   );
-  const specLines = buildSpecLines(item);
+  // Pre-wrap every spec line to the column width so long values render in
+  // full (and the row height accounts for the extra lines) instead of being
+  // silently truncated to their first wrapped line.
+  const specLines = buildSpecLines(item).flatMap((line) =>
+    wrapText(line, fonts.regular, metaSize, COL_SPECS_W - 8)
+  );
 
   const productHeight = nameLines.length * lineH + 4 + metaSize;
   const specHeight = specLines.length * (metaSize + 4);
@@ -401,8 +407,7 @@ function drawItemRow(ctx: Ctx, item: QuoteItem, idx: number) {
   // Specifications
   const specsX = COL_NUM_X + COL_NUM_W + COL_PRODUCT_W;
   specLines.forEach((line, i) => {
-    const fitted = wrapText(line, fonts.regular, metaSize, COL_SPECS_W - 8);
-    page.drawText(fitted[0] ?? "", {
+    page.drawText(line, {
       x: specsX,
       y: rowTop - i * (metaSize + 4),
       size: metaSize,
@@ -529,7 +534,7 @@ function drawInfoGrid(ctx: Ctx) {
     characterSpacing: 1.4,
   });
 
-  const phoneText = "+91 93105 09909";
+  const phoneText = PHONE_DISPLAY;
   const emailText = "info@aplustechsol.com";
   const siteText = "aplustechsol.com";
 
@@ -542,7 +547,7 @@ function drawInfoGrid(ctx: Ctx) {
     startY - 14,
     10,
     C.black,
-    "tel:+919310509909"
+    PHONE_TEL
   );
   drawLeftLink(
     doc,

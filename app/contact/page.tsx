@@ -4,11 +4,22 @@ import { useState, useRef, useEffect, useId } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Phone, Mail, MapPin, Clock, Send, CheckCircle,
+  MapPin, Send, CheckCircle,
   ChevronDown, ChevronUp,
-  Building2, Timer, BadgeCheck, Linkedin, ChevronRight
+  Linkedin, ChevronRight
 } from "lucide-react";
+import {
+  PhoneIcon,
+  MailIcon,
+  MapPinIcon,
+  TimerIcon,
+  BadgeCheckIcon,
+  BuildingIcon,
+  SendIcon,
+  IconTile,
+} from "@/components/icons";
 import { contactFormSchema, type ContactFormValues } from "@/lib/formSchemas";
+import { PHONE_DISPLAY, PHONE_TEL, WHATSAPP_NUMBER } from "@/lib/contact";
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
@@ -75,6 +86,12 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 
 const LINKEDIN_URL = "https://in.linkedin.com/company/aplus-technology-solutions-pvt-ltd";
 const MAX_MESSAGE_LENGTH = 500;
+
+const OFFICES = [
+  { tier: "Corporate Office",   cities: "Noida, Uttar Pradesh",   dotColor: "#2563eb" },
+  { tier: "Regional Office",    cities: "Kolkata, West Bengal",   dotColor: "#6366f1" },
+  { tier: "Operational Offices", cities: "Guwahati · Patna · Bhubaneswar", dotColor: "#10b981" },
+];
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -158,13 +175,13 @@ export default function ContactPage() {
             {/* Quick stats */}
             <div className="flex gap-6 sm:gap-10 bg-white/[0.07] p-6 rounded-2xl backdrop-blur-sm border border-white/10">
               {[
-                { icon: Timer,      value: "1 day",  label: "Response Time" },
-                { icon: BadgeCheck, value: "Samsung",label: "Certified Partner" },
-                { icon: Building2,  value: "Noida",  label: "Headquarters" },
+                { icon: TimerIcon,      value: "1 day",  label: "Response Time" },
+                { icon: BadgeCheckIcon, value: "Samsung",label: "Certified Partner" },
+                { icon: BuildingIcon,   value: "Noida",  label: "Headquarters" },
               ].map(({ icon: Icon, value, label }) => (
                 <div key={label} className="text-center">
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-2.5 bg-white/10 border border-white/10">
-                    <Icon size={18} className="text-blue-200" />
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-2.5 bg-white/5 border border-white/10">
+                    <Icon size={18} className="text-slate-200" accentClassName="text-blue-400" />
                   </div>
                   <p className="text-white font-bold text-base">{value}</p>
                   <p className="text-blue-300/70 text-[10px] uppercase tracking-wider mt-0.5">{label}</p>
@@ -180,17 +197,17 @@ export default function ContactPage() {
         <div className="px-2">
           <div className="grid grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: Phone,  label: "Call Us",      value: "+91 93105 09909",       sub: "Mon – Sat, 10 AM – 6 PM",      href: "tel:+919310509909",         iconColor: "#2563eb", iconBg: "#eff6ff", accent: "#3b82f6" },
-              { icon: Mail,   label: "Email",         value: "info@aplustechsol.com", sub: "Reply within 24 hours",        href: "mailto:info@aplustechsol.com",iconColor: "#7c3aed", iconBg: "#f5f3ff", accent: "#8b5cf6" },
-              { icon: MapPin, label: "Office",        value: "Sector-94, Noida",      sub: "Supernova Astralis, 8th Fl.", href: "https://maps.google.com/?q=Aplus+Technology+Solutions+Private+Limited+Noida", iconColor: "#059669", iconBg: "#ecfdf5", accent: "#10b981" },
-              { icon: Clock,  label: "Support",  value: "24 × 7",   sub: "Emergency assistance",    href: null,                          iconColor: "#d97706", iconBg: "#fffbeb", accent: "#f59e0b" },
-            ].map(({ icon: Icon, label, value, sub, href, iconColor, iconBg, accent }) => {
+              { icon: PhoneIcon,  label: "Call Us",  value: PHONE_DISPLAY,       sub: "Mon – Sat, 10 AM – 6 PM",      href: PHONE_TEL,         accentClass: "text-blue-600",    accent: "#3b82f6" },
+              { icon: MailIcon,   label: "Email",    value: "info@aplustechsol.com", sub: "Reply within 24 hours",        href: "mailto:info@aplustechsol.com", accentClass: "text-violet-600", accent: "#8b5cf6" },
+              { icon: MapPinIcon, label: "Office",   value: "Sector-94, Noida",      sub: "Supernova Astralis, 8th Fl.", href: "https://maps.google.com/?q=Aplus+Technology+Solutions+Private+Limited+Noida", accentClass: "text-emerald-600", accent: "#10b981" },
+              { icon: TimerIcon,  label: "Support",  value: "24 × 7",   sub: "Emergency assistance",    href: null,      accentClass: "text-amber-600",   accent: "#f59e0b" },
+            ].map(({ icon: Icon, label, value, sub, href, accentClass, accent }) => {
               const inner = (
                 <div className="flex items-center gap-3.5 px-4 lg:px-5 py-5 hover:bg-gray-50/80 transition-colors h-full group relative overflow-hidden rounded-xl">
                   <div className="absolute top-0 left-4 right-4 h-[2px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: accent }} />
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all group-hover:scale-110 group-hover:shadow-md" style={{ background: iconBg, color: iconColor }}>
-                    <Icon size={19} />
-                  </div>
+                  <IconTile className="shrink-0">
+                    <Icon size={22} className="text-current" accentClassName={accentClass} />
+                  </IconTile>
                   <div className="min-w-0">
                     <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400">{label}</p>
                     <p className="text-sm font-bold text-gray-900 truncate mt-0.5">{value}</p>
@@ -221,9 +238,9 @@ export default function ContactPage() {
               {/* Form header */}
               <div className="px-8 pt-8 pb-6 border-b border-gray-100/80 relative">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/25">
-                    <Send size={16} className="text-white" />
-                  </div>
+                  <IconTile size="md">
+                    <SendIcon size={20} className="text-current" />
+                  </IconTile>
                   <div>
                     <h2 className="text-xl font-bold text-gray-900">Send Us a Message</h2>
                     <p className="text-gray-400 text-xs mt-0.5">We&apos;ll respond within one business day</p>
@@ -257,7 +274,7 @@ export default function ContactPage() {
                       tabIndex={-1}
                       autoComplete="off"
                       aria-hidden="true"
-                      className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                      className="sr-only"
                       {...register("company_website" as keyof ContactFormValues)}
                     />
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -383,17 +400,17 @@ export default function ContactPage() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 {[
-                  { icon: BadgeCheck, bg: "bg-blue-50",  text: "text-blue-600",  shadow: "shadow-blue-100/60",  title: "Certified Expertise",   desc: "Authorized Samsung partners — authentic products with official warranties." },
-                  { icon: MapPin,     bg: "bg-green-50", text: "text-green-600", shadow: "shadow-green-100/60", title: "Pan-India Support",     desc: "Nationwide logistics & installation network covering 50+ cities." },
-                  { icon: Timer,      bg: "bg-amber-50", text: "text-amber-600", shadow: "shadow-amber-100/60", title: "End-to-End Service",    desc: "Consultation, supply, installation & 24/7 AMC — one expert team." },
-                ].map(({ icon: Icon, bg, text, shadow, title, desc }) => (
+                  { icon: BadgeCheckIcon, accentClass: "text-blue-600",    shadow: "shadow-blue-100/60",  title: "Certified Expertise",   desc: "Authorized Samsung partners — authentic products with official warranties." },
+                  { icon: MapPinIcon,     accentClass: "text-emerald-600", shadow: "shadow-green-100/60", title: "Pan-India Support",     desc: "Nationwide logistics & installation network covering 50+ cities." },
+                  { icon: TimerIcon,      accentClass: "text-amber-600",   shadow: "shadow-amber-100/60", title: "End-to-End Service",    desc: "Consultation, supply, installation & 24/7 AMC — one expert team." },
+                ].map(({ icon: Icon, accentClass, shadow, title, desc }) => (
                   <div
                     key={title}
                     className={`relative bg-white rounded-2xl border border-gray-100 p-6 text-center sm:text-left shadow-lg ${shadow} hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group`}
                   >
-                    <div className={`w-12 h-12 rounded-xl ${bg} ${text} flex items-center justify-center mx-auto sm:mx-0 mb-4 group-hover:scale-110 transition-transform`}>
-                      <Icon size={22} />
-                    </div>
+                    <IconTile className="mx-auto sm:mx-0 mb-4">
+                      <Icon size={22} className="text-current" accentClassName={accentClass} />
+                    </IconTile>
                     <h3 className="text-sm font-bold text-gray-900 mb-1.5">{title}</h3>
                     <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
                   </div>
@@ -409,9 +426,9 @@ export default function ContactPage() {
               <div className="px-6 pt-6 pb-5 bg-linear-to-br from-slate-50 via-white to-blue-50/30 border-b border-gray-100/60 relative">
                 <div className="absolute top-0 right-0 w-20 h-20 bg-linear-to-bl from-blue-50 to-transparent pointer-events-none" />
                 <div className="flex items-center gap-3.5 mb-4 relative">
-                  <div className="w-11 h-11 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/25">
-                    <Building2 size={18} className="text-white" />
-                  </div>
+                  <IconTile size="md">
+                    <BuildingIcon size={20} className="text-current" />
+                  </IconTile>
                   <div>
                     <p className="text-base font-bold text-gray-900">Aplus Technology Solutions</p>
                     <p className="text-[10px] font-bold uppercase tracking-widest text-blue-600">Samsung Authorized Partner</p>
@@ -460,7 +477,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <div className="px-5 pb-6 relative z-10">
-                <a href="https://wa.me/919310509909?text=Hi%2C%20I%20have%20an%20inquiry%20about%20your%20Samsung%20display%20products."
+                <a href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%20have%20an%20inquiry%20about%20your%20Samsung%20display%20products.`}
                   target="_blank" rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2.5 w-full text-sm font-bold py-4 rounded-2xl transition-all bg-[#25d366] hover:bg-[#20ba5a] text-white shadow-lg shadow-green-900/30 hover:shadow-xl hover:shadow-green-900/40 hover:-translate-y-0.5 active:translate-y-0">
                   <svg viewBox="0 0 24 24" className="w-4.5 h-4.5 fill-white">
@@ -504,6 +521,29 @@ export default function ContactPage() {
         </div>
       </div>
 
+      {/* ── OFFICE NETWORK ───────────────────────────────────────────── */}
+      <div className="border-t border-gray-100 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+          <div className="text-center md:text-left mb-8">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-2">Our Offices</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">A growing presence across India</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {OFFICES.map(({ tier, cities, dotColor }) => (
+              <div
+                key={tier}
+                className="relative bg-white rounded-2xl border border-gray-100 p-6 shadow-lg shadow-gray-100/60 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <span className="absolute top-6 left-6 w-2.5 h-2.5 rounded-full" style={{ background: dotColor }} aria-hidden="true" />
+                <div className="pl-6">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-gray-400">{tier}</p>
+                  <p className="text-base font-bold text-gray-900 mt-1.5 leading-snug">{cities}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
     </main>
   );

@@ -1,28 +1,35 @@
 import Link from "next/link";
-import { MessageSquare, Package, Wrench, LifeBuoy, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
+import {
+  MessageSquareIcon,
+  PackageIcon,
+  WrenchIcon,
+  LifeBuoyIcon,
+  IconTile,
+} from "@/components/icons";
 import AnimatedSection from "@/components/AnimatedSection";
 
 const PROCESS_STEPS = [
   {
-    icon: MessageSquare,
+    icon: MessageSquareIcon,
     step: "01",
     title: "Consult",
     desc: "Tell us your space, use case, and budget. Our display specialists assess your exact requirements.",
   },
   {
-    icon: Package,
+    icon: PackageIcon,
     step: "02",
     title: "Select",
     desc: "We recommend the right products from our full Samsung catalog — no upsell, just the right fit.",
   },
   {
-    icon: Wrench,
+    icon: WrenchIcon,
     step: "03",
     title: "Install",
     desc: "Our certified technicians handle mounting, cabling, and software configuration at your location.",
   },
   {
-    icon: LifeBuoy,
+    icon: LifeBuoyIcon,
     step: "04",
     title: "Support",
     desc: "Ongoing 24/7 technical support, AMC contracts, and warranty management — we're with you long-term.",
@@ -37,9 +44,9 @@ function StepCard({ step, i }: { step: typeof PROCESS_STEPS[0]; i: number }) {
       )}
       <div className="bg-gray-50 border border-gray-100 rounded-2xl p-7 h-full group-hover:border-blue-200 group-hover:bg-blue-50/30 transition-all duration-300">
         <div className="flex items-center justify-between mb-5">
-          <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
-            <step.icon className="text-white" size={22} />
-          </div>
+          <IconTile>
+            <step.icon className="text-current" size={24} />
+          </IconTile>
           <span className="text-4xl font-bold opacity-[0.15] text-gray-900 group-hover:text-blue-600 transition-colors" aria-hidden="true" role="presentation">
             {step.step}
           </span>
@@ -70,7 +77,13 @@ export default function HowItWorks() {
           <div className="absolute right-0 top-0 h-full w-8 bg-linear-to-l from-white to-transparent z-10 pointer-events-none" />
           <div className="animate-marquee-steps gap-4 py-1">
             {[...PROCESS_STEPS, ...PROCESS_STEPS].map((step, i) => (
-              <div key={i} className="shrink-0 w-[72vw] max-w-[260px]">
+              // Second copy exists only for the seamless marquee loop —
+              // hide it from assistive tech so steps aren't announced twice.
+              <div
+                key={i}
+                aria-hidden={i >= PROCESS_STEPS.length || undefined}
+                className="shrink-0 w-[72vw] max-w-[260px]"
+              >
                 <StepCard step={step} i={i % PROCESS_STEPS.length} />
               </div>
             ))}

@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { ShieldCheck, Award, Truck, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
+import { ShieldCheckIcon, AwardIcon, TruckIcon } from "@/components/icons";
 
-const ICONS = [ShieldCheck, Award, Truck];
+const ICONS = [ShieldCheckIcon, AwardIcon, TruckIcon];
 const PROMISES = [
   "No minimum order",
   "Bulk pricing available",
@@ -17,8 +18,8 @@ export default function FinalCTA() {
       <div className="relative max-w-3xl mx-auto z-10">
         <div className="flex items-center justify-center gap-2 mb-6">
           {ICONS.map((Icon, i) => (
-            <div key={i} className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
-              <Icon size={16} className="text-blue-300" />
+            <div key={i} className="w-8 h-8 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center">
+              <Icon size={16} className="text-slate-200" accentClassName="text-blue-400" />
             </div>
           ))}
         </div>

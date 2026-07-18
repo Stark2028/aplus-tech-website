@@ -61,24 +61,33 @@ export function rateLimit(
  * (all anonymous callers then share one bucket — fail-safe, not fail-open).
  */
 export function clientIp(req: Request): string {
-  // Prefer headers set by the edge/CDN itself — these are overwritten by the
-  // platform on each request and cannot be spoofed by the client. Only fall
-  // back to x-forwarded-for (client-appendable) last, taking the LAST entry,
-  // which is the one the nearest trusted proxy added.
-  const trusted =
-    req.headers.get("cf-connecting-ip") ?? req.headers.get("x-real-ip");
-  if (trusted) return trusted.trim();
+  // Cloudflare's cf-connecting-ip is unforgeable ONLY when a Cloudflare proxy
+  // terminates the request and rewrites it. This app deploys on Vercel, which
+  // does NOT set that header — so an inbound cf-connecting-ip is an arbitrary,
+  // client-supplied value. Trusting it let an attacker randomize the header to
+  // mint a fresh bucket per request and defeat the limiter entirely. Only honor
+  // it when a Cloudflare proxy is explicitly declared to sit in front.
+  if (process.env.TRUST_CF_CONNECTING_IP === "1") {
+    const cf = req.headers.get("cf-connecting-ip");
+    if (cf) return cf.trim();
+  }
 
+  // On Vercel, x-forwarded-for carries the real client IP appended as its LAST
+  // (rightmost) entry: the platform adds it after any client-supplied values,
+  // so the rightmost is the one our nearest trusted proxy set and cannot be
+  // forged. The client-appendable leftmost entries are deliberately ignored (a
+  // forged leftmost IP would otherwise mint a fresh bucket per request). Do not
+  // "fix" this to parts[0].
   const xff = req.headers.get("x-forwarded-for");
   if (xff) {
     const parts = xff.split(",").map((s) => s.trim()).filter(Boolean);
-    // Take the LAST (rightmost) entry, not the first. X-Forwarded-For is
-    // client-appendable, so the leftmost value is attacker-controlled (a forged
-    // leftmost IP would mint a fresh bucket per request and defeat the limiter).
-    // The rightmost entry is the one our nearest trusted proxy appended. This
-    // branch is only a fallback anyway — real hosts hit cf-connecting-ip /
-    // x-real-ip above and never reach here. Do not "fix" this to parts[0].
     if (parts.length > 0) return parts[parts.length - 1];
   }
+
+  // Fallback for non-Vercel / local contexts that only set x-real-ip. Reached
+  // only when x-forwarded-for is absent (it is always present on Vercel).
+  const realIp = req.headers.get("x-real-ip");
+  if (realIp) return realIp.trim();
+
   return "unknown";
 }
