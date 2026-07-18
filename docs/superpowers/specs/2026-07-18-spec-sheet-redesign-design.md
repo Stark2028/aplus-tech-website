@@ -53,7 +53,7 @@ The contact band + legal always sit at the **bottom of the last page** (drawn af
 
 ### Watermark (every page)
 
-Aplus logo PNG, centered on the page, ~300 pt wide, drawn at **opacity 0.05**, upright. Drawn FIRST on each page (immediately after page creation, including pages created by pagination) so all content renders above it. `pdf-lib` `drawImage` supports `opacity` directly.
+Aplus logo PNG, centered on the page, ~300 pt wide, drawn at **opacity 0.10** (user-requested bump from the original 0.05), upright. Drawn FIRST on each page (immediately after page creation, including pages created by pagination) so all content renders above it. `pdf-lib` `drawImage` supports `opacity` directly.
 
 ## Spec table system (the density fix)
 

@@ -75,13 +75,18 @@ interface Ctx {
   productName: string;
 }
 
+/** "VMB-U" → "VMB-U Series"; "QET Series" → "QET Series" (no doubling). */
+function seriesLabel(series: string): string {
+  return /series\s*$/i.test(series) ? series : `${series} Series`;
+}
+
 export async function buildSpecSheetPdf(product: Product): Promise<Uint8Array> {
   const { PDFDocument, StandardFonts } = await import("pdf-lib");
 
   const doc = await PDFDocument.create();
   doc.setTitle(`${product.name} — Spec Sheet`);
   doc.setAuthor("Aplus Technology Solutions Pvt. Ltd.");
-  doc.setSubject(`${product.series} Series specifications`);
+  doc.setSubject(`${seriesLabel(product.series)} specifications`);
   doc.setProducer("aplustechsol.com");
   doc.setCreator("aplustechsol.com");
 
@@ -151,7 +156,7 @@ function paintPageChrome(ctx: Ctx) {
       y: (A4_HEIGHT - h) / 2,
       width: w,
       height: h,
-      opacity: 0.05,
+      opacity: 0.1,
     });
   }
   ctx.page.drawRectangle({
@@ -185,7 +190,7 @@ function addFirstPage(ctx: Ctx, product: Product, docDate: string) {
   drawSpacedText(page, "SPEC SHEET", {
     x: rightX - sheetW, y: A4_HEIGHT - 30, size: 8.5, font: fonts.bold, color: C.black, characterSpacing: 1.6,
   });
-  const seriesTxt = safe(`${product.series} Series`);
+  const seriesTxt = safe(seriesLabel(product.series));
   page.drawText(seriesTxt, {
     x: rightX - fonts.regular.widthOfTextAtSize(seriesTxt, 7.5),
     y: A4_HEIGHT - 42, size: 7.5, font: fonts.regular, color: C.gray500,
@@ -243,7 +248,7 @@ function drawTitleBlock(ctx: Ctx, product: Product, productImg: PDFImage | null)
   const topY = ctx.y;
   const titleW = productImg ? CONTENT_WIDTH - IMG_PANEL_W - 16 : CONTENT_WIDTH;
 
-  const eyebrow = safe(`${product.category} · ${product.series} Series`).toUpperCase();
+  const eyebrow = safe(`${product.category} · ${seriesLabel(product.series)}`).toUpperCase();
   drawSpacedText(page, eyebrow, {
     x: MARGIN_X, y: ctx.y, size: 8, font: fonts.bold, color: C.blue600, characterSpacing: 2.2,
   });
