@@ -1,10 +1,28 @@
 import { ImageResponse } from "next/og";
 import { getCategoryById, type CategorySlug } from "@/data/categories";
 import { products } from "@/data/products";
+import { categoryOgAltFor } from "./ogAlt";
 
-export const alt = "Samsung Commercial Display Category — Aplus Technology Solutions";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+export async function generateImageMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const category = getCategoryById(slug as CategorySlug);
+
+  return [
+    {
+      id: "og",
+      alt: category ? categoryOgAltFor(category) : "Aplus Technology Solutions",
+      size,
+      contentType,
+    },
+  ];
+}
 
 export default async function Image({
   params,
