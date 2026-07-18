@@ -49,6 +49,11 @@ export const SIZE_BUCKETS = [
  * bands rather than being treated as 0 and bucketed into "Under 350 nit".
  */
 function parseBrightnessNit(brightness: string): number | null {
+  // Only strings that actually denote nits participate in nit bands. A VC
+  // "113° FOV" / "CollabOS" / "PoE touch controller" must NOT be parsed as a
+  // brightness (its leading number is a field-of-view angle, not nits).
+  const isNitLike = /nit/i.test(brightness) || /^\s*[\d,]+\s*$/.test(brightness);
+  if (!isNitLike) return null;
   const cleaned = brightness.replace(/,/g, "");
   const nums = cleaned.match(/\d+/g);
   if (!nums) return null;
