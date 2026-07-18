@@ -6,6 +6,7 @@ import {
   InteractiveIcon,
   TvIcon,
   LedIcon,
+  UsersIcon,
   IconTile,
 } from "@/components/icons";
 import { products } from "@/data/products";
@@ -13,8 +14,8 @@ import { getCategoryById, type CategorySlug } from "@/data/categories";
 import AnimatedSection from "@/components/AnimatedSection";
 import MobileProductScroller from "@/components/MobileProductScroller";
 
-// Desktop shows all five categories in a single horizontal row
-// (lg:grid-cols-5). On sm (2-col) the last card spans full width so no
+// Desktop shows all six categories in a single horizontal row
+// (lg:grid-cols-6). On sm (2-col) the six cards fill three even rows, so no
 // card sits orphaned.
 const CATEGORY_CARDS: {
   id: CategorySlug;
@@ -64,7 +65,15 @@ const CATEGORY_CARDS: {
     title: ["LED", "Signage"],
     iconColor: "#0891b2",
     accentClass: "text-cyan-600",
-    span: "sm:col-span-2 lg:col-span-1",
+    span: "",
+  },
+  {
+    id: "video-conferencing",
+    Icon: UsersIcon,
+    title: ["Video", "Conferencing"],
+    iconColor: "#0d9488",
+    accentClass: "text-teal-600",
+    span: "",
   },
 ];
 
@@ -78,7 +87,7 @@ export default function CategoryGrid() {
           </h2>
         </AnimatedSection>
 
-        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-5" autoPlay={true} autoPlayInterval={3200} initialDelay={1800}>
+        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-6" autoPlay={true} autoPlayInterval={3200} initialDelay={1800}>
           {CATEGORY_CARDS.map((card) => {
             const category = getCategoryById(card.id);
             const count = category
