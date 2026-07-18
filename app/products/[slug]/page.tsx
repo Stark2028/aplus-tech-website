@@ -13,15 +13,15 @@ import {
 import ProductGallery from "@/components/ProductGallery";
 import ProductActions from "@/components/ProductActions";
 import SpecSheetButton from "@/components/SpecSheetButton";
-import CompareButton from "@/components/CompareButton";
+import ProductCard from "@/components/ProductCard";
 import WhatsAppIcon from "@/components/quote/WhatsAppIcon";
-import Image from "next/image";
 import { Metadata } from "next";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import MobileProductScroller from "@/components/MobileProductScroller";
 import { breadcrumbLd, productLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
 import { buildProductFaqs } from "@/lib/productFaq";
 import { modelCodeFor } from "@/lib/modelCodes";
+import { formatSkuLine } from "@/lib/productSku";
 import { formatSize, formatSizeRange } from "@/lib/formatSize";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
@@ -110,6 +110,11 @@ export default async function ProductPage({
 
   const faqs = buildProductFaqs(product);
   const modelCode = modelCodeFor(product.id);
+  // Mono SKU line (spec 2026-07-18): series + size range, plus the India
+  // model code when one is known. Replaces the old series pill + model row.
+  const skuLine = modelCode
+    ? `${formatSkuLine(product)} · ${modelCode}`
+    : formatSkuLine(product);
 
   const jsonLd = [
     productLd(product),
@@ -130,13 +135,17 @@ export default async function ProductPage({
       />
 
       {/* ── TOP CTA BAR ───────────────────────────────────────────── */}
-      <div className="bg-blue-600 text-white py-2.5 px-4 text-center text-sm">
-        <span className="font-medium">Authorized Samsung Distributor</span>
-        <span className="mx-2 opacity-50">·</span>
-        Get B2B pricing in 24 hrs —{" "}
-        <a href={PHONE_TEL} className="underline font-semibold hover:no-underline">
-          Call {PHONE_DISPLAY}
-        </a>
+      <div className="bg-[#0f172a] py-2.5 px-4 text-[12.5px] text-slate-300">
+        <div className="max-w-7xl mx-auto flex items-center justify-center sm:justify-between gap-x-4 gap-y-1 flex-wrap sm:px-2 lg:px-4">
+          <span className="tracking-wide">
+            <span className="font-semibold text-white">Authorized Samsung Distributor</span>
+            <span className="mx-2 text-slate-600">·</span>
+            Get B2B pricing in 24 hrs
+          </span>
+          <a href={PHONE_TEL} className="font-semibold text-white hover:text-blue-300 transition-colors">
+            Call {PHONE_DISPLAY}
+          </a>
+        </div>
       </div>
 
       {/* ── BREADCRUMB ────────────────────────────────────────────── */}
@@ -164,22 +173,18 @@ export default async function ProductPage({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         {/* ── MOBILE ONLY: Title & Series Header ── */}
         <div className="block lg:hidden mb-6 px-1">
-          <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold bg-blue-50/80 text-blue-600 uppercase tracking-widest mb-2.5">
-            {product.series}
-          </span>
-          <h1 className="text-2xl font-extrabold text-slate-900 mb-2 leading-snug tracking-tight">
+          <p
+            className="text-[11px] tracking-[0.14em] text-slate-500 mb-2.5"
+            style={{ fontFamily: "var(--font-card-mono)" }}
+          >
+            {skuLine}
+          </p>
+          <h1
+            className="text-2xl font-bold text-slate-900 mb-2 leading-snug tracking-tight"
+            style={{ fontFamily: "var(--font-card-display)" }}
+          >
             {product.name}
           </h1>
-          {modelCode && (
-            <p className="flex items-center gap-2 mb-3 text-[11px]">
-              <span className="font-semibold uppercase tracking-widest text-slate-400">
-                Model
-              </span>
-              <span className="font-mono text-[13px] font-semibold text-slate-900 bg-white border border-slate-300 shadow-sm rounded-lg px-2.5 py-1 tracking-wide">
-                {modelCode}
-              </span>
-            </p>
-          )}
           <p className="text-slate-500 text-sm leading-relaxed">
             {product.description}
           </p>
@@ -218,8 +223,11 @@ export default async function ProductPage({
                     value: formatSizeRange(product.specs.screenSizes),
                   },
                 ].map(({ label, value }) => (
-                  <div key={label} className="bg-slate-50/80 rounded-xl p-3 border border-slate-100">
-                    <div className="text-[9px] uppercase font-bold tracking-widest text-slate-400 mb-0.5">
+                  <div key={label} className="bg-white rounded-xl p-3 border border-slate-200">
+                    <div
+                      className="text-[9px] uppercase tracking-[0.16em] text-slate-400 mb-0.5"
+                      style={{ fontFamily: "var(--font-card-mono)" }}
+                    >
                       {label}
                     </div>
                     <div className="text-xs font-semibold text-slate-800 truncate">{value}</div>
@@ -237,7 +245,7 @@ export default async function ProductPage({
                     {product.specs.screenSizes.map((s) => (
                       <span
                         key={s}
-                        className="px-3 py-1.5 bg-slate-50 border border-slate-200/80 rounded-lg text-xs font-semibold text-slate-700"
+                        className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700"
                       >
                         {formatSize(s)}
                       </span>
@@ -246,11 +254,11 @@ export default async function ProductPage({
                 </div>
               )}
 
-              {/* Action buttons */}
-              <ProductActions product={product} />
-
-              {/* Spec sheet download */}
-              <SpecSheetButton product={product} />
+              {/* Action buttons — spec sheet shares the Compare row */}
+              <ProductActions
+                product={product}
+                specSheetSlot={<SpecSheetButton product={product} compact />}
+              />
 
               {/* Direct contact */}
               <div className="flex gap-3">
@@ -275,7 +283,10 @@ export default async function ProductPage({
 
             {/* Key highlights */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-7">
-              <h3 className="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
+              <h3
+                className="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2 tracking-tight"
+                style={{ fontFamily: "var(--font-card-display)" }}
+              >
                 <span className="w-1 h-5 bg-blue-600 rounded-full" />
                 Key Highlights
               </h3>
@@ -294,7 +305,10 @@ export default async function ProductPage({
             {/* Product overview — only shown when longDescription is present */}
             {product.longDescription && (
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-7">
-                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <h3
+                  className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2 tracking-tight"
+                  style={{ fontFamily: "var(--font-card-display)" }}
+                >
                   <span className="w-1 h-5 bg-blue-600 rounded-full" />
                   Product Overview
                 </h3>
@@ -312,7 +326,12 @@ export default async function ProductPage({
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="px-7 py-5 border-b border-gray-100 flex items-center gap-2">
                 <span className="w-1 h-5 bg-blue-600 rounded-full" />
-                <h3 className="text-lg font-bold text-gray-900">Technical Specifications</h3>
+                <h3
+                  className="text-lg font-bold text-gray-900 tracking-tight"
+                  style={{ fontFamily: "var(--font-card-display)" }}
+                >
+                  Technical Specifications
+                </h3>
               </div>
 
               {product.specGroups ? (
@@ -320,8 +339,8 @@ export default async function ProductPage({
                 <div>
                   {Object.entries(product.specGroups).map(([group, rows]) => (
                     <div key={group}>
-                      <div className="px-7 py-3 bg-gray-50 border-y border-gray-100">
-                        <span className="text-xs font-bold text-blue-600 uppercase tracking-widest">{group}</span>
+                      <div className="px-7 py-3 bg-slate-50 border-y border-slate-100">
+                        <span className="text-[11px] font-bold text-blue-600 uppercase tracking-[0.18em]">{group}</span>
                       </div>
                       <div className="divide-y divide-gray-50">
                         {Object.entries(rows).map(([label, value]) => (
@@ -355,8 +374,8 @@ export default async function ProductPage({
                     const hardcodedKeys = new Set(hardcoded.map((r) => r.label.toLowerCase()));
                     const additional = product.additionalSpecs
                       ? Object.entries(product.additionalSpecs)
-                          .filter(([key]) => !hardcodedKeys.has(key.toLowerCase()))
-                          .map(([label, value]) => ({ label, value }))
+                        .filter(([key]) => !hardcodedKeys.has(key.toLowerCase()))
+                        .map(([label, value]) => ({ label, value }))
                       : [];
                     return [...hardcoded, ...additional];
                   })().map(({ label, value }) => (
@@ -378,7 +397,7 @@ export default async function ProductPage({
               ].map(({ icon: Icon, label }) => (
                 <div
                   key={label}
-                  className="bg-white border border-gray-100 rounded-xl p-4 flex flex-col items-center gap-2 text-center"
+                  className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col items-center gap-2 text-center"
                 >
                   <Icon size={22} className="text-slate-700" />
                   <span className="text-xs font-medium text-gray-600">{label}</span>
@@ -393,26 +412,18 @@ export default async function ProductPage({
 
               {/* Product info card */}
               <div className="hidden lg:block bg-white rounded-2xl shadow-[0_8px_30px_-4px_rgba(6,81,237,0.08)] border border-slate-200/60 p-8">
-                {/* Series badge + rating */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold bg-blue-50/80 text-blue-600 uppercase tracking-widest">
-                    {product.series}
-                  </span>
-                </div>
-
-                <h1 className="text-2xl font-extrabold text-slate-900 mb-3 leading-snug tracking-tight">
+                <p
+                  className="text-[11px] tracking-[0.14em] text-slate-500 mb-3"
+                  style={{ fontFamily: "var(--font-card-mono)" }}
+                >
+                  {skuLine}
+                </p>
+                <h1
+                  className="text-2xl font-bold text-slate-900 mb-3 leading-snug tracking-tight"
+                  style={{ fontFamily: "var(--font-card-display)" }}
+                >
                   {product.name}
                 </h1>
-                {modelCode && (
-                  <p className="flex items-center gap-2 mb-4 text-[11px]">
-                    <span className="font-semibold uppercase tracking-widest text-slate-400">
-                      Model
-                    </span>
-                    <span className="font-mono text-[13px] font-semibold text-slate-900 bg-white border border-slate-300 shadow-sm rounded-lg px-2.5 py-1 tracking-wide">
-                      {modelCode}
-                    </span>
-                  </p>
-                )}
                 <p className="text-slate-500 text-[14px] leading-relaxed mb-6">
                   {product.description}
                 </p>
@@ -431,8 +442,11 @@ export default async function ProductPage({
                       value: formatSizeRange(product.specs.screenSizes),
                     },
                   ].map(({ label, value }) => (
-                    <div key={label} className="bg-slate-50/80 rounded-xl p-3.5 border border-slate-100 transition-colors hover:bg-blue-50/30 hover:border-blue-100/50">
-                      <div className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1">
+                    <div key={label} className="bg-white rounded-xl p-3.5 border border-slate-200 transition-colors hover:bg-blue-50/30 hover:border-blue-200">
+                      <div
+                        className="text-[10px] uppercase tracking-[0.16em] text-slate-400 mb-1"
+                        style={{ fontFamily: "var(--font-card-mono)" }}
+                      >
                         {label}
                       </div>
                       <div className="text-[13px] font-semibold text-slate-800 truncate">{value}</div>
@@ -450,7 +464,7 @@ export default async function ProductPage({
                       {product.specs.screenSizes.map((s) => (
                         <span
                           key={s}
-                          className="px-3.5 py-1.5 bg-slate-50 border border-slate-200/80 rounded-lg text-[13px] font-semibold text-slate-700"
+                          className="px-3.5 py-1.5 bg-white border border-slate-200 rounded-lg text-[13px] font-semibold text-slate-700"
                         >
                           {formatSize(s)}
                         </span>
@@ -459,14 +473,12 @@ export default async function ProductPage({
                   </div>
                 )}
 
-                <div className="mb-3">
-                  {/* Action buttons */}
-                  <ProductActions product={product} />
-                </div>
-
-                {/* Spec sheet download (email-gated) */}
                 <div className="mb-4">
-                  <SpecSheetButton product={product} />
+                  {/* Action buttons — spec sheet (email-gated) shares the Compare row */}
+                  <ProductActions
+                    product={product}
+                    specSheetSlot={<SpecSheetButton product={product} compact />}
+                  />
                 </div>
 
                 {/* Direct contact */}
@@ -494,17 +506,22 @@ export default async function ProductPage({
               <QuoteForm productName={product.name} />
 
               {/* Assurance strip */}
-              <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5 text-sm">
-                <p className="font-semibold text-blue-800 mb-3">Why buy from Aplus?</p>
-                <ul className="space-y-2">
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 text-sm">
+                <p
+                  className="font-bold text-slate-900 mb-3 tracking-tight"
+                  style={{ fontFamily: "var(--font-card-display)" }}
+                >
+                  Why buy from Aplus?
+                </p>
+                <ul className="space-y-2.5">
                   {[
                     "100% genuine Samsung products",
                     "Formal GST invoice provided",
                     "EMI options available for bulk orders",
                     "Free installation assessment",
                   ].map((item) => (
-                    <li key={item} className="flex items-center gap-2 text-blue-700">
-                      <Check size={13} strokeWidth={3} className="text-blue-500 shrink-0" />
+                    <li key={item} className="flex items-center gap-2 text-slate-600">
+                      <Check size={13} strokeWidth={3} className="text-blue-600 shrink-0" />
                       {item}
                     </li>
                   ))}
@@ -534,51 +551,7 @@ export default async function ProductPage({
             </div>
             <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-4">
               {related.map((rel) => (
-                <div
-                  key={rel.id}
-                  className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg hover:border-blue-100 transition-all group relative block h-full"
-                >
-                  <CompareButton 
-                    product={rel} 
-                    className="absolute top-2 right-2 z-20" 
-                  />
-                  <div className="h-40 bg-linear-to-br from-gray-50 to-gray-100 flex items-center justify-center relative overflow-hidden">
-                    {rel.images?.[0] ? (
-                      <Image
-                        src={rel.images[0]}
-                        alt={rel.name}
-                        fill
-                        sizes="(max-width: 640px) 72vw, (max-width: 1024px) 50vw, 25vw"
-                        className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <MonitorIcon
-                        size={40}
-                        className="text-gray-300"
-                        accentClassName="text-gray-300"
-                      />
-                    )}
-                  </div>
-                  <div className="p-4 relative z-10">
-                    <p className="text-[11px] font-bold text-blue-600 uppercase tracking-wider mb-1">
-                      {rel.series}
-                    </p>
-                    <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 mb-2">
-                      <Link
-                        href={`/products/${rel.id}`}
-                        className="before:absolute before:inset-0 before:z-0 focus:outline-none cursor-pointer"
-                      >
-                        {rel.name}
-                      </Link>
-                    </h3>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-400">{rel.specs.resolution}</span>
-                      <span className="text-xs font-semibold text-blue-600 flex items-center gap-0.5 relative z-10">
-                        Details <ChevronRight size={12} />
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <ProductCard key={rel.id} product={rel} />
               ))}
             </MobileProductScroller>
           </section>
@@ -597,7 +570,7 @@ export default async function ProductPage({
               {faqs.map((faq, i) => (
                 <details
                   key={i}
-                  className="group bg-white rounded-2xl border border-gray-100 shadow-sm open:shadow-md transition-shadow"
+                  className="group bg-white rounded-2xl border border-slate-200 shadow-sm open:shadow-md transition-shadow"
                 >
                   <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 text-[15px] font-semibold text-gray-900">
                     {faq.q}

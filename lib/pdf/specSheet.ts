@@ -231,9 +231,12 @@ function ensureSpace(ctx: Ctx, needed: number) {
   if (ctx.y - needed < FOOT_FLOOR) addContinuationPage(ctx);
 }
 
-/** Bold tracked caps + heavy rule. */
-function sectionHeader(ctx: Ctx, label: string) {
-  ensureSpace(ctx, 34);
+/**
+ * Bold tracked caps + heavy rule. `keepWith` reserves space below the rule so
+ * a header can never strand at a page bottom without its first content lines.
+ */
+function sectionHeader(ctx: Ctx, label: string, keepWith = 0) {
+  ensureSpace(ctx, 34 + keepWith);
   drawSpacedText(ctx.page, safe(label).toUpperCase(), {
     x: MARGIN_X, y: ctx.y, size: 9.5, font: ctx.fonts.bold, color: C.black, characterSpacing: 2,
   });
@@ -252,17 +255,17 @@ function drawTitleBlock(ctx: Ctx, product: Product, productImg: PDFImage | null)
   drawSpacedText(page, eyebrow, {
     x: MARGIN_X, y: ctx.y, size: 8, font: fonts.bold, color: C.blue600, characterSpacing: 2.2,
   });
-  ctx.y -= 18;
+  ctx.y -= 21;
 
   for (const line of wrapText(safe(product.name), fonts.bold, 20, titleW)) {
     page.drawText(line, { x: MARGIN_X, y: ctx.y, size: 20, font: fonts.bold, color: C.black });
-    ctx.y -= 24;
+    ctx.y -= 25;
   }
-  ctx.y -= 2;
+  ctx.y -= 7;
 
   for (const line of wrapText(safe(product.description), fonts.regular, 9, titleW)) {
     page.drawText(line, { x: MARGIN_X, y: ctx.y, size: 9, font: fonts.regular, color: C.gray700 });
-    ctx.y -= 13;
+    ctx.y -= 14;
   }
 
   if (productImg) {
@@ -285,12 +288,11 @@ function drawTitleBlock(ctx: Ctx, product: Product, productImg: PDFImage | null)
     });
     ctx.y = Math.min(ctx.y, panelTop - IMG_PANEL_H - 6);
   }
-  ctx.y -= 14;
+  ctx.y -= 18;
 }
 
 function drawKpiStrip(ctx: Ctx, product: Product) {
   const { page, fonts } = ctx;
-  const stripH = 44;
   const top = ctx.y;
   const stats = [
     { label: "RESOLUTION", value: safe(product.specs.resolution.split("(")[0].trim()) },
@@ -299,23 +301,43 @@ function drawKpiStrip(ctx: Ctx, product: Product) {
     { label: "SIZES", value: safe(product.specs.screenSizes.map(formatSize).join(" · ")) },
   ];
 
+  const colW = CONTENT_WIDTH / 4;
+  const innerW = colW - 20;
+
+  // Fit each value inside its cell: single line 11→8 pt, then wrap to two
+  // lines 8.5→6.5 pt. Values must never overflow into the neighbouring cell.
+  const fitted = stats.map((stat) => {
+    for (let size = 11; size >= 8; size -= 0.5) {
+      if (fonts.bold.widthOfTextAtSize(stat.value, size) <= innerW) {
+        return { lines: [stat.value], size };
+      }
+    }
+    for (let size = 8.5; size >= 6.5; size -= 0.5) {
+      const lines = wrapText(stat.value, fonts.bold, size, innerW);
+      if (lines.length <= 2) return { lines, size };
+    }
+    return { lines: wrapText(stat.value, fonts.bold, 6.5, innerW).slice(0, 3), size: 6.5 };
+  });
+
+  const maxLines = Math.max(...fitted.map((f) => f.lines.length));
+  const stripH = 44 + (maxLines - 1) * 11;
+
   page.drawRectangle({
     x: MARGIN_X, y: top - stripH, width: CONTENT_WIDTH, height: stripH,
     color: C.gray50, borderWidth: 0.5, borderColor: C.gray200,
   });
 
-  const colW = CONTENT_WIDTH / 4;
   stats.forEach((stat, i) => {
     const colX = MARGIN_X + i * colW + 10;
     drawSpacedText(page, stat.label, {
       x: colX, y: top - 15, size: 7, font: fonts.bold, color: C.gray400, characterSpacing: 1.4,
     });
-    let size = 11;
-    const innerW = colW - 20;
-    while (size > 6.5 && fonts.bold.widthOfTextAtSize(stat.value, size) > innerW) {
-      size -= 0.5;
-    }
-    page.drawText(stat.value, { x: colX, y: top - 32, size, font: fonts.bold, color: C.black });
+    const { lines, size } = fitted[i];
+    lines.forEach((line, li) => {
+      page.drawText(line, {
+        x: colX, y: top - 32 - li * 11, size, font: fonts.bold, color: C.black,
+      });
+    });
     if (i > 0) {
       page.drawLine({
         start: { x: MARGIN_X + i * colW, y: top - 6 },
@@ -470,13 +492,19 @@ function drawGroupChunk(ctx: Ctx, chunk: PlacedChunk, x: number, topY: number): 
 // ── Page 2 sections ───────────────────────────────────────────────────────
 
 function drawOverview(ctx: Ctx, product: Product) {
-  sectionHeader(ctx, "Product Overview");
   const { fonts } = ctx;
   const paragraphs = (product.longDescription ?? "").split("\n\n").filter(Boolean);
+  if (paragraphs.length === 0) return;
+
+  // Keep the header attached to at least the first three lines of prose.
+  const firstLines = wrapText(safe(paragraphs[0]), fonts.regular, 9, CONTENT_WIDTH);
+  sectionHeader(ctx, "Product Overview", Math.min(firstLines.length, 3) * 14);
+
   for (const para of paragraphs) {
     const lines = wrapText(safe(para), fonts.regular, 9, CONTENT_WIDTH);
-    ensureSpace(ctx, lines.length * 14 + 8);
     for (const line of lines) {
+      // Paginate per line so long paragraphs flow instead of stranding headers.
+      if (ctx.y < FOOT_FLOOR + 14) addContinuationPage(ctx);
       ctx.page.drawText(line, { x: MARGIN_X, y: ctx.y, size: 9, font: fonts.regular, color: C.gray700 });
       ctx.y -= 14;
     }

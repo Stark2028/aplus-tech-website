@@ -16,8 +16,8 @@ const ADVANTAGES = [
   },
   {
     icon: HeadphonesIcon,
-    title: "24/7 Support",
-    desc: "Dedicated account managers and technical support available around the clock.",
+    title: "Dedicated Support",
+    desc: "Dedicated account managers and responsive technical support throughout your deployment.",
   },
   {
     icon: TruckIcon,

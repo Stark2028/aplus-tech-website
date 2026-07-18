@@ -32,7 +32,7 @@ const PROCESS_STEPS = [
     icon: LifeBuoyIcon,
     step: "04",
     title: "Support",
-    desc: "Ongoing 24/7 technical support, AMC contracts, and warranty management — we're with you long-term.",
+    desc: "Ongoing technical support, AMC contracts, and warranty management — we're with you long-term.",
   },
 ];
 

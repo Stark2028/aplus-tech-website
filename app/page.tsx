@@ -16,7 +16,7 @@ const FinalCTA = dynamic(() => import("@/components/sections/FinalCTA"));
 export const metadata: Metadata = {
   title: "Aplus Technology Solutions — Samsung B2B Display Partner, India",
   description:
-    "Authorized Samsung distributor for Smart Signage, Video Walls, Interactive Displays & Hospitality TVs. Pan-India delivery, certified installation, 24/7 support.",
+    "Authorized Samsung distributor for Smart Signage, Video Walls, Interactive Displays & Hospitality TVs. Pan-India delivery, certified installation, dedicated support.",
   keywords: [
     "Samsung Business TV",
     "Video Wall",

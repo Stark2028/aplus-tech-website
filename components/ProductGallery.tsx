@@ -81,10 +81,22 @@ export default function ProductGallery({
 
   return (
     <div className="flex flex-col gap-4 w-full group">
-      {/* Main Large Image */}
-      <div className="h-100 flex items-center justify-center overflow-hidden relative rounded-xl bg-gray-50 group-hover:cursor-zoom-in">
+      {/* Main Large Image — bezel display (spec 2026-07-18): thin dark frame
+          around the light mat, same treatment as ProductCard. Real CSS border
+          (not a gradient ring) so the corner curve rasterizes crisply;
+          mix-blend-multiply melts white-background JPEGs into the mat. */}
+      <div
+        className="h-100 flex items-center justify-center overflow-hidden relative rounded-xl border-2 border-[#26324a] group-hover:cursor-zoom-in"
+        style={{ background: "linear-gradient(160deg, #f6f8fb, #eef2f7 60%, #f2f5fa)" }}
+      >
+        {/* Backlight glow — constant and faint; the display is always on. */}
         <div
-          className="relative w-full h-full cursor-grab active:cursor-grabbing"
+          aria-hidden="true"
+          className="pointer-events-none absolute -inset-[20%]"
+          style={{ background: "radial-gradient(closest-side, rgba(37,99,235,0.10), transparent 70%)" }}
+        />
+        <div
+          className="relative w-full h-full p-5 sm:p-7 cursor-grab active:cursor-grabbing"
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
           onWheel={(e) => {
@@ -121,7 +133,7 @@ export default function ProductGallery({
                 alt={`${productName} — view ${activeIndex + 1} of ${images.length}`}
                 fill
                 sizes="(max-width: 1024px) 100vw, 700px"
-                className="object-contain pointer-events-none"
+                className="object-contain pointer-events-none mix-blend-multiply"
                 priority
               />
             </motion.div>
@@ -212,16 +224,19 @@ export default function ProductGallery({
             type="button"
             aria-label={`View image ${index + 1} of ${images.length}`}
             aria-current={activeIndex === index ? "true" : undefined}
-            className={`flex-shrink-0 w-20 h-20 rounded-lg border-2 p-1 ${activeIndex === index ? "border-blue-600" : "border-gray-200"
+            className={`flex-shrink-0 w-20 h-20 rounded-lg border-[1.5px] p-1.5 transition-shadow ${activeIndex === index
+              ? "border-[#26324a] ring-2 ring-blue-500/25"
+              : "border-slate-200 hover:border-slate-300"
               }`}
+            style={{ background: "linear-gradient(160deg, #f6f8fb, #eef2f7 60%, #f2f5fa)" }}
           >
-            <div className="relative w-full h-full">
+            <div className="relative w-full h-full mix-blend-multiply">
               <Image
                 src={img}
                 alt={`${productName} thumbnail ${index + 1}`}
                 fill
                 sizes="80px"
-                className="object-cover rounded-md"
+                className="object-contain"
               />
             </div>
           </button>

@@ -1,27 +1,23 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { usePostHog } from "posthog-js/react";
 import "./stage.css";
-import { useStageChannel } from "./useStageChannel";
 import RetailScene from "./scenes/RetailScene";
 import NocScene from "./scenes/NocScene";
 import HotelScene from "./scenes/HotelScene";
 import FlipScene from "./scenes/FlipScene";
 
 const CHANNELS = [
-  { key: "signage", chip: "SIGNAGE", label: "Smart Signage", ch: "CH·01", osd: "SMART SIGNAGE", Scene: RetailScene },
-  { key: "video-wall", chip: "VIDEO WALL", label: "Video Wall", ch: "CH·02", osd: "VIDEO WALL", Scene: NocScene },
-  { key: "hotel-tv", chip: "HOTEL TV", label: "Hospitality TV", ch: "CH·03", osd: "HOSPITALITY TV", Scene: HotelScene },
-  { key: "interactive", chip: "INTERACTIVE", label: "Interactive Display", ch: "CH·04", osd: "INTERACTIVE", Scene: FlipScene },
+  { key: "signage", ch: "CH·01", osd: "SMART SIGNAGE", Scene: RetailScene },
+  { key: "video-wall", ch: "CH·02", osd: "VIDEO WALL", Scene: NocScene },
+  { key: "hotel-tv", ch: "CH·03", osd: "HOSPITALITY TV", Scene: HotelScene },
+  { key: "interactive", ch: "CH·04", osd: "INTERACTIVE", Scene: FlipScene },
 ] as const;
 
 /** The hero's right-half "stage": a display that morphs through four product
- *  form factors on a pure-CSS 20s loop. React only handles manual chip mode
- *  and the desktop 3D tilt — the loop itself runs without JS. */
+ *  form factors on a pure-CSS 20s loop. React only handles the desktop 3D
+ *  tilt — the loop itself runs without JS. */
 export default function DisplayStage() {
-  const { manualIndex, select, resumeAuto } = useStageChannel();
-  const posthog = usePostHog();
   const colRef = useRef<HTMLDivElement>(null);
   const tiltRef = useRef<HTMLDivElement>(null);
 
@@ -60,17 +56,14 @@ export default function DisplayStage() {
     };
   }, []);
 
-  const manual = manualIndex !== null;
-  const on = (i: number) => (manualIndex === i ? " on" : "");
-
   return (
     <div ref={colRef} className="stg-col w-full">
-      <div className={`stg-scale${manual ? " stg-manual" : ""}`}>
+      <div className="stg-scale">
         {/* Everything visual is decorative; the H1/copy carry the information. */}
         <div aria-hidden="true">
           <div className="stg-persp">
             {CHANNELS.map((c, i) => (
-              <div key={c.key} className={`stg-glow g${i + 1}${on(i)}`} />
+              <div key={c.key} className={`stg-glow g${i + 1}`} />
             ))}
             <div ref={tiltRef} className="stg-tilt">
               <div className="stg-dust d1" />
@@ -80,12 +73,12 @@ export default function DisplayStage() {
               <div className="stg-float">
                 <div className="stg-stagebox stg-reveal">
                   {CHANNELS.map((c, i) => (
-                    <div key={c.key} className={`stg-osd o${i + 1}${on(i)}`}>
+                    <div key={c.key} className={`stg-osd o${i + 1}`}>
                       {c.ch} <b>{c.osd}</b>
                     </div>
                   ))}
                   {CHANNELS.map(({ key, Scene }, i) => (
-                    <div key={key} className={`stg-prod p${i + 1}${on(i)}`}>
+                    <div key={key} className={`stg-prod p${i + 1}`}>
                       <Scene />
                     </div>
                   ))}
@@ -93,44 +86,13 @@ export default function DisplayStage() {
                 </div>
                 <div className="stg-floor">
                   {CHANNELS.map((c, i) => (
-                    <div key={c.key} className={`stg-pool g${i + 1}${on(i)}`} />
+                    <div key={c.key} className={`stg-pool g${i + 1}`} />
                   ))}
                   <div className="stg-shadow" />
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="stg-chips">
-          {CHANNELS.map((c, i) => (
-            <button
-              key={c.key}
-              type="button"
-              className={`stg-chip c${i + 1}`}
-              aria-pressed={manualIndex === i}
-              aria-label={`Preview: ${c.label}`}
-              onClick={() => {
-                select(i);
-                posthog?.capture("hero_stage_channel_click", { channel: c.key });
-              }}
-            >
-              {c.chip}
-              <span className="stg-chip-bar" />
-            </button>
-          ))}
-          {manual && (
-            <button
-              type="button"
-              className="stg-chip stg-chip-auto"
-              aria-label="Resume automatic channel cycling"
-              onClick={() => {
-                resumeAuto();
-                posthog?.capture("hero_stage_auto_resume");
-              }}
-            >
-              ▶ AUTO
-            </button>
-          )}
         </div>
       </div>
     </div>

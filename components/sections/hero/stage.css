@@ -818,83 +818,6 @@
 .stg-glow.g2 { background: radial-gradient(closest-side, rgba(19, 78, 74, 0.42), rgba(19, 78, 74, 0.16) 45%, transparent 72%); animation-delay: 5s; }
 .stg-glow.g3 { background: radial-gradient(closest-side, rgba(146, 64, 14, 0.32), rgba(146, 64, 14, 0.12) 45%, transparent 72%); animation-delay: 10s; }
 .stg-glow.g4 { background: radial-gradient(closest-side, rgba(148, 163, 184, 0.26), rgba(148, 163, 184, 0.1) 45%, transparent 72%); animation-delay: 15s; }
-/* ── manual mode: chips pin a channel, loop visuals freeze ── */
-.stg-manual .stg-prod,
-.stg-manual .stg-glow,
-.stg-manual .stg-pool,
-.stg-manual .stg-osd {
-  animation: none !important;
-  opacity: 0 !important;
-}
-.stg-manual .stg-prod.on { opacity: 1 !important; transform: scale(1); }
-.stg-manual .stg-glow.on { opacity: 1 !important; }
-.stg-manual .stg-pool.on { opacity: 0.85 !important; }
-.stg-manual .stg-osd.on { opacity: 1 !important; transform: translateY(0) !important; }
-/* Sticky notes ride the 20s clock; when Flip is pinned, show them statically. */
-.stg-manual .stg-note { animation: none !important; opacity: 1 !important; }
-/* ── chips: real buttons, real UI — fixed px type, not stage-scaled ── */
-.stg-chips {
-  display: flex;
-  gap: 7px;
-  justify-content: center;
-  margin-top: 8px;
-  position: relative;
-  z-index: 2;
-  flex-wrap: wrap;
-}
-.stg-chip {
-  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: #94a3b8; /* ≥4.5:1 on the near-black hero */
-  border: 1px solid rgba(148, 163, 184, 0.22);
-  padding: 6px 12px;
-  min-height: 30px;
-  border-radius: 99px;
-  position: relative;
-  overflow: hidden;
-  background: rgba(15, 23, 42, 0.5);
-  cursor: pointer;
-  transition: border-color 0.25s, color 0.25s;
-}
-.stg-chip:hover {
-  border-color: rgba(125, 211, 252, 0.45);
-  color: #cbd5e1;
-}
-.stg-chip[aria-pressed="true"] {
-  border-color: rgba(56, 189, 248, 0.65);
-  color: #e0f2fe;
-}
-/* Per-chip progress bar synced to the 20s clock. Mockup animated width;
-   converted to scaleX per perf budget. */
-.stg-chip-bar {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 2px;
-  width: 100%;
-  transform-origin: left;
-  transform: scaleX(0);
-  background: linear-gradient(90deg, #38bdf8, #818cf8);
-  animation: stg-chipbar 20s linear infinite;
-}
-.stg-chip.c2 .stg-chip-bar { animation-delay: 5s; }
-.stg-chip.c3 .stg-chip-bar { animation-delay: 10s; }
-.stg-chip.c4 .stg-chip-bar { animation-delay: 15s; }
-@keyframes stg-chipbar {
-  0% { transform: scaleX(0); opacity: 1; }
-  25% { transform: scaleX(1); opacity: 1; }
-  26% { transform: scaleX(1); opacity: 0; }
-  100% { transform: scaleX(0); opacity: 0; }
-}
-.stg-manual .stg-chip-bar {
-  animation: none !important;
-  transform: scaleX(0);
-}
-.stg-chip-auto {
-  color: #67e8f9;
-  border-color: rgba(103, 232, 249, 0.4);
-}
 
 /* ── hero shell (classes used by the server HeroSection) ──────────────────── */
 .hero2 {
@@ -1068,7 +991,7 @@
   .stg-pool.g1 { opacity: 0.85; }
   .stg-osd.o1 { opacity: 1; transform: translateY(0); }
   .stg-note { opacity: 1; }
-  .stg-chip-bar, .stg-screen::after { display: none; }
+  .stg-screen::after { display: none; }
   .stg-htype { max-width: 17ch; border-right-color: transparent; }
   .stg-drawline { stroke-dashoffset: 0 !important; }
 }
