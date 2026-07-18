@@ -61,7 +61,7 @@ Rally Board 65 doubles as a digital whiteboard for in-room and remote collaborat
         OS: "Logitech CollabOS",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-rally-board-65/1.webp"],
   },
   {
     id: "logitech-rally-bar",
@@ -104,7 +104,7 @@ Rally Bar runs Microsoft Teams Rooms or Zoom Rooms on Android without an externa
         OS: "Logitech CollabOS",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-rally-bar/1.webp"],
   },
   {
     id: "logitech-rally-bar-mini",
@@ -147,7 +147,7 @@ Rally Bar Mini runs Microsoft Teams Rooms or Zoom Rooms on-device in appliance m
         OS: "Logitech CollabOS",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-rally-bar-mini/1.webp"],
   },
   {
     id: "logitech-rally-bar-huddle",
@@ -190,7 +190,7 @@ Rally Bar Huddle runs Microsoft Teams Rooms or Zoom Rooms on-device via Logitech
         OS: "Logitech CollabOS",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-rally-bar-huddle/1.webp"],
   },
   {
     id: "logitech-rally-plus",
@@ -234,7 +234,7 @@ Rally Plus delivers cinematic 4K video with 15x HD zoom and automatic speaker fr
         Interface: "USB 3.0",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-rally-plus/1.webp"],
   },
   {
     id: "logitech-meetup-2",
@@ -277,7 +277,7 @@ MeetUp 2 integrates six beamforming microphones and room-tuned speakers with AI 
         Interface: "USB",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-meetup-2/1.webp"],
   },
   // ── Cameras ────────────────────────────────────────────────────────────
   {
@@ -320,7 +320,7 @@ Rally AI Camera connects to Logitech room compute or a room PC and is a natural 
         Interface: "USB",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-rally-ai-camera/1.webp"],
   },
   {
     id: "logitech-rally-ai-camera-pro",
@@ -363,7 +363,7 @@ Motorized PTZ with a ±90° pan range and on-camera AI keep every speaker perfec
         Interface: "USB",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-rally-ai-camera-pro/1.webp"],
   },
   {
     id: "logitech-rally-camera",
@@ -406,7 +406,7 @@ Rally Camera connects over USB to a room PC or Logitech room compute and suits m
         "Power Supply": "AC/DC adapter, 100–240 V, 50/60 Hz",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-rally-camera/1.webp"],
   },
   {
     id: "logitech-ptz-pro-2",
@@ -444,7 +444,7 @@ PTZ Pro 2 is a proven fit for classrooms, auditoriums and large meeting rooms, w
         Interface: "USB plug-and-play",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-ptz-pro-2/1.webp"],
   },
   {
     id: "logitech-sight",
@@ -485,7 +485,7 @@ Sight pairs with a front-of-room camera such as Rally Bar to deliver an immersiv
         "Speaker Tracking": "Frames and follows up to four speakers",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-sight/1.webp"],
   },
   {
     id: "logitech-scribe",
@@ -526,7 +526,7 @@ Scribe mounts above the whiteboard, is powered over a single Cat5e cable using P
         Platforms: "Microsoft Teams Rooms, Zoom Rooms, Google Meet",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-scribe/1.webp"],
   },
   // ── Controllers & Scheduling ──────────────────────────────────────────
   {
@@ -570,7 +570,7 @@ Tap connects over USB to a room PC or Logitech room compute and is a standard co
         VESA: "100 × 100 mm",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-tap/1.webp"],
   },
   {
     id: "logitech-tap-ip",
@@ -609,7 +609,7 @@ Tap IP is ideal where a clean, cable-light room layout matters. Aplus Technology
         Pairing: "Appliance-mode room systems over LAN",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-tap-ip/1.webp"],
   },
   {
     id: "logitech-tap-scheduler",
@@ -652,7 +652,7 @@ Tap Scheduler installs with a single PoE cable and works with leading room-booki
         "Status LEDs": "Wide-angle room availability LEDs",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-tap-scheduler/1.webp"],
   },
   // ── Room Compute ──────────────────────────────────────────────────────
   {
@@ -696,6 +696,6 @@ RoomMate runs Logitech CollabOS, drives one or two displays, and is monitored an
         Tools: "Logitech Sync, Teams admin center, Zoom Device Management",
       },
     },
-    images: [],
+    images: ["/products/video-conferencing/logitech-roommate/1.webp"],
   },
 ];
