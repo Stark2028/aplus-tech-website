@@ -62,8 +62,8 @@ const VALUES = [
   },
   {
     icon: HeadphonesIcon,
-    title: "Always-On Support",
-    desc: "Technical issues don't keep business hours. Our support team is available 24/7 with guaranteed response SLAs for enterprise accounts.",
+    title: "Dedicated Support",
+    desc: "A responsive support team that resolves issues fast, with guaranteed response SLAs for enterprise accounts.",
   },
 ];
 
@@ -71,7 +71,7 @@ const TEAM = [
   {
     name: "Anurag Walia",
     role: "Director",
-    image: "/team/anurag-walia-v3.jpg",
+    image: "/team/anurag-walia-v4.jpg",
     linkedin: "https://www.linkedin.com/in/anurag-walia-bba9103/",
   },
   {
@@ -98,7 +98,7 @@ const MILESTONES = [
   { year: "2022", event: "Crossed 100+ enterprise clients; opened Mumbai service center." },
   { year: "2023", event: "Launched dedicated hospitality and education verticals." },
   { year: "2024", event: "500+ clients milestone; expanded to 50+ cities pan-India." },
-  { year: "2025", event: "Introduced AMC contracts and 24/7 remote support program." },
+  { year: "2025", event: "Introduced AMC contracts and a dedicated remote support program." },
   { year: "2026", event: "Achieved ISO 9001:2015 certification; expanding into Tier-2 cities with a new national service partner network." },
 ];
 

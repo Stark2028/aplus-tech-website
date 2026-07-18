@@ -402,7 +402,7 @@ export default function ContactPage() {
                 {[
                   { icon: BadgeCheckIcon, accentClass: "text-blue-600",    shadow: "shadow-blue-100/60",  title: "Certified Expertise",   desc: "Authorized Samsung partners — authentic products with official warranties." },
                   { icon: MapPinIcon,     accentClass: "text-emerald-600", shadow: "shadow-green-100/60", title: "Pan-India Support",     desc: "Nationwide logistics & installation network covering 50+ cities." },
-                  { icon: TimerIcon,      accentClass: "text-amber-600",   shadow: "shadow-amber-100/60", title: "End-to-End Service",    desc: "Consultation, supply, installation & 24/7 AMC — one expert team." },
+                  { icon: TimerIcon,      accentClass: "text-amber-600",   shadow: "shadow-amber-100/60", title: "End-to-End Service",    desc: "Consultation, supply, installation & AMC support — one expert team." },
                 ].map(({ icon: Icon, accentClass, shadow, title, desc }) => (
                   <div
                     key={title}

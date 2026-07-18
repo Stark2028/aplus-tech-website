@@ -374,8 +374,8 @@ export default async function ProductPage({
                     const hardcodedKeys = new Set(hardcoded.map((r) => r.label.toLowerCase()));
                     const additional = product.additionalSpecs
                       ? Object.entries(product.additionalSpecs)
-                          .filter(([key]) => !hardcodedKeys.has(key.toLowerCase()))
-                          .map(([label, value]) => ({ label, value }))
+                        .filter(([key]) => !hardcodedKeys.has(key.toLowerCase()))
+                        .map(([label, value]) => ({ label, value }))
                       : [];
                     return [...hardcoded, ...additional];
                   })().map(({ label, value }) => (
