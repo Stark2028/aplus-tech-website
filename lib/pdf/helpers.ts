@@ -42,6 +42,8 @@ export const C = {
   blue700: rgb(0.11, 0.31, 0.78),
   blue600: rgb(0.15, 0.39, 0.92),       // #2563eb
   blue50:  rgb(0.94, 0.96, 1.00),       // #eff6ff
+  blueLight: rgb(0.576, 0.773, 0.988),  // #93c5fd — links on the navy band
+  navy: rgb(0.059, 0.086, 0.165),       // #0f172a — contact band
   slate50: rgb(0.97, 0.98, 0.99),       // #f8fafc
   white: rgb(1, 1, 1),
 };
@@ -267,6 +269,21 @@ export async function imageToPngBytes(src: string): Promise<Uint8Array | null> {
     });
   } catch (err) {
     console.warn("[pdf] imageToPngBytes failed", err);
+    return null;
+  }
+}
+
+/**
+ * Fetch a PNG (or any bytes) from a same-origin URL. Resolves null on ANY
+ * failure — HTTP error, network error, or non-browser environment — so PDF
+ * generation can degrade (skip logo/watermark) instead of throwing.
+ */
+export async function fetchPngBytes(url: string): Promise<Uint8Array | null> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return new Uint8Array(await res.arrayBuffer());
+  } catch {
     return null;
   }
 }
