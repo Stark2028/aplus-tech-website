@@ -38,6 +38,11 @@ export default async function Image({
   const categoryProducts = products.filter((p) => p.category === category.name);
   const productCount = categoryProducts.length;
 
+  // Eyebrow pill: the site is Samsung-led, but the Video Conferencing category
+  // is Logitech and must never carry Samsung wording (positioning rule).
+  const eyebrow =
+    category.id === "video-conferencing" ? "Video Conferencing" : "Samsung Category";
+
   return new ImageResponse(
     <div
       style={{
@@ -82,7 +87,7 @@ export default async function Image({
             alignItems: "center",
           }}
         >
-          Samsung Category
+          {eyebrow}
         </div>
       </div>
 
