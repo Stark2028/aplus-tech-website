@@ -11,9 +11,11 @@ import { downloadPdf } from "@/lib/pdf/download";
 
 interface Props {
   product: Product;
+  // Compact: rides the Compare row inside ProductActions — shorter label, tighter padding.
+  compact?: boolean;
 }
 
-export default function SpecSheetButton({ product }: Props) {
+export default function SpecSheetButton({ product, compact = false }: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -61,10 +63,14 @@ export default function SpecSheetButton({ product }: Props) {
       <button
         onClick={handleClick}
         disabled={isGenerating}
-        className="flex items-center justify-center gap-2 w-full py-3.5 border border-slate-200 rounded-xl text-[15px] font-semibold text-slate-700 hover:border-slate-300 hover:text-blue-700 hover:bg-slate-50 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 bg-white disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+        className={`flex items-center justify-center w-full py-3.5 border border-slate-200 rounded-xl font-semibold text-slate-700 hover:border-slate-300 hover:text-blue-700 hover:bg-slate-50 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 bg-white disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 ${
+          compact ? "gap-1.5 px-2 text-[13px] whitespace-nowrap" : "gap-2 text-[15px]"
+        }`}
       >
-        <FileDown size={18} />
-        {isGenerating ? "Preparing PDF…" : "Download Spec Sheet (PDF)"}
+        <FileDown size={compact ? 16 : 18} />
+        {isGenerating
+          ? compact ? "Preparing…" : "Preparing PDF…"
+          : compact ? "Spec Sheet (PDF)" : "Download Spec Sheet (PDF)"}
       </button>
 
       <LeadGateModal
