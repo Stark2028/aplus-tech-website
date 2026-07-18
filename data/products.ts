@@ -5,6 +5,9 @@ export interface Product {
   /** True for products in the current (2026) Samsung catalog.
    *  Sole source of truth for the "latest first" sort. */
   catalog2026?: boolean;
+  /** Hide from the /products "View All Products" listing while keeping the
+   *  product live on its category page, detail page, and search. */
+  hideFromAllProducts?: boolean;
   name: string;
   /** Must match ProductCategory.name exactly */
   category: string;
@@ -1115,6 +1118,7 @@ With a single USB-C connection delivering power, data, and high-bandwidth conten
   {
     id: "samsung-interactive-wac",
     popularity: 99,
+    hideFromAllProducts: true,
     name: "Samsung WAC Series Interactive Display",
     category: "Interactive Display",
     series: "WAC",
@@ -1192,6 +1196,7 @@ Powerful screen sharing supports up to nine simultaneous screens so content flow
   {
     id: "samsung-interactive-wad",
     popularity: 92,
+    hideFromAllProducts: true,
     name: "Samsung WAD Series Interactive Display",
     category: "Interactive Display",
     series: "WAD",
@@ -2172,6 +2177,7 @@ With 24/7 operation reliability and wide 178°/178° viewing angles, the VH55R s
   {
     id: "samsung-flip-2",
     popularity: 98,
+    hideFromAllProducts: true,
     name: "Samsung Flip 2 (WM55R) Interactive Display",
     category: "Interactive Display",
     series: "Flip 2",

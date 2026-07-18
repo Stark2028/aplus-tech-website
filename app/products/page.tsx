@@ -47,7 +47,10 @@ export default function ProductsListingPage() {
 
       <ProductsCategoryNav />
 
-      <ProductsClientShell products={products} productCategories={productCategories} />
+      <ProductsClientShell
+        products={products.filter((p) => !p.hideFromAllProducts)}
+        productCategories={productCategories}
+      />
     </div>
   );
 }
