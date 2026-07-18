@@ -10,6 +10,7 @@ import { formatSkuLine } from "@/lib/productSku";
 import { useQuote } from "@/context/QuoteContext";
 import { useComparison } from "@/context/ComparisonContext";
 import { getProductBadge } from "@/lib/productBadges";
+import { specLabels } from "@/lib/vcSpecLabels";
 import SpotlightCard from "@/components/SpotlightCard";
 
 interface ProductCardProps {
@@ -45,6 +46,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   const badge = getProductBadge(product.id);
+  const labels = specLabels(product);
 
   const badgeStyles: Record<string, string> = {
     "Best Seller": "bg-linear-to-r from-amber-500 to-orange-500 text-white shadow-orange-500/20",
@@ -115,7 +117,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {primaryImage ? (
             <Image
               src={primaryImage}
-              alt={`${product.name} — Samsung ${product.series} ${product.category}`}
+              alt={`${product.name} — ${product.series} ${product.category}`}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-contain transition-transform duration-500 group-hover:scale-105 group-focus-within:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-within:scale-100"
@@ -164,11 +166,11 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Key Specs Grid */}
         <div className="grid grid-cols-2 gap-3 mb-5">
           <div className="bg-slate-50/80 rounded-xl p-3.5 border border-slate-100 transition-colors group-hover:bg-blue-50/30 group-hover:border-blue-100/50">
-            <span className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1">Brightness</span>
+            <span className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1">{labels.brightness}</span>
             <span className="text-sm font-semibold text-slate-700">{product.specs.brightness}</span>
           </div>
           <div className="bg-slate-50/80 rounded-xl p-3.5 border border-slate-100 transition-colors group-hover:bg-blue-50/30 group-hover:border-blue-100/50">
-            <span className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1">Resolution</span>
+            <span className="block text-[10px] uppercase font-bold tracking-widest text-slate-400 mb-1">{labels.resolution}</span>
             <span className="text-sm font-semibold text-slate-700 truncate block">{product.specs.resolution}</span>
           </div>
         </div>
@@ -179,7 +181,9 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="mt-auto flex items-center gap-2 mb-6 text-[13px] text-slate-500 bg-blue-50/50 rounded-lg py-2.5 px-3.5 border border-blue-100/30">
           <Clock size={14} className="text-blue-500 shrink-0" />
           <span className="truncate">
-            Rated for <strong className="text-slate-700 font-bold">{product.specs.operationTime}</strong> continuous operation
+            {labels.operation === "Operation"
+              ? <>Rated for <strong className="text-slate-700 font-bold">{product.specs.operationTime}</strong> continuous operation</>
+              : <><strong className="text-slate-700 font-bold">{labels.operation}:</strong> {product.specs.operationTime}</>}
           </span>
         </div>
 

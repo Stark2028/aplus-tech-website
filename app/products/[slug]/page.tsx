@@ -25,6 +25,8 @@ import { formatSkuLine } from "@/lib/productSku";
 import { formatSize, formatSizeRange } from "@/lib/formatSize";
 import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
+import { specLabels } from "@/lib/vcSpecLabels";
+import { isLogitech } from "@/lib/brand";
 
 export const revalidate = 3600;
 
@@ -53,7 +55,9 @@ export async function generateMetadata({
   // Model code in the title captures exact model-number searches (common in B2B).
   const title = modelCode ? `${product.name} (${modelCode})` : product.name;
   const sizeRange = formatSizeRange(product.specs.screenSizes);
-  const metaDescription = `${product.description} Available in ${sizeRange} — B2B pricing from Aplus, an authorized Samsung distributor in India.`;
+  const metaDescription = isLogitech(product)
+    ? `${product.description} B2B pricing, installation and AMC from Aplus Technology Solutions in India.`
+    : `${product.description} Available in ${sizeRange} — B2B pricing from Aplus, an authorized Samsung distributor in India.`;
   return {
     title,
     description: metaDescription,
@@ -62,7 +66,7 @@ export async function generateMetadata({
       product.series,
       ...(modelCode ? [modelCode] : []),
       product.category,
-      "Samsung",
+      isLogitech(product) ? "Logitech" : "Samsung",
       "B2B",
       "price",
       "dealer India",
@@ -115,6 +119,8 @@ export default async function ProductPage({
   const skuLine = modelCode
     ? `${formatSkuLine(product)} · ${modelCode}`
     : formatSkuLine(product);
+  const labels = specLabels(product);
+  const logi = isLogitech(product);
 
   const jsonLd = [
     productLd(product),
@@ -138,7 +144,7 @@ export default async function ProductPage({
       <div className="bg-[#0f172a] py-2.5 px-4 text-[12.5px] text-slate-300">
         <div className="max-w-7xl mx-auto flex items-center justify-center sm:justify-between gap-x-4 gap-y-1 flex-wrap sm:px-2 lg:px-4">
           <span className="tracking-wide">
-            <span className="font-semibold text-white">Authorized Samsung Distributor</span>
+            <span className="font-semibold text-white">{logi ? "Video Conferencing Specialists" : "Authorized Samsung Distributor"}</span>
             <span className="mx-2 text-slate-600">·</span>
             Get B2B pricing in 24 hrs
           </span>
@@ -212,16 +218,23 @@ export default async function ProductPage({
               {/* Quick spec pills */}
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { label: "Resolution", value: product.specs.resolution },
-                  { label: "Brightness", value: product.specs.brightness },
+                  { label: labels.resolution, value: product.specs.resolution },
+                  { label: labels.brightness, value: product.specs.brightness },
                   {
-                    label: "Operation",
-                    value: `${product.specs.operationTime} hrs`,
+                    label: labels.operation === "Operation" ? "Operation" : labels.operation,
+                    value:
+                      labels.operation === "Operation"
+                        ? `${product.specs.operationTime} hrs`
+                        : product.specs.operationTime,
                   },
-                  {
-                    label: "Sizes",
-                    value: formatSizeRange(product.specs.screenSizes),
-                  },
+                  ...(product.specs.screenSizes.length > 0
+                    ? [
+                        {
+                          label: "Sizes",
+                          value: formatSizeRange(product.specs.screenSizes),
+                        },
+                      ]
+                    : []),
                 ].map(({ label, value }) => (
                   <div key={label} className="bg-white rounded-xl p-3 border border-slate-200">
                     <div
@@ -391,9 +404,9 @@ export default async function ProductPage({
             {/* Trust badges */}
             <div className="grid grid-cols-3 gap-3">
               {[
-                { icon: ShieldCheckIcon, label: "Authorized Samsung Distributor" },
+                { icon: ShieldCheckIcon, label: logi ? "Video Conferencing Supply & Install" : "Authorized Samsung Distributor" },
                 { icon: TruckIcon, label: "Pan-India Delivery" },
-                { icon: AwardIcon, label: "Certified Installation" },
+                { icon: AwardIcon, label: logi ? "Professional Installation" : "Certified Installation" },
               ].map(({ icon: Icon, label }) => (
                 <div
                   key={label}
@@ -431,16 +444,23 @@ export default async function ProductPage({
                 {/* Quick spec pills */}
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   {[
-                    { label: "Resolution", value: product.specs.resolution },
-                    { label: "Brightness", value: product.specs.brightness },
+                    { label: labels.resolution, value: product.specs.resolution },
+                    { label: labels.brightness, value: product.specs.brightness },
                     {
-                      label: "Operation",
-                      value: `${product.specs.operationTime} hrs`,
+                      label: labels.operation === "Operation" ? "Operation" : labels.operation,
+                      value:
+                        labels.operation === "Operation"
+                          ? `${product.specs.operationTime} hrs`
+                          : product.specs.operationTime,
                     },
-                    {
-                      label: "Sizes",
-                      value: formatSizeRange(product.specs.screenSizes),
-                    },
+                    ...(product.specs.screenSizes.length > 0
+                      ? [
+                          {
+                            label: "Sizes",
+                            value: formatSizeRange(product.specs.screenSizes),
+                          },
+                        ]
+                      : []),
                   ].map(({ label, value }) => (
                     <div key={label} className="bg-white rounded-xl p-3.5 border border-slate-200 transition-colors hover:bg-blue-50/30 hover:border-blue-200">
                       <div
@@ -515,7 +535,7 @@ export default async function ProductPage({
                 </p>
                 <ul className="space-y-2.5">
                   {[
-                    "100% genuine Samsung products",
+                    logi ? "Genuine Logitech room systems" : "100% genuine Samsung products",
                     "Formal GST invoice provided",
                     "EMI options available for bulk orders",
                     "Free installation assessment",
