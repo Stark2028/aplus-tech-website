@@ -19,6 +19,7 @@ const PRODUCT_LINKS = [
   { label: "Video Walls", href: "/categories/video-walls" },
   { label: "Interactive Displays", href: "/categories/interactive" },
   { label: "Hospitality & Business TV", href: "/categories/commercial-tv" },
+  { label: "Video Conferencing", href: "/categories/video-conferencing" },
   { label: "All Products", href: "/products" },
 ];
 
@@ -265,6 +266,11 @@ export default function Footer() {
               <span className="hidden sm:inline mx-2 text-slate-600">|</span>
               <span className="whitespace-nowrap">GSTIN: 07AAUCA5631L1Z6</span>
             </div>
+            <p className="text-[11px] leading-relaxed text-slate-500 max-w-xl">
+              Logitech® is a trademark of Logitech. Aplus Technology Solutions is
+              an independent reseller of Logitech products and is not affiliated
+              with or endorsed by Logitech.
+            </p>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 justify-center">
             <Link href="/privacy" className="hover:text-white transition-colors">
