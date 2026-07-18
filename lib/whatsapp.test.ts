@@ -74,3 +74,25 @@ describe("buildWhatsAppUrlTo", () => {
     expect(buildWhatsAppUrlTo("nope", "Hi")).toBeNull();
   });
 });
+
+import { getWhatsAppMessage } from "./whatsapp";
+
+describe("getWhatsAppMessage — video conferencing", () => {
+  it("returns a Logitech VC message on the VC category path", () => {
+    const msg = getWhatsAppMessage("/categories/video-conferencing");
+    expect(msg).toMatch(/Logitech/);
+    expect(msg).toMatch(/video conferencing/i);
+    expect(msg).not.toMatch(/authoriz|partner|certif|samsung/i);
+  });
+
+  it("keeps the Samsung digital-signage message unchanged", () => {
+    const msg = getWhatsAppMessage("/categories/digital-signage");
+    expect(msg).toMatch(/Samsung digital signage/i);
+  });
+
+  it("product-page message names the product, not the brand", () => {
+    const msg = getWhatsAppMessage("/products/logitech-rally-bar");
+    expect(msg).not.toMatch(/samsung/i);
+    expect(msg).toMatch(/logitech rally bar/i);
+  });
+});

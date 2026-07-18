@@ -32,6 +32,8 @@ export function getWhatsAppMessage(pathname: string): string {
     return "Hi! I'm looking for Samsung interactive display solutions for meeting rooms or classrooms. Could you help?";
   if (pathname.startsWith("/categories/commercial-tv"))
     return "Hi! I'm looking for Samsung hospitality or commercial TV solutions. Could you share more details?";
+  if (pathname.startsWith("/categories/video-conferencing"))
+    return "Hi! I'm looking for Logitech video conferencing systems for our meeting rooms. Could you share options and pricing?";
   if (pathname.startsWith("/solutions/hospitality"))
     return "Hi! I need Samsung display solutions for my hospitality property. Could you help?";
   if (pathname.startsWith("/solutions/corporate"))
