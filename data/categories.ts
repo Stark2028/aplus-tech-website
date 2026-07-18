@@ -3,7 +3,8 @@ export type CategorySlug =
   | "video-walls"
   | "interactive"
   | "commercial-tv"
-  | "led-signage";
+  | "led-signage"
+  | "video-conferencing";
 
 export interface ProductCategory {
   id: CategorySlug;
@@ -77,6 +78,17 @@ export const productCategories: ProductCategory[] = [
     description: "Direct-view LED display solutions — from The Wall's micro-LED to all-in-one packages — delivering bezel-free, large-format visuals that scale to any space.",
     overview:
       "Samsung direct-view LED signage delivers bezel-free, large-format visuals that scale to virtually any size — from The Wall's micro-LED to IE-series indoor cabinets and All-in-One (IAB and IAC) packages. Fine pixel pitches produce crisp, seamless imagery for corporate lobbies, auditoriums, control rooms, retail flagships, and experience centres, without the seams of a tiled LCD wall. Aplus Technology Solutions handles LED site survey, supply, and turnkey installation across India, with service and AMC support.",
+  },
+  {
+    id: "video-conferencing",
+    name: "Video Conferencing",
+    navLabel: "Video Conferencing",
+    tagline: "Boardrooms, huddle rooms & meeting spaces",
+    subtitle: "Logitech video bars, cameras and room controllers for Microsoft Teams and Zoom Rooms.",
+    useCases: ["Boardrooms", "Huddle Rooms", "Microsoft Teams Rooms", "Zoom Rooms", "Training Rooms"],
+    description: "Logitech video conferencing systems — video bars, PTZ cameras, tap controllers and room compute for meeting spaces of every size.",
+    overview:
+      "Logitech video conferencing brings enterprise-grade meeting-room hardware to boardrooms, huddle spaces, training rooms and executive suites — video bars with AI-driven framing, PTZ cameras, tap touch controllers, schedulers and compute appliances that run Microsoft Teams Rooms and Zoom Rooms out of the box. Aplus Technology Solutions supplies, installs and maintains the full Logitech room lineup across India — from all-in-one huddle-room bars to modular boardroom systems — with GST invoicing, professional installation, and AMC support.",
   },
 ];
 
