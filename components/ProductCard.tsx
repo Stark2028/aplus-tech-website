@@ -97,7 +97,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           }
         }}
         aria-label={`View details for ${product.name}`}
-        className="spotlight-content relative mx-2.5 mt-2.5 h-64 rounded-lg overflow-hidden border-[1.5px] border-[#26324a] flex items-center justify-center cursor-pointer px-6 py-8 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 transition-shadow duration-500 group-hover:shadow-[0_0_30px_-6px_rgba(37,99,235,0.45)] group-focus-within:shadow-[0_0_30px_-6px_rgba(37,99,235,0.45)]"
+        className="spotlight-content relative mx-2.5 mt-2.5 h-64 rounded-lg overflow-hidden border-[1.5px] border-[#26324a] flex items-center justify-center cursor-pointer px-4 py-6 focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2 transition-shadow duration-500 group-hover:shadow-[0_0_30px_-6px_rgba(37,99,235,0.45)] group-focus-within:shadow-[0_0_30px_-6px_rgba(37,99,235,0.45)]"
         style={{ background: "linear-gradient(160deg, #f6f8fb, #eef2f7 60%, #f2f5fa)" }}
       >
         {/* Backlight glow — fades in on hover/focus; under reduced motion it
@@ -111,7 +111,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Fixed-height image box normalises display size across sources:
             some product shots fill edge-to-edge, others float with whitespace.
             Capping the height keeps every card's display visually consistent. */}
-        <div className="relative w-[82%] h-[170px] mix-blend-multiply">
+        <div className="relative w-[92%] h-[190px] mix-blend-multiply">
           {primaryImage ? (
             <Image
               src={primaryImage}
