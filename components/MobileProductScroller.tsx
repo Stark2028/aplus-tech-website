@@ -13,11 +13,19 @@ interface MobileProductScrollerProps {
   autoPlayInterval?: number;
   /** Initial delay in ms before the first auto-scroll fires */
   initialDelay?: number;
+  /**
+   * Breakpoint at which the carousel gives way to the grid. Defaults to `"sm"`
+   * (carousel < 640px). Pass `"md"` to keep the carousel up to 768px — used by
+   * CategoryGrid, whose bento grid only kicks in at `md`. When set, the caller
+   * is responsible for supplying matching `gridCols` (e.g. `md:grid-cols-*`).
+   */
+  breakpoint?: "sm" | "md";
 }
 
 /**
- * On mobile (< sm) renders children as a horizontally snap-scrollable carousel.
- * On sm+ renders the normal grid specified via `gridCols`.
+ * On mobile (below `breakpoint`) renders children as a horizontally
+ * snap-scrollable carousel. At `breakpoint`+ renders the normal grid
+ * specified via `gridCols`.
  */
 export default function MobileProductScroller({
   children,
@@ -25,7 +33,12 @@ export default function MobileProductScroller({
   autoPlay = false,
   autoPlayInterval = 4000,
   initialDelay = 0,
+  breakpoint = "sm",
 }: MobileProductScrollerProps) {
+  // Static class strings so Tailwind's JIT scanner sees complete literals
+  // (it can't resolve `${breakpoint}:hidden` interpolations).
+  const mobileHidden = breakpoint === "md" ? "md:hidden" : "sm:hidden";
+  const gridShow = breakpoint === "md" ? "hidden md:grid" : "hidden sm:grid";
   const scrollRef = useRef<HTMLDivElement>(null);
   // Paused state lives in a ref (read at interval fire-time), NOT in the effect
   // deps — so hovering/touching the carousel suspends advancing without tearing
@@ -87,8 +100,8 @@ export default function MobileProductScroller({
   return (
     <>
       {/* ── MOBILE: horizontal snap carousel ─────────────────────── */}
-      <div 
-        className={`relative sm:hidden`}
+      <div
+        className={`relative ${mobileHidden}`}
         onMouseEnter={() => { pausedRef.current = true; }}
         onMouseLeave={() => { pausedRef.current = false; }}
         onTouchStart={() => { pausedRef.current = true; }}
@@ -137,7 +150,7 @@ export default function MobileProductScroller({
       </div>
 
       {/* ── DESKTOP: normal grid ──────────────────────────────────── */}
-      <div className={`hidden sm:grid ${gridCols} gap-4`}>{children}</div>
+      <div className={`${gridShow} ${gridCols} gap-4`}>{children}</div>
     </>
   );
 }
