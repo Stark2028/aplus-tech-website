@@ -58,6 +58,9 @@ export const educationHero = {
   ],
 };
 
+// tag-hive.com homepage, verified 2026-07-19: "Trusted by 15,000+ classrooms globally".
+export const educationTrustLine = "Trusted in 15,000+ classrooms globally";
+
 // Brochure p.10 — awards grid (8 of 9; EdTech Tulna rating omitted per spec).
 export const educationAwards: EducationAward[] = [
   { title: "Top 10 EdTech Startup", issuer: "UNICEF XTC Competition", year: "2022" },
@@ -245,7 +248,9 @@ export const educationFaqs = [
   },
   {
     q: "Who is TagHive?",
-    a: "TagHive is the education-technology company behind Class Saathi, operating in South Korea and India, and accelerated by Samsung C-Lab. Class Saathi® is TagHive's clicker-based learning and assessment solution.", // p.1, p.10
+    // Brochure p.1/p.10 + tag-hive.com (verified 2026-07-19: founder is an
+    // IIT Kanpur & Harvard graduate; "Built by a Harvard MBA").
+    a: "TagHive is the education-technology company behind Class Saathi, operating in South Korea and India, and accelerated by Samsung C-Lab. Founded by an IIT Kanpur and Harvard alumnus, TagHive builds Class Saathi® — its clicker-based learning and assessment solution.",
   },
   {
     q: "How do we get pricing or a demo for our school?",
