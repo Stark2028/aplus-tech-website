@@ -7,6 +7,8 @@ import {
   simulatorQuestions,
   howItWorksSteps,
 } from "./education";
+import { productCategories, getCategoryById } from "./categories";
+import { categoriesWithProducts } from "@/lib/nonEmptyCategories";
 
 /** Flatten every string in the module for content-policy scans. */
 function allText(): string {
@@ -67,6 +69,29 @@ describe("education content shape", () => {
       const total = Object.values(q.classAnswers).reduce((s, n) => s + n, 0);
       expect(total).toBe(23); // fixed simulated class size
       expect(q.explanation.length).toBeGreaterThan(10);
+    }
+  });
+});
+
+describe("education category taxonomy", () => {
+  it("registers the education category", () => {
+    const cat = getCategoryById("education");
+    expect(cat?.name).toBe("Education");
+    expect(cat?.navLabel).toBe("Education");
+  });
+
+  it("education copy obeys the truth policy", () => {
+    const text = JSON.stringify(getCategoryById("education"));
+    expect(text).not.toMatch(/authori[sz]ed|official|certified|partner/i);
+    expect(text.match(/Samsung(?! C-Lab)/g) ?? []).toHaveLength(0);
+  });
+
+  it("zero-product categories are excluded from product-listing surfaces", () => {
+    const ids = categoriesWithProducts.map((c) => c.id);
+    expect(ids).not.toContain("education");
+    // every other current category has products and must stay
+    for (const cat of productCategories.filter((c) => c.id !== "education")) {
+      expect(ids).toContain(cat.id);
     }
   });
 });

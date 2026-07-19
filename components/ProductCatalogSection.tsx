@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ArrowRight, Check, ShoppingBag, Scale } from "lucide-react";
 import { MonitorIcon } from "@/components/icons";
 import { products, Product } from "@/data/products";
-import { productCategories } from "@/data/categories";
+import { categoriesWithProducts } from "@/lib/nonEmptyCategories";
 import { useQuote } from "@/context/QuoteContext";
 import { useComparison } from "@/context/ComparisonContext";
 import { trackEvent } from "@/lib/analytics";
@@ -16,7 +16,7 @@ import { formatSizeRange } from "@/lib/formatSize";
 import { byLatestThenPopularity } from "@/lib/productSort";
 
 export default function ProductCatalogSection() {
-  const [activeTab, setActiveTab] = useState(productCategories[0].name);
+  const [activeTab, setActiveTab] = useState(categoriesWithProducts[0].name);
   const [addedId, setAddedId] = useState<string | null>(null);
   const { addItem } = useQuote();
   const { addToCompare, isInCompare, removeFromCompare } = useComparison();
@@ -75,7 +75,7 @@ export default function ProductCatalogSection() {
 
         {/* Category tabs */}
         <div className="flex justify-start md:justify-center gap-2 overflow-x-auto pb-2.5 snap-x no-scrollbar">
-          {productCategories.map((cat) => (
+          {categoriesWithProducts.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveTab(cat.name)}

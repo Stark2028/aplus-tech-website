@@ -5,7 +5,8 @@ export type CategorySlug =
   | "commercial-tv"
   | "led-signage"
   | "video-conferencing"
-  | "software";
+  | "software"
+  | "education";
 
 export interface ProductCategory {
   id: CategorySlug;
@@ -101,6 +102,21 @@ export const productCategories: ProductCategory[] = [
     description: "Samsung cloud software platforms — VXT for signage content management and LYNK Cloud for hospitality — to control content and devices across every site from one dashboard.",
     overview:
       "Samsung software solutions move signage and hospitality management to the cloud. Samsung VXT is the cloud content-management platform (the successor to MagicINFO) that lets teams design, schedule, and publish content to Samsung signage across every location from a browser, with playlists, templates, and device monitoring built in. Samsung LYNK Cloud is the hospitality platform for managing in-room hotel TV content, channel line-ups, and guest-facing experiences remotely across a property or chain. As an authorized Samsung distributor, Aplus Technology Solutions supplies, provisions, and supports both platforms across India — with licensing, onboarding, and AMC support.",
+  },
+  {
+    // Education is Class Saathi (TagHive), not Samsung — its copy must carry no
+    // Samsung/authorized wording, and its category page renders a standalone
+    // landing (zero catalog products; see lib/nonEmptyCategories.ts).
+    id: "education",
+    name: "Education",
+    navLabel: "Education",
+    tagline: "Smart classrooms & AI-powered learning",
+    subtitle: "Class Saathi clicker-based learning and AI assessment that gets every student participating.",
+    useCases: ["K-12 Schools", "Coaching Institutes", "Smart Classrooms", "Formative Assessment"],
+    description:
+      "Class Saathi smart classroom solutions — Bluetooth clickers and an AI learning platform that make every lesson fully participative, with no internet required in class.",
+    overview:
+      "Class Saathi, by TagHive, combines simple Bluetooth clickers with an AI-powered learning and assessment platform so every student in the room answers every question — with no internet required in class. Teachers get instant question-by-question visibility, AI-generated quizzes and lesson plans, and downloadable insights for each student; school leaders get real-time dashboards and monthly reports. Aplus Technology Solutions helps schools across India evaluate and deploy Class Saathi, from live demos to classroom rollout and ongoing support.",
   },
 ];
 
