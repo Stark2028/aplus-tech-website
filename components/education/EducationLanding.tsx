@@ -12,7 +12,7 @@ import ClosingCta from "./ClosingCta";
 import "./education.css";
 
 // Code-split the interactive islands so the landing stays light.
-const ClickerSimulator = dynamic(() => import("./ClickerSimulator"));
+const ClassroomSimulator = dynamic(() => import("./simulator/ClassroomSimulator"));
 const BlueprintLeadForm = dynamic(() => import("./BlueprintLeadForm"));
 
 export default function EducationLanding() {
@@ -37,18 +37,32 @@ export default function EducationLanding() {
       <HowItWorks />
       <EcosystemTabs />
 
-      {/* The page's single dark band — the live clicker demo. */}
-      <section id="simulator" className="scroll-mt-24 bg-linear-to-br from-slate-950 via-slate-900 to-emerald-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      {/* The page's single dark band — the live classroom theater. */}
+      <section
+        id="simulator"
+        className="edu-sim-band relative overflow-hidden scroll-mt-24 bg-linear-to-br from-slate-950 via-slate-900 to-emerald-950"
+      >
+        <div className="edu-sim-dots" aria-hidden="true" />
+        <div className="edu-sim-aur edu-sim-aur-a" aria-hidden="true" />
+        <div className="edu-sim-aur edu-sim-aur-b" aria-hidden="true" />
+        <div className="edu-sim-noise" aria-hidden="true" />
+        <div className="edu-sim-vignette" aria-hidden="true" />
+        <div className="relative z-[2] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <p className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 mb-3">Live simulator</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">Try the clicker yourself</h2>
+            <p className="edu-eyebrow text-emerald-400 mb-3">Live simulator</p>
+            <h2 className="edu-display text-3xl md:text-4xl font-bold text-white leading-tight">
+              Try the clicker yourself
+            </h2>
             <p className="mt-3 text-slate-400 text-sm md:text-base">
               Press a key, submit your answer, and watch the class results come in — exactly the loop students
               experience.
             </p>
+            <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/5 border border-white/10 px-3.5 py-1.5 edu-mono text-[10px] uppercase tracking-[0.18em] text-slate-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
+              Simulation · sample class data
+            </p>
           </div>
-          <ClickerSimulator />
+          <ClassroomSimulator />
         </div>
       </section>
 

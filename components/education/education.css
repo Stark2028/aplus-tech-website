@@ -3,7 +3,7 @@
    Scope: edu-* classes for the landing's bright sections plus the dark
    simulator band's backdrop (which is server-rendered by EducationLanding).
    Hero-stage rules live in hero/stage.css; simulator component rules in
-   simulator/simulator.css. Adapted from the home hero's hero2-*/stg-*
+   simulator/simulator.css. Adapted from the home hero's hero2- and stg-
    vocabulary (components/sections/hero/stage.css), re-tuned to a light,
    airy emerald identity. Animations are transform/opacity only.
    ═══════════════════════════════════════════════════════════════════════════ */
