@@ -9,7 +9,6 @@ import { Product } from "@/data/products";
 import { formatSkuLine } from "@/lib/productSku";
 import { useQuote } from "@/context/QuoteContext";
 import { useComparison } from "@/context/ComparisonContext";
-import { getProductBadge } from "@/lib/productBadges";
 import { specLabels } from "@/lib/vcSpecLabels";
 import SpotlightCard from "@/components/SpotlightCard";
 
@@ -45,26 +44,10 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  const badge = getProductBadge(product.id);
   const labels = specLabels(product);
-
-  const badgeStyles: Record<string, string> = {
-    "Best Seller": "bg-linear-to-r from-amber-500 to-orange-500 text-white shadow-orange-500/20",
-    Popular: "bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-blue-600/20",
-    New: "bg-linear-to-r from-emerald-400 to-emerald-600 text-white shadow-emerald-500/20",
-  };
 
   return (
     <SpotlightCard className="bg-white rounded-2xl border border-slate-200/60 overflow-hidden shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(6,81,237,0.12)] hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
-
-      {/* Badge (Top Left) */}
-      {badge && (
-        <div className="absolute top-4 left-4 z-10">
-          <span className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-sm ${badgeStyles[badge]}`}>
-            {badge}
-          </span>
-        </div>
-      )}
 
       {/* Compare Checkbox (Top Right) */}
       <button

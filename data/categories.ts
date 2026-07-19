@@ -4,7 +4,8 @@ export type CategorySlug =
   | "interactive"
   | "commercial-tv"
   | "led-signage"
-  | "video-conferencing";
+  | "video-conferencing"
+  | "software";
 
 export interface ProductCategory {
   id: CategorySlug;
@@ -89,6 +90,17 @@ export const productCategories: ProductCategory[] = [
     description: "Logitech video conferencing systems — video bars, PTZ cameras, tap controllers and room compute for meeting spaces of every size.",
     overview:
       "Logitech video conferencing brings enterprise-grade meeting-room hardware to boardrooms, huddle spaces, training rooms and executive suites — video bars with AI-driven framing, PTZ cameras, tap touch controllers, schedulers and compute appliances that run Microsoft Teams Rooms and Zoom Rooms out of the box. Aplus Technology Solutions supplies, installs and maintains the full Logitech room lineup across India — from all-in-one huddle-room bars to modular boardroom systems — with GST invoicing, professional installation, and AMC support.",
+  },
+  {
+    id: "software",
+    name: "Software Solutions",
+    navLabel: "Software",
+    tagline: "Cloud platforms for signage & hospitality",
+    subtitle: "Samsung cloud software to manage signage content and hospitality TV fleets remotely.",
+    useCases: ["Signage Networks", "Hotels & Resorts", "Retail Chains", "Remote Management", "Content Scheduling"],
+    description: "Samsung cloud software platforms — VXT for signage content management and LYNK Cloud for hospitality — to control content and devices across every site from one dashboard.",
+    overview:
+      "Samsung software solutions move signage and hospitality management to the cloud. Samsung VXT is the cloud content-management platform (the successor to MagicINFO) that lets teams design, schedule, and publish content to Samsung signage across every location from a browser, with playlists, templates, and device monitoring built in. Samsung LYNK Cloud is the hospitality platform for managing in-room hotel TV content, channel line-ups, and guest-facing experiences remotely across a property or chain. As an authorized Samsung distributor, Aplus Technology Solutions supplies, provisions, and supports both platforms across India — with licensing, onboarding, and AMC support.",
   },
 ];
 

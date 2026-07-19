@@ -200,7 +200,7 @@ export default function ContactPage() {
               { icon: PhoneIcon,  label: "Call Us",  value: PHONE_DISPLAY,       sub: "Mon – Sat, 10 AM – 6 PM",      href: PHONE_TEL,         accentClass: "text-blue-600",    accent: "#3b82f6" },
               { icon: MailIcon,   label: "Email",    value: "info@aplustechsol.com", sub: "Reply within 24 hours",        href: "mailto:info@aplustechsol.com", accentClass: "text-violet-600", accent: "#8b5cf6" },
               { icon: MapPinIcon, label: "Office",   value: "Sector-94, Noida",      sub: "Supernova Astralis, 8th Fl.", href: "https://maps.google.com/?q=Aplus+Technology+Solutions+Private+Limited+Noida", accentClass: "text-emerald-600", accent: "#10b981" },
-              { icon: TimerIcon,  label: "Support",  value: "24 × 7",   sub: "Emergency assistance",    href: null,      accentClass: "text-amber-600",   accent: "#f59e0b" },
+              { icon: TimerIcon,  label: "Support",  value: "Dedicated",   sub: "Pre & post-sale assistance",    href: null,      accentClass: "text-amber-600",   accent: "#f59e0b" },
             ].map(({ icon: Icon, label, value, sub, href, accentClass, accent }) => {
               const inner = (
                 <div className="flex items-center gap-3.5 px-4 lg:px-5 py-5 hover:bg-gray-50/80 transition-colors h-full group relative overflow-hidden rounded-xl">

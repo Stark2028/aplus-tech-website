@@ -179,10 +179,6 @@ export default function QuoteItemsCard({
                   <h3 className="font-bold text-gray-900 text-base mb-2 line-clamp-2 leading-snug">
                     {item.product.name}
                   </h3>
-                  <div className="flex items-center gap-2 text-xs font-semibold text-green-700 bg-green-50 w-fit px-2.5 py-1 rounded-full border border-green-100">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                    In Stock
-                  </div>
                 </div>
               </Link>
 

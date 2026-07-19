@@ -38,6 +38,7 @@ export interface Product {
 }
 
 import { videoConferencingProducts } from "@/data/videoConferencing";
+import { softwareProducts } from "@/data/software";
 
 export const products: Product[] = [
 
@@ -3668,4 +3669,7 @@ An optimised half-width 4:9 cabinet enables flawless curved installations with s
 
   // ── VIDEO CONFERENCING (Logitech) ────────────────────────────────────────
   ...videoConferencingProducts,
+
+  // ── SOFTWARE SOLUTIONS (Samsung VXT / LYNK Cloud) ────────────────────────
+  ...softwareProducts,
 ];

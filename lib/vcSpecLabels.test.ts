@@ -25,4 +25,11 @@ describe("specLabels", () => {
     expect(l.brightness).toBe("Platform");
     expect(l.resolution).toBe("Video Out");
   });
+
+  it("uses Deployment/Platform/Designed For for Software Solutions", () => {
+    const l = specLabels({ category: "Software Solutions", subCategory: "Cloud Platform" });
+    expect(l.resolution).toBe("Deployment");
+    expect(l.brightness).toBe("Platform");
+    expect(l.operation).toBe("Designed For");
+  });
 });

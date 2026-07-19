@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { X, MessageCircle, Phone, ChevronRight } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useChat, type ChatView } from "@/context/ChatContext";
 import LiveChat from "./LiveChat";
 import WhatsAppPanel, { WA_PATH } from "./WhatsAppPanel";
 import { PHONE_TEL } from "@/lib/contact";
+import { getWhatsAppMessage, buildWhatsAppUrl } from "@/lib/whatsapp";
+import { trackEvent } from "@/lib/analytics";
 
 /**
  * The panel behind the single launcher (spec §3.1) — desktop popover, mobile
@@ -21,8 +24,34 @@ import { PHONE_TEL } from "@/lib/contact";
  * Layering (spec §3.1): panel z-[60], above the mobile sticky bar (z-40) and
  * below the cookie banner (z-300).
  */
+/**
+ * Touch-primary devices (phones/tablets) have the WhatsApp app installed, so a
+ * wa.me deep link opens the real conversation instantly. The in-widget WhatsApp
+ * panel (QR to scan, "WhatsApp Web" link) only earns its keep on desktop, where
+ * there may be no app. `pointer: coarse` is the standard signal for a
+ * touchscreen-primary device and cleanly separates the two.
+ */
+function isTouchPrimary(): boolean {
+  return typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(pointer: coarse)").matches;
+}
+
 export default function ChatPanel({ teamOnline }: { teamOnline: boolean }) {
   const { isOpen, view, openChat, closeChat } = useChat();
+  const pathname = usePathname();
+
+  // WhatsApp pick from the home fork: on mobile/tablet jump straight into the
+  // installed app; on desktop fall back to the in-widget WhatsApp panel.
+  const handleWhatsAppPick = () => {
+    if (isTouchPrimary()) {
+      trackEvent("whatsapp_click", { source: "chat_widget_home", page: pathname });
+      window.open(buildWhatsAppUrl(getWhatsAppMessage(pathname)), "_blank", "noopener,noreferrer");
+      closeChat();
+      return;
+    }
+    openChat("whatsapp");
+  };
   // Lazy initializer, not an Effect: ChatLauncher (Task 17) loads this component
   // via `dynamic(..., { ssr: false })`, so ChatPanel only ever mounts
   // client-side — `document` is already available on the very first render.
@@ -58,7 +87,7 @@ export default function ChatPanel({ teamOnline }: { teamOnline: boolean }) {
     >
       <Header teamOnline={teamOnline} onClose={closeChat} />
 
-      {view === "home" && <HomeFork teamOnline={teamOnline} onPick={openChat} />}
+      {view === "home" && <HomeFork teamOnline={teamOnline} onPick={openChat} onWhatsApp={handleWhatsAppPick} />}
       {view === "live" && <LiveChat onWhatsApp={() => openChat("whatsapp")} />}
       {view === "whatsapp" && <WhatsAppPanel />}
     </div>
@@ -109,7 +138,15 @@ function Header({ teamOnline, onClose }: { teamOnline: boolean; onClose: () => v
  *   away   → say so, and give WhatsApp/Call equal weight, because a live chat
  *            cannot be answered live.
  */
-function HomeFork({ teamOnline, onPick }: { teamOnline: boolean; onPick: (view: ChatView) => void }) {
+function HomeFork({
+  teamOnline,
+  onPick,
+  onWhatsApp,
+}: {
+  teamOnline: boolean;
+  onPick: (view: ChatView) => void;
+  onWhatsApp: () => void;
+}) {
   return (
     <div className="flex-1 overflow-y-auto p-4 space-y-3">
       {teamOnline ? (
@@ -129,7 +166,7 @@ function HomeFork({ teamOnline, onPick }: { teamOnline: boolean; onPick: (view: 
           </button>
 
           <button
-            onClick={() => onPick("whatsapp")}
+            onClick={onWhatsApp}
             className="w-full flex items-center gap-3 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-4 py-3 rounded-xl font-semibold transition-all"
           >
             <svg viewBox="0 0 24 24" className="w-5 h-5 fill-[#25D366] shrink-0">
@@ -172,7 +209,7 @@ function HomeFork({ teamOnline, onPick }: { teamOnline: boolean; onPick: (view: 
 
           <div className="grid grid-cols-2 gap-2">
             <button
-              onClick={() => onPick("whatsapp")}
+              onClick={onWhatsApp}
               className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white px-3 py-3 rounded-xl font-semibold text-sm transition-all"
             >
               <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white shrink-0">

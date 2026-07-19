@@ -19,6 +19,11 @@ const DEFAULT_LABELS: SpecLabels = {
 export function specLabels(
   product: Pick<Product, "category" | "subCategory">
 ): SpecLabels {
+  // Software Solutions (VXT, LYNK Cloud) have no display specs — the three cells
+  // describe the platform instead of a panel. Driven by category, like VC.
+  if (product.category === "Software Solutions") {
+    return { resolution: "Deployment", brightness: "Platform", operation: "Designed For" };
+  }
   if (product.category !== "Video Conferencing") return DEFAULT_LABELS;
   switch (product.subCategory) {
     case "Controllers & Scheduling":

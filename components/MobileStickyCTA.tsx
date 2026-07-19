@@ -84,12 +84,13 @@ export default function MobileStickyCTA() {
               Call
             </a>
 
-            {/* Quote — 3/12 */}
+            {/* Quote — 3/12. Indigo (not blue) so it reads as distinct from the
+                blue Chat button at the other end of the bar. */}
             <Link
               href="/quote"
               aria-label="Request a quote"
               onClick={() => trackEvent("quote_click", { source: "mobile_sticky", page: pathname })}
-              className="col-span-3 flex items-center justify-center gap-1.5 bg-blue-600 active:bg-blue-700 text-white font-semibold text-sm rounded-xl py-3 transition-colors"
+              className="col-span-3 flex items-center justify-center gap-1.5 bg-indigo-600 active:bg-indigo-700 text-white font-semibold text-sm rounded-xl py-3 transition-colors"
             >
               <FileText size={15} aria-hidden="true" />
               Quote
