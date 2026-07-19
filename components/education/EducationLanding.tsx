@@ -1,17 +1,34 @@
 import dynamic from "next/dynamic";
+import { breadcrumbLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
+import { educationFaqs } from "@/data/education";
 import EducationHero from "./EducationHero";
 import AwardsStrip from "./AwardsStrip";
 import ParticipationComparison from "./ParticipationComparison";
 import HowItWorks from "./HowItWorks";
 import EcosystemTabs from "./EcosystemTabs";
+import EducationFaq from "./EducationFaq";
+import ClosingCta from "./ClosingCta";
 
 // Code-split the interactive islands so the landing stays light.
 const ClickerSimulator = dynamic(() => import("./ClickerSimulator"));
 const BlueprintLeadForm = dynamic(() => import("./BlueprintLeadForm"));
 
 export default function EducationLanding() {
+  const jsonLd = [
+    breadcrumbLd([
+      { name: "Home", url: "/" },
+      { name: "Products", url: "/products" },
+      { name: "Education", url: "/categories/education" },
+    ]),
+    faqPageLd(educationFaqs.map((f) => ({ question: f.q, answer: f.a }))),
+  ];
+
   return (
     <main className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
+      />
       <EducationHero />
       <AwardsStrip />
       <ParticipationComparison />
@@ -39,6 +56,9 @@ export default function EducationLanding() {
           <BlueprintLeadForm />
         </div>
       </section>
+
+      <EducationFaq />
+      <ClosingCta />
     </main>
   );
 }
