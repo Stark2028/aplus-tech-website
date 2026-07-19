@@ -5,7 +5,7 @@ import { educationHero } from "@/data/education";
 
 export default function EducationHero() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50/70 via-white to-white border-b border-gray-100">
+    <section className="relative overflow-hidden bg-linear-to-b from-emerald-50/70 via-white to-white border-b border-gray-100">
       {/* Soft ambient wash behind the device card */}
       <div
         aria-hidden="true"
