@@ -49,9 +49,12 @@ async function getAccessToken(): Promise<string> {
   return data.access_token;
 }
 
-export async function createZohoLead(body: Record<string, string>): Promise<void> {
-  const accessToken = await getAccessToken();
-
+/**
+ * Pure lead-shape builder, extracted for testability. `lead_source` becomes
+ * the filterable Zoho segment (e.g. "Class Saathi" for education leads);
+ * absent ⇒ the historical "Web Site".
+ */
+export function buildZohoLead(body: Record<string, string>) {
   const nameParts = (body.name ?? "").trim().split(/\s+/);
   const lastName = nameParts.length > 1 ? nameParts.slice(1).join(" ") : nameParts[0];
   const firstName = nameParts.length > 1 ? nameParts[0] : "";
@@ -69,16 +72,21 @@ export async function createZohoLead(body: Record<string, string>): Promise<void
     .filter(Boolean)
     .join("\n\n");
 
-  const lead = {
+  return {
     Last_Name: lastName || "Unknown",
     First_Name: firstName,
     Email: body.email,
     Phone: body.phone,
     Company: body.company || "Not provided",
     Description: description,
-    Lead_Source: "Web Site",
+    Lead_Source: body.lead_source || "Web Site",
     Lead_Status: "New",
   };
+}
+
+export async function createZohoLead(body: Record<string, string>): Promise<void> {
+  const accessToken = await getAccessToken();
+  const lead = buildZohoLead(body);
 
   const res = await fetchWithRetry(LEADS_URL, {
     method: "POST",

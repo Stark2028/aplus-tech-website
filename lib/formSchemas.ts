@@ -47,3 +47,16 @@ export const contactFormSchema = z.object({
   message: z.string().trim().max(500, "Message is too long").optional().or(z.literal("")),
 });
 export type ContactFormValues = z.infer<typeof contactFormSchema>;
+
+export const classSaathiLeadSchema = z.object({
+  name,
+  email,
+  phone,
+  role: z.string().trim().min(2, "Please enter your role").max(80, "Role is too long"),
+  school: z.string().trim().min(2, "Please enter your school name").max(120, "School name is too long"),
+  city: z.string().trim().min(2, "Please enter your city").max(80, "City name is too long"),
+  student_count: z.string().trim().min(1, "Please select a student count"),
+  primary_goal: z.string().trim().min(1, "Please select a primary goal"),
+  message: z.string().trim().max(1000, "Message is too long").optional().or(z.literal("")),
+});
+export type ClassSaathiLeadValues = z.infer<typeof classSaathiLeadSchema>;
