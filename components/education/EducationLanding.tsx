@@ -7,6 +7,7 @@ import EcosystemTabs from "./EcosystemTabs";
 
 // Code-split the interactive islands so the landing stays light.
 const ClickerSimulator = dynamic(() => import("./ClickerSimulator"));
+const BlueprintLeadForm = dynamic(() => import("./BlueprintLeadForm"));
 
 export default function EducationLanding() {
   return (
@@ -29,6 +30,13 @@ export default function EducationLanding() {
             </p>
           </div>
           <ClickerSimulator />
+        </div>
+      </section>
+
+      {/* Lead capture */}
+      <section id="lead-form" className="scroll-mt-24 bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+          <BlueprintLeadForm />
         </div>
       </section>
     </main>
