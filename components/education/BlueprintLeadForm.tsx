@@ -93,8 +93,8 @@ export default function BlueprintLeadForm() {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
       {/* Persuasion panel */}
       <div className="lg:col-span-5 lg:sticky lg:top-28">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-emerald-700 mb-3">Request a school demo</p>
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+        <p className="edu-eyebrow text-emerald-700 mb-3">Request a school demo</p>
+        <h2 className="edu-display text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
           Get your school&apos;s Class Saathi blueprint
         </h2>
         <p className="mt-4 text-gray-600 text-sm md:text-base leading-relaxed">
