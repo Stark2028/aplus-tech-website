@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { breadcrumbLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
 import { educationFaqs } from "@/data/education";
+import { spaceGrotesk, plexMono } from "@/app/fonts-accent";
 import EducationHero from "./EducationHero";
 import AwardsStrip from "./AwardsStrip";
 import ParticipationComparison from "./ParticipationComparison";
@@ -8,6 +9,7 @@ import HowItWorks from "./HowItWorks";
 import EcosystemTabs from "./EcosystemTabs";
 import EducationFaq from "./EducationFaq";
 import ClosingCta from "./ClosingCta";
+import "./education.css";
 
 // Code-split the interactive islands so the landing stays light.
 const ClickerSimulator = dynamic(() => import("./ClickerSimulator"));
@@ -24,7 +26,7 @@ export default function EducationLanding() {
   ];
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className={`${spaceGrotesk.variable} ${plexMono.variable} min-h-screen bg-white`}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
