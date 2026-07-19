@@ -16,4 +16,10 @@ describe("categoryOgAltFor", () => {
     expect(alt).not.toMatch(/samsung/i);
     expect(alt).toMatch(/Video Conferencing/);
   });
+
+  it("returns a neutral, Samsung-free alt for Education", () => {
+    const alt = categoryOgAltFor({ id: "education", navLabel: "Education" });
+    expect(alt).not.toMatch(/samsung/i);
+    expect(alt).toMatch(/Education/);
+  });
 });
