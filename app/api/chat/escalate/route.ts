@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
 import { FieldValue } from "firebase-admin/firestore";
 import { getAdminDb } from "@/lib/firebase/admin";
+import { getResend, serverError } from "@/lib/apiErrors";
 import { guardRequest, verifyOwner } from "@/lib/chat/apiGuards";
 import { COL } from "@/lib/chat/types";
 import { siteUrl } from "@/lib/chat/links";
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     const customer = conversation.customer ?? {};
     const consoleUrl = `${siteUrl()}/admin/chat?c=${encodeURIComponent(conversationId)}`;
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const resend = getResend();
     const { error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev",
       to: TO_EMAIL,
@@ -97,8 +97,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[api/chat/escalate]", err);
-    return NextResponse.json({ success: false, message: "Internal server error." }, { status: 500 });
+    return serverError("api/chat/escalate", err);
   }
 }
 
