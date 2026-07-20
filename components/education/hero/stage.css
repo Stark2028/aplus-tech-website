@@ -228,6 +228,9 @@
   font-weight: 700;
   opacity: 0;
   transform: scale(0.6);
+}
+/* only the correct option's check flashes in */
+.edu-st-opt.is-correct .edu-st-chk {
   animation: edu-st-chkk 16s ease-in-out infinite;
   animation-delay: var(--beat);
 }
@@ -463,7 +466,7 @@
   .edu-st-beat.b2 { opacity: 0; }
   .edu-st-bar { transform: scaleX(var(--w)); }
   .edu-st-count .c3 { opacity: 1; }
-  .edu-st-chk { opacity: 1; transform: scale(1); }
+  .edu-st-opt.is-correct .edu-st-chk { opacity: 1; transform: scale(1); }
   .edu-st-opt.is-correct { border-color: rgba(52, 211, 153, 0.75); background: rgba(6, 78, 59, 0.45); }
   .edu-st-ring, .edu-st-pkt { opacity: 0; }
   .edu-st-lcd .l1 { opacity: 0; }

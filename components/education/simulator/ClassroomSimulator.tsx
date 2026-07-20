@@ -63,19 +63,22 @@ export default function ClassroomSimulator() {
         }
         setPhase("collecting");
         setCollected(1);
+        // Plain local counter: setState updaters must stay pure (React dev
+        // double-invokes them), so the interval bookkeeping lives out here.
+        let count = 1;
         ticker.current = setInterval(() => {
-          setCollected((c) => {
-            if (c + 1 >= TOTAL_SEATS) {
-              if (ticker.current) {
-                clearInterval(ticker.current);
-                ticker.current = null;
-              }
-              // brief beat on the full grid before the reveal
-              timers.current.push(setTimeout(finalize, 250));
-              return TOTAL_SEATS;
+          count += 1;
+          if (count >= TOTAL_SEATS) {
+            if (ticker.current) {
+              clearInterval(ticker.current);
+              ticker.current = null;
             }
-            return c + 1;
-          });
+            setCollected(TOTAL_SEATS);
+            // brief beat on the full grid before the reveal
+            timers.current.push(setTimeout(finalize, 250));
+          } else {
+            setCollected(count);
+          }
         }, COLLECT_MS / TOTAL_SEATS);
       }, TRANSMIT_MS)
     );
