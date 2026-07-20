@@ -64,12 +64,23 @@ h1, h2 {
   outline: none;
 }
 
-/* Page-enter fade (used by PageTransition.tsx — replaces framer-motion) */
+/* Page-enter transition (used by PageTransition.tsx — replaces framer-motion).
+
+   LCP hardening: this wrapper contains the ENTIRE page. Chrome does not count
+   an element as an LCP candidate while it (or an ancestor) first paints at
+   opacity 0 and fades in, so an opacity-0 start here can defer the whole
+   page's LCP. The entrance now rises via transform only and stays fully
+   opaque; the slide-up is preserved, only the imperceptible whole-page fade is
+   dropped. (The separate mobile NO_LCP defect — see the word-rise note below —
+   turned out to be the carousel rails, not this fade; it is fixed in
+   hooks/useDeferredScroll. This change is complementary hygiene, correct on its
+   own merits.) */
 @keyframes page-enter {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { transform: translateY(10px); }
+  to   { transform: translateY(0); }
 }
 .animate-page-enter {
+  /* opacity stays 1 throughout — see LCP note above. */
   animation: page-enter 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -243,20 +254,32 @@ h1, h2 {
    Each word fades/slides up with a small per-word delay set inline. Pure CSS
    `both` fill keeps the final state painted.
 
-   LCP note: the H1 is the LCP element, and an opacity-0 start defers when the
-   browser counts it as painted. The spec's 0.3/0.45/0.6s line stagger
-   (2026-07-17-premium-hero-stage-design §5) regressed mobile LCP by ~0.7s in
-   the Lighthouse gate, so delays run tightened (H1 lines 0.12/0.2/0.28s,
-   badge 0.1s, subcopy 0.4s, CTAs 0.5s) — same choreography, near-baseline
-   paint. The reduced-motion guard (plus the hero2 block in
+   LCP note: the H1 is the LCP element on desktop. Chrome does not count an
+   element as an LCP candidate while its first paint is at opacity 0 and fades
+   in, so the words now rise via transform ONLY and stay fully opaque (the
+   slide-up is kept; only the barely-perceptible fade is dropped). Non-LCP
+   chrome — badge, subcopy, CTAs — keeps its opacity fade via `hero2-rise`.
+
+   RESOLVED (mobile NO_LCP): below the md breakpoint (~768px) Chrome recorded
+   NO LCP candidate for this page at all — the on-load scroll on a nested flex
+   scroller was the trigger. The MobileProductScroller/AutoSlider carousel rails
+   are `overflow-x:auto` scroll containers; as fonts reflow the flex track the
+   browser nudges the rail's scroll position a few px, and Chromium's
+   paint-timing detector treats that scroll as user interaction and stops
+   recording LCP. With the hero painting later on mobile, LCP was finalized
+   empty. Fixed by keeping those rails `overflow-x:clip` until load — see
+   hooks/useDeferredScroll. This opacity change did not (and could not) fix that.
+
+   The reduced-motion guard (plus the hero2 block in
    components/sections/hero/stage.css) collapses the stagger entirely.
 */
 @keyframes word-rise {
-  from { opacity: 0; transform: translateY(0.35em); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { transform: translateY(0.35em); }
+  to   { transform: translateY(0); }
 }
 .hero-word {
   display: inline-block;
+  /* opacity stays 1 throughout — see LCP note above. */
   animation: word-rise 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 

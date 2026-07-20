@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useDeferredScroll } from "@/hooks/useDeferredScroll";
 
 interface AutoSliderProps {
   children: React.ReactNode[];
@@ -21,6 +22,9 @@ export default function AutoSlider({
 }: AutoSliderProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
+  // Keep the rail a non-scroll-container until after load, so a font-reflow
+  // scroll can't finalize LCP empty. See hooks/useDeferredScroll.
+  const scrollReady = useDeferredScroll();
 
   const scroll = (dir: "left" | "right") => {
     const el = scrollRef.current;
@@ -61,9 +65,13 @@ export default function AutoSlider({
         <ChevronLeft size={16} />
       </button>
 
+      {/* No-JS fallback: useDeferredScroll never fires without JS. */}
+      <noscript>
+        <style>{`.as-rail{overflow-x:auto !important}`}</style>
+      </noscript>
       <div
         ref={scrollRef}
-        className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-1"
+        className={`as-rail flex gap-5 ${scrollReady ? "overflow-x-auto" : "overflow-x-clip"} snap-x snap-mandatory scroll-smooth no-scrollbar pb-1`}
       >
         {children.map((child, i) => (
           <div key={i} className={`snap-start shrink-0 ${slideWidth} ${slideMaxWidth}`}>

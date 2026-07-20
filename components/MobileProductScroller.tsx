@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useDeferredScroll } from "@/hooks/useDeferredScroll";
 
 interface MobileProductScrollerProps {
   children: React.ReactNode;
@@ -44,6 +45,10 @@ export default function MobileProductScroller({
   // deps — so hovering/touching the carousel suspends advancing without tearing
   // down and re-arming the `initialDelay` timer on every interaction.
   const pausedRef = useRef(false);
+  // Defer making the rail a scroll container until after load / first input, so
+  // a font-reflow scroll on this rail can't finalize LCP empty on mobile. See
+  // hooks/useDeferredScroll for the full NO_LCP story.
+  const scrollReady = useDeferredScroll();
 
   const scroll = (dir: "left" | "right") => {
     const el = scrollRef.current;
@@ -117,12 +122,17 @@ export default function MobileProductScroller({
           <ChevronLeft size={16} aria-hidden="true" />
         </button>
 
+        {/* No-JS fallback: useDeferredScroll never fires without JS, so force the
+            rail scrollable there (the arrows/auto-play need JS anyway). */}
+        <noscript>
+          <style>{`.mps-rail{overflow-x:auto !important}`}</style>
+        </noscript>
         <div
           id="mobile-scroller-track"
           ref={scrollRef}
           role="region"
           aria-label="Product carousel"
-          className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 px-1 no-scrollbar"
+          className={`mps-rail flex gap-5 ${scrollReady ? "overflow-x-auto" : "overflow-x-clip"} snap-x snap-mandatory scroll-smooth pb-4 px-1 no-scrollbar`}
           style={{ scrollPaddingLeft: "0px" }}
         >
           {/* Wrap each direct child in a snap-aligned slide */}
