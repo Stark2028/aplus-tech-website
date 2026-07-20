@@ -6,6 +6,7 @@ import { educationHero } from "@/data/education";
 
 export default function EducationHero() {
   const words = educationHero.headline.split(" ");
+  const [eyebrowContext, eyebrowBrand] = educationHero.eyebrow.split(" · ");
   return (
     <section className="relative overflow-hidden bg-linear-to-b from-emerald-50/70 via-white to-white border-b border-gray-100">
       <div className="edu-dots-light" aria-hidden="true" />
@@ -13,8 +14,25 @@ export default function EducationHero() {
       <div className="edu-aur edu-aur-b" aria-hidden="true" />
       <div className="relative z-[2] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-24 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
         <div className="lg:col-span-6">
-          <p className="edu-eyebrow edu-rise text-emerald-700 mb-4" style={{ animationDelay: "0.05s" }}>
-            {educationHero.eyebrow}
+          <p
+            className="edu-rise mb-5 inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/70 backdrop-blur-sm ring-1 ring-emerald-600/20 shadow-sm shadow-emerald-600/10"
+            style={{ animationDelay: "0.05s" }}
+          >
+            <i
+              className="w-1.5 h-1.5 shrink-0 rounded-full bg-emerald-500 shadow-[0_0_8px_2px_rgba(16,185,129,0.45)]"
+              aria-hidden="true"
+            />
+            <span className="edu-mono text-[11px] font-medium uppercase tracking-[0.22em] text-emerald-600/90">
+              {eyebrowContext}
+            </span>
+            {eyebrowBrand ? (
+              <>
+                <span className="w-px h-3 shrink-0 bg-emerald-600/25" aria-hidden="true" />
+                <span className="edu-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-900">
+                  {eyebrowBrand}
+                </span>
+              </>
+            ) : null}
           </p>
           <h1 className="edu-display text-4xl md:text-5xl font-bold text-gray-900 leading-[1.05] tracking-tight">
             {words.map((word, i) => (
