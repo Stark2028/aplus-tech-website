@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     template: "%s | Aplus Technology Solutions",
   },
   description:
-    "Authorized Samsung distributor for Smart Signage, Video Walls, Interactive Displays, and Hospitality TVs. End-to-end supply, installation & support across India.",
+    "Authorized Samsung distributor for Smart Signage, Video Walls, Interactive Displays, and Hospitality TVs — and Logitech video conferencing systems. End-to-end supply, installation & support across India.",
   keywords: [
     "Samsung digital signage India",
     "Samsung video wall distributor",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     siteName: "Aplus Technology Solutions",
     title: "Aplus Technology Solutions | Authorized Samsung Business Display Distributor",
     description:
-      "Authorized Samsung distributor for Smart Signage, Video Walls, Interactive Displays, and Hospitality TVs across India.",
+      "Authorized Samsung distributor for Smart Signage, Video Walls, Interactive Displays, and Hospitality TVs — plus Logitech video conferencing — across India.",
     images: [{ url: "/og-default.png", width: 1200, height: 630, alt: "Aplus Technology Solutions" }],
   },
   twitter: {

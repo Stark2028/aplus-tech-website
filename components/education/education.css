@@ -1,0 +1,238 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Class Saathi premium — shared education-landing vocabulary (spec §A).
+   Scope: edu-* classes for the landing's bright sections plus the dark
+   simulator band's backdrop (which is server-rendered by EducationLanding).
+   Hero-stage rules live in hero/stage.css; simulator component rules in
+   simulator/simulator.css. Adapted from the home hero's hero2- and stg-
+   vocabulary (components/sections/hero/stage.css), re-tuned to a light,
+   airy emerald identity. Animations are transform/opacity only.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── type system (fonts arrive as CSS vars from EducationLanding) ── */
+.edu-display { font-family: var(--font-display, system-ui, sans-serif); }
+.edu-mono { font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace); }
+.edu-eyebrow {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, monospace);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Shimmering emerald headline gradient (hero2-grad, re-colored). */
+.edu-grad {
+  background: linear-gradient(100deg, #047857 15%, #10b981 38%, #6ee7b7 50%, #059669 62%, #065f46 85%);
+  background-size: 230% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: edu-shimmer 7s ease-in-out infinite;
+}
+@keyframes edu-shimmer {
+  0%, 100% { background-position: 0% 0; }
+  50% { background-position: 100% 0; }
+}
+
+/* Entrance rise (hero2-rise twin — that class lives in the home hero's CSS,
+   which this page never loads). `both` fill keeps elements hidden through
+   their delay. */
+.edu-rise { animation: edu-risein 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@keyframes edu-risein {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── light atmosphere ── */
+.edu-dots-light {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(4, 120, 87, 0.09) 1px, transparent 1.3px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 78%);
+  mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 78%);
+}
+.edu-aur {
+  position: absolute;
+  width: 46%;
+  height: 52%;
+  opacity: 0.6;
+  z-index: 0;
+  pointer-events: none;
+}
+.edu-aur-a {
+  left: -10%;
+  top: -16%;
+  background: radial-gradient(closest-side, rgba(16, 185, 129, 0.18), rgba(16, 185, 129, 0.07) 45%, transparent 72%);
+  animation: edu-drift 16s ease-in-out infinite alternate;
+}
+.edu-aur-b {
+  right: -12%;
+  bottom: -20%;
+  background: radial-gradient(closest-side, rgba(45, 212, 191, 0.14), rgba(45, 212, 191, 0.05) 45%, transparent 72%);
+  animation: edu-drift 19s ease-in-out infinite alternate-reverse;
+}
+@keyframes edu-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(40px, 26px) scale(1.15); }
+}
+
+/* ── awards marquee (spec §C) ── */
+.edu-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.edu-marquee-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  animation: edu-marquee 48s linear infinite;
+}
+.edu-marquee:hover .edu-marquee-track { animation-play-state: paused; }
+/* Track = two identical card sets; -50% - 8px lands set 2 exactly where set 1
+   started (8px = half the 16px seam gap), so the loop is seamless. */
+@keyframes edu-marquee {
+  to { transform: translateX(calc(-50% - 8px)); }
+}
+
+/* ── in-view trigger (seat dots + timeline draw-line) ──
+   InView.tsx adds .edu-anim on mount (JS present) and .edu-inview once
+   scrolled in. Without JS neither class lands and the finished state
+   shows — same no-JS behavior as AnimatedSection. */
+.edu-seat {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+  transition: background-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+  transition-delay: calc(var(--i) * 55ms);
+}
+.edu-seat.off {
+  background: #e5e7eb;
+  box-shadow: none;
+}
+.edu-anim:not(.edu-inview) .edu-seat {
+  background: #e5e7eb;
+  box-shadow: none;
+  transform: scale(0.8);
+}
+
+/* SVG paths must set pathLength="100". Default = drawn (no-JS safe). */
+.edu-drawline {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+}
+.edu-anim:not(.edu-inview) .edu-drawline { stroke-dashoffset: 100; }
+
+/* Gradient-ring card (spec §D after-panel). */
+.edu-card-grad {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, #34d399, #059669 60%, #10b981) border-box;
+  box-shadow: 0 24px 64px -28px rgba(5, 150, 105, 0.35);
+}
+
+/* FAQ body entrance on open (spec §H) — close stays native/instant. */
+details[open] .edu-faq-body { animation: edu-faq-in 0.32s cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes edu-faq-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── closing CTA texture (spec §H) ── */
+.edu-cta-dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.09) 1px, transparent 1.3px);
+  background-size: 22px 22px;
+}
+.edu-cta-aur { position: absolute; width: 55%; height: 90%; pointer-events: none; }
+.edu-cta-aur.a {
+  left: -15%;
+  top: -35%;
+  background: radial-gradient(closest-side, rgba(52, 211, 153, 0.35), rgba(52, 211, 153, 0.12) 45%, transparent 72%);
+  animation: edu-drift 16s ease-in-out infinite alternate;
+}
+.edu-cta-aur.b {
+  right: -18%;
+  bottom: -40%;
+  background: radial-gradient(closest-side, rgba(6, 95, 70, 0.55), rgba(6, 95, 70, 0.2) 45%, transparent 72%);
+  animation: edu-drift 19s ease-in-out infinite alternate-reverse;
+}
+
+/* ── dark simulator band backdrop (server-rendered by EducationLanding) ── */
+.edu-sim-band { isolation: isolate; }
+.edu-sim-dots {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(110, 231, 183, 0.06) 1px, transparent 1.3px);
+  background-size: 26px 26px;
+}
+.edu-sim-aur {
+  position: absolute;
+  width: 46%;
+  height: 52%;
+  opacity: 0.55;
+  z-index: 0;
+  pointer-events: none;
+}
+.edu-sim-aur-a {
+  left: -8%;
+  top: -14%;
+  background: radial-gradient(closest-side, rgba(5, 150, 105, 0.3), rgba(5, 150, 105, 0.11) 45%, transparent 72%);
+  animation: edu-drift 16s ease-in-out infinite alternate;
+}
+.edu-sim-aur-b {
+  right: -10%;
+  bottom: -18%;
+  background: radial-gradient(closest-side, rgba(13, 148, 136, 0.24), rgba(13, 148, 136, 0.09) 45%, transparent 72%);
+  animation: edu-drift 19s ease-in-out infinite alternate-reverse;
+}
+/* Static film grain: one tiny inline SVG data-URI (angle brackets URL-encoded
+   for Firefox), matching hero2-noise. */
+.edu-sim-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url('data:image/svg+xml;utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="140" height="140"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2"/%3E%3C/filter%3E%3Crect width="140" height="140" filter="url(%23n)" opacity="0.55"/%3E%3C/svg%3E');
+}
+.edu-sim-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 120%, transparent 30%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+/* ── reduced motion: pin finished states (the global guard in globals.css
+   force-completes animations with no fill, so frames must be pinned here) ── */
+@media (prefers-reduced-motion: reduce) {
+  .edu-grad,
+  .edu-aur-a, .edu-aur-b,
+  .edu-cta-aur.a, .edu-cta-aur.b,
+  .edu-sim-aur-a, .edu-sim-aur-b {
+    animation: none !important;
+  }
+  .edu-rise { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .edu-seat, .edu-drawline { transition: none !important; }
+  .edu-marquee { -webkit-mask-image: none; mask-image: none; }
+  .edu-marquee-track {
+    animation: none !important;
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .edu-marquee-dup { display: none; }
+  details[open] .edu-faq-body { animation: none; }
+}

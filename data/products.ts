@@ -5,6 +5,11 @@ export interface Product {
   /** True for products in the current (2026) Samsung catalog.
    *  Sole source of truth for the "latest first" sort. */
   catalog2026?: boolean;
+  /** Product brand. Absent means "Samsung" — no existing entry sets this, so
+   *  Samsung behaviour is the default everywhere. Only Logitech video-
+   *  conferencing entries set brand: "Logitech". Never infer brand from
+   *  category; always read this field (via lib/brand.ts). */
+  brand?: "Samsung" | "Logitech";
   /** Hide from the /products "View All Products" listing while keeping the
    *  product live on its category page, detail page, and search. */
   hideFromAllProducts?: boolean;
@@ -31,6 +36,9 @@ export interface Product {
   /** Sub-label shown in listings (e.g. "Hotel TV", "Business TV") */
   subCategory?: string;
 }
+
+import { videoConferencingProducts } from "@/data/videoConferencing";
+import { softwareProducts } from "@/data/software";
 
 export const products: Product[] = [
 
@@ -3658,4 +3666,10 @@ An optimised half-width 4:9 cabinet enables flawless curved installations with s
       "/products/led-signage/samsung-the-wall-mpf/3.jpg",
     ],
   },
+
+  // ── VIDEO CONFERENCING (Logitech) ────────────────────────────────────────
+  ...videoConferencingProducts,
+
+  // ── SOFTWARE SOLUTIONS (Samsung VXT / LYNK Cloud) ────────────────────────
+  ...softwareProducts,
 ];

@@ -203,7 +203,7 @@ function drawTitleBlock(ctx: Ctx) {
   ctx.y -= 16;
   page.drawText(
     safe(
-      `${params.totalItems} item${params.totalItems !== 1 ? "s" : ""} · Authorized Samsung Commercial Display Distributor`
+      `${params.totalItems} item${params.totalItems !== 1 ? "s" : ""} · Commercial Display & Video Conferencing · India`
     ),
     {
       x: MARGIN_X,
@@ -637,7 +637,7 @@ function drawFooter(ctx: Ctx) {
   drawRightText(
     page,
     fonts.regular,
-    safe("Authorized Samsung B2B Display Distributor · Pan-India"),
+    safe("Commercial Display & Video Conferencing Supply · Pan-India"),
     rightX,
     ctx.y - 11,
     7.5,

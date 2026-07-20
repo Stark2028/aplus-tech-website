@@ -2,6 +2,7 @@ import type { Product } from "@/data/products";
 import { formatSize } from "@/lib/formatSize";
 import { modelCodeFor } from "@/lib/modelCodes";
 import { PHONE_DISPLAY } from "@/lib/contact";
+import { isLogitech } from "@/lib/brand";
 
 export interface Faq {
   q: string;
@@ -36,7 +37,11 @@ export function buildProductFaqs(product: Product): Faq[] {
     });
   }
 
-  if (modelCode) {
+  // Model-code FAQ is Samsung-worded ("Samsung order codes"); gate it on brand
+  // so it can never surface on a Logitech product even if a Logitech model code
+  // is added to lib/modelCodes.ts later. Logitech products have no model-code
+  // FAQ (there is no Logitech order-code system to explain).
+  if (modelCode && !isLogitech(product)) {
     faqs.push({
       q: `What is the model number of the ${product.name}?`,
       a: `The base model code is ${modelCode} (${product.series}). Larger sizes in the series carry matching Samsung order codes — share your preferred size and we'll confirm the exact model number and availability.`,
@@ -59,12 +64,16 @@ export function buildProductFaqs(product: Product): Faq[] {
 
   faqs.push({
     q: `How do I get pricing for the ${product.name} in India?`,
-    a: `Aplus Technology Solutions is an authorized Samsung B2B distributor and offers project and bulk pricing on quote. Request a quote on this page, message us on WhatsApp, or call ${PHONE_DISPLAY} for B2B pricing within 24 hours — GST invoice included.`,
+    a: isLogitech(product)
+      ? `Aplus Technology Solutions supplies ${product.name} to businesses across India with project and bulk pricing on quote. Request a quote on this page, message us on WhatsApp, or call ${PHONE_DISPLAY} for B2B pricing within 24 hours — GST invoice included.`
+      : `Aplus Technology Solutions is an authorized Samsung B2B distributor and offers project and bulk pricing on quote. Request a quote on this page, message us on WhatsApp, or call ${PHONE_DISPLAY} for B2B pricing within 24 hours — GST invoice included.`,
   });
 
   faqs.push({
-    q: `Does Aplus provide installation and warranty for the ${product.series}?`,
-    a: `Yes. We supply 100% genuine Samsung units with manufacturer warranty, certified installation, and AMC support across India. A free installation assessment is available for every order.`,
+    q: `Does Aplus provide installation and ${isLogitech(product) ? "support" : "warranty"} for the ${product.series}?`,
+    a: isLogitech(product)
+      ? `Yes. Aplus supplies, installs and maintains ${product.name} across India, with professional installation and AMC support. A free installation assessment is available for every order.`
+      : `Yes. We supply 100% genuine Samsung units with manufacturer warranty, certified installation, and AMC support across India. A free installation assessment is available for every order.`,
   });
 
   return faqs;

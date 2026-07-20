@@ -2,12 +2,12 @@
 
 import { useEffect, useState, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { productCategories } from "@/data/categories";
+import { categoriesWithProducts } from "@/lib/nonEmptyCategories";
 
 const NAV_OFFSET = 120;
 
 function ProductsCategoryNavContent() {
-  const [activeId, setActiveId] = useState<string>(productCategories[0]?.id ?? "");
+  const [activeId, setActiveId] = useState<string>(categoriesWithProducts[0]?.id ?? "");
   const searchParams = useSearchParams();
   const categoryParam = searchParams?.get("category");
 
@@ -18,13 +18,13 @@ function ProductsCategoryNavContent() {
   const [prevCategoryParam, setPrevCategoryParam] = useState(categoryParam);
   if (categoryParam !== prevCategoryParam) {
     setPrevCategoryParam(categoryParam);
-    if (categoryParam && productCategories.some((cat) => cat.id === categoryParam)) {
+    if (categoryParam && categoriesWithProducts.some((cat) => cat.id === categoryParam)) {
       setActiveId(categoryParam);
     }
   }
 
   const onScroll = useCallback(() => {
-    const sections = productCategories
+    const sections = categoriesWithProducts
       .map((cat) => ({
         id: cat.id,
         top: document.getElementById(cat.id)?.getBoundingClientRect().top ?? Infinity,
@@ -34,7 +34,7 @@ function ProductsCategoryNavContent() {
     if (sections.length > 0) {
       setActiveId(sections[sections.length - 1].id);
     } else {
-      setActiveId(productCategories[0]?.id ?? "");
+      setActiveId(categoriesWithProducts[0]?.id ?? "");
     }
   }, []);
 
@@ -48,7 +48,7 @@ function ProductsCategoryNavContent() {
   // sync above; this effect only performs the DOM scroll side-effect.
   useEffect(() => {
     if (!categoryParam) return;
-    const matched = productCategories.find((cat) => cat.id === categoryParam);
+    const matched = categoriesWithProducts.find((cat) => cat.id === categoryParam);
     if (!matched) return;
 
     // Wait slightly for DOM structure & cards to be ready
@@ -73,7 +73,7 @@ function ProductsCategoryNavContent() {
     <div className="sticky top-18 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto scrollbar-hide no-scrollbar py-3">
-          {productCategories.map((cat) => (
+          {categoriesWithProducts.map((cat) => (
             <button
               key={cat.id}
               onClick={() => scrollTo(cat.id)}

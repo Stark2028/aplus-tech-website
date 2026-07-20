@@ -1,10 +1,28 @@
 import { ImageResponse } from "next/og";
 import { getCategoryById, type CategorySlug } from "@/data/categories";
 import { products } from "@/data/products";
+import { categoryOgAltFor } from "./ogAlt";
 
-export const alt = "Samsung Commercial Display Category — Aplus Technology Solutions";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+export async function generateImageMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const category = getCategoryById(slug as CategorySlug);
+
+  return [
+    {
+      id: "og",
+      alt: category ? categoryOgAltFor(category) : "Aplus Technology Solutions",
+      size,
+      contentType,
+    },
+  ];
+}
 
 export default async function Image({
   params,
@@ -38,6 +56,40 @@ export default async function Image({
   const categoryProducts = products.filter((p) => p.category === category.name);
   const productCount = categoryProducts.length;
 
+  // Eyebrow pill: the site is Samsung-led, but Video Conferencing (Logitech)
+  // and Education (Class Saathi / TagHive) must never carry Samsung wording.
+  const isEducation = category.id === "education";
+  const eyebrow = isEducation
+    ? "Education"
+    : category.id === "video-conferencing"
+    ? "Video Conferencing"
+    : "Samsung Category";
+
+  // Education swaps the site-blue chrome for a Class Saathi emerald ramp.
+  const theme = isEducation
+    ? {
+        bg: "linear-gradient(135deg, #04140c 0%, #0b3a25 60%, #06281a 100%)",
+        glow: "rgba(16,185,129,0.18)",
+        chipBg: "rgba(16,185,129,0.2)",
+        chipBorder: "1px solid rgba(16,185,129,0.4)",
+        chipText: "#6ee7b7",
+        label: "#34d399",
+        pillBg: "rgba(16,185,129,0.15)",
+        pillBorder: "1px solid rgba(16,185,129,0.3)",
+        cta: "rgba(5,150,105,0.9)",
+      }
+    : {
+        bg: "linear-gradient(135deg, #050b15 0%, #0d1f40 60%, #0a1628 100%)",
+        glow: "rgba(37, 99, 235, 0.18)",
+        chipBg: "rgba(37,99,235,0.2)",
+        chipBorder: "1px solid rgba(37,99,235,0.4)",
+        chipText: "#93c5fd",
+        label: "#60a5fa",
+        pillBg: "rgba(37,99,235,0.15)",
+        pillBorder: "1px solid rgba(37,99,235,0.3)",
+        cta: "rgba(37,99,235,0.9)",
+      };
+
   return new ImageResponse(
     <div
       style={{
@@ -45,7 +97,7 @@ export default async function Image({
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        background: "linear-gradient(135deg, #050b15 0%, #0d1f40 60%, #0a1628 100%)",
+        background: theme.bg,
         padding: "56px 64px",
         fontFamily: "system-ui, sans-serif",
         position: "relative",
@@ -60,7 +112,7 @@ export default async function Image({
           width: 500,
           height: 500,
           borderRadius: "50%",
-          background: "rgba(37, 99, 235, 0.18)",
+          background: theme.glow,
           filter: "blur(80px)",
         }}
       />
@@ -69,9 +121,9 @@ export default async function Image({
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: "auto" }}>
         <div
           style={{
-            background: "rgba(37,99,235,0.2)",
-            border: "1px solid rgba(37,99,235,0.4)",
-            color: "#93c5fd",
+            background: theme.chipBg,
+            border: theme.chipBorder,
+            color: theme.chipText,
             padding: "6px 16px",
             borderRadius: 100,
             fontSize: 13,
@@ -82,14 +134,14 @@ export default async function Image({
             alignItems: "center",
           }}
         >
-          Samsung Category
+          {eyebrow}
         </div>
       </div>
 
       {/* Category label */}
       <div
         style={{
-          color: "#60a5fa",
+          color: theme.label,
           fontSize: 15,
           fontWeight: 700,
           letterSpacing: "0.15em",
@@ -97,7 +149,7 @@ export default async function Image({
           marginBottom: 16,
         }}
       >
-        Browse Products
+        {isEducation ? "Class Saathi by TagHive" : "Browse Products"}
       </div>
 
       {/* Category name */}
@@ -130,9 +182,9 @@ export default async function Image({
       {/* Product count pill */}
       <div
         style={{
-          background: "rgba(37,99,235,0.15)",
-          border: "1px solid rgba(37,99,235,0.3)",
-          color: "#93c5fd",
+          background: theme.pillBg,
+          border: theme.pillBorder,
+          color: theme.chipText,
           padding: "10px 20px",
           borderRadius: 10,
           fontSize: 15,
@@ -148,7 +200,9 @@ export default async function Image({
           marginBottom: 48,
         }}
       >
-        {productCount} Products in This Category
+        {isEducation
+          ? "Class Saathi — smart classrooms & AI-powered learning"
+          : `${productCount} Products in This Category`}
       </div>
 
       {/* Footer */}
@@ -166,7 +220,7 @@ export default async function Image({
         </div>
         <div
           style={{
-            background: "rgba(37,99,235,0.9)",
+            background: theme.cta,
             color: "white",
             padding: "10px 24px",
             borderRadius: 10,

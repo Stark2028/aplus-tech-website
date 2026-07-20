@@ -10,6 +10,7 @@ import { ArrowRight, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import { SITE, breadcrumbLd, categoryCollectionLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
 import { buildCategoryFaqs, categorySizeRange } from "@/lib/categoryFaq";
+import EducationLanding from "@/components/education/EducationLanding";
 
 export const revalidate = 3600;
 
@@ -32,16 +33,63 @@ export async function generateMetadata({
   const category = getCategoryById(slug);
   if (!category) return {};
   const url = `${SITE}/categories/${slug}`;
+  // Education is Class Saathi (TagHive) — education-scoped metadata with no
+  // Samsung/authorized wording (content truth policy).
+  if (category.id === "education") {
+    return {
+      title: "Class Saathi Smart Classrooms — Clickers & AI Learning",
+      description:
+        "Class Saathi by TagHive — Bluetooth clickers and AI-powered assessment for 100% student participation, no internet required. School demos, deployment and support across India.",
+      keywords: [
+        "Class Saathi",
+        "classroom clickers",
+        "student response system",
+        "smart classroom India",
+        "TagHive",
+        "Aplus Technology Solutions",
+      ],
+      alternates: { canonical: url },
+      openGraph: {
+        type: "website",
+        url,
+        title: "Education | Aplus Technology Solutions",
+        description: category.description,
+        images: [{ url: `/categories/${slug}/opengraph-image`, width: 1200, height: 630, alt: category.navLabel }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: "Education | Aplus Technology Solutions",
+        description: category.description,
+        images: [`/categories/${slug}/opengraph-image`],
+      },
+    };
+  }
+  // The Video Conferencing category is Logitech, not Samsung — its metadata must
+  // carry no Samsung/authorized/certified wording (positioning rule). Every other
+  // category is Samsung-led and keeps its historical copy verbatim.
+  const isVc = category.id === "video-conferencing";
   return {
-    title: `Samsung ${category.navLabel} — Price, Models & Specs`,
-    description: `${category.description} Authorized Samsung distributor in India — B2B pricing, certified installation & AMC.`,
-    keywords: [
-      `Samsung ${category.navLabel}`,
-      `${category.navLabel} price India`,
-      `${category.navLabel} dealer`,
-      "Samsung B2B",
-      "Aplus Technology Solutions",
-    ],
+    title: isVc
+      ? `${category.navLabel} — Price, Models & Specs`
+      : `Samsung ${category.navLabel} — Price, Models & Specs`,
+    description: isVc
+      ? `${category.description} B2B pricing, installation and AMC support across India.`
+      : `${category.description} Authorized Samsung distributor in India — B2B pricing, certified installation & AMC.`,
+    keywords: isVc
+      ? [
+          `Logitech ${category.navLabel}`,
+          `${category.navLabel} price India`,
+          `${category.navLabel} dealer`,
+          "video conferencing systems",
+          "Aplus Technology Solutions",
+        ]
+      : [
+          `Samsung ${category.navLabel}`,
+          `${category.navLabel} price India`,
+          `${category.navLabel} dealer`,
+          "Samsung B2B",
+          "Aplus Technology Solutions",
+        ],
     alternates: { canonical: url },
     openGraph: {
       type: "website",
@@ -68,6 +116,10 @@ export default async function CategoryPage({
   const category = getCategoryById(slug);
 
   if (!category) return notFound();
+
+  // Education has zero catalog products — its category page IS the Class
+  // Saathi landing, not the product-grid template below.
+  if (category.id === "education") return <EducationLanding />;
 
   const categoryProducts = products.filter(
     (p) => p.category === category.name

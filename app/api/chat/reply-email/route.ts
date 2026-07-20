@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
 import { FieldValue } from "firebase-admin/firestore";
 import { getAdminDb } from "@/lib/firebase/admin";
+import { getResend, serverError } from "@/lib/apiErrors";
 import { guardRequest, verifyOwner } from "@/lib/chat/apiGuards";
 import { COL, toMillis } from "@/lib/chat/types";
 import { shouldEmailReply } from "@/lib/chat/replyEmail";
@@ -122,7 +122,7 @@ export async function POST(req: Request) {
     // permanently suppressed.
     await messageRef.update({ emailedAt: FieldValue.serverTimestamp() });
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const resend = getResend();
     const { error } = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev",
       to: customerEmail,
@@ -163,8 +163,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, emailed: true });
   } catch (err) {
-    console.error("[api/chat/reply-email]", err);
-    return NextResponse.json({ success: false, message: "Internal server error." }, { status: 500 });
+    return serverError("api/chat/reply-email", err);
   }
 }
 

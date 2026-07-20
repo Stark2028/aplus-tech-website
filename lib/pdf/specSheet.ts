@@ -12,6 +12,7 @@
 import type { Product } from "@/data/products";
 import { formatSize } from "@/lib/formatSize";
 import { CONTACT_EMAIL, PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
+import { isLogitech } from "@/lib/brand";
 
 import {
   A4_HEIGHT,
@@ -59,11 +60,34 @@ const IMG_PANEL_H = 120;
 
 const BAND_H = 58;                     // navy contact band height
 
-const TRUST_CARDS: ReadonlyArray<readonly [string, string]> = [
+const SAMSUNG_TRUST_CARDS: ReadonlyArray<readonly [string, string]> = [
   ["Samsung Authorized", "Genuine India-spec units with full Samsung warranty."],
   ["Pan-India Installation", "Site survey, mounting and commissioning across India."],
   ["ISO 9001:2015", "Certified quality management, GST invoicing, bulk pricing."],
 ];
+
+const LOGITECH_TRUST_CARDS: ReadonlyArray<readonly [string, string]> = [
+  ["Supply & Sourcing", "Genuine Logitech room systems supplied across India."],
+  ["Pan-India Installation", "Site survey, mounting and commissioning across India."],
+  ["AMC & Support", "Ongoing maintenance, GST invoicing and bulk pricing."],
+];
+
+/** Trust cards for the spec-sheet's "Why Buy From Aplus" strip, keyed by brand.
+ *  Logitech drops all authorized/partner/certified/Samsung claims (positioning
+ *  rule); Samsung is unchanged. Always three cards — the layout divides by 3. */
+export function trustCardsFor(
+  product: Pick<Product, "brand">
+): ReadonlyArray<readonly [string, string]> {
+  return isLogitech(product) ? LOGITECH_TRUST_CARDS : SAMSUNG_TRUST_CARDS;
+}
+
+/** Header sub-line under the company name. Brand-scoped so Logitech sheets
+ *  never claim Samsung authorization. */
+export function distributorLineFor(product: Pick<Product, "brand">): string {
+  return isLogitech(product)
+    ? "Commercial Video Conferencing Supply & Installation · India"
+    : "Authorized Samsung Commercial Display Distributor · India";
+}
 
 interface Ctx {
   doc: PDFDocument;
@@ -137,7 +161,7 @@ export async function buildSpecSheetPdf(product: Product): Promise<Uint8Array> {
   if (product.features.length > 0) drawFeatures(ctx, product);
   drawSpecSection(ctx, product);
   if (product.longDescription) drawOverview(ctx, product);
-  drawTrustStrip(ctx);
+  drawTrustStrip(ctx, product);
   drawContactBand(ctx);
   drawFootersAndLegal(ctx);
 
@@ -181,7 +205,7 @@ function addFirstPage(ctx: Ctx, product: Product, docDate: string) {
   drawSpacedText(page, "APLUS TECHNOLOGY SOLUTIONS", {
     x: textX, y: A4_HEIGHT - 30, size: 11, font: fonts.bold, color: C.black, characterSpacing: 1.6,
   });
-  page.drawText(safe("Authorized Samsung Commercial Display Distributor · India"), {
+  page.drawText(safe(distributorLineFor(product)), {
     x: textX, y: A4_HEIGHT - 43, size: 7.5, font: fonts.regular, color: C.gray500,
   });
 
@@ -513,17 +537,18 @@ function drawOverview(ctx: Ctx, product: Product) {
   ctx.y -= 6;
 }
 
-function drawTrustStrip(ctx: Ctx) {
+function drawTrustStrip(ctx: Ctx, product: Product) {
   const { fonts } = ctx;
+  const cards = trustCardsFor(product);
   const cardGap = 10;
   const cardW = (CONTENT_WIDTH - cardGap * 2) / 3;
-  const bodies = TRUST_CARDS.map(([, body]) => wrapText(safe(body), fonts.regular, 7.5, cardW - 20));
+  const bodies = cards.map(([, body]) => wrapText(safe(body), fonts.regular, 7.5, cardW - 20));
   const cardH = 26 + Math.max(...bodies.map((b) => b.length)) * 10;
   ensureSpace(ctx, 34 + cardH);
 
   sectionHeader(ctx, "Why Buy From Aplus");
   const top = ctx.y;
-  TRUST_CARDS.forEach(([title], i) => {
+  cards.forEach(([title], i) => {
     const x = MARGIN_X + i * (cardW + cardGap);
     ctx.page.drawRectangle({
       x, y: top - cardH, width: cardW, height: cardH, borderWidth: 0.5, borderColor: C.gray200,

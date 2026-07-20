@@ -46,3 +46,31 @@ describe("size bucket filter", () => {
     expect(applyFilters(items, DEFAULT_FILTERS)).toHaveLength(2);
   });
 });
+
+function fovProduct(over: Partial<Product>): Product {
+  return {
+    id: over.id ?? "x", name: "n", category: over.category ?? "Digital Signage",
+    series: "s", description: "d", features: ["f"],
+    specs: {
+      resolution: over.specs?.resolution ?? "4K UHD",
+      brightness: over.specs?.brightness ?? "500 nit",
+      screenSizes: over.specs?.screenSizes ?? ["55"],
+      operationTime: over.specs?.operationTime ?? "24/7",
+    },
+    images: [], ...over,
+  } as Product;
+}
+
+describe("applyFilters — FOV must not false-match a nit band", () => {
+  it("excludes a '113° FOV' VC product from the 'Under 350 nit' band (not a match)", () => {
+    const fov = fovProduct({ id: "fov", specs: { resolution: "4K UHD", brightness: "113° FOV", screenSizes: [], operationTime: "Huddle Rooms" } });
+    const out = applyFilters([fov], { ...DEFAULT_FILTERS, brightness: "Under 350 nit" });
+    expect(out).toHaveLength(0);
+  });
+
+  it("still bands a genuine nit value correctly", () => {
+    const nit = fovProduct({ id: "nit", specs: { resolution: "FHD", brightness: "350 nit", screenSizes: ["65"], operationTime: "Large Rooms" } });
+    const out = applyFilters([nit], { ...DEFAULT_FILTERS, brightness: "350–500 nit" });
+    expect(out).toHaveLength(1);
+  });
+});

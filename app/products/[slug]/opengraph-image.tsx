@@ -1,10 +1,30 @@
 import { ImageResponse } from "next/og";
 import { products } from "@/data/products";
 import { formatSizeRange } from "@/lib/formatSize";
+import { ogBadgeLabel } from "./ogBadge";
+import { ogAltFor } from "./ogAlt";
 
-export const alt = "Samsung Commercial Display — Aplus Technology Solutions";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+export async function generateImageMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const product = products.find((p) => p.id === slug);
+
+  return [
+    {
+      id: "og",
+      alt: product ? ogAltFor(product) : "Aplus Technology Solutions",
+      size,
+      contentType,
+    },
+  ];
+}
+
 export default async function Image({
   params,
 }: {
@@ -87,7 +107,7 @@ export default async function Image({
             alignItems: "center",
           }}
         >
-          Authorized Samsung Partner
+          {ogBadgeLabel(product)}
         </div>
         <div
           style={{

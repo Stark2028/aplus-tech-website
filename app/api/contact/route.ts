@@ -1,12 +1,16 @@
-import { Resend } from "resend";
 import { NextResponse } from "next/server";
 import { createZohoLead } from "@/lib/zoho";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
+import { getResend, serverError } from "@/lib/apiErrors";
 
 // Delivery address for all form submissions.
 // Set CONTACT_TO_EMAIL in .env.local (or your hosting platform's env vars).
 // Never hard-code a personal or dev address here.
 const TO_EMAIL = process.env.CONTACT_TO_EMAIL ?? "info@aplustechsol.com";
+
+// Class Saathi (education) leads route to the education owner. Set
+// CLASS_SAATHI_TO_EMAIL alongside CONTACT_TO_EMAIL; falls back to TO_EMAIL.
+const CLASS_SAATHI_TO_EMAIL = process.env.CLASS_SAATHI_TO_EMAIL ?? TO_EMAIL;
 
 // Abuse throttle: 5 submissions per IP per 10 minutes.
 const RATE_LIMIT = 5;
@@ -189,6 +193,68 @@ function buildContactEmail(b: Record<string, string>) {
 </html>`;
 }
 
+function buildClassSaathiEmail(b: Record<string, string>) {
+  const details: Array<[string, string | undefined]> = [
+    ["Name", b.name],
+    ["Email", b.email],
+    ["Phone", b.phone],
+    ["Role", b.role],
+    ["School", b.company],
+    ["City", b.city],
+    ["Students", b.student_count],
+    ["Primary Goal", b.primary_goal],
+  ];
+  const rows = details
+    .filter(([, value]) => Boolean(value))
+    .map(([label, value]) => row(label, value ?? ""))
+    .join(`<tr><td colspan="2" style="height:1px;background:#f3f4f6;padding:0"></td></tr>`);
+
+  return `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"/></head>
+<body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding:32px 16px">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.1)">
+
+        <!-- Header -->
+        <tr>
+          <td style="background:linear-gradient(135deg,#065f46,#059669);padding:28px 32px">
+            <div style="font-size:11px;font-weight:700;color:#a7f3d0;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">Aplus Technology Solutions · Education</div>
+            <div style="font-size:22px;font-weight:700;color:#fff">New Class Saathi School Lead</div>
+            <div style="font-size:13px;color:#d1fae5;margin-top:4px">${esc(b.company ?? "")}</div>
+          </td>
+        </tr>
+
+        <!-- School details -->
+        <tr><td style="padding:24px 32px 0">
+          <div style="font-size:11px;font-weight:700;color:#6b7280;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">School Details</div>
+          <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+            ${rows}
+          </table>
+        </td></tr>
+
+        <!-- Message -->
+        ${b.message ? `
+        <tr><td style="padding:24px 32px">
+          <div style="font-size:11px;font-weight:700;color:#6b7280;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Submission Summary</div>
+          <div style="background:#f0fdf4;border:1px solid #d1fae5;border-radius:8px;padding:16px;font-size:13px;color:#374151;line-height:1.7;white-space:pre-wrap">${esc(b.message)}</div>
+        </td></tr>` : ""}
+
+        <!-- Footer -->
+        <tr>
+          <td style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:16px 32px;font-size:11px;color:#9ca3af;text-align:center">
+            Reply directly to this email to respond to ${esc(b.name ?? "the school")}.
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
 export async function POST(req: Request) {
   try {
     // Reject anything that isn't a JSON submission.
@@ -252,14 +318,19 @@ export async function POST(req: Request) {
       }
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
+    const resend = getResend();
     const FROM_EMAIL = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
     const isQuote = Boolean(body.items_list);
-    const html = isQuote ? buildQuoteEmail(body) : buildContactEmail(body);
+    const isClassSaathi = body.lead_source === "Class Saathi";
+    const html = isClassSaathi
+      ? buildClassSaathiEmail(body)
+      : isQuote
+      ? buildQuoteEmail(body)
+      : buildContactEmail(body);
 
     const { error } = await resend.emails.send({
       from: FROM_EMAIL,
-      to: TO_EMAIL,
+      to: isClassSaathi ? CLASS_SAATHI_TO_EMAIL : TO_EMAIL,
       replyTo: headerSafe(body.email, 320),
       subject: headerSafe(body.subject ?? "New Inquiry — Aplus Technology Solutions"),
       html,
@@ -279,7 +350,6 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("[api/contact]", err);
-    return NextResponse.json({ success: false, message: "Internal server error." }, { status: 500 });
+    return serverError("api/contact", err);
   }
 }

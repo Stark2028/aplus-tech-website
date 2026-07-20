@@ -21,6 +21,7 @@ export { default as LayoutGridIcon } from "./LayoutGridIcon";
 export { default as InteractiveIcon } from "./InteractiveIcon";
 export { default as TvIcon } from "./TvIcon";
 export { default as LedIcon } from "./LedIcon";
+export { default as CloudIcon } from "./CloudIcon";
 export { default as PackageIcon } from "./PackageIcon";
 
 // Industry set

@@ -1,0 +1,165 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ClassroomSimulator — dark-band component rules (spec §G).
+   Band backdrop lives in education.css (server-rendered); these classes style
+   the interactive island: clicker press physics, transmit flight, collecting
+   seats, confetti. Animations transform/opacity only; the transmit LED pulse
+   is a paint-only micro-exception (6px dot).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* clicker shell: soft white, top sheen */
+.edu-sim-shell {
+  position: relative;
+  background: linear-gradient(165deg, #ffffff, #d7dfe9 90%);
+  border: 3px solid #fff;
+  box-shadow: 0 28px 70px -24px rgba(0, 0, 0, 0.65), inset 0 1px 0 #fff;
+}
+.edu-sim-shell::before {
+  content: "";
+  position: absolute;
+  inset: 6px 6px 60%;
+  border-radius: 2rem 2rem 40% 40%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.85), transparent);
+  pointer-events: none;
+}
+.edu-sim-lcd {
+  background: #0a1f16;
+  border: 1px solid rgba(6, 78, 59, 0.55);
+}
+
+/* answer-key press physics */
+.edu-key {
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.15s ease;
+}
+.edu-key:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* transmit LED — paint-only micro-exception (6px dot) */
+.edu-sim-led {
+  position: absolute;
+  top: 14px;
+  right: 22px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+.edu-sim-led.on {
+  background: #34d399;
+  box-shadow: 0 0 10px #34d399;
+  animation: edu-sim-blink 0.22s linear infinite;
+}
+@keyframes edu-sim-blink {
+  50% { opacity: 0.35; }
+}
+
+/* transmit ripple rings, centered on the LCD */
+.edu-sim-ring {
+  position: absolute;
+  top: 3.2rem;
+  left: 50%;
+  width: 3rem;
+  height: 3rem;
+  margin-left: -1.5rem;
+  border: 2px solid rgba(52, 211, 153, 0.7);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.is-tx .edu-sim-ring { animation: edu-sim-ripple 0.45s ease-out; }
+.is-tx .edu-sim-ring.r2 { animation-delay: 0.12s; }
+@keyframes edu-sim-ripple {
+  from { opacity: 0.9; transform: scale(0.5); }
+  to { opacity: 0; transform: scale(1.9); }
+}
+
+/* packet flight strip between clicker and board:
+   horizontal on lg, vertical when the columns stack */
+.edu-sim-flight { position: relative; pointer-events: none; }
+.edu-sim-flight i {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
+  opacity: 0;
+}
+.edu-sim-flight.is-tx i { animation: edu-sim-pkt-x 0.45s ease-in forwards; }
+.edu-sim-flight.is-tx i:nth-child(2) { animation-delay: 0.09s; }
+.edu-sim-flight.is-tx i:nth-child(3) { animation-delay: 0.18s; }
+@keyframes edu-sim-pkt-x {
+  from { opacity: 0; transform: translate(0, -50%); }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  to { opacity: 0; transform: translate(3.4rem, -50%); }
+}
+@keyframes edu-sim-pkt-y {
+  from { opacity: 0; transform: translate(-50%, 0); }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  to { opacity: 0; transform: translate(-50%, 2.6rem); }
+}
+@media (max-width: 1023.98px) {
+  .edu-sim-flight i { left: 50%; top: 0; }
+  .edu-sim-flight.is-tx i { animation-name: edu-sim-pkt-y; }
+}
+
+/* collecting: 24-seat dot grid on the board */
+.edu-sim-seat {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background-color 0.18s ease, box-shadow 0.18s ease;
+}
+.edu-sim-seat.on {
+  background: #34d399;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.7);
+}
+
+/* live "class ready" dot */
+.edu-sim-livedot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px #34d399;
+  animation: edu-sim-pulse 2.4s ease-in-out infinite;
+}
+@keyframes edu-sim-pulse {
+  50% { opacity: 0.4; }
+}
+
+/* confetti burst on a correct reveal */
+.edu-sim-confetti {
+  position: absolute;
+  top: 12px;
+  left: 22px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+.edu-sim-confetti i {
+  position: absolute;
+  width: 7px;
+  height: 10px;
+  border-radius: 2px;
+  opacity: 1;
+  animation: edu-sim-conf 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+@keyframes edu-sim-conf {
+  from { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  to { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .edu-sim-confetti { display: none; }
+  .edu-sim-ring, .edu-sim-flight i { display: none; }
+  .edu-sim-led.on, .edu-sim-livedot { animation: none !important; opacity: 1; }
+  .edu-key, .edu-sim-seat { transition: none !important; }
+}

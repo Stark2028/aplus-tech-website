@@ -5,6 +5,7 @@ import type { UseCaseCombo } from "@/data/useCaseCombos";
 import { formatSize } from "@/lib/formatSize";
 import { PHONE_SCHEMA } from "@/lib/contact";
 import { modelCodeFor } from "@/lib/modelCodes";
+import { brandOf, BRAND_JSONLD_NAME, BRAND_MANUFACTURER } from "@/lib/brand";
 
 export const SITE = "https://www.aplustechsol.com";
 
@@ -124,11 +125,11 @@ export function productLd(product: Product) {
     sku: modelCode ?? product.id,
     ...(modelCode ? { mpn: modelCode } : {}),
     category: product.category,
-    brand: { "@type": "Brand", name: "Samsung" },
+    brand: { "@type": "Brand", name: BRAND_JSONLD_NAME[brandOf(product)] },
     manufacturer: {
       "@type": "Organization",
-      name: "Samsung Electronics Co., Ltd.",
-      url: "https://www.samsung.com",
+      name: BRAND_MANUFACTURER[brandOf(product)].name,
+      url: BRAND_MANUFACTURER[brandOf(product)].url,
     },
     model: product.series,
     image: images,
@@ -152,7 +153,10 @@ export function categoryCollectionLd(
     "@type": "CollectionPage",
     "@id": `${url}#collection`,
     url,
-    name: `${category.navLabel} — Samsung B2B Displays`,
+    name:
+      category.id === "video-conferencing"
+        ? `${category.navLabel} — Logitech Systems`
+        : `${category.navLabel} — Samsung B2B Displays`,
     description: category.description,
     isPartOf: { "@id": ORG_ID },
     mainEntity: {
