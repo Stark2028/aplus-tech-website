@@ -148,6 +148,9 @@ export const OLD_EXACT_PATH_TO_NEW: Record<string, string> = {
  * Values must never appear as keys, or the redirect would loop.
  */
 export const MERGED_PRODUCT_TO_CANONICAL: Record<string, string> = {
+  // Renamed id: this product is the QMB-T series (name, series, and SKU
+  // LH43QMBTBGCXXL all say QMB-T); its id was mistakenly "samsung-touch-qbc-t".
+  "samsung-touch-qbc-t": "samsung-touch-qmb-t",
   "samsung-hotel-tv-hgu701f": "samsung-hotel-tv-hu7010f",
   "samsung-hotel-tv-hgu800f": "samsung-hotel-tv-hu8000f",
   "samsung-vm55c-r": "samsung-videowall-vmc-r",

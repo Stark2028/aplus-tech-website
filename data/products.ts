@@ -525,7 +525,7 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
     },
   },
   {
-    id: "samsung-touch-qbc-t",
+    id: "samsung-touch-qmb-t",
     popularity: 97,
     catalog2026: true,
     name: "Samsung Interactive Signage QMB-T Series",
@@ -2313,7 +2313,8 @@ Centralized remote device management through MDM/EMM platforms enables IT teams 
     popularity: 64,
     catalog2026: true,
     name: "Samsung QBC-T Small Signage Touch Display",
-    category: "Interactive Display",
+    category: "Digital Signage",
+    subCategory: "Touch Signage",
     series: "QBC-T",
     description:
       "Compact 13\" and 24\" Full HD capacitive touch signage — ideal for reception desks, POS counters, and interactive information points where space is constrained.",

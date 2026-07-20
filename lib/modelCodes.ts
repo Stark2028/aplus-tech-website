@@ -25,7 +25,7 @@ export const REPRESENTATIVE_MODEL_CODE: Record<string, string> = {
   // India sells the Window OM as the OMN series (46"/55" only).
   "samsung-window-om": "LH46OMNSLGB",
   // Touch
-  "samsung-touch-qbc-t": "LH43QMBTBGCXXL",
+  "samsung-touch-qmb-t": "LH43QMBTBGCXXL",
   "samsung-touch-qmc-t": "LH32QMCTBGCXXL",
   "samsung-touch-qmr-t": "LH32QMRTBGCXXL",
   "samsung-qbc-t": "LH24QBCTBGCXEN", // ~ India page not found
