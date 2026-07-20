@@ -29,6 +29,12 @@ const jakartaSans = Plus_Jakarta_Sans({
   variable: "--font-display",
   weight: ["600", "700", "800"],
   display: "swap",
+  // preload:false — on the homepage the hero H1 (the LCP element) shadows
+  // --font-display with Space Grotesk, so preloading Jakarta here only adds a
+  // third font <link rel=preload> that competes with Space Grotesk for the
+  // mobile connection pipe and delays the LCP paint. Jakarta is metric-matched
+  // (adjustFontFallback), so its below-the-fold headings swap in without CLS.
+  preload: false,
 });
 
 const SITE_URL = "https://www.aplustechsol.com";
@@ -101,11 +107,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://us.i.posthog.com" />
         <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
-        {/* Font CDNs — preconnect to both domains used by next/font/google:
-            googleapis.com = CSS resolver, gstatic.com = actual woff2 files.
-            Missing gstatic preconnect is a common cause of font-swap LCP delay. */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* No font-CDN preconnects on purpose: next/font/google self-hosts the
+            woff2 files at build time under /_next/static/media (same origin), so
+            fonts.googleapis.com / fonts.gstatic.com are never hit at runtime.
+            Preconnecting to unused origins only steals connection slots from the
+            real, same-origin LCP font — the opposite of what we want. */}
       </head>
       <body className={`${inter.className} ${jakartaSans.variable} ${spaceGroteskCard.variable} ${plexMonoCard.variable} bg-background text-foreground`}>
         <ScrollProgress />
