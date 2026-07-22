@@ -49,7 +49,7 @@ export default function IndustrySolutions() {
           </h2>
         </div>
 
-        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-4" autoPlay={true} autoPlayInterval={3700} initialDelay={600}>
+        <MobileProductScroller label="Industry solutions carousel" gridCols="sm:grid-cols-2 lg:grid-cols-4" autoPlay={true} autoPlayInterval={3700} initialDelay={600}>
           {SOLUTIONS.map((s) => (
             <Link
               key={s.title}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useId } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useDeferredScroll } from "@/hooks/useDeferredScroll";
 
@@ -21,6 +21,13 @@ interface MobileProductScrollerProps {
    * is responsible for supplying matching `gridCols` (e.g. `md:grid-cols-*`).
    */
   breakpoint?: "sm" | "md";
+  /**
+   * Accessible name for the carousel region, e.g. "Category carousel" or
+   * "Featured products carousel". Multiple rails mount on one page (the
+   * homepage has three), so a distinct label per rail keeps screen-reader
+   * region navigation unambiguous. Defaults to a generic "Product carousel".
+   */
+  label?: string;
   /**
    * Whether to render the built-in desktop grid at `breakpoint`+. Defaults to
    * `true`. Pass `false` when the caller supplies its own desktop grid (e.g.
@@ -44,7 +51,12 @@ export default function MobileProductScroller({
   initialDelay = 0,
   breakpoint = "sm",
   renderGrid = true,
+  label = "Product carousel",
 }: MobileProductScrollerProps) {
+  // Unique per instance: several rails mount on one page, so a hardcoded id
+  // would make every rail's arrows aria-controls the FIRST match. useId keeps
+  // each rail's controls pointing at its own track.
+  const trackId = useId();
   // Static class strings so Tailwind's JIT scanner sees complete literals
   // (it can't resolve `${breakpoint}:hidden` interpolations).
   const mobileHidden = breakpoint === "md" ? "md:hidden" : "sm:hidden";
@@ -124,7 +136,7 @@ export default function MobileProductScroller({
         {/* Prev arrow */}
         <button
           aria-label="Scroll left"
-          aria-controls="mobile-scroller-track"
+          aria-controls={trackId}
           onClick={() => scroll("left")}
           className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-10 bg-white border border-gray-200 shadow-md rounded-full p-1.5 text-gray-500 hover:text-blue-600 transition-colors"
         >
@@ -137,10 +149,10 @@ export default function MobileProductScroller({
           <style>{`.mps-rail{overflow-x:auto !important}`}</style>
         </noscript>
         <div
-          id="mobile-scroller-track"
+          id={trackId}
           ref={scrollRef}
           role="region"
-          aria-label="Product carousel"
+          aria-label={label}
           className={`mps-rail flex gap-5 ${scrollReady ? "overflow-x-auto" : "overflow-x-clip"} snap-x snap-mandatory scroll-smooth pb-4 px-1 no-scrollbar`}
           style={{ scrollPaddingLeft: "0px" }}
         >
@@ -160,7 +172,7 @@ export default function MobileProductScroller({
         {/* Next arrow */}
         <button
           aria-label="Scroll right"
-          aria-controls="mobile-scroller-track"
+          aria-controls={trackId}
           onClick={() => scroll("right")}
           className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-10 bg-white border border-gray-200 shadow-md rounded-full p-1.5 text-gray-500 hover:text-blue-600 transition-colors"
         >

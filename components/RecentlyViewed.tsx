@@ -61,7 +61,7 @@ export default function RecentlyViewed({ currentProductId }: RecentlyViewedProps
         <Clock size={16} className="text-gray-400" />
         <h2 className="text-lg font-bold text-gray-900">Recently Viewed</h2>
       </div>
-      <MobileProductScroller gridCols="sm:grid-cols-4">
+      <MobileProductScroller label="Recently viewed products carousel" gridCols="sm:grid-cols-4">
         {recentProducts.map((product) => (
           <div
             key={product.id}

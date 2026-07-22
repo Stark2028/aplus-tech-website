@@ -108,7 +108,7 @@ export default function ProductCatalogSection() {
             </Link>
           </div>
         ) : (
-        <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" autoPlay={true} autoPlayInterval={3900} initialDelay={3300}>
+        <MobileProductScroller label="Featured products carousel" gridCols="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" autoPlay={true} autoPlayInterval={3900} initialDelay={3300}>
           {filtered.map((product) => (
             <div
               key={product.id}

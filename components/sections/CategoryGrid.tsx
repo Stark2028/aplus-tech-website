@@ -195,6 +195,7 @@ export default function CategoryGrid() {
         <MobileProductScroller
           breakpoint="md"
           renderGrid={false}
+          label="Category carousel"
           gridCols=""
           autoPlay={true}
           autoPlayInterval={3200}
