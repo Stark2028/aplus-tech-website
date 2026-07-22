@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FileText, Link2, X } from "lucide-react";
 import { searchCatalogue, buildProductLink, buildSpecSheetLink, buildCatalogueLink } from "@/lib/chat/links";
 import type { ChatLink } from "@/lib/chat/types";
@@ -13,6 +13,7 @@ import type { ChatLink } from "@/lib/chat/types";
 export default function LinkPicker({ onPick }: { onPick: (link: ChatLink) => void }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const rootRef = useRef<HTMLDivElement>(null);
 
   const hits = searchCatalogue(query);
 
@@ -22,8 +23,18 @@ export default function LinkPicker({ onPick }: { onPick: (link: ChatLink) => voi
     setQuery("");
   };
 
+  // Dismiss on outside click while open, matching every other popover here.
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={rootRef}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -42,6 +53,13 @@ export default function LinkPicker({ onPick }: { onPick: (link: ChatLink) => voi
               autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                // This input is a descendant of the composer <form>, so a bare
+                // Enter would trigger implicit submission and send the agent's
+                // half-typed draft to the customer. Swallow it; Escape closes.
+                if (e.key === "Enter") e.preventDefault();
+                if (e.key === "Escape") setOpen(false);
+              }}
               placeholder="Search products…"
               aria-label="Search products"
               className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 text-sm text-gray-900"
