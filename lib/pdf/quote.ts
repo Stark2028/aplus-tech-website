@@ -156,17 +156,12 @@ function drawTitleBlock(ctx: Ctx) {
 }
 
 function sectionHeader(ctx: Ctx, label: string) {
-  ensureSpace(ctx, 30);
+  ensureSpace(ctx, 34);
   const { page, fonts } = ctx;
   drawSpacedText(page, safe(label).toUpperCase(), {
-    x: MARGIN_X,
-    y: ctx.y,
-    size: 8.5,
-    font: fonts.bold,
-    color: C.black,
-    characterSpacing: 1.6,
+    x: MARGIN_X, y: ctx.y, size: 9.5, font: fonts.bold, color: C.black, characterSpacing: 2,
   });
-  drawHr(page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y - 6, 0.75, C.black);
+  drawHr(page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y - 7, 1.5, C.black);
   ctx.y -= 22;
 }
 
@@ -315,6 +310,16 @@ function drawItemRow(ctx: Ctx, item: QuoteItem, idx: number) {
 
   const rowTop = ctx.y;
 
+  if (idx % 2 === 1) {
+    page.drawRectangle({
+      x: MARGIN_X,
+      y: rowTop + 7 - rowHeight,
+      width: CONTENT_WIDTH,
+      height: rowHeight,
+      color: C.gray50,
+    });
+  }
+
   // # number
   page.drawText(String(idx + 1).padStart(2, "0"), {
     x: COL_NUM_X,
@@ -367,7 +372,6 @@ function drawItemRow(ctx: Ctx, item: QuoteItem, idx: number) {
   );
 
   ctx.y -= rowHeight;
-  drawHr(page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y + 6, 0.4, C.gray100);
 }
 
 function drawPricingNote(ctx: Ctx) {
