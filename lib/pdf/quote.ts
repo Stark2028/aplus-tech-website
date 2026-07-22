@@ -7,7 +7,6 @@
 
 import type { QuoteItem } from "@/context/QuoteContext";
 import { formatSize } from "@/lib/formatSize";
-import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 
 import {
   A4_HEIGHT,
@@ -15,7 +14,6 @@ import {
   C,
   CONTENT_WIDTH,
   MARGIN_X,
-  addLinkAnnotation,
   drawHr,
   drawSpacedText,
   safe,
@@ -433,174 +431,25 @@ function drawPricingNote(ctx: Ctx) {
 }
 
 function drawNextSteps(ctx: Ctx) {
-  // Filled in Task 4. For now, retain the existing info grid so the document
-  // stays complete while the chrome lands incrementally.
-  drawInfoGrid(ctx);
-}
-
-function drawInfoGrid(ctx: Ctx) {
-  ensureSpace(ctx, 110);
-  const { page, fonts, doc } = ctx;
+  ensureSpace(ctx, 70);
+  const { page, fonts } = ctx;
 
   drawHr(page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y, 0.75, C.black);
   ctx.y -= 16;
-
-  const colGap = 24;
-  const col1W = CONTENT_WIDTH * 0.58 - colGap / 2;
-  const col2X = MARGIN_X + col1W + colGap;
-  const startY = ctx.y;
-
-  // ── Col 1: Next Steps ────────────────────────────────────────────────
   drawSpacedText(page, "NEXT STEPS", {
-    x: MARGIN_X,
-    y: startY,
-    size: 7.5,
-    font: fonts.bold,
-    color: C.gray500,
-    characterSpacing: 1.4,
+    x: MARGIN_X, y: ctx.y, size: 7.5, font: fonts.bold, color: C.gray500, characterSpacing: 1.4,
   });
-  const stepsBody = safe(
+
+  const body = safe(
     "Submit this quote online or share this PDF with our team to receive formal pricing within 24 business hours. This is a quote request, not an invoice — pricing is subject to confirmation."
   );
-  const stepLines = wrapText(stepsBody, fonts.regular, 9, col1W);
-  stepLines.forEach((line, i) => {
+  const lines = wrapText(body, fonts.regular, 9, CONTENT_WIDTH);
+  lines.forEach((line, i) => {
     page.drawText(line, {
-      x: MARGIN_X,
-      y: startY - 14 - i * 13,
-      size: 9,
-      font: fonts.regular,
-      color: C.black,
+      x: MARGIN_X, y: ctx.y - 14 - i * 13, size: 9, font: fonts.regular, color: C.black,
     });
   });
-
-  // ── Col 2: Reach Us ──────────────────────────────────────────────────
-  drawSpacedText(page, "REACH US", {
-    x: col2X,
-    y: startY,
-    size: 7.5,
-    font: fonts.bold,
-    color: C.gray500,
-    characterSpacing: 1.4,
-  });
-
-  const phoneText = PHONE_DISPLAY;
-  const emailText = "info@aplustechsol.com";
-  const siteText = "aplustechsol.com";
-
-  drawLeftLink(
-    doc,
-    page,
-    fonts.bold,
-    phoneText,
-    col2X,
-    startY - 14,
-    10,
-    C.black,
-    PHONE_TEL
-  );
-  drawLeftLink(
-    doc,
-    page,
-    fonts.regular,
-    emailText,
-    col2X,
-    startY - 28,
-    9,
-    C.blue600,
-    "mailto:info@aplustechsol.com"
-  );
-  drawLeftLink(
-    doc,
-    page,
-    fonts.regular,
-    siteText,
-    col2X,
-    startY - 42,
-    9,
-    C.blue600,
-    "https://www.aplustechsol.com"
-  );
-
-  // Column divider
-  page.drawLine({
-    start: { x: col2X - colGap / 2, y: startY + 4 },
-    end: { x: col2X - colGap / 2, y: startY - 60 },
-    thickness: 0.4,
-    color: C.gray200,
-  });
-
-  const usedHeight = Math.max(14 + stepLines.length * 13, 60);
-  ctx.y = startY - usedHeight - 18;
-}
-
-function drawFooter(ctx: Ctx) {
-  ensureSpace(ctx, 50);
-  const { page, fonts } = ctx;
-
-  drawHr(page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y, 0.4, C.gray200);
-  ctx.y -= 14;
-
-  // Legal left
-  drawSpacedText(page, "CIN", {
-    x: MARGIN_X,
-    y: ctx.y,
-    size: 7,
-    font: fonts.bold,
-    color: C.gray500,
-    characterSpacing: 1,
-  });
-  page.drawText("U72900DL2020PTC374888", {
-    x: MARGIN_X + 22,
-    y: ctx.y,
-    size: 7.5,
-    font: fonts.regular,
-    color: C.gray500,
-  });
-  drawSpacedText(page, "GSTIN", {
-    x: MARGIN_X,
-    y: ctx.y - 11,
-    size: 7,
-    font: fonts.bold,
-    color: C.gray500,
-    characterSpacing: 1,
-  });
-  page.drawText("07AAUCA5631L1Z6", {
-    x: MARGIN_X + 32,
-    y: ctx.y - 11,
-    size: 7.5,
-    font: fonts.regular,
-    color: C.gray500,
-  });
-
-  // Copy right
-  const rightX = A4_WIDTH - MARGIN_X;
-  drawRightText(
-    page,
-    fonts.bold,
-    "Aplus Technology Solutions Pvt. Ltd.",
-    rightX,
-    ctx.y,
-    7.5,
-    C.gray600
-  );
-  drawRightText(
-    page,
-    fonts.regular,
-    safe("Commercial Display & Video Conferencing Supply · Pan-India"),
-    rightX,
-    ctx.y - 11,
-    7.5,
-    C.gray400
-  );
-  drawRightText(
-    page,
-    fonts.regular,
-    `© ${new Date().getFullYear()} All rights reserved.`,
-    rightX,
-    ctx.y - 22,
-    7.5,
-    C.gray400
-  );
+  ctx.y = ctx.y - 14 - lines.length * 13 - 16;
 }
 
 // ── helpers ────────────────────────────────────────────────────────────
@@ -655,29 +504,3 @@ function drawRightText(
   });
 }
 
-function drawLeftLink(
-  doc: Ctx["doc"],
-  page: Ctx["page"],
-  font: import("pdf-lib").PDFFont,
-  text: string,
-  x: number,
-  y: number,
-  size: number,
-  color: import("pdf-lib").RGB,
-  url: string
-) {
-  const width = font.widthOfTextAtSize(text, size);
-  page.drawText(text, { x, y, size, font, color });
-  page.drawLine({
-    start: { x, y: y - 1 },
-    end: { x: x + width, y: y - 1 },
-    thickness: 0.4,
-    color,
-  });
-  addLinkAnnotation(doc, page, url, {
-    x,
-    y: y - 2,
-    width,
-    height: size + 4,
-  });
-}
