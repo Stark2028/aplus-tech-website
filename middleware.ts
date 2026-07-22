@@ -24,9 +24,18 @@ const RESERVED_ROOTS = new Set([
   "api",
 ]);
 
-/** Permanent redirect helper (301 — preserves ranking equity). */
-function permanent(url: URL) {
-  return NextResponse.redirect(url, 301);
+/**
+ * Build a 301 to `pathname` on the same origin, carrying the original query
+ * string across (301 — preserves ranking equity).
+ *
+ * `new URL(pathname, req.url)` takes only the ORIGIN from the base — the search
+ * params are dropped — which silently destroyed utm_* and gclid on every legacy
+ * redirect. Attribution for paid traffic depends on this.
+ */
+export function redirectTo(req: NextRequest, pathname: string) {
+  const to = new URL(pathname, req.url);
+  to.search = req.nextUrl.search;
+  return NextResponse.redirect(to, 301);
 }
 
 export function middleware(req: NextRequest) {
@@ -45,7 +54,7 @@ export function middleware(req: NextRequest) {
   if (first === "products" && segments.length === 2) {
     const canonical = MERGED_PRODUCT_TO_CANONICAL[segments[1]];
     if (canonical) {
-      return permanent(new URL(`/products/${canonical}`, req.url));
+      return redirectTo(req, `/products/${canonical}`);
     }
   }
 
@@ -55,12 +64,12 @@ export function middleware(req: NextRequest) {
   // Old blog → new blogs (root and posts).
   if (first === "blog") {
     const rest = segments.slice(1).join("/");
-    return permanent(new URL(rest ? `/blogs/${rest}` : "/blogs", req.url));
+    return redirectTo(req, rest ? `/blogs/${rest}` : "/blogs");
   }
 
   // Single-segment static / role-root pages.
   if (segments.length === 1 && OLD_EXACT_PATH_TO_NEW[first]) {
-    return permanent(new URL(OLD_EXACT_PATH_TO_NEW[first], req.url));
+    return redirectTo(req, OLD_EXACT_PATH_TO_NEW[first]);
   }
 
   // Any old product page — matched on the LAST segment so every prefix
@@ -68,12 +77,12 @@ export function middleware(req: NextRequest) {
   const last = segments[segments.length - 1];
   const productId = OLD_PRODUCT_SLUG_TO_ID[last];
   if (productId) {
-    return permanent(new URL(`/products/${productId}`, req.url));
+    return redirectTo(req, `/products/${productId}`);
   }
 
   // Old category-root landing page → new category page.
   if (segments.length === 1 && OLD_CATEGORY_ROOT_TO_ID[first]) {
-    return permanent(new URL(`/categories/${OLD_CATEGORY_ROOT_TO_ID[first]}`, req.url));
+    return redirectTo(req, `/categories/${OLD_CATEGORY_ROOT_TO_ID[first]}`);
   }
 
   return NextResponse.next();
