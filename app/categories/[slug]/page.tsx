@@ -55,13 +55,14 @@ export async function generateMetadata({
         url,
         title: "Education | Aplus Technology Solutions",
         description: category.description,
-        images: [{ url: `/categories/${slug}/opengraph-image`, width: 1200, height: 630, alt: category.navLabel }],
+        // OG image is supplied by opengraph-image.tsx (file convention).
+        // generateImageMetadata mounts it at .../opengraph-image/og, so any
+        // hardcoded URL here 404s — let Next emit the correct, hashed one.
       },
       twitter: {
         card: "summary_large_image",
         title: "Education | Aplus Technology Solutions",
         description: category.description,
-        images: [`/categories/${slug}/opengraph-image`],
       },
     };
   }
@@ -97,13 +98,14 @@ export async function generateMetadata({
       url,
       title: `${category.navLabel} | Aplus Technology Solutions`,
       description: category.description,
-      images: [{ url: `/categories/${slug}/opengraph-image`, width: 1200, height: 630, alt: category.navLabel }],
+      // OG image is supplied by opengraph-image.tsx (file convention).
+      // generateImageMetadata mounts it at .../opengraph-image/og, so any
+      // hardcoded URL here 404s — let Next emit the correct, hashed one.
     },
     twitter: {
       card: "summary_large_image",
       title: `${category.navLabel} | Aplus Technology Solutions`,
       description: category.description,
-      images: [`/categories/${slug}/opengraph-image`],
     },
   };
 }
