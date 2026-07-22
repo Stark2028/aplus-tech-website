@@ -45,13 +45,32 @@ export function useVisitorHeartbeat(chatOpen: boolean): void {
     let cancelled = false;
     let timer: ReturnType<typeof setInterval> | undefined;
     let onVisibility: (() => void) | undefined;
+    // The uid the current timer is beating for. A plain `timer` guard pinned the
+    // heartbeat to the FIRST uid: on the resume A→B transition, beat() kept
+    // writing the closed-over visitors/{A} doc, which the rules deny for B
+    // (auth.uid must equal visitorId), and the .catch swallowed every failure —
+    // so an actively-typing customer showed as "left" in the console.
+    let beatingUid: string | null = null;
+
+    const teardownBeat = () => {
+      if (timer) clearInterval(timer);
+      if (onVisibility) document.removeEventListener("visibilitychange", onVisibility);
+      timer = undefined;
+      onVisibility = undefined;
+      beatingUid = null;
+    };
 
     const unsubscribe = onAuthStateChanged(getAuthClient(), (user) => {
-      // No session ⇒ this visitor has never opened the chat. Stay silent.
-      // The `timer` guard makes this idempotent against onAuthStateChanged
-      // re-firing (e.g. token refresh) for a session that's already beating.
-      if (!user || cancelled || timer) return;
+      if (cancelled) return;
+      // Identity changed (or signed out): stop beating for the stale uid before
+      // arming the new one.
+      if (beatingUid && user?.uid !== beatingUid) teardownBeat();
+      // No session ⇒ this visitor has never opened the chat (or just signed
+      // out). Stay silent. Idempotent against onAuthStateChanged re-firing
+      // (e.g. token refresh) for a uid we're already beating.
+      if (!user || beatingUid === user.uid) return;
 
+      beatingUid = user.uid;
       const visitorRef = doc(getDb(), COL.visitors, user.uid);
       let seeded = false;
 
@@ -82,8 +101,7 @@ export function useVisitorHeartbeat(chatOpen: boolean): void {
     return () => {
       cancelled = true;
       unsubscribe();
-      if (timer) clearInterval(timer);
-      if (onVisibility) document.removeEventListener("visibilitychange", onVisibility);
+      teardownBeat();
     };
   }, []);
 }
