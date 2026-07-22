@@ -14,15 +14,28 @@ import {
   A4_WIDTH,
   C,
   CONTENT_WIDTH,
-  MARGIN_BOTTOM,
-  MARGIN_TOP,
   MARGIN_X,
   addLinkAnnotation,
   drawHr,
   drawSpacedText,
   safe,
+  widthOfSpacedText,
   wrapText,
 } from "./helpers";
+import {
+  BAND_H,
+  CONT_TOP,
+  FOOT_FLOOR,
+  drawContactBand,
+  drawFootersAndLegal,
+  loadLogo,
+  paintPageChrome,
+} from "./chrome";
+
+type PDFDocument = import("pdf-lib").PDFDocument;
+type PDFPage = import("pdf-lib").PDFPage;
+type PDFFont = import("pdf-lib").PDFFont;
+type PDFImage = import("pdf-lib").PDFImage;
 
 interface QuoteParams {
   items: QuoteItem[];
@@ -32,13 +45,12 @@ interface QuoteParams {
 }
 
 interface Ctx {
-  doc: import("pdf-lib").PDFDocument;
-  page: import("pdf-lib").PDFPage;
-  fonts: {
-    regular: import("pdf-lib").PDFFont;
-    bold: import("pdf-lib").PDFFont;
-  };
+  doc: PDFDocument;
+  page: PDFPage;
+  pages: PDFPage[];
+  fonts: { regular: PDFFont; bold: PDFFont };
   y: number;
+  logo: PDFImage | null;
   params: QuoteParams;
 }
 
@@ -55,140 +67,67 @@ export async function buildQuotePdf(params: QuoteParams): Promise<Uint8Array> {
   const regular = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
 
-  const page = doc.addPage([A4_WIDTH, A4_HEIGHT]);
+  const logo = await loadLogo(doc);
 
   const ctx: Ctx = {
     doc,
-    page,
+    page: undefined as unknown as PDFPage,
+    pages: [],
     fonts: { regular, bold },
-    y: A4_HEIGHT - MARGIN_TOP,
+    y: 0,
+    logo,
     params,
   };
 
-  drawHeader(ctx);
+  addFirstPage(ctx);
   drawTitleBlock(ctx);
   drawItemsSection(ctx);
   drawPricingNote(ctx);
-  drawInfoGrid(ctx);
-  drawFooter(ctx);
+  drawNextSteps(ctx);
+  if (ctx.y < FOOT_FLOOR + BAND_H + 10) addContinuationPage(ctx);
+  drawContactBand(ctx);
+  drawFootersAndLegal(ctx);
 
   return doc.save();
 }
 
 // ── Sections ───────────────────────────────────────────────────────────
 
-function drawHeader(ctx: Ctx) {
+function addFirstPage(ctx: Ctx) {
+  ctx.page = ctx.doc.addPage([A4_WIDTH, A4_HEIGHT]);
+  ctx.pages.push(ctx.page);
+  paintPageChrome(ctx);
   const { page, fonts, params } = ctx;
-  const yTop = ctx.y;
 
-  // Brand block (left)
-  drawSpacedText(page, safe("APLUS TECHNOLOGY SOLUTIONS"), {
-    x: MARGIN_X,
-    y: yTop,
-    size: 10,
-    font: fonts.bold,
-    color: C.black,
-    characterSpacing: 1.4,
+  const textX = ctx.logo ? MARGIN_X + 40 : MARGIN_X;
+  if (ctx.logo) {
+    page.drawImage(ctx.logo, { x: MARGIN_X, y: A4_HEIGHT - 48, width: 30, height: 30 });
+  }
+  drawSpacedText(page, "APLUS TECHNOLOGY SOLUTIONS", {
+    x: textX, y: A4_HEIGHT - 30, size: 11, font: fonts.bold, color: C.black, characterSpacing: 1.6,
   });
-  const addrLines = [
-    "Office No. 855, 8th Floor, Supernova Astralis",
-    "Sector-94, Noida, Uttar Pradesh 201301",
-  ];
-  addrLines.forEach((line, i) => {
-    page.drawText(safe(line), {
-      x: MARGIN_X,
-      y: yTop - 14 - i * 11,
-      size: 8,
-      font: fonts.regular,
-      color: C.gray500,
-    });
+  page.drawText(safe("Commercial Display & Video Conferencing Supply · Pan-India"), {
+    x: textX, y: A4_HEIGHT - 43, size: 7.5, font: fonts.regular, color: C.gray500,
   });
 
-  // Phone + email clickable
-  const phone = PHONE_DISPLAY;
-  const email = "info@aplustechsol.com";
-  const sep = " • ";
-  const fontSize = 8;
-
-  const phoneW = fonts.regular.widthOfTextAtSize(phone, fontSize);
-  const sepW = fonts.regular.widthOfTextAtSize(sep, fontSize);
-  const emailW = fonts.regular.widthOfTextAtSize(email, fontSize);
-  const lineY = yTop - 14 - 2 * 11;
-
-  page.drawText(phone, {
-    x: MARGIN_X,
-    y: lineY,
-    size: fontSize,
-    font: fonts.regular,
-    color: C.gray700,
-  });
-  page.drawLine({
-    start: { x: MARGIN_X, y: lineY - 1 },
-    end: { x: MARGIN_X + phoneW, y: lineY - 1 },
-    thickness: 0.4,
-    color: C.gray400,
-  });
-  addLinkAnnotation(ctx.doc, page, PHONE_TEL, {
-    x: MARGIN_X,
-    y: lineY - 2,
-    width: phoneW,
-    height: fontSize + 4,
-  });
-
-  page.drawText(sep, {
-    x: MARGIN_X + phoneW,
-    y: lineY,
-    size: fontSize,
-    font: fonts.regular,
-    color: C.gray400,
-  });
-
-  const emailX = MARGIN_X + phoneW + sepW;
-  page.drawText(email, {
-    x: emailX,
-    y: lineY,
-    size: fontSize,
-    font: fonts.regular,
-    color: C.gray700,
-  });
-  page.drawLine({
-    start: { x: emailX, y: lineY - 1 },
-    end: { x: emailX + emailW, y: lineY - 1 },
-    thickness: 0.4,
-    color: C.gray400,
-  });
-  addLinkAnnotation(ctx.doc, page, "mailto:info@aplustechsol.com", {
-    x: emailX,
-    y: lineY - 2,
-    width: emailW,
-    height: fontSize + 4,
-  });
-
-  // Meta (right)
   const rightX = A4_WIDTH - MARGIN_X;
-  drawRightText(page, fonts.bold, "QUOTE REQUEST", rightX, yTop, 8, C.blue600, 1.8);
-  drawRightText(
-    page,
-    fonts.bold,
-    safe(params.quoteRef),
-    rightX,
-    yTop - 16,
-    12,
-    C.black
-  );
-  drawRightText(
-    page,
-    fonts.regular,
-    safe(`Issued ${params.quoteDate}`),
-    rightX,
-    yTop - 32,
-    8,
-    C.gray500
-  );
+  const eyebrowW = widthOfSpacedText("QUOTE REQUEST", fonts.bold, 8.5, 1.6);
+  drawSpacedText(page, "QUOTE REQUEST", {
+    x: rightX - eyebrowW, y: A4_HEIGHT - 30, size: 8.5, font: fonts.bold, color: C.blue600, characterSpacing: 1.6,
+  });
+  const refTxt = safe(params.quoteRef);
+  page.drawText(refTxt, {
+    x: rightX - fonts.bold.widthOfTextAtSize(refTxt, 12),
+    y: A4_HEIGHT - 46, size: 12, font: fonts.bold, color: C.black,
+  });
+  const issued = safe(`Issued ${params.quoteDate}`);
+  page.drawText(issued, {
+    x: rightX - fonts.regular.widthOfTextAtSize(issued, 7.5),
+    y: A4_HEIGHT - 58, size: 7.5, font: fonts.regular, color: C.gray500,
+  });
 
-  // Rule
-  drawHr(page, MARGIN_X, A4_WIDTH - MARGIN_X, yTop - 50, 0.75, C.black);
-  ctx.y = yTop - 70;
+  drawHr(page, MARGIN_X, rightX, A4_HEIGHT - 66, 1.5, C.black);
+  ctx.y = A4_HEIGHT - 84;
 }
 
 function drawTitleBlock(ctx: Ctx) {
@@ -368,8 +307,8 @@ function drawItemRow(ctx: Ctx, item: QuoteItem, idx: number) {
   const rowHeight = Math.max(productHeight, specHeight) + 14;
 
   // Check page space, redraw header on new page
-  if (ctx.y - rowHeight < MARGIN_BOTTOM + 70) {
-    addNewPage(ctx);
+  if (ctx.y - rowHeight < FOOT_FLOOR) {
+    addContinuationPage(ctx);
     sectionHeader(ctx, "Items Requested (continued)");
     drawItemsHeader(ctx);
   }
@@ -487,6 +426,12 @@ function drawPricingNote(ctx: Ctx) {
   });
 
   ctx.y = startY - boxH - 22;
+}
+
+function drawNextSteps(ctx: Ctx) {
+  // Filled in Task 4. For now, retain the existing info grid so the document
+  // stays complete while the chrome lands incrementally.
+  drawInfoGrid(ctx);
 }
 
 function drawInfoGrid(ctx: Ctx) {
@@ -657,14 +602,30 @@ function drawFooter(ctx: Ctx) {
 // ── helpers ────────────────────────────────────────────────────────────
 
 function ensureSpace(ctx: Ctx, needed: number) {
-  if (ctx.y - needed < MARGIN_BOTTOM + 40) {
-    addNewPage(ctx);
-  }
+  if (ctx.y - needed < FOOT_FLOOR) addContinuationPage(ctx);
 }
 
-function addNewPage(ctx: Ctx) {
+function addContinuationPage(ctx: Ctx) {
   ctx.page = ctx.doc.addPage([A4_WIDTH, A4_HEIGHT]);
-  ctx.y = A4_HEIGHT - MARGIN_TOP;
+  ctx.pages.push(ctx.page);
+  paintPageChrome(ctx);
+  const { page, fonts, params } = ctx;
+
+  const textX = ctx.logo ? MARGIN_X + 22 : MARGIN_X;
+  if (ctx.logo) {
+    page.drawImage(ctx.logo, { x: MARGIN_X, y: A4_HEIGHT - 38, width: 16, height: 16 });
+  }
+  drawSpacedText(page, "APLUS TECHNOLOGY SOLUTIONS", {
+    x: textX, y: A4_HEIGHT - 33, size: 8.5, font: fonts.bold, color: C.black, characterSpacing: 1.6,
+  });
+  const rightTxt = safe(`QUOTE REQUEST · ${params.quoteRef}`);
+  const rightX = A4_WIDTH - MARGIN_X;
+  page.drawText(rightTxt, {
+    x: rightX - fonts.regular.widthOfTextAtSize(rightTxt, 7.5),
+    y: A4_HEIGHT - 33, size: 7.5, font: fonts.regular, color: C.gray500,
+  });
+  drawHr(page, MARGIN_X, rightX, A4_HEIGHT - 46, 0.5, C.gray200);
+  ctx.y = CONT_TOP;
 }
 
 function drawRightText(
