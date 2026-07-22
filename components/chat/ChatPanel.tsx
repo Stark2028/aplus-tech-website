@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { X, MessageCircle, Phone, ChevronRight } from "lucide-react";
@@ -59,6 +59,7 @@ export default function ChatPanel({ teamOnline }: { teamOnline: boolean }) {
   // effect that calls setState synchronously — doesn't trip
   // react-hooks/set-state-in-effect (ERROR-level in this repo).
   const [mounted] = useState(() => typeof document !== "undefined");
+  const panelRef = useRef<HTMLDivElement>(null);
 
   // Escape closes — a fixed overlay with no keyboard exit is a trap.
   useEffect(() => {
@@ -70,10 +71,23 @@ export default function ChatPanel({ teamOnline }: { teamOnline: boolean }) {
     return () => document.removeEventListener("keydown", onKey);
   }, [isOpen, closeChat]);
 
+  // Move focus into the dialog on open and return it to the invoker on close.
+  // A non-modal dialog (aria-modal="false") still owes keyboard users an
+  // explicit focus entry and return — without it, opening leaves focus on the
+  // launcher behind the panel and closing drops it to <body>.
+  useEffect(() => {
+    if (!isOpen) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    panelRef.current?.focus();
+    return () => previouslyFocused?.focus?.();
+  }, [isOpen]);
+
   if (!mounted || !isOpen) return null;
 
   const panel = (
     <div
+      ref={panelRef}
+      tabIndex={-1}
       role="dialog"
       aria-modal="false"
       aria-label="Chat with Aplus Technology Solutions"

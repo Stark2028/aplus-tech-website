@@ -46,7 +46,13 @@ export default function ChatLauncher() {
       {/* md:flex — the bubble is desktop-only; mobile uses the sticky bar. */}
       <button
         onClick={toggleChat}
-        aria-label={isOpen ? "Close chat" : "Open chat"}
+        aria-label={
+          isOpen
+            ? "Close chat"
+            : unread > 0
+              ? `Open chat, ${unread} new ${unread === 1 ? "message" : "messages"}`
+              : "Open chat"
+        }
         aria-expanded={isOpen}
         className="hidden md:flex fixed bottom-5 right-5 z-50 w-14 h-14 bg-blue-600 hover:bg-blue-700 rounded-full items-center justify-center shadow-xl shadow-blue-600/40 transition-all hover:scale-110"
       >

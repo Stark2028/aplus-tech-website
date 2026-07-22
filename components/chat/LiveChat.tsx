@@ -186,7 +186,12 @@ export default function LiveChat({ onWhatsApp }: { onWhatsApp: () => void }) {
   // ── live thread ──────────────────────────────────────────────────────────
   return (
     <>
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+      <div
+        role="log"
+        aria-live="polite"
+        aria-relevant="additions"
+        className="flex-1 overflow-y-auto p-4 space-y-3"
+      >
         {messages.map((m) => {
           if (m.sender === "system") {
             return (
