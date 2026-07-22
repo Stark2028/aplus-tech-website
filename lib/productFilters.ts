@@ -43,22 +43,35 @@ export const SIZE_BUCKETS = [
   { label: '98"+',      min: 98, max: Infinity },
 ];
 
+// A brightness figure: a number immediately followed by a nit unit — "nit" or
+// "cd/m²" (with or without the ², slash, or spaces). Anchoring on the unit is
+// what keeps parenthesised inch diagonals ("(13\")", "(43\", 55\")") out of the
+// value set — those digits carry no unit token.
+const NIT_VALUE = /([\d,]+)\s*(?:nit|cd\s*\/?\s*m)/gi;
+
 /**
- * Parse a nit value from a brightness string, or null when it carries no number
- * (e.g. "HDR", "Standard"). Null products are excluded from numeric brightness
- * bands rather than being treated as 0 and bucketed into "Under 350 nit".
+ * Parse a nit value from a brightness string, or null when it carries no
+ * brightness figure (e.g. "HDR", "Standard", a VC "113° FOV"). Null products
+ * are excluded from numeric brightness bands rather than being treated as 0 and
+ * bucketed into "Under 350 nit".
+ *
+ * Recognises both "nit" and "cd/m²" (the same unit). For a multi-value spec
+ * like "500 nit (13\") / 250 nit (24\")" it averages the min and max nit
+ * figures — the inch diagonals in parentheses are ignored because they carry no
+ * unit token, so a 500-nit panel is no longer mis-filed by averaging in "24".
  */
-function parseBrightnessNit(brightness: string): number | null {
-  // Only strings that actually denote nits participate in nit bands. A VC
-  // "113° FOV" / "CollabOS" / "PoE touch controller" must NOT be parsed as a
-  // brightness (its leading number is a field-of-view angle, not nits).
-  const isNitLike = /nit/i.test(brightness) || /^\s*[\d,]+\s*$/.test(brightness);
-  if (!isNitLike) return null;
-  const cleaned = brightness.replace(/,/g, "");
-  const nums = cleaned.match(/\d+/g);
-  if (!nums) return null;
-  if (nums.length === 1) return parseInt(nums[0]);
-  return Math.round((parseInt(nums[0]) + parseInt(nums[nums.length - 1])) / 2);
+export function parseBrightnessNit(brightness: string | undefined): number | null {
+  if (!brightness) return null;
+  const values = [...brightness.matchAll(NIT_VALUE)].map((m) =>
+    Number(m[1].replace(/,/g, ""))
+  );
+  if (values.length === 0) {
+    // A bare number with no unit is still a nit figure (legacy data shape).
+    const bare = /^\s*([\d,]+)\s*$/.exec(brightness);
+    return bare ? Number(bare[1].replace(/,/g, "")) : null;
+  }
+  if (values.length === 1) return values[0];
+  return Math.round((Math.min(...values) + Math.max(...values)) / 2);
 }
 
 function parseMaxSize(screenSizes: string[]): number {
