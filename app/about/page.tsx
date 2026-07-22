@@ -121,7 +121,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <main className="bg-white bg-waves">
+    <div className="bg-white bg-waves">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
@@ -396,6 +396,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-    </main>
+    </div>
   );
 }

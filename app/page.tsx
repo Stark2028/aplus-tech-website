@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white">
       <HomeJsonLd />
       <HeroSection />
       <CategoryGrid />
@@ -41,6 +41,6 @@ export default function Home() {
       <WhyChooseUs />
       <FAQSection />
       <FinalCTA />
-    </main>
+    </div>
   );
 }

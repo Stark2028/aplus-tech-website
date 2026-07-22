@@ -151,7 +151,7 @@ export default async function CategoryPage({
   ];
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
@@ -378,6 +378,6 @@ export default async function CategoryPage({
           </div>
         </section>
       )}
-    </main>
+    </div>
   );
 }

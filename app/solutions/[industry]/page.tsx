@@ -94,7 +94,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
     ];
 
     return (
-        <main className="bg-white">
+        <div className="bg-white">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
@@ -165,7 +165,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
                                 Samsung displays used in {solution.title.toLowerCase()}
                             </h2>
                         </div>
-                        <MobileProductScroller gridCols="md:grid-cols-2 lg:grid-cols-4" autoPlay={true} autoPlayInterval={3800} initialDelay={900}>
+                        <MobileProductScroller label="Recommended displays carousel" gridCols="md:grid-cols-2 lg:grid-cols-4" autoPlay={true} autoPlayInterval={3800} initialDelay={900}>
                             {combosForIndustry.map((combo) => {
                                 const cat = getCategoryById(combo.category);
                                 if (!cat) return null;
@@ -224,6 +224,6 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
                     </div>
                 </div>
             </section>
-        </main>
+        </div>
     );
 }

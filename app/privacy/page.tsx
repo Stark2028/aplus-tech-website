@@ -99,7 +99,7 @@ To exercise any of these rights, contact us at info@aplustechsol.com`,
 
 export default function PrivacyPage() {
   return (
-    <main className="bg-gray-50 min-h-screen py-16">
+    <div className="bg-gray-50 min-h-screen py-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -163,6 +163,6 @@ export default function PrivacyPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

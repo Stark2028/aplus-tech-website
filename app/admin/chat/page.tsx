@@ -103,7 +103,7 @@ function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise
           />
         </aside>
 
-        <main className={`${selected ? "block" : "hidden md:block"} flex-1 min-w-0`}>
+        <div className={`${selected ? "block" : "hidden md:block"} flex-1 min-w-0`}>
           {selected ? (
             <ChatThread conversation={selected} onBack={() => setSelectedId(null)} />
           ) : (
@@ -111,7 +111,7 @@ function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise
               Select a conversation.
             </div>
           )}
-        </main>
+        </div>
       </div>
     </div>
   );

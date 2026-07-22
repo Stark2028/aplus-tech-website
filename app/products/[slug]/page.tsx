@@ -136,7 +136,7 @@ export default async function ProductPage({
   ];
 
   return (
-    <main className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
@@ -571,7 +571,7 @@ export default async function ProductPage({
                 />
               </Link>
             </div>
-            <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-4">
+            <MobileProductScroller label="Related products carousel" gridCols="sm:grid-cols-2 lg:grid-cols-4">
               {related.map((rel) => (
                 <ProductCard key={rel.id} product={rel} />
               ))}
@@ -613,6 +613,6 @@ export default async function ProductPage({
         {/* ── RECENTLY VIEWED ──────────────────────────────────────── */}
         <RecentlyViewed currentProductId={product.id} />
       </div>
-    </main>
+    </div>
   );
 }

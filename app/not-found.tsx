@@ -42,7 +42,7 @@ export default function NotFound() {
     window.dispatchEvent(new CustomEvent("aplus:search:open"));
 
   return (
-    <main className="min-h-[90vh] bg-gray-50">
+    <div className="min-h-[90vh] bg-gray-50">
       {/* Hero */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
@@ -155,6 +155,6 @@ export default function NotFound() {
         </div>
       </div>
       )}
-    </main>
+    </div>
   );
 }

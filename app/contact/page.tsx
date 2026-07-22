@@ -152,7 +152,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
 
       {/* ── PAGE HEADER ──────────────────────────────────────────────── */}
       <div style={{ background: "linear-gradient(135deg, #0f1b3d 0%, #1e3a6e 40%, #2563eb 100%)" }} className="py-20 md:py-28 relative overflow-hidden">
@@ -544,6 +544,6 @@ export default function ContactPage() {
         </div>
       </div>
 
-    </main>
+    </div>
   );
 }
