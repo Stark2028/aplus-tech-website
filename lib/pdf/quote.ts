@@ -122,8 +122,7 @@ function addFirstPage(ctx: Ctx) {
     y: A4_HEIGHT - 58, size: 7.5, font: fonts.regular, color: C.gray500,
   });
 
-  drawHr(page, MARGIN_X, rightX, A4_HEIGHT - 66, 1.5, C.black);
-  ctx.y = A4_HEIGHT - 84;
+  ctx.y = A4_HEIGHT - 82;
 }
 
 function drawTitleBlock(ctx: Ctx) {
