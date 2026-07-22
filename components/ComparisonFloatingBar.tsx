@@ -72,9 +72,10 @@ export default function ComparisonFloatingBar() {
                             </span>
                             <button
                                 onClick={() => removeFromCompare(p.id)}
+                                aria-label={`Remove ${p.name} from comparison`}
                                 className="p-1 hover:bg-gray-200 rounded-full text-gray-400 hover:text-red-500 transition-colors"
                             >
-                                <X size={12} />
+                                <X size={12} aria-hidden="true" />
                             </button>
                         </div>
                     ))}
