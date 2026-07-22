@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 export default function ProductFinderPage() {
   return (
     <div className="min-h-screen bg-white">
-<ProductFinderSection />
+      <ProductFinderSection headingLevel="h1" />
     </div>
   );
 }

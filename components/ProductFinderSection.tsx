@@ -67,7 +67,15 @@ const DISPLAY_TYPES = DISPLAY_TYPE_DATA.map((d) => ({ ...d, Icon: DISPLAY_TYPE_I
 
 type ScoredProduct = { product: Product; score: number; sizeFit: "exact" | "near" | "any" };
 
-export default function ProductFinderSection() {
+export default function ProductFinderSection({
+  headingLevel = "h2",
+}: {
+  /** Render the section title as an <h1> when this section owns the page
+   *  (e.g. /product-finder), or the default <h2> when embedded below a page
+   *  <h1>. Standalone the page had no <h1> at all — an a11y + SEO gap. */
+  headingLevel?: "h1" | "h2";
+} = {}) {
+  const Heading = headingLevel;
   const [step, setStep] = useState<Step>(1);
   const [industry, setIndustry] = useState<IndustryId | "">("");
   const [displayType, setDisplayType] = useState("");
@@ -261,9 +269,9 @@ export default function ProductFinderSection() {
           <span className="inline-block text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-1.5 rounded-full mb-4">
             Product Finder
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+          <Heading className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
             Not Sure Which Display to Choose?
-          </h2>
+          </Heading>
           <p className="text-gray-500 text-base max-w-xl mx-auto">
             Answer 3 quick questions and we&apos;ll match the right Samsung display to your needs.
           </p>
