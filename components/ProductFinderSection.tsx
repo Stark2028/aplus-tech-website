@@ -22,7 +22,8 @@ import {
   StoreIcon,
   HotelIcon,
 } from "@/components/icons";
-import { products, Product } from "@/data/products";
+import { Product } from "@/data/products";
+import { showcaseProducts } from "@/lib/showcaseProducts";
 import { useQuote } from "@/context/QuoteContext";
 import { trackEvent } from "@/lib/analytics";
 import {
@@ -93,7 +94,7 @@ export default function ProductFinderSection() {
     };
 
     // Primary: must match category exactly; size matters if chosen.
-    const exact = products
+    const exact = showcaseProducts
       .filter((p) => p.category === displayType && inSize(p))
       .map<ScoredProduct>((p) => ({ product: p, score: scoreFor(p), sizeFit: sizeConfig ? "exact" : "any" }))
       .sort((a, b) => b.score - a.score)
@@ -104,7 +105,7 @@ export default function ProductFinderSection() {
     }
 
     // Fallback 1: same category, ignore size — "different size, same type"
-    const sameCategoryDifferentSize = products
+    const sameCategoryDifferentSize = showcaseProducts
       .filter((p) => p.category === displayType)
       .map<ScoredProduct>((p) => ({ product: p, score: scoreFor(p), sizeFit: "near" }))
       .sort((a, b) => b.score - a.score)
@@ -120,7 +121,7 @@ export default function ProductFinderSection() {
 
     // Fallback 2: industry-recommended alternatives (different category)
     if (industry && industry !== "any") {
-      const ranked = products
+      const ranked = showcaseProducts
         .filter((p) => (INDUSTRY_CATEGORY_SCORE[industry][p.category] ?? 0) > 0)
         .map<ScoredProduct>((p) => ({ product: p, score: scoreFor(p), sizeFit: "any" }))
         .sort((a, b) => b.score - a.score)

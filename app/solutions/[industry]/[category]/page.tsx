@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, ChevronRight, Phone, Check } from "lucide-react";
 import type { Metadata } from "next";
 import { solutions } from "@/data/solutions";
-import { products } from "@/data/products";
+import { showcaseProducts } from "@/lib/showcaseProducts";
 import { getCategoryById, type CategorySlug } from "@/data/categories";
 import { byLatestThenPopularity } from "@/lib/productSort";
 import { useCaseCombos, getCombo } from "@/data/useCaseCombos";
@@ -91,7 +91,7 @@ export default async function IndustryCategoryPage({
   }
 
   // Products matching BOTH this category AND one of the solution's recommended series.
-  const matchingProducts = products.filter(
+  const matchingProducts = showcaseProducts.filter(
     (p) =>
       p.category === categoryObj.name &&
       solution.recommendedSeries.some((series) => p.series.includes(series))
@@ -101,7 +101,7 @@ export default async function IndustryCategoryPage({
   const featuredProducts =
     matchingProducts.length > 0
       ? matchingProducts.slice(0, 8)
-      : products.filter((p) => p.category === categoryObj.name).sort(byLatestThenPopularity).slice(0, 4);
+      : showcaseProducts.filter((p) => p.category === categoryObj.name).sort(byLatestThenPopularity).slice(0, 4);
 
   const showingFallback = matchingProducts.length === 0;
   const accentGradient = GRADIENTS[industry] || "from-blue-900 via-blue-950 to-slate-900";

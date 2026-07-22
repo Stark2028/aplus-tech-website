@@ -208,7 +208,6 @@ export default function Footer() {
                   <MapPinIcon size={14} className="text-slate-300" accentClassName="text-blue-400" />
                 </div>
                 <div className="text-sm leading-relaxed text-slate-400">
-                  Office No. 855, 8th Floor,<br />
                   Supernova Astralis, Sector-94,<br />
                   Noida, UP — 201301
                 </div>

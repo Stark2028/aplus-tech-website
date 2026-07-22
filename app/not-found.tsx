@@ -5,11 +5,11 @@ import Image from "next/image";
 import { ArrowLeft, Search, Phone, ArrowRight } from "lucide-react";
 import { MonitorIcon } from "@/components/icons";
 import { useIsMac } from "@/hooks/usePlatform";
-import { products } from "@/data/products";
+import { showcaseProducts } from "@/lib/showcaseProducts";
 import { productCategories } from "@/data/categories";
 import { PHONE_TEL } from "@/lib/contact";
 
-const POPULAR = products.slice(0, 4);
+const POPULAR = showcaseProducts.slice(0, 4);
 
 export default function NotFound() {
   const isMac = useIsMac();

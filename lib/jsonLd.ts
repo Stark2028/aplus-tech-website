@@ -40,7 +40,7 @@ export function organizationLd() {
     email: "info@aplustechsol.com",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Office No. 855, 8th Floor, Supernova Astralis, Sector-94",
+      streetAddress: "Supernova Astralis, Sector-94",
       addressLocality: "Noida",
       addressRegion: "Uttar Pradesh",
       postalCode: "201301",

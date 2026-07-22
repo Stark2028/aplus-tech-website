@@ -97,14 +97,16 @@
   85% { opacity: 1; }
   to { opacity: 0; transform: translate(3.4rem, -50%); }
 }
+/* Mobile stacks the board above the clicker, so the answer packet flies
+   UPWARD (from the clicker at the bottom to the board at the top). */
 @keyframes edu-sim-pkt-y {
   from { opacity: 0; transform: translate(-50%, 0); }
   15% { opacity: 1; }
   85% { opacity: 1; }
-  to { opacity: 0; transform: translate(-50%, 2.6rem); }
+  to { opacity: 0; transform: translate(-50%, -2.6rem); }
 }
 @media (max-width: 1023.98px) {
-  .edu-sim-flight i { left: 50%; top: 0; }
+  .edu-sim-flight i { left: 50%; top: auto; bottom: 0; }
   .edu-sim-flight.is-tx i { animation-name: edu-sim-pkt-y; }
 }
 

@@ -238,7 +238,7 @@ export default function AboutPage() {
                       { k: "Certification", v: "Authorized Samsung B2B Partner" },
                       { k: "Quality System", v: "ISO 9001:2015 Certified" },
                       { k: "Coverage", v: "Pan-India · 50+ cities" },
-                      { k: "Support", v: "24 / 7 Technical Response" },
+                      { k: "Support", v: "Dedicated Technical Support" },
                       { k: "Founded", v: "2020 · India" },
                       { k: "CIN", v: "U72900DL2020PTC374888" },
                       { k: "GSTIN", v: "07AAUCA5631L1Z6" },

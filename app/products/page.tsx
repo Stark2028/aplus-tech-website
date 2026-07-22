@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { products } from "@/data/products";
+import { showcaseProducts } from "@/lib/showcaseProducts";
 import { categoriesWithProducts } from "@/lib/nonEmptyCategories";
 import ProductsCategoryNav from "@/components/ProductsCategoryNav";
 import ProductsClientShell from "@/components/ProductsClientShell";
@@ -48,7 +48,7 @@ export default function ProductsListingPage() {
       <ProductsCategoryNav />
 
       <ProductsClientShell
-        products={products.filter((p) => !p.hideFromAllProducts)}
+        products={showcaseProducts}
         productCategories={categoriesWithProducts}
       />
     </div>

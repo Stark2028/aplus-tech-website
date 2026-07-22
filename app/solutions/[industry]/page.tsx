@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, ChevronRight, Phone } from "lucide-react";
 import { solutions } from "@/data/solutions";
-import { products } from "@/data/products";
+import { showcaseProducts } from "@/lib/showcaseProducts";
 import { getCategoryById } from "@/data/categories";
 import { byLatestThenPopularity } from "@/lib/productSort";
 import { useCaseCombos } from "@/data/useCaseCombos";
@@ -76,7 +76,7 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
         notFound();
     }
 
-    const recommendedProducts = products.filter((p) =>
+    const recommendedProducts = showcaseProducts.filter((p) =>
         solution.recommendedSeries.some((series) => p.series.includes(series))
     ).sort(byLatestThenPopularity);
 

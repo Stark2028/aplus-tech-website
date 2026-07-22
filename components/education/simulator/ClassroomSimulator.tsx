@@ -143,34 +143,39 @@ export default function ClassroomSimulator() {
             transition={{ duration: 0.28 }}
             className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_4.5rem_minmax(0,7fr)] items-stretch"
           >
-            <div className="flex flex-col items-center justify-center">
+            {/* On mobile the board (the question) reads first, then the flight
+                connector, then the clicker — natural quiz order. On lg+ the
+                grid places them left-to-right so `order` is a no-op. */}
+            <div className="order-3 lg:order-0 flex flex-col items-center justify-center">
               <p className="edu-mono text-[11px] font-bold uppercase tracking-wider text-emerald-400/70 mb-4">
                 Your clicker
               </p>
               <ClickerDevice phase={phase} selected={selected} onPick={pick} onSubmit={submit} onRestart={restart} />
             </div>
             <div
-              className={`edu-sim-flight h-12 lg:h-auto ${phase === "transmitting" ? "is-tx" : ""}`}
+              className={`edu-sim-flight order-2 lg:order-0 h-12 lg:h-auto ${phase === "transmitting" ? "is-tx" : ""}`}
               aria-hidden="true"
             >
               <i />
               <i />
               <i />
             </div>
-            <Smartboard
-              question={question}
-              qIndex={qIndex}
-              total={simulatorQuestions.length}
-              phase={phase}
-              selected={selected}
-              litSeats={litSeats}
-              collected={collected}
-              streak={currentStreak(answered)}
-              isLast={isLast}
-              summary={sessionSummary(answered)}
-              onNext={next}
-              onRestart={restart}
-            />
+            <div className="order-1 lg:order-0 lg:contents">
+              <Smartboard
+                question={question}
+                qIndex={qIndex}
+                total={simulatorQuestions.length}
+                phase={phase}
+                selected={selected}
+                litSeats={litSeats}
+                collected={collected}
+                streak={currentStreak(answered)}
+                isLast={isLast}
+                summary={sessionSummary(answered)}
+                onNext={next}
+                onRestart={restart}
+              />
+            </div>
           </motion.div>
         ) : (
           <motion.div

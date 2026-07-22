@@ -3,14 +3,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Scale } from "lucide-react";
-import { products } from "@/data/products";
+import { showcaseProducts } from "@/lib/showcaseProducts";
 import { useComparison } from "@/context/ComparisonContext";
 
 export default function ProductMarquee() {
-    const marqueeProducts = [...products, ...products];
+    const marqueeProducts = [...showcaseProducts, ...showcaseProducts];
     const { addToCompare, isInCompare, removeFromCompare } = useComparison();
 
-    const handleCompareToggle = (e: React.MouseEvent, product: typeof products[0]) => {
+    const handleCompareToggle = (e: React.MouseEvent, product: typeof showcaseProducts[0]) => {
       e.preventDefault();
       e.stopPropagation();
       if (isInCompare(product.id)) {

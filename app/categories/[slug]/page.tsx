@@ -1,4 +1,4 @@
-import { products } from "@/data/products";
+import { showcaseProducts } from "@/lib/showcaseProducts";
 import ProductCard from "@/components/ProductCard";
 import { notFound } from "next/navigation";
 import { getCategoryById, productCategories, CategorySlug } from "@/data/categories";
@@ -9,7 +9,8 @@ import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import { SITE, breadcrumbLd, categoryCollectionLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
-import { buildCategoryFaqs, categorySizeRange } from "@/lib/categoryFaq";
+import { buildCategoryFaqs } from "@/lib/categoryFaq";
+import { categoryBrand, categoryCountLabel, categoryHeroSizeRange } from "@/lib/categoryBrand";
 import EducationLanding from "@/components/education/EducationLanding";
 
 export const revalidate = 3600;
@@ -121,7 +122,7 @@ export default async function CategoryPage({
   // Saathi landing, not the product-grid template below.
   if (category.id === "education") return <EducationLanding />;
 
-  const categoryProducts = products.filter(
+  const categoryProducts = showcaseProducts.filter(
     (p) => p.category === category.name
   ).sort(byLatestThenPopularity);
 
@@ -132,7 +133,9 @@ export default async function CategoryPage({
 
   const hasSubCategories = subCategories.length > 1;
 
-  const sizeRange = categorySizeRange(categoryProducts);
+  const brand = categoryBrand(category);
+  const countLabel = categoryCountLabel(category, categoryProducts.length);
+  const sizeRange = categoryHeroSizeRange(category, categoryProducts);
   const faqs = buildCategoryFaqs(category, categoryProducts);
 
   const jsonLd = [
@@ -167,35 +170,61 @@ export default async function CategoryPage({
 
           <div className="min-w-0">
             <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-2">
-              Samsung Authorized Distributor
+              {brand.eyebrow}
             </p>
 
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-              Samsung {category.navLabel}
+              {brand.h1
+                ? brand.h1
+                : brand.brand
+                  ? `${brand.brand} ${category.navLabel}`
+                  : category.navLabel}
             </h1>
 
             <p className="mt-3 max-w-2xl text-gray-500 text-sm md:text-base leading-relaxed">
               {category.subtitle}
             </p>
 
-            {/* Quick facts + use cases (indexable, keyword-rich) */}
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">
-                {categoryProducts.length} Samsung series
-              </span>
+            {/* Stat strip — labeled numeric facts, then a clearly-separated
+                "Best for" use-case group. Replaces the old flat chip row that
+                mixed count/size pills with bare use-case tags. */}
+            <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-stretch sm:gap-0 sm:divide-x sm:divide-gray-200">
+              {/* Models / platforms */}
+              <div className="sm:pr-6">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                  {brand.unitNoun.many === "platforms" ? "Platforms" : "Models"}
+                </p>
+                <p className="mt-1 text-lg font-bold text-gray-900">{countLabel}</p>
+              </div>
+
+              {/* Size range — display categories only */}
               {sizeRange && (
-                <span className="inline-flex items-center px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold">
-                  Sizes {sizeRange}
-                </span>
+                <div className="sm:px-6">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                    Size Range
+                  </p>
+                  <p className="mt-1 text-lg font-bold text-gray-900">{sizeRange}</p>
+                </div>
               )}
-              {category.useCases.slice(0, 4).map((uc) => (
-                <span
-                  key={uc}
-                  className="inline-flex items-center px-3 py-1 rounded-full bg-slate-50 border border-slate-100 text-slate-500 text-xs font-medium"
-                >
-                  {uc}
-                </span>
-              ))}
+
+              {/* Best for — use cases, clearly grouped and labeled */}
+              {category.useCases.length > 0 && (
+                <div className="sm:pl-6">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                    Best for
+                  </p>
+                  <div className="mt-1.5 flex flex-wrap gap-1.5">
+                    {category.useCases.slice(0, 4).map((uc) => (
+                      <span
+                        key={uc}
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-xs font-medium"
+                      >
+                        {uc}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -223,8 +252,23 @@ export default async function CategoryPage({
             </Link>
           </div>
         ) : hasSubCategories ? (
-          /* Grouped layout for Commercial TV etc. */
+          /* Grouped layout for Commercial TV etc. The ungrouped "core" products
+             (no subCategory) render FIRST — they're the flagship/best-selling
+             signage buyers land for — then the specialised subcategory sections
+             (Touch, Large Format, Outdoor, …) follow. */
           <div className="space-y-14">
+            {/* Products without a subCategory — shown on top */}
+            {categoryProducts.filter((p) => !p.subCategory).length > 0 && (
+              <section>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {categoryProducts
+                    .filter((p) => !p.subCategory)
+                    .map((product) => (
+                      <ProductCard key={product.id} product={product} />
+                    ))}
+                </div>
+              </section>
+            )}
             {subCategories.map((sub) => {
               const subProducts = categoryProducts.filter(
                 (p) => p.subCategory === sub
@@ -242,18 +286,6 @@ export default async function CategoryPage({
                 </section>
               );
             })}
-            {/* Products without a subCategory */}
-            {categoryProducts.filter((p) => !p.subCategory).length > 0 && (
-              <section>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {categoryProducts
-                    .filter((p) => !p.subCategory)
-                    .map((product) => (
-                      <ProductCard key={product.id} product={product} />
-                    ))}
-                </div>
-              </section>
-            )}
           </div>
         ) : (
           /* Flat grid layout */

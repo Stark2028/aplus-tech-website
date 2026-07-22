@@ -5,7 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Check, ShoppingBag, Scale } from "lucide-react";
 import { MonitorIcon } from "@/components/icons";
-import { products, Product } from "@/data/products";
+import { Product } from "@/data/products";
+import { showcaseProducts } from "@/lib/showcaseProducts";
 import { categoriesWithProducts } from "@/lib/nonEmptyCategories";
 import { useQuote } from "@/context/QuoteContext";
 import { useComparison } from "@/context/ComparisonContext";
@@ -22,7 +23,7 @@ export default function ProductCatalogSection() {
   const { addToCompare, isInCompare, removeFromCompare } = useComparison();
 
   const filtered = declusterByImage(
-    products
+    showcaseProducts
       .filter((p) => p.category === activeTab)
       .sort(byLatestThenPopularity)
   );

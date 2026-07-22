@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { products } from "@/data/products";
+import { showcaseProducts } from "@/lib/showcaseProducts";
 import { getCategoryByName } from "@/data/categories";
 import QuoteForm from "@/components/QuoteForm";
 import Link from "next/link";
@@ -107,8 +108,10 @@ export default async function ProductPage({
 
   const categorySlug = getCategorySlug(product.category);
 
-  // Related products: same category, exclude self, max 4
-  const related = products
+  // Related products: same category, exclude self, max 4. Uses the showcase
+  // list so a discontinued model never appears in another product's related
+  // rail — and a discontinued product's own page recommends only live models.
+  const related = showcaseProducts
     .filter((p) => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 

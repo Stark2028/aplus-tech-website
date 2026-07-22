@@ -10,9 +10,15 @@ export interface Product {
    *  conferencing entries set brand: "Logitech". Never infer brand from
    *  category; always read this field (via lib/brand.ts). */
   brand?: "Samsung" | "Logitech";
-  /** Hide from the /products "View All Products" listing while keeping the
-   *  product live on its category page, detail page, and search. */
-  hideFromAllProducts?: boolean;
+  /** Discontinued / not in current production. Hidden from every product
+   *  BROWSE surface (the /products grid, category pages, homepage catalog,
+   *  finder, marquee, related rails, solutions pages, 404 popular) while
+   *  staying fully live: the detail page /products/<slug> still renders, the
+   *  URL still resolves, it stays in the sitemap, and on-site + Google search
+   *  still find it. Lets us stop showcasing a model without losing its SEO.
+   *  Filtering is centralised in lib/showcaseProducts.ts — never re-implement
+   *  the predicate inline. */
+  discontinued?: boolean;
   name: string;
   /** Must match ProductCategory.name exactly */
   category: string;
@@ -116,7 +122,7 @@ With a 16/7 operation rating and a size range from 43" to 82", the QET Series ad
   },
   {
     id: "samsung-signage-qbc",
-    popularity: 81,
+    popularity: 99,
     catalog2026: true,
     name: "Samsung Crystal UHD Signage QBC Series",
     category: "Digital Signage",
@@ -197,7 +203,7 @@ With Smart Calibration via the Samsung mobile app, teams can guarantee brand col
   },
   {
     id: "samsung-signage-qhc",
-    popularity: 70,
+    popularity: 97,
     catalog2026: true,
     name: "Samsung Signage QHC Series — High Brightness",
     category: "Digital Signage",
@@ -270,7 +276,7 @@ The QHC's 4K UHD resolution combined with Samsung's Crystal Display technology p
   },
   {
     id: "samsung-signage-qmc",
-    popularity: 95,
+    popularity: 98,
     catalog2026: true,
     name: "Samsung Crystal UHD Signage QMC Series",
     category: "Digital Signage",
@@ -528,7 +534,7 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
     id: "samsung-touch-qmb-t",
     popularity: 97,
     catalog2026: true,
-    name: "Samsung Interactive Signage QMB-T Series",
+    name: "Samsung Touch Signage QMB-T Series",
     category: "Digital Signage",
     subCategory: "Touch Signage",
     series: "QMB-T",
@@ -583,7 +589,7 @@ With embedded MagicINFO Player and native Samsung Tizen OS, the QMR-T can deploy
     id: "samsung-mp016f",
     popularity: 69,
     name: "Samsung LED Display MP016F",
-    category: "Digital Signage",
+    category: "LED Signage",
     subCategory: "LED Display",
     series: "MP016F",
     description:
@@ -777,6 +783,7 @@ With factory-calibrated color performance and Samsung's daisy chain connectivity
   {
     id: "samsung-videowall-vmb-r",
     popularity: 96,
+    discontinued: true,
     name: "Samsung VMB-R Razor Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VMB-R",
@@ -1126,7 +1133,7 @@ With a single USB-C connection delivering power, data, and high-bandwidth conten
   {
     id: "samsung-interactive-wac",
     popularity: 99,
-    hideFromAllProducts: true,
+    discontinued: true,
     name: "Samsung WAC Series Interactive Display",
     category: "Interactive Display",
     series: "WAC",
@@ -1204,7 +1211,7 @@ Powerful screen sharing supports up to nine simultaneous screens so content flow
   {
     id: "samsung-interactive-wad",
     popularity: 92,
-    hideFromAllProducts: true,
+    discontinued: true,
     name: "Samsung WAD Series Interactive Display",
     category: "Interactive Display",
     series: "WAD",
@@ -1274,6 +1281,7 @@ The WAD's 4K UHD resolution, wide 178°/178° viewing angles, and 400-nit bright
   {
     id: "samsung-business-tv-bea-h",
     popularity: 82,
+    discontinued: true,
     name: "Samsung Business TV BEA-H Series",
     category: "Commercial TV",
     subCategory: "Business TV",
@@ -1344,6 +1352,7 @@ With built-in Business TV app support and a range of sizes from 43" to 75", the 
   {
     id: "samsung-business-tv-bec-h",
     popularity: 87,
+    discontinued: true,
     name: "Samsung Business TV BEC-H Series",
     category: "Commercial TV",
     subCategory: "Business TV",
@@ -1415,6 +1424,7 @@ With Business TV App support for content scheduling and a comprehensive size ran
   {
     id: "samsung-business-tv-bed-h",
     popularity: 69,
+    discontinued: true,
     name: "Samsung Business TV Pro BED-H Series",
     category: "Commercial TV",
     subCategory: "Business TV",
@@ -1488,6 +1498,7 @@ The wide 43" to 75" size range and 16/7 operation rating make the BED-H adaptabl
   {
     id: "samsung-hotel-tv-hg55au800t",
     popularity: 76,
+    discontinued: true,
     name: "Samsung Hotel TV HG55AU800T",
     category: "Commercial TV",
     subCategory: "Hotel TV",
@@ -1629,6 +1640,7 @@ Dynamic Crystal Colour technology with HDR10+ and a billion shades of colour ele
   {
     id: "samsung-hotel-tv-hg55au700f",
     popularity: 67,
+    discontinued: true,
     name: "Samsung Hotel TV HG55AU700F",
     category: "Commercial TV",
     subCategory: "Hotel TV",
@@ -1977,6 +1989,7 @@ Standard professional connectivity — dual HDMI 2.0, DisplayPort 1.2, DVI-D, an
   {
     id: "samsung-vmb-e",
     popularity: 96,
+    discontinued: true,
     name: "Samsung VMB-E Extreme Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VMB-E",
@@ -2045,6 +2058,7 @@ With daisy chain support eliminating external video processors from many install
   {
     id: "samsung-vhb-e",
     popularity: 67,
+    discontinued: true,
     name: "Samsung VHB-E High-Brightness Extreme Narrow Bezel Video Wall",
     category: "Video Wall",
     series: "VHB-E",
@@ -2113,6 +2127,7 @@ With 24/7 operation certification and Samsung's Image Enhancement Technology mai
   {
     id: "samsung-vh55r",
     popularity: 96,
+    discontinued: true,
     name: "Samsung VH55R Razor Thin Bezel Video Wall",
     category: "Video Wall",
     series: "VH55R",
@@ -2185,7 +2200,7 @@ With 24/7 operation reliability and wide 178°/178° viewing angles, the VH55R s
   {
     id: "samsung-flip-2",
     popularity: 98,
-    hideFromAllProducts: true,
+    discontinued: true,
     name: "Samsung Flip 2 (WM55R) Interactive Display",
     category: "Interactive Display",
     series: "Flip 2",
