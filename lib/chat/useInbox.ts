@@ -92,6 +92,10 @@ export function useThread(conversationId: string | null) {
     setPrevConversationId(conversationId);
     setMessages([]);
     setVisitorId(null);
+    // Clear a stale listener error the instant we switch threads (reset during
+    // render, not in the effect — a synchronous setState in an effect body is
+    // an ESLint error in this repo).
+    setError(null);
   }
 
   // Likewise clear the customer's presence the instant we point at a different
@@ -104,7 +108,6 @@ export function useThread(conversationId: string | null) {
 
   useEffect(() => {
     if (!conversationId) return;
-    setError(null);
 
     const db = getDb();
 

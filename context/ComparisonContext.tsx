@@ -75,7 +75,8 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
                 // list — a direct set here would clobber it with the persisted
                 // one. Restore from storage only when nothing was added yet.
                 if (cleaned.length > 0) {
-                    // eslint-disable-next-line react-hooks/set-state-in-effect
+                    // No eslint-disable needed here: the setState runs inside an
+                    // async callback, not synchronously in the effect body.
                     setSelectedProducts((prev) => (prev.length > 0 ? prev : cleaned));
                 }
             } catch (e) {
