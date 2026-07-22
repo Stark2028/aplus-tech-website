@@ -19,7 +19,7 @@ export default function ChatThread({
   conversation: Conversation;
   onBack: () => void;
 }) {
-  const { messages, visitor, sendReply, markRead, setStatus } = useThread(conversation.id);
+  const { messages, visitor, error: threadError, sendReply, markRead, setStatus } = useThread(conversation.id);
   const [draft, setDraft] = useState("");
   const [uploadError, setUploadError] = useState("");
   const end = useRef<HTMLDivElement>(null);
@@ -174,6 +174,11 @@ export default function ChatThread({
       </div>
 
       <div className="border-t border-gray-200 shrink-0">
+        {threadError && (
+          <p role="alert" className="text-xs text-red-700 bg-red-50 px-4 py-2">
+            {threadError}
+          </p>
+        )}
         {uploadError && (
           <p role="alert" className="text-xs text-red-700 bg-red-50 px-4 py-2">
             {uploadError}

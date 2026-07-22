@@ -6,6 +6,7 @@ import {
   collection,
   doc,
   limit,
+  limitToLast,
   onSnapshot,
   orderBy,
   query,
@@ -78,6 +79,7 @@ export function useThread(conversationId: string | null) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [visitor, setVisitor] = useState<VisitorDoc | null>(null);
   const [visitorId, setVisitorId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Reset the thread synchronously when the selected conversation changes. Doing
   // this in the streaming effect would let one render escape with the previous
@@ -102,24 +104,38 @@ export function useThread(conversationId: string | null) {
 
   useEffect(() => {
     if (!conversationId) return;
+    setError(null);
 
     const db = getDb();
 
-    const unsubConv = onSnapshot(doc(db, COL.conversations, conversationId), (snap) => {
-      setVisitorId(snap.data()?.visitorId ?? null);
-    });
+    // Every listener carries an error callback: without one, a lapsed token or a
+    // revoked `agent` claim kills the stream SILENTLY and the thread keeps
+    // rendering its last snapshot — the agent believes a live lead went quiet.
+    const onError = (err: unknown) => {
+      console.error("[useThread]", err);
+      setError("Lost the live connection to this chat. Reload to reconnect.");
+    };
+
+    const unsubConv = onSnapshot(
+      doc(db, COL.conversations, conversationId),
+      (snap) => setVisitorId(snap.data()?.visitorId ?? null),
+      onError
+    );
 
     const unsubMsgs = onSnapshot(
       query(
         collection(db, COL.conversations, conversationId, COL.messages),
         orderBy("createdAt", "asc"),
-        limit(300)
+        // limitToLast, NOT limit: ascending order + limit(n) keeps the OLDEST n,
+        // so a thread past 300 messages froze on messages 1–300 forever.
+        limitToLast(300)
       ),
       (snap) => {
         setMessages(
           snap.docs.map((d) => mapMessage(d.id, d.data() as Record<string, unknown>))
         );
-      }
+      },
+      onError
     );
 
     return () => {
@@ -131,19 +147,25 @@ export function useThread(conversationId: string | null) {
   // Is the customer still watching? (spec §5 — decides "keep typing" vs "call them")
   useEffect(() => {
     if (!visitorId) return;
-    return onSnapshot(doc(getDb(), COL.visitors, visitorId), (snap) => {
-      const data = snap.data();
-      setVisitor(
-        data
-          ? {
-              firstSeenAt: toMillis(data.firstSeenAt),
-              lastSeenAt: toMillis(data.lastSeenAt),
-              currentPage: data.currentPage ?? "",
-              chatOpen: Boolean(data.chatOpen),
-            }
-          : null
-      );
-    });
+    return onSnapshot(
+      doc(getDb(), COL.visitors, visitorId),
+      (snap) => {
+        const data = snap.data();
+        setVisitor(
+          data
+            ? {
+                firstSeenAt: toMillis(data.firstSeenAt),
+                lastSeenAt: toMillis(data.lastSeenAt),
+                currentPage: data.currentPage ?? "",
+                chatOpen: Boolean(data.chatOpen),
+              }
+            : null
+        );
+      },
+      // Presence is a nice-to-have; a failed listen shouldn't raise the thread
+      // error banner. Drop presence to null so the UI stops claiming "Online".
+      () => setVisitor(null)
+    );
   }, [visitorId]);
 
   const sendReply = useCallback(
@@ -205,5 +227,5 @@ export function useThread(conversationId: string | null) {
     [conversationId]
   );
 
-  return { messages, visitor, sendReply, markRead, setStatus };
+  return { messages, visitor, error, sendReply, markRead, setStatus };
 }
