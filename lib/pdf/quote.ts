@@ -80,8 +80,6 @@ export async function buildQuotePdf(params: QuoteParams): Promise<Uint8Array> {
   addFirstPage(ctx);
   drawTitleBlock(ctx);
   drawItemsSection(ctx);
-  drawPricingNote(ctx);
-  drawNextSteps(ctx);
   if (ctx.y < FOOT_FLOOR + BAND_H + 10) addContinuationPage(ctx);
   drawContactBand(ctx);
   drawFootersAndLegal(ctx);
@@ -370,86 +368,6 @@ function drawItemRow(ctx: Ctx, item: QuoteItem, idx: number) {
   );
 
   ctx.y -= rowHeight;
-}
-
-function drawPricingNote(ctx: Ctx) {
-  ensureSpace(ctx, 70);
-  const { page, fonts } = ctx;
-  const startY = ctx.y;
-  const padX = 16;
-  const padY = 12;
-
-  const body = safe(
-    "Final pricing will be issued by our sales team within 24 business hours of submission. Volume discounts apply on orders of 5+ units. All prices are exclusive of GST; a formal GST invoice is issued with order confirmation."
-  );
-  const bodyLines = wrapText(
-    body,
-    fonts.regular,
-    8.5,
-    CONTENT_WIDTH - padX * 2
-  );
-  const boxH = padY * 2 + 14 + bodyLines.length * 12;
-
-  // Background
-  page.drawRectangle({
-    x: MARGIN_X,
-    y: startY - boxH,
-    width: CONTENT_WIDTH,
-    height: boxH,
-    color: C.slate50,
-  });
-  // Blue left rule
-  page.drawRectangle({
-    x: MARGIN_X,
-    y: startY - boxH,
-    width: 3,
-    height: boxH,
-    color: C.blue600,
-  });
-
-  // Label
-  drawSpacedText(page, "PRICING", {
-    x: MARGIN_X + padX,
-    y: startY - padY - 8,
-    size: 7.5,
-    font: fonts.bold,
-    color: C.blue600,
-    characterSpacing: 1.6,
-  });
-
-  bodyLines.forEach((line, i) => {
-    page.drawText(line, {
-      x: MARGIN_X + padX,
-      y: startY - padY - 22 - i * 12,
-      size: 8.5,
-      font: fonts.regular,
-      color: C.gray700,
-    });
-  });
-
-  ctx.y = startY - boxH - 22;
-}
-
-function drawNextSteps(ctx: Ctx) {
-  ensureSpace(ctx, 70);
-  const { page, fonts } = ctx;
-
-  drawHr(page, MARGIN_X, A4_WIDTH - MARGIN_X, ctx.y, 0.75, C.black);
-  ctx.y -= 16;
-  drawSpacedText(page, "NEXT STEPS", {
-    x: MARGIN_X, y: ctx.y, size: 7.5, font: fonts.bold, color: C.gray500, characterSpacing: 1.4,
-  });
-
-  const body = safe(
-    "Submit this quote online or share this PDF with our team to receive formal pricing within 24 business hours. This is a quote request, not an invoice — pricing is subject to confirmation."
-  );
-  const lines = wrapText(body, fonts.regular, 9, CONTENT_WIDTH);
-  lines.forEach((line, i) => {
-    page.drawText(line, {
-      x: MARGIN_X, y: ctx.y - 14 - i * 13, size: 9, font: fonts.regular, color: C.black,
-    });
-  });
-  ctx.y = ctx.y - 14 - lines.length * 13 - 16;
 }
 
 // ── helpers ────────────────────────────────────────────────────────────
