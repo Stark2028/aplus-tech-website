@@ -1,7 +1,8 @@
 "use client";
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { Product, products } from "@/data/products";
+import type { Product } from "@/data/products";
+import type { ProductSummary } from "@/data/productIndex";
 
 const MAX_COMPARE = 3;
 
@@ -9,21 +10,30 @@ const MAX_COMPARE = 3;
  * Sanitise a persisted compare list: keep only well-formed entries whose product
  * id still exists in the current catalog, dedupe by id, and cap at MAX_COMPARE.
  * Guards against stale/oversized/malformed localStorage breaking the compare table.
+ *
+ * Validates against `productIndex` (a light id/name/image projection) rather
+ * than value-importing the whole catalog. The index is passed in — the caller
+ * loads it with a dynamic import so data/products.ts stays OUT of every route's
+ * first-load JS (this provider is mounted globally). The stored objects are
+ * full Products (state is Product[] and callers pass full products), so we keep
+ * the persisted shape for the heavy fields the /compare table reads and only
+ * refresh the light name/images from the canonical index.
  */
-function sanitizeCompareList(raw: unknown): Product[] {
+function sanitizeCompareList(
+  raw: unknown,
+  index: Record<string, ProductSummary>
+): Product[] {
   if (!Array.isArray(raw)) return [];
-  const validIds = new Set(products.map((p) => p.id));
   const seen = new Set<string>();
   const out: Product[] = [];
   for (const item of raw) {
     if (!item || typeof item !== "object") continue;
     const id = (item as { id?: unknown }).id;
-    if (typeof id !== "string" || !validIds.has(id) || seen.has(id)) continue;
-    // Re-hydrate from the canonical product to avoid stale shapes from old data.
-    const canonical = products.find((p) => p.id === id);
-    if (!canonical) continue;
+    if (typeof id !== "string" || seen.has(id)) continue;
+    const summary = index[id];
+    if (!summary) continue; // id no longer in the catalog — drop it
     seen.add(id);
-    out.push(canonical);
+    out.push({ ...(item as Product), name: summary.name, images: summary.images });
     if (out.length >= MAX_COMPARE) break;
   }
   return out;
@@ -47,9 +57,19 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
 
     useEffect(() => {
         const saved = localStorage.getItem("b2b_compare_list");
-        if (saved) {
+        // Nothing persisted (or an empty list) ⇒ never pull the catalog chunk.
+        if (!saved || saved === "[]") return;
+        let cancelled = false;
+        (async () => {
             try {
-                const cleaned = sanitizeCompareList(JSON.parse(saved));
+                const parsed = JSON.parse(saved);
+                // Dynamic import so data/products.ts (pulled in transitively by
+                // productIndex) is a lazy chunk, not part of any route's
+                // first-load JS. It loads only for a returning visitor who has a
+                // saved compare list, after mount and off the LCP critical path.
+                const { productIndex } = await import("@/data/productIndex");
+                if (cancelled) return;
+                const cleaned = sanitizeCompareList(parsed, productIndex);
                 // Functional update: child effects run before this provider
                 // effect, so /compare?ids=… may have already loaded a shared
                 // list — a direct set here would clobber it with the persisted
@@ -61,7 +81,10 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
             } catch (e) {
                 console.error("Failed to parse compare list", e);
             }
-        }
+        })();
+        return () => {
+            cancelled = true;
+        };
     }, []);
 
     useEffect(() => {

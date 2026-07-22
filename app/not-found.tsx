@@ -2,17 +2,42 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { ArrowLeft, Search, Phone, ArrowRight } from "lucide-react";
 import { MonitorIcon } from "@/components/icons";
 import { useIsMac } from "@/hooks/usePlatform";
-import { showcaseProducts } from "@/lib/showcaseProducts";
 import { productCategories } from "@/data/categories";
 import { PHONE_TEL } from "@/lib/contact";
 
-const POPULAR = showcaseProducts.slice(0, 4);
+/** Light projection for the 404 "Popular Products" cards. */
+type PopularProduct = { id: string; name: string; series: string; image?: string };
 
 export default function NotFound() {
   const isMac = useIsMac();
+  // The root not-found boundary is bundled into every route's first-load JS, so
+  // a static import of the catalog here would ship data/products.ts (~45 KB gz)
+  // on every page. Load the popular list lazily instead — this is a 404 error
+  // page, so populating the section after mount is a fine trade for keeping the
+  // catalog out of every real page's critical path.
+  const [popular, setPopular] = useState<PopularProduct[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    import("@/lib/showcaseProducts").then(({ showcaseProducts }) => {
+      if (cancelled) return;
+      setPopular(
+        showcaseProducts.slice(0, 4).map((p) => ({
+          id: p.id,
+          name: p.name,
+          series: p.series,
+          image: p.images?.[0],
+        }))
+      );
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const openSearch = () =>
     window.dispatchEvent(new CustomEvent("aplus:search:open"));
 
@@ -77,7 +102,9 @@ export default function NotFound() {
         </div>
       </div>
 
-      {/* Popular products */}
+      {/* Popular products — lazily loaded (see effect above). Rendered only
+          once the catalog chunk resolves, so it never blocks the 404 paint. */}
+      {popular.length > 0 && (
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-gray-900">Popular Products</h2>
@@ -90,16 +117,16 @@ export default function NotFound() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {POPULAR.map((product) => (
+          {popular.map((product) => (
             <Link
               key={product.id}
               href={`/products/${product.id}`}
               className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:border-blue-200 hover:shadow-md transition-all"
             >
               <div className="h-32 bg-gray-50 relative overflow-hidden">
-                {product.images?.[0] ? (
+                {product.image ? (
                   <Image
-                    src={product.images[0]}
+                    src={product.image}
                     alt={product.name}
                     fill
                     sizes="(max-width: 640px) 50vw, 25vw"
@@ -127,6 +154,7 @@ export default function NotFound() {
           ))}
         </div>
       </div>
+      )}
     </main>
   );
 }
