@@ -11,7 +11,6 @@
 
 import type { Product } from "@/data/products";
 import { formatSize } from "@/lib/formatSize";
-import { CONTACT_EMAIL, PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 import { isLogitech } from "@/lib/brand";
 
 import {
@@ -20,15 +19,22 @@ import {
   C,
   CONTENT_WIDTH,
   MARGIN_X,
-  addLinkAnnotation,
   drawHr,
   drawSpacedText,
-  fetchPngBytes,
   imageToPngBytes,
   safe,
   widthOfSpacedText,
   wrapText,
 } from "./helpers";
+import {
+  BAND_H,
+  CONT_TOP,
+  FOOT_FLOOR,
+  drawContactBand,
+  drawFootersAndLegal,
+  loadLogo,
+  paintPageChrome,
+} from "./chrome";
 import {
   type MeasuredGroup,
   type PlacedChunk,
@@ -42,10 +48,6 @@ type PDFFont = import("pdf-lib").PDFFont;
 type PDFImage = import("pdf-lib").PDFImage;
 
 // ── Layout constants (pt) ─────────────────────────────────────────────────
-const BAR_H = 6;                       // blue brand bar across the page top
-const FOOT_FLOOR = 52;                 // content never drawn below this y
-const CONT_TOP = A4_HEIGHT - 64;       // content top on continuation pages
-
 const ROW_FONT = 8.5;
 const ROW_LINE_H = 11;
 const ROW_PAD_V = 4;
@@ -57,8 +59,6 @@ const SPEC_LABEL_W = Math.round(SPEC_COL_W * 0.47);
 
 const IMG_PANEL_W = 190;
 const IMG_PANEL_H = 120;
-
-const BAND_H = 58;                     // navy contact band height
 
 const SAMSUNG_TRUST_CARDS: ReadonlyArray<readonly [string, string]> = [
   ["Samsung Authorized", "Genuine India-spec units with full Samsung warranty."],
@@ -119,15 +119,7 @@ export async function buildSpecSheetPdf(product: Product): Promise<Uint8Array> {
 
   // Brand + product images. Every failure degrades to null — generation
   // must never fail because an asset didn't load.
-  let logo: PDFImage | null = null;
-  const logoBytes = await fetchPngBytes("/logo.png");
-  if (logoBytes) {
-    try {
-      logo = await doc.embedPng(logoBytes);
-    } catch {
-      logo = null;
-    }
-  }
+  const logo = await loadLogo(doc);
 
   let productImg: PDFImage | null = null;
   const imgBytes = product.images[0] ? await imageToPngBytes(product.images[0]) : null;
@@ -162,6 +154,7 @@ export async function buildSpecSheetPdf(product: Product): Promise<Uint8Array> {
   drawSpecSection(ctx, product);
   if (product.longDescription) drawOverview(ctx, product);
   drawTrustStrip(ctx, product);
+  if (ctx.y < FOOT_FLOOR + BAND_H + 10) addContinuationPage(ctx);
   drawContactBand(ctx);
   drawFootersAndLegal(ctx);
 
@@ -169,28 +162,6 @@ export async function buildSpecSheetPdf(product: Product): Promise<Uint8Array> {
 }
 
 // ── Page infrastructure ───────────────────────────────────────────────────
-
-/** Watermark + brand bar. MUST run first on every page so content sits above. */
-function paintPageChrome(ctx: Ctx) {
-  if (ctx.logo) {
-    const w = 300;
-    const h = (ctx.logo.height / ctx.logo.width) * w;
-    ctx.page.drawImage(ctx.logo, {
-      x: (A4_WIDTH - w) / 2,
-      y: (A4_HEIGHT - h) / 2,
-      width: w,
-      height: h,
-      opacity: 0.1,
-    });
-  }
-  ctx.page.drawRectangle({
-    x: 0,
-    y: A4_HEIGHT - BAR_H,
-    width: A4_WIDTH,
-    height: BAR_H,
-    color: C.blue600,
-  });
-}
 
 function addFirstPage(ctx: Ctx, product: Product, docDate: string) {
   ctx.page = ctx.doc.addPage([A4_WIDTH, A4_HEIGHT]);
@@ -563,81 +534,3 @@ function drawTrustStrip(ctx: Ctx, product: Product) {
   ctx.y = top - cardH - 16;
 }
 
-// ── Contact band + footers ────────────────────────────────────────────────
-
-function drawContactBand(ctx: Ctx) {
-  // Anchored to the bottom of the last page, just above the legal line.
-  if (ctx.y < FOOT_FLOOR + BAND_H + 10) addContinuationPage(ctx);
-  const { doc, page, fonts } = ctx;
-  const bandY = FOOT_FLOOR;
-
-  page.drawRectangle({
-    x: MARGIN_X, y: bandY, width: CONTENT_WIDTH, height: BAND_H, color: C.navy,
-  });
-
-  drawSpacedText(page, "CONTACT SALES", {
-    x: MARGIN_X + 16, y: bandY + BAND_H - 18, size: 7, font: fonts.bold,
-    color: C.gray400, characterSpacing: 1.8,
-  });
-  page.drawText(safe("Bulk pricing · GST invoice · Pan-India installation"), {
-    x: MARGIN_X + 16, y: bandY + BAND_H - 36, size: 10, font: fonts.bold, color: C.white,
-  });
-
-  const rightX = A4_WIDTH - MARGIN_X - 16;
-  const phoneW = fonts.bold.widthOfTextAtSize(PHONE_DISPLAY, 11.5);
-  page.drawText(PHONE_DISPLAY, {
-    x: rightX - phoneW, y: bandY + BAND_H - 22, size: 11.5, font: fonts.bold, color: C.white,
-  });
-  addLinkAnnotation(doc, page, PHONE_TEL, {
-    x: rightX - phoneW, y: bandY + BAND_H - 25, width: phoneW, height: 15,
-  });
-
-  const contactLine = safe(`${CONTACT_EMAIL} · aplustechsol.com`);
-  const lineW = fonts.regular.widthOfTextAtSize(contactLine, 8);
-  const lineX = rightX - lineW;
-  page.drawText(contactLine, {
-    x: lineX, y: bandY + BAND_H - 38, size: 8, font: fonts.regular, color: C.blueLight,
-  });
-  const emailW = fonts.regular.widthOfTextAtSize(CONTACT_EMAIL, 8);
-  addLinkAnnotation(doc, page, `mailto:${CONTACT_EMAIL}`, {
-    x: lineX, y: bandY + BAND_H - 41, width: emailW, height: 12,
-  });
-  const siteW = fonts.regular.widthOfTextAtSize("aplustechsol.com", 8);
-  addLinkAnnotation(doc, page, "https://www.aplustechsol.com", {
-    x: rightX - siteW, y: bandY + BAND_H - 41, width: siteW, height: 12,
-  });
-}
-
-function drawFootersAndLegal(ctx: Ctx) {
-  const { fonts } = ctx;
-  const total = ctx.pages.length;
-  const year = new Date().getFullYear();
-
-  ctx.pages.forEach((page, i) => {
-    const n = i + 1;
-    const rightX = A4_WIDTH - MARGIN_X;
-    if (n < total) {
-      drawHr(page, MARGIN_X, rightX, 38, 0.4, C.gray200);
-      page.drawText(safe("Aplus Technology Solutions · aplustechsol.com"), {
-        x: MARGIN_X, y: 28, size: 7, font: fonts.regular, color: C.gray400,
-      });
-      const pn = `Page ${n} of ${total}`;
-      page.drawText(pn, {
-        x: rightX - fonts.regular.widthOfTextAtSize(pn, 7),
-        y: 28, size: 7, font: fonts.regular, color: C.gray400,
-      });
-    } else {
-      // Legal line replaces the standard footer on the last page.
-      page.drawText(safe("CIN U72900DL2020PTC374888 · GSTIN 07AAUCA5631L1Z6"), {
-        x: MARGIN_X, y: 30, size: 7, font: fonts.regular, color: C.gray500,
-      });
-      const legal = safe(
-        `© ${year} Aplus Technology Solutions Pvt. Ltd. · Specifications subject to change · Page ${n} of ${total}`
-      );
-      page.drawText(legal, {
-        x: rightX - fonts.regular.widthOfTextAtSize(legal, 7),
-        y: 30, size: 7, font: fonts.regular, color: C.gray400,
-      });
-    }
-  });
-}
