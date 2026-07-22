@@ -1,7 +1,11 @@
 import { z } from "zod";
 
-// Permissive phone matcher: allows +, spaces, hyphens, parens; 8–18 digits total.
-const phoneRegex = /^[+]?[\d\s()-]{8,18}$/;
+// Permissive phone shape: only +, digits, spaces, hyphens and parens are
+// allowed characters. The old matcher quantified the whole class ({8,18}), so
+// it counted separators as "length" — "--------" passed while a valid 16-digit
+// international number with spaces was rejected. Validation of length is done on
+// the DIGIT count instead (see `phone` below).
+const phoneCharsRegex = /^[+]?[\d\s()-]+$/;
 
 const name = z
   .string()
@@ -20,7 +24,11 @@ const phone = z
   .string()
   .trim()
   .min(1, "Phone number is required")
-  .regex(phoneRegex, "Enter a valid phone number");
+  .regex(phoneCharsRegex, "Enter a valid phone number")
+  .refine((v) => {
+    const digits = v.match(/\d/g)?.length ?? 0;
+    return digits >= 8 && digits <= 15; // E.164 caps the subscriber number at 15
+  }, "Enter a valid phone number");
 
 export const quoteFormSchema = z.object({
   name,
