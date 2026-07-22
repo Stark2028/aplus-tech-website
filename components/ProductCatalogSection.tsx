@@ -109,7 +109,7 @@ export default function ProductCatalogSection() {
           </div>
         ) : (
         <MobileProductScroller gridCols="sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" autoPlay={true} autoPlayInterval={3900} initialDelay={3300}>
-          {filtered.map((product, index) => (
+          {filtered.map((product) => (
             <div
               key={product.id}
               className="relative bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group flex flex-col h-full"
@@ -123,7 +123,6 @@ export default function ProductCatalogSection() {
                       src={product.images[0]}
                       alt={product.name}
                       fill
-                      priority={index < 2}
                       sizes="(max-width: 640px) 72vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                       className="object-contain group-hover:scale-105 transition-transform duration-500"
                     />
