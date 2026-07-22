@@ -38,6 +38,7 @@ export default function CookieConsent() {
       role="dialog"
       aria-label="Cookie consent"
       aria-hidden={!visible}
+      inert={!visible}
     >
       <div className="max-w-4xl mx-auto bg-gray-950 border border-gray-800 rounded-2xl p-4 sm:p-5 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4">
         <div className="w-9 h-9 bg-blue-600/15 rounded-xl flex items-center justify-center shrink-0">

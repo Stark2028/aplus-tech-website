@@ -23,6 +23,7 @@ export default function BackToTop() {
       }}
       aria-label="Back to top"
       aria-hidden={!visible}
+      inert={!visible}
     >
       <ChevronUp size={18} />
     </button>
