@@ -127,7 +127,7 @@ function addFirstPage(ctx: Ctx) {
 }
 
 function drawTitleBlock(ctx: Ctx) {
-  const { page, fonts, params } = ctx;
+  const { page, fonts } = ctx;
   page.drawText("Request for Quote", {
     x: MARGIN_X,
     y: ctx.y,
@@ -135,19 +135,6 @@ function drawTitleBlock(ctx: Ctx) {
     font: fonts.bold,
     color: C.black,
   });
-  ctx.y -= 16;
-  page.drawText(
-    safe(
-      `${params.totalItems} item${params.totalItems !== 1 ? "s" : ""} · Commercial Display & Video Conferencing · India`
-    ),
-    {
-      x: MARGIN_X,
-      y: ctx.y - 2,
-      size: 10,
-      font: fonts.regular,
-      color: C.gray500,
-    }
-  );
   ctx.y -= 28;
 }
 
