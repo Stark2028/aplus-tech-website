@@ -186,24 +186,24 @@ export default function CategoryGrid() {
           </h2>
         </AnimatedSection>
 
-        {/* ── MOBILE (< md): unchanged swipe carousel ───────────────────
-            MobileProductScroller with breakpoint="md" shows only its carousel
-            here; wrapping in md:hidden also suppresses its own desktop grid so
-            the uniform grid below is the single desktop layout. The synthetic
-            View-all tile is intentionally excluded from the carousel. */}
-        <div className="md:hidden">
-          <MobileProductScroller
-            breakpoint="md"
-            gridCols=""
-            autoPlay={true}
-            autoPlayInterval={3200}
-            initialDelay={1800}
-          >
-            {CATEGORY_CARDS.map((card) => (
-              <CategoryTile key={card.id} card={card} />
-            ))}
-          </MobileProductScroller>
-        </div>
+        {/* ── MOBILE (< md): swipe carousel ─────────────────────────────
+            MobileProductScroller with breakpoint="md" hides its own rail at
+            md+, and renderGrid={false} suppresses its built-in desktop grid
+            entirely — the uniform grid below is the single desktop layout, so
+            the tiles are no longer rendered a third time into a dead subtree.
+            The synthetic View-all tile is intentionally excluded here. */}
+        <MobileProductScroller
+          breakpoint="md"
+          renderGrid={false}
+          gridCols=""
+          autoPlay={true}
+          autoPlayInterval={3200}
+          initialDelay={1800}
+        >
+          {CATEGORY_CARDS.map((card) => (
+            <CategoryTile key={card.id} card={card} />
+          ))}
+        </MobileProductScroller>
 
         {/* ── DESKTOP / TABLET (md+): uniform grid ──────────────────────
             md: 2 columns (4 rows).  lg: 4 columns (2 rows).  Eight equal tiles:

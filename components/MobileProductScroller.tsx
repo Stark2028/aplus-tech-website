@@ -21,6 +21,14 @@ interface MobileProductScrollerProps {
    * is responsible for supplying matching `gridCols` (e.g. `md:grid-cols-*`).
    */
   breakpoint?: "sm" | "md";
+  /**
+   * Whether to render the built-in desktop grid at `breakpoint`+. Defaults to
+   * `true`. Pass `false` when the caller supplies its own desktop grid (e.g.
+   * CategoryGrid) — otherwise this component renders the children a second
+   * time into a grid the caller has already hidden, a subtree dead at every
+   * breakpoint.
+   */
+  renderGrid?: boolean;
 }
 
 /**
@@ -35,6 +43,7 @@ export default function MobileProductScroller({
   autoPlayInterval = 4000,
   initialDelay = 0,
   breakpoint = "sm",
+  renderGrid = true,
 }: MobileProductScrollerProps) {
   // Static class strings so Tailwind's JIT scanner sees complete literals
   // (it can't resolve `${breakpoint}:hidden` interpolations).
@@ -159,8 +168,13 @@ export default function MobileProductScroller({
         </button>
       </div>
 
-      {/* ── DESKTOP: normal grid ──────────────────────────────────── */}
-      <div className={`${gridShow} ${gridCols} gap-4`}>{children}</div>
+      {/* ── DESKTOP: normal grid ──────────────────────────────────────
+          Skipped when the caller supplies its own desktop grid (renderGrid
+          =false), so the children aren't rendered a second time into a
+          subtree the caller has already hidden. */}
+      {renderGrid && (
+        <div className={`${gridShow} ${gridCols} gap-4`}>{children}</div>
+      )}
     </>
   );
 }
