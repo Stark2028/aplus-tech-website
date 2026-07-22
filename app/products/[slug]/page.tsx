@@ -51,7 +51,6 @@ export async function generateMetadata({
   const product = products.find((p) => p.id === slug);
   if (!product) return { title: "Product Not Found | Aplus Tech" };
   const url = `https://www.aplustechsol.com/products/${slug}`;
-  const ogAlt = `${product.name} — ${product.series} ${product.category}`;
   const modelCode = modelCodeFor(slug);
   // Model code in the title captures exact model-number searches (common in B2B).
   const title = modelCode ? `${product.name} (${modelCode})` : product.name;
@@ -79,15 +78,15 @@ export async function generateMetadata({
       url,
       title,
       description: metaDescription,
-      images: product.images?.[0]
-        ? [{ url: product.images[0], width: 1200, height: 630, alt: ogAlt }]
-        : [],
+      // OG image is supplied by opengraph-image.tsx (file convention): the
+      // designed 1200×630 card with the brand badge + descriptive alt. An
+      // explicit images override here would suppress it and letterbox a raw,
+      // non-16:9 product photo instead.
     },
     twitter: {
       card: "summary_large_image",
       title: product.name,
       description: product.description,
-      images: product.images?.[0] ? [product.images[0]] : [],
     },
   };
 }
