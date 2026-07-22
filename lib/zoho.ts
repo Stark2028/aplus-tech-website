@@ -29,15 +29,28 @@ async function fetchWithRetry(url: string, options: RequestInit, retries = 3): P
   throw lastErr;
 }
 
+/**
+ * Read a required Zoho secret, naming it if absent. Without this the missing
+ * var reached Zoho as the literal string "undefined" and came back as an
+ * opaque `invalid_client` — indistinguishable from a revoked credential.
+ */
+function requireEnv(name: "ZOHO_CLIENT_ID" | "ZOHO_CLIENT_SECRET" | "ZOHO_REFRESH_TOKEN"): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`${name} is not set — Zoho lead sync is unavailable.`);
+  }
+  return value;
+}
+
 async function getAccessToken(): Promise<string> {
   const res = await fetchWithRetry(TOKEN_URL, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
       grant_type: "refresh_token",
-      client_id: process.env.ZOHO_CLIENT_ID!,
-      client_secret: process.env.ZOHO_CLIENT_SECRET!,
-      refresh_token: process.env.ZOHO_REFRESH_TOKEN!,
+      client_id: requireEnv("ZOHO_CLIENT_ID"),
+      client_secret: requireEnv("ZOHO_CLIENT_SECRET"),
+      refresh_token: requireEnv("ZOHO_REFRESH_TOKEN"),
     }),
   });
   const data = await res.json();
