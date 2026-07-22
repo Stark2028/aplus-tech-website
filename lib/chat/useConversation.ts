@@ -6,6 +6,7 @@ import {
   collection,
   doc,
   limit,
+  limitToLast,
   onSnapshot,
   orderBy,
   query,
@@ -66,6 +67,21 @@ export function useConversation(engaged = false) {
   if (conversationId !== prevConversationId) {
     setPrevConversationId(conversationId);
     setMessages([]);
+  }
+
+  // Reset the thread when the identity changes. The uid transitions A→B on the
+  // resume flow (signInWithCustomToken swaps the anonymous uid for the original
+  // ownerUid). Without this, the previous uid's conversationId/conversation
+  // stayed in state and the message stream kept reading A's thread under B —
+  // which the rules deny — and the empty-snapshot guard below (keyed on the
+  // ref) refused to clear the stale id, freezing a returning visitor on a dead
+  // thread with no error. Clearing state here detaches the old stream; the ref
+  // itself is uid-tagged (see conversationIdRef) so B's snapshot isn't blocked.
+  const [prevUid, setPrevUid] = useState(uid);
+  if (uid !== prevUid) {
+    setPrevUid(uid);
+    setConversationId(null);
+    setConversation(null);
   }
 
   // ── resume from an emailed link (spec §6.3) ───────────────────────────────
@@ -149,7 +165,10 @@ export function useConversation(engaged = false) {
   // to mid-session.
   // Kept in sync manually at every setConversationId call site (all of them
   // are subscription/event callbacks) — refs must not be written during render.
-  const conversationIdRef = useRef<string | null>(null);
+  // Tagged with the uid it belongs to so the empty-snapshot guard below can tell
+  // "I hold an id for THIS visitor" from "I hold a stale id from a previous uid"
+  // (the resume A→B transition), and never suppresses the clear across identities.
+  const conversationIdRef = useRef<{ uid: string; id: string } | null>(null);
   useEffect(() => {
     if (!uid) return;
     const q = query(
@@ -165,15 +184,16 @@ export function useConversation(engaged = false) {
         const first = snap.docs[0];
         if (!first) {
           // Transient empty for a freshly-created (or just-written) thread —
-          // ignore it while we already have one. Only a visitor who genuinely
-          // has no open thread (never started one) falls through to null.
-          if (conversationIdRef.current) return;
+          // ignore it while we already have one FOR THIS uid. Only a visitor who
+          // genuinely has no open thread (never started one, or a fresh identity
+          // after a resume) falls through to null.
+          if (conversationIdRef.current?.uid === uid) return;
           conversationIdRef.current = null;
           setConversationId(null);
           setConversation(null);
           return;
         }
-        conversationIdRef.current = first.id;
+        conversationIdRef.current = { uid, id: first.id };
         setConversationId(first.id);
         setConversation(mapConversation(first.id, first.data() as Record<string, unknown>));
       },
@@ -187,7 +207,11 @@ export function useConversation(engaged = false) {
     const q = query(
       collection(getDb(), COL.conversations, conversationId, COL.messages),
       orderBy("createdAt", "asc"),
-      limit(200)
+      // limitToLast, NOT limit: with an ascending order, limit(n) keeps the
+      // OLDEST n, so once a thread crossed 200 messages it pinned to messages
+      // 1–200 and stopped updating forever. limitToLast keeps the most recent
+      // 200 while preserving ascending render order.
+      limitToLast(200)
     );
     return onSnapshot(
       q,
@@ -324,7 +348,7 @@ export function useConversation(engaged = false) {
 
       setCachedLead({ name: customer.name, email: customer.email, phone: customer.phone });
       trackEvent("chat_started", { page });
-      conversationIdRef.current = convRef.id;
+      conversationIdRef.current = { uid, id: convRef.id };
       setConversationId(convRef.id);
     },
     [uid]
