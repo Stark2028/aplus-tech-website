@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Phone, Mail, X } from "lucide-react";
 import type { Conversation, VisitorDoc } from "@/lib/chat/types";
 import { formatLastSeen } from "@/lib/chat/presence";
@@ -25,6 +27,14 @@ export default function CustomerPanel({
 }) {
   const { customer } = conversation;
   const name = customer.name || "Visitor";
+
+  // The mobile slide-over is portaled to <body> so no transformed ancestor — e.g. the
+  // site-wide PageTransition wrapper, whose animation retains a translateY(0) — can become
+  // its containing block and clamp `fixed inset-0` to less than the viewport. Mirrors the
+  // portal in NavbarMobile. `mounted` keeps createPortal off the server render.
+  const [mounted, setMounted] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => setMounted(true), []);
 
   const body = (
     <div className="flex flex-col gap-5 p-5">
@@ -98,27 +108,30 @@ export default function CustomerPanel({
         {body}
       </aside>
 
-      {open && (
-        <div className="fixed inset-0 z-50 flex lg:hidden">
-          <button
-            className="flex-1 bg-black/30"
-            onClick={onCloseSidebar}
-            aria-label="Close customer details"
-          />
-          <aside className="flex w-72 max-w-[80%] flex-col overflow-y-auto border-l border-gray-200 bg-gray-50">
-            <div className="flex justify-end p-2">
-              <button
-                onClick={onCloseSidebar}
-                aria-label="Close customer details"
-                className="p-1 text-gray-400 hover:text-gray-700"
-              >
-                <X size={18} />
-              </button>
-            </div>
-            {body}
-          </aside>
-        </div>
-      )}
+      {open &&
+        mounted &&
+        createPortal(
+          <div className="fixed inset-0 z-50 flex lg:hidden">
+            <button
+              className="flex-1 bg-black/30"
+              onClick={onCloseSidebar}
+              aria-label="Close customer details"
+            />
+            <aside className="flex w-72 max-w-[80%] flex-col overflow-y-auto border-l border-gray-200 bg-gray-50">
+              <div className="flex justify-end p-2">
+                <button
+                  onClick={onCloseSidebar}
+                  aria-label="Close customer details"
+                  className="p-1 text-gray-400 hover:text-gray-700"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+              {body}
+            </aside>
+          </div>,
+          document.body
+        )}
     </>
   );
 }

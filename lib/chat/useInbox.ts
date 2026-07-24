@@ -90,7 +90,11 @@ export function useClosedInbox(enabled: boolean) {
   const [prevEnabled, setPrevEnabled] = useState(enabled);
   if (enabled !== prevEnabled) {
     setPrevEnabled(enabled);
-    if (!enabled) setConversations([]);
+    if (!enabled) {
+      setConversations([]);
+      // Drop any stale error so it never lingers on the banner after the tab is left.
+      setError(null);
+    }
   }
 
   useEffect(() => {

@@ -48,7 +48,7 @@ export default function AdminChatPage() {
 function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise<void> }) {
   const { conversations: open, error } = useInbox();
   const [tab, setTab] = useState<TabKey>("open");
-  const { conversations: closed } = useClosedInbox(tab === "closed");
+  const { conversations: closed, error: closedError } = useClosedInbox(tab === "closed");
 
   const noReply = open.filter((c) => c.needsFollowUp);
   const visible = tab === "open" ? open : tab === "noreply" ? noReply : closed;
@@ -86,9 +86,9 @@ function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise
         </button>
       </header>
 
-      {error && (
+      {(error || closedError) && (
         <p role="alert" className="text-xs text-red-700 bg-red-50 border-b border-red-200 px-4 py-2">
-          {error}
+          {error || closedError}
         </p>
       )}
 
