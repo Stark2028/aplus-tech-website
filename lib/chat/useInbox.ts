@@ -74,6 +74,49 @@ export function useInbox() {
   return { conversations, error };
 }
 
+/**
+ * Closed conversations, newest first — lazily. Only subscribes while `enabled`
+ * (the Closed tab is active), so the default console never streams closed
+ * history. Reuses the (status, lastMessageAt) index the open inbox already uses.
+ */
+export function useClosedInbox(enabled: boolean) {
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  // Clear the closed list the instant the tab is switched off (reset during render,
+  // not in the effect — a synchronous setState in an effect body is an ESLint error
+  // in this repo). Mirrors the prevConversationId pattern in useThread.
+  const [prevEnabled, setPrevEnabled] = useState(enabled);
+  if (enabled !== prevEnabled) {
+    setPrevEnabled(enabled);
+    if (!enabled) setConversations([]);
+  }
+
+  useEffect(() => {
+    if (!enabled) return;
+    const q = query(
+      collection(getDb(), COL.conversations),
+      where("status", "==", "closed"),
+      orderBy("lastMessageAt", "desc"),
+      limit(50)
+    );
+    return onSnapshot(
+      q,
+      (snap) => {
+        setConversations(
+          snap.docs.map((d) => mapConversation(d.id, d.data() as Record<string, unknown>))
+        );
+      },
+      (err) => {
+        console.error("[useClosedInbox]", err);
+        setError("Could not load closed conversations.");
+      }
+    );
+  }, [enabled]);
+
+  return { conversations, error };
+}
+
 /** One conversation: its messages, the customer's presence, and the actions. */
 export function useThread(conversationId: string | null) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);

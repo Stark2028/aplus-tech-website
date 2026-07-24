@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import { Loader2, LogOut } from "lucide-react";
 import { useAgentAuth } from "@/lib/chat/useAgentAuth";
-import { useInbox } from "@/lib/chat/useInbox";
+import { useInbox, useClosedInbox } from "@/lib/chat/useInbox";
 import { useTeamHeartbeat } from "@/lib/chat/useTeamHeartbeat";
 import AgentLogin from "@/components/admin/chat/AgentLogin";
 import ConversationList from "@/components/admin/chat/ConversationList";
 import ChatThread from "@/components/admin/chat/ChatThread";
+import InboxTabs, { type TabKey } from "@/components/admin/chat/InboxTabs";
 
 export default function AdminChatPage() {
   const { ready, user, isAgent, signIn, signOutAgent, error } = useAgentAuth();
@@ -47,7 +48,17 @@ export default function AdminChatPage() {
 }
 
 function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise<void> }) {
-  const { conversations, error } = useInbox();
+  const { conversations: open, error } = useInbox();
+  const [tab, setTab] = useState<TabKey>("open");
+  const { conversations: closed } = useClosedInbox(tab === "closed");
+
+  const noReply = open.filter((c) => c.needsFollowUp);
+  const visible = tab === "open" ? open : tab === "noreply" ? noReply : closed;
+  const counts = {
+    open: open.length,
+    noreply: noReply.length,
+    closed: tab === "closed" ? closed.length : null,
+  };
 
   // Deep link from the escalation email / (Phase 2) a push notification. Read the
   // ?c= param at mount via a lazy initializer rather than an effect: this repo
@@ -63,12 +74,12 @@ function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise
 
   // In-app alert: badge the tab title so an unread chat is visible from another
   // window (spec §4). Push (Phase 2) covers "nothing open at all".
-  const unread = conversations.reduce((n, c) => n + (c.unreadForAgent > 0 ? 1 : 0), 0);
+  const unread = open.reduce((n, c) => n + (c.unreadForAgent > 0 ? 1 : 0), 0);
   useEffect(() => {
     document.title = unread > 0 ? `(${unread}) Sales console` : "Sales console";
   }, [unread]);
 
-  const selected = conversations.find((c) => c.id === selectedId) ?? null;
+  const selected = [...open, ...closed].find((c) => c.id === selectedId) ?? null;
 
   return (
     <div className="h-screen flex flex-col">
@@ -93,14 +104,24 @@ function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise
       <div className="flex-1 min-h-0 flex">
         <aside
           className={`${
-            selected ? "hidden md:block" : "block"
-          } w-full md:w-80 lg:w-96 shrink-0 border-r border-gray-200 bg-white overflow-y-auto`}
+            selected ? "hidden md:flex" : "flex"
+          } w-full flex-col md:w-80 lg:w-96 shrink-0 border-r border-gray-200 bg-white`}
         >
-          <ConversationList
-            conversations={conversations}
-            selectedId={selectedId}
-            onSelect={setSelectedId}
-          />
+          <InboxTabs active={tab} onChange={setTab} counts={counts} />
+          <div className="min-h-0 flex-1 overflow-y-auto">
+            <ConversationList
+              conversations={visible}
+              selectedId={selectedId}
+              onSelect={setSelectedId}
+              emptyLabel={
+                tab === "open"
+                  ? "No open chats."
+                  : tab === "noreply"
+                  ? "Nothing waiting on a reply."
+                  : "No closed chats."
+              }
+            />
+          </div>
         </aside>
 
         <div className={`${selected ? "block" : "hidden md:block"} flex-1 min-w-0`}>
