@@ -128,12 +128,19 @@ export function useVisitorsPresence(visitorIds: string[]) {
 
   const uniqueIdsKey = Array.from(new Set(visitorIds.filter(Boolean))).sort().join(",");
 
+  // When the visible set empties, clear presence during render rather than in the
+  // effect — a synchronous setState in an effect body is an ESLint error in this
+  // repo. Mirrors the prevConversationId guard in useThread and prevEnabled in
+  // useClosedInbox above.
+  const [prevIdsKey, setPrevIdsKey] = useState(uniqueIdsKey);
+  if (uniqueIdsKey !== prevIdsKey) {
+    setPrevIdsKey(uniqueIdsKey);
+    if (!uniqueIdsKey) setPresenceMap({});
+  }
+
   useEffect(() => {
-    const ids = uniqueIdsKey ? uniqueIdsKey.split(",") : [];
-    if (ids.length === 0) {
-      setPresenceMap({});
-      return;
-    }
+    if (!uniqueIdsKey) return;
+    const ids = uniqueIdsKey.split(",");
 
     const db = getDb();
     const lastSeenMap: Record<string, number> = {};
