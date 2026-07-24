@@ -8,7 +8,7 @@ const MINUTE = 60_000;
 const HOUR = 3_600_000;
 const DAY = 86_400_000;
 
-/** Compact age for a conversation row: "now" | "5m" | "3h" | "2d" | "Jul 12". */
+/** Compact age for a conversation row: "now" | "5m" | "3h" | "2d" | "24 Jul". */
 export function formatRelative(ts: number, now: number = Date.now()): string {
   if (!ts) return "";
   const diff = Math.max(0, now - ts);
@@ -19,7 +19,7 @@ export function formatRelative(ts: number, now: number = Date.now()): string {
   return new Date(ts).toLocaleDateString("en-IN", { month: "short", day: "numeric" });
 }
 
-/** Clock time under a message bubble: "3:45 PM". */
+/** Clock time under a message bubble: "9:15 pm". */
 export function formatClock(ts: number): string {
   if (!ts) return "";
   return new Date(ts).toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit" });
@@ -39,6 +39,8 @@ export function sameDay(a: number, b: number): boolean {
 /** Divider label between messages: "Today" | "Yesterday" | "12 July 2026". */
 export function dayLabel(ts: number, now: number = Date.now()): string {
   if (sameDay(ts, now)) return "Today";
-  if (sameDay(ts, now - DAY)) return "Yesterday";
+  const yesterday = new Date(now);
+  yesterday.setDate(yesterday.getDate() - 1);
+  if (sameDay(ts, yesterday.getTime())) return "Yesterday";
   return new Date(ts).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
 }
