@@ -90,20 +90,15 @@ export default async function IndustryCategoryPage({
     notFound();
   }
 
-  // Products matching BOTH this category AND one of the solution's recommended series.
-  const matchingProducts = showcaseProducts.filter(
-    (p) =>
-      p.category === categoryObj.name &&
-      solution.recommendedSeries.some((series) => p.series.includes(series))
-  ).sort(byLatestThenPopularity);
+  // This page is already scoped to a single category, so we simply feature the
+  // top products in that category (newest-catalog-then-most-popular). The old
+  // per-solution series filter has been removed — it over-matched and could
+  // wrongly exclude in-category products. See lib/solutionProducts.ts.
+  const featuredProducts = showcaseProducts
+    .filter((p) => p.category === categoryObj.name)
+    .sort(byLatestThenPopularity)
+    .slice(0, 8);
 
-  // Fallback: if the combo has no recommended-series matches, show top products in the category.
-  const featuredProducts =
-    matchingProducts.length > 0
-      ? matchingProducts.slice(0, 8)
-      : showcaseProducts.filter((p) => p.category === categoryObj.name).sort(byLatestThenPopularity).slice(0, 4);
-
-  const showingFallback = matchingProducts.length === 0;
   const accentGradient = GRADIENTS[industry] || "from-blue-900 via-blue-950 to-slate-900";
 
   const jsonLd = [
@@ -211,7 +206,7 @@ export default async function IndustryCategoryPage({
             <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
               <div>
                 <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600 mb-3">
-                  {showingFallback ? "From this category" : "Recommended for you"}
+                  Recommended for you
                 </p>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
                   Samsung {categoryObj.navLabel.toLowerCase()} for {solution.title.toLowerCase()}

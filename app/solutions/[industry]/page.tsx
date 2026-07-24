@@ -2,9 +2,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, ChevronRight, Phone } from "lucide-react";
 import { solutions } from "@/data/solutions";
-import { showcaseProducts } from "@/lib/showcaseProducts";
 import { getCategoryById } from "@/data/categories";
-import { byLatestThenPopularity } from "@/lib/productSort";
+import { featuredProductsForSolution } from "@/lib/solutionProducts";
 import { useCaseCombos } from "@/data/useCaseCombos";
 import ProductCard from "@/components/ProductCard";
 import MobileProductScroller from "@/components/MobileProductScroller";
@@ -76,16 +75,14 @@ export default async function IndustryPage({ params }: { params: Promise<{ indus
         notFound();
     }
 
-    const recommendedProducts = showcaseProducts.filter((p) =>
-        solution.recommendedSeries.some((series) => p.series.includes(series))
-    ).sort(byLatestThenPopularity);
+    const recommendedProducts = featuredProductsForSolution(solution);
 
     const combosForIndustry = useCaseCombos.filter((c) => c.industry === industry);
 
     const accentGradient = GRADIENTS[industry] || "from-blue-900 via-blue-950 to-slate-900";
 
     const jsonLd = [
-        solutionServiceLd(solution),
+        solutionServiceLd(solution, recommendedProducts),
         breadcrumbLd([
             { name: "Home", url: "/" },
             { name: "Solutions", url: "/#solutions" },

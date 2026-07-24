@@ -176,7 +176,7 @@ export function categoryCollectionLd(
  * Service JSON-LD for an industry / solution page.
  * Provider points to the canonical Organization node via @id.
  */
-export function solutionServiceLd(solution: Solution) {
+export function solutionServiceLd(solution: Solution, featuredProducts: Product[]) {
   const url = `${SITE}/solutions/${solution.slug}`;
   return {
     "@context": "https://schema.org",
@@ -191,8 +191,8 @@ export function solutionServiceLd(solution: Solution) {
     audience: { "@type": "BusinessAudience", audienceType: "Business" },
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: `Recommended Samsung products for ${solution.title}`,
-      itemListElement: solution.recommendedSeries.map((series) => ({
+      name: `Recommended products for ${solution.title}`,
+      itemListElement: featuredProducts.map((product) => ({
         "@type": "Offer",
         itemOffered: {
           "@type": "Product",

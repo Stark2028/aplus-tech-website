@@ -5,6 +5,7 @@ import {
   AwardIcon as Award,
 } from "@/components/icons";
 import { ElementType } from "react";
+import type { CategorySlug } from "./categories";
 
 export interface Solution {
     id: string;
@@ -18,7 +19,14 @@ export interface Solution {
         description: string;
         icon: ElementType;
     }[];
-    recommendedSeries: string[]; // e.g., ["QHC", "VMT"]
+    /**
+     * Product categories to feature on the solution page, PRIMARY FIRST.
+     * The featured-products grid leads with the primary category (top row) and
+     * fills the rest from the secondary categories — see lib/solutionProducts.ts.
+     * Replaces the old `recommendedSeries` substring match, which over-matched
+     * (e.g. "VM" pulled in every VMB/VMC/VHC wall) and dropped drifted series.
+     */
+    featuredCategories: CategorySlug[];
 }
 
 export const solutions: Solution[] = [
@@ -45,7 +53,8 @@ export const solutions: Solution[] = [
                 icon: Award,
             },
         ],
-        recommendedSeries: ["HBU", "HGU", "HG75", "AU", "BEFX", "BEA", "BEC", "BED", "QHC", "QMC", "QH115", "VM", "VH", "WAC", "WAD"],
+        // Guest-room / hotel TVs lead; then lobby signage, statement video walls, concierge kiosks.
+        featuredCategories: ["commercial-tv", "digital-signage", "video-walls", "interactive"],
     },
     {
         id: "corporate",
@@ -70,7 +79,8 @@ export const solutions: Solution[] = [
                 icon: LayoutGrid,
             },
         ],
-        recommendedSeries: ["Flip", "WAC", "WAD", "WAFX", "WAF", "QHC", "QMC", "QH115", "VMB", "VMC", "VHC", "VHB", "MP016", "BE"],
+        // Samsung Flip / interactive meeting-room displays lead; then signage, control-room walls, reception TVs.
+        featuredCategories: ["interactive", "digital-signage", "video-walls", "commercial-tv"],
     },
     {
         id: "education",
@@ -95,7 +105,8 @@ export const solutions: Solution[] = [
                 icon: LayoutGrid,
             },
         ],
-        recommendedSeries: ["Flip", "WAC", "WAD", "WAFX", "WAF", "QBC", "QBR", "QMR", "QMB", "VM", "VH", "BE"],
+        // Interactive classroom displays lead; then campus signage, hostel/common-room TVs. (No video walls.)
+        featuredCategories: ["interactive", "digital-signage", "commercial-tv"],
     },
     {
         id: "retail",
@@ -120,6 +131,7 @@ export const solutions: Solution[] = [
                 icon: LayoutGrid,
             },
         ],
-        recommendedSeries: ["QHC", "QMC", "QBC", "QBR", "QH115", "QPDX", "QET", "QMR", "QMB", "MP016", "VMB", "VMC", "VHC", "VHB", "VH55R", "BE"],
+        // Storefront / menu-board signage leads; then endless-aisle kiosks, flagship video walls, LED.
+        featuredCategories: ["digital-signage", "interactive", "video-walls", "led-signage"],
     },
 ];

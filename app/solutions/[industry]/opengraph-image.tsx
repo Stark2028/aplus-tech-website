@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { solutions } from "@/data/solutions";
+import { getCategoryById } from "@/data/categories";
 
 export const alt = "Industry Solution — Samsung B2B Displays | Aplus Technology Solutions";
 export const size = { width: 1200, height: 630 };
@@ -154,24 +155,28 @@ export default async function Image({
         >
           Recommended:
         </div>
-        {solution.recommendedSeries.slice(0, 3).map((series) => (
-          <div
-            key={series}
-            style={{
-              background: "rgba(37,99,235,0.15)",
-              border: "1px solid rgba(37,99,235,0.3)",
-              color: "#93c5fd",
-              padding: "6px 14px",
-              borderRadius: 8,
-              fontSize: 14,
-              fontWeight: 600,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            Samsung {series}
-          </div>
-        ))}
+        {solution.featuredCategories
+          .slice(0, 3)
+          .map((catId) => getCategoryById(catId))
+          .filter((cat): cat is NonNullable<typeof cat> => Boolean(cat))
+          .map((cat) => (
+            <div
+              key={cat.id}
+              style={{
+                background: "rgba(37,99,235,0.15)",
+                border: "1px solid rgba(37,99,235,0.3)",
+                color: "#93c5fd",
+                padding: "6px 14px",
+                borderRadius: 8,
+                fontSize: 14,
+                fontWeight: 600,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {cat.navLabel}
+            </div>
+          ))}
       </div>
 
       {/* Footer */}
