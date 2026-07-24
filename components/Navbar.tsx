@@ -20,9 +20,6 @@ export default function Navbar() {
 
   const cartCount = quoteItems.reduce((acc, item) => acc + item.quantity, 0);
 
-  // The sales console (/admin) is a standalone full-screen tool — no marketing chrome.
-  if (pathname?.startsWith("/admin")) return null;
-
   // When the home link / logo is clicked while already on the homepage,
   // Next.js won't navigate — so scroll back to the top ourselves.
   const handleHomeClick = (e: React.MouseEvent) => {
@@ -37,6 +34,9 @@ export default function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // The sales console (/admin) is a standalone full-screen tool — no marketing chrome.
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <>
