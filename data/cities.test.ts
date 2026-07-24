@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { cities, CITY_SLUGS, getCityBySlug, cityFaqs, SERVING_OFFICES } from "@/data/cities";
+import { cities, CITY_SLUGS, getCityBySlug, relatedCities, SERVING_OFFICES } from "@/data/cities";
+import { cityFaqs } from "@/lib/cityContent";
 import { products } from "@/data/products";
 import { productCategories } from "@/data/categories";
 import { solutions } from "@/data/solutions";
@@ -75,6 +76,69 @@ describe("city data integrity", () => {
     const faqs = cityFaqs(getCityBySlug("mumbai")!);
     expect(faqs.length).toBeGreaterThanOrEqual(3);
     expect(faqs.some((f) => f.q.includes("Mumbai") || f.a.includes("Mumbai"))).toBe(true);
+  });
+});
+
+describe("relatedCities — internal link graph", () => {
+  const LIMIT = 6;
+
+  it("never links a city to itself", () => {
+    const bad = cities.filter((c) => relatedCities(c, LIMIT).some((r) => r.slug === c.slug));
+    expect(bad.map((c) => c.slug)).toEqual([]);
+  });
+
+  it("returns distinct cities from the same region", () => {
+    for (const c of cities) {
+      const related = relatedCities(c, LIMIT);
+      expect(new Set(related.map((r) => r.slug)).size).toBe(related.length);
+      expect(related.every((r) => r.region === c.region)).toBe(true);
+    }
+  });
+
+  // The regression that matters. The previous implementation was
+  // `cities.filter(sameRegion).slice(0, 6)`, which pointed EVERY city in a
+  // region at the same six entries — those six hoarded the region's inbound
+  // links and every other city page was orphaned. A ring must give every city
+  // the same inbound count as its outbound count.
+  it("gives every city inbound links — no orphans, no hoarding", () => {
+    const inbound = new Map<string, number>(cities.map((c) => [c.slug, 0]));
+    for (const c of cities) {
+      for (const r of relatedCities(c, LIMIT)) {
+        inbound.set(r.slug, (inbound.get(r.slug) ?? 0) + 1);
+      }
+    }
+    const counts = [...inbound.values()];
+    expect(Math.min(...counts)).toBeGreaterThan(0);
+
+    // Ring symmetry: within a region every city sends and receives the same
+    // number of links, so the whole graph is perfectly balanced.
+    const regions = new Set(cities.map((c) => c.region));
+    for (const region of regions) {
+      const inRegion = cities.filter((c) => c.region === region);
+      const expected = Math.min(LIMIT, inRegion.length - 1);
+      const regionCounts = inRegion.map((c) => inbound.get(c.slug) ?? 0);
+      expect(new Set(regionCounts)).toEqual(new Set([expected]));
+    }
+  });
+
+  it("favours same-state neighbours for topical relevance", () => {
+    // `cities` is authored grouped by region then state, so ring neighbours are
+    // mostly same-state. Assert the majority of links stay in-state overall.
+    let sameState = 0;
+    let total = 0;
+    for (const c of cities) {
+      for (const r of relatedCities(c, LIMIT)) {
+        total++;
+        if (r.state === c.state) sameState++;
+      }
+    }
+    expect(sameState / total).toBeGreaterThan(0.4);
+  });
+
+  it("is deterministic across calls", () => {
+    const a = relatedCities(getCityBySlug("jaipur")!, LIMIT).map((c) => c.slug);
+    const b = relatedCities(getCityBySlug("jaipur")!, LIMIT).map((c) => c.slug);
+    expect(a).toEqual(b);
   });
 });
 

@@ -55,47 +55,47 @@ export const cities: City[] = [
   { slug: "meerut", name: "Meerut", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Meerut, Uttar Pradesh, dispatched and service-backed from our nearby Noida headquarters." },
   { slug: "agra", name: "Agra", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for hospitality, retail and education clients across Agra, Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
+    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Agra, Uttar Pradesh — the full range of digital signage, video walls, interactive displays and hospitality TVs — dispatched and service-backed from our Noida headquarters." },
   { slug: "aligarh", name: "Aligarh", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for institutions and businesses across Aligarh, Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
   { slug: "allahabad", name: "Prayagraj (Allahabad)", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Prayagraj (Allahabad), Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
+    intro: "Looking for Samsung commercial displays in Prayagraj (Allahabad)? Aplus Technology Solutions delivers smart signage, video walls, interactive panels and hotel TVs to organisations across Prayagraj (Allahabad) and the wider Uttar Pradesh region, with certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "bareilly", name: "Bareilly", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Bareilly, Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
+    intro: "Aplus Technology Solutions is an authorized Samsung distributor serving Bareilly, Uttar Pradesh. We supply and install commercial signage, LED video walls, interactive displays and hospitality TVs for offices, retail and institutions across the city, dispatched and service-backed from our Noida headquarters." },
   { slug: "firozabad", name: "Firozabad", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Firozabad, Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
+    intro: "From single displays to full projects, Aplus Technology Solutions equips Firozabad businesses with Samsung digital signage, LED walls, touch-interactive displays and guest-room TVs — supply, certified installation and AMC across Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
   { slug: "gorakhpur", name: "Gorakhpur", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Gorakhpur, Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
+    intro: "Aplus Technology Solutions brings the complete Samsung commercial-display range — digital signage, video walls, interactive displays and hospitality TVs — to Gorakhpur and the surrounding northern India market, dispatched and service-backed from our Noida headquarters." },
   { slug: "jhansi", name: "Jhansi", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Jhansi, Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
+    intro: "Businesses across Jhansi, Uttar Pradesh source their Samsung commercial displays from Aplus Technology Solutions — smart signage, video walls, interactive panels and hotel TVs, with delivery, certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "kanpur", name: "Kanpur", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for industry, retail and offices across Kanpur, Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
+    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Kanpur, Uttar Pradesh — the full range of commercial signage, LED video walls, interactive displays and hospitality TVs — dispatched and service-backed from our Noida headquarters." },
   { slug: "lucknow", name: "Lucknow", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for government, corporate and retail clients across Lucknow, Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
   { slug: "moradabad", name: "Moradabad", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Moradabad, Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
+    intro: "Looking for Samsung commercial displays in Moradabad? Aplus Technology Solutions delivers digital signage, LED walls, touch-interactive displays and guest-room TVs to organisations across Moradabad and the wider Uttar Pradesh region, with certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "saharanpur", name: "Saharanpur", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Saharanpur, Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
+    intro: "Aplus Technology Solutions is an authorized Samsung distributor serving Saharanpur, Uttar Pradesh. We supply and install digital signage, video walls, interactive displays and hospitality TVs for offices, retail and institutions across the city, dispatched and service-backed from our Noida headquarters." },
   { slug: "varanasi", name: "Varanasi", state: "Uttar Pradesh", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for hospitality, retail and education clients across Varanasi, Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
+    intro: "From single displays to full projects, Aplus Technology Solutions equips Varanasi businesses with Samsung smart signage, video walls, interactive panels and hotel TVs — supply, certified installation and AMC across Uttar Pradesh, dispatched and service-backed from our Noida headquarters." },
   { slug: "amritsar", name: "Amritsar", state: "Punjab", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for hospitality and retail clients across Amritsar, Punjab, dispatched and service-backed from our Noida headquarters." },
+    intro: "Aplus Technology Solutions brings the complete Samsung commercial-display range — commercial signage, LED video walls, interactive displays and hospitality TVs — to Amritsar and the surrounding northern India market, dispatched and service-backed from our Noida headquarters." },
   { slug: "jalandhar", name: "Jalandhar", state: "Punjab", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Jalandhar, Punjab, dispatched and service-backed from our Noida headquarters." },
+    intro: "Businesses across Jalandhar, Punjab source their Samsung commercial displays from Aplus Technology Solutions — digital signage, LED walls, touch-interactive displays and guest-room TVs, with delivery, certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "ludhiana", name: "Ludhiana", state: "Punjab", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for industry, retail and offices across Ludhiana, Punjab, dispatched and service-backed from our Noida headquarters." },
+    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Ludhiana, Punjab — the full range of digital signage, video walls, interactive displays and hospitality TVs — dispatched and service-backed from our Noida headquarters." },
   { slug: "ajmer", name: "Ajmer", state: "Rajasthan", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Ajmer, Rajasthan, dispatched and service-backed from our Noida headquarters." },
+    intro: "Looking for Samsung commercial displays in Ajmer? Aplus Technology Solutions delivers smart signage, video walls, interactive panels and hotel TVs to organisations across Ajmer and the wider Rajasthan region, with certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "bikaner", name: "Bikaner", state: "Rajasthan", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Bikaner, Rajasthan, dispatched and service-backed from our Noida headquarters." },
+    intro: "Aplus Technology Solutions is an authorized Samsung distributor serving Bikaner, Rajasthan. We supply and install commercial signage, LED video walls, interactive displays and hospitality TVs for offices, retail and institutions across the city, dispatched and service-backed from our Noida headquarters." },
   { slug: "jaipur", name: "Jaipur", state: "Rajasthan", region: "north", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays across Jaipur, Rajasthan — for its hospitality, retail and corporate sectors — with delivery, certified installation and AMC coordinated from our Noida headquarters." },
   { slug: "jodhpur", name: "Jodhpur", state: "Rajasthan", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for hospitality and retail clients across Jodhpur, Rajasthan, dispatched and service-backed from our Noida headquarters." },
+    intro: "From single displays to full projects, Aplus Technology Solutions equips Jodhpur businesses with Samsung digital signage, LED walls, touch-interactive displays and guest-room TVs — supply, certified installation and AMC across Rajasthan, dispatched and service-backed from our Noida headquarters." },
   { slug: "kota", name: "Kota", state: "Rajasthan", region: "north", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for the coaching institutes, schools and offices of Kota, Rajasthan, dispatched and service-backed from our Noida headquarters." },
   { slug: "udaipur", name: "Udaipur", state: "Rajasthan", region: "north", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for hospitality and retail clients across Udaipur, Rajasthan, dispatched and service-backed from our Noida headquarters." },
+    intro: "Aplus Technology Solutions brings the complete Samsung commercial-display range — digital signage, video walls, interactive displays and hospitality TVs — to Udaipur and the surrounding northern India market, dispatched and service-backed from our Noida headquarters." },
   // net-new tier-2 (added 2026-07-24)
   { slug: "panipat", name: "Panipat", state: "Haryana", region: "north", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for the textile industry, showrooms and offices of Panipat, Haryana, dispatched and service-backed from our nearby Noida headquarters." },
@@ -124,31 +124,31 @@ export const cities: City[] = [
   { slug: "pimpri-and-chinchwad", name: "Pimpri-Chinchwad", state: "Maharashtra", region: "west", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for the manufacturing and corporate clients of Pimpri-Chinchwad, Maharashtra, with certified installation and AMC support." },
   { slug: "nashik", name: "Nashik", state: "Maharashtra", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Nashik, Maharashtra, with certified installation and AMC support." },
+    intro: "Businesses across Nashik, Maharashtra source their Samsung commercial displays from Aplus Technology Solutions — smart signage, video walls, interactive panels and hotel TVs, with delivery, certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "nagpur", name: "Nagpur", state: "Maharashtra", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for corporate, retail and government clients across Nagpur, Maharashtra, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Nagpur, Maharashtra — the full range of commercial signage, LED video walls, interactive displays and hospitality TVs — dispatched and service-backed from our Noida headquarters." },
   { slug: "aurangabad", name: "Aurangabad (Chhatrapati Sambhajinagar)", state: "Maharashtra", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Aurangabad (Chhatrapati Sambhajinagar), Maharashtra, with certified installation and AMC support." },
+    intro: "Looking for Samsung commercial displays in Aurangabad (Chhatrapati Sambhajinagar)? Aplus Technology Solutions delivers digital signage, LED walls, touch-interactive displays and guest-room TVs to organisations across Aurangabad (Chhatrapati Sambhajinagar) and the wider Maharashtra region, with certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "amravati", name: "Amravati", state: "Maharashtra", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Amravati, Maharashtra, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions is an authorized Samsung distributor serving Amravati, Maharashtra. We supply and install digital signage, video walls, interactive displays and hospitality TVs for offices, retail and institutions across the city, dispatched and service-backed from our Noida headquarters." },
   { slug: "solapur", name: "Solapur", state: "Maharashtra", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Solapur, Maharashtra, with certified installation and AMC support." },
+    intro: "From single displays to full projects, Aplus Technology Solutions equips Solapur businesses with Samsung smart signage, video walls, interactive panels and hotel TVs — supply, certified installation and AMC across Maharashtra, dispatched and service-backed from our Noida headquarters." },
   { slug: "kolapur", name: "Kolhapur", state: "Maharashtra", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Kolhapur, Maharashtra, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions brings the complete Samsung commercial-display range — commercial signage, LED video walls, interactive displays and hospitality TVs — to Kolhapur and the surrounding western India market, dispatched and service-backed from our Noida headquarters." },
   { slug: "sangli", name: "Sangli", state: "Maharashtra", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Sangli, Maharashtra, with certified installation and AMC support." },
+    intro: "Businesses across Sangli, Maharashtra source their Samsung commercial displays from Aplus Technology Solutions — digital signage, LED walls, touch-interactive displays and guest-room TVs, with delivery, certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "jalgaon", name: "Jalgaon", state: "Maharashtra", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Jalgaon, Maharashtra, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Jalgaon, Maharashtra — the full range of digital signage, video walls, interactive displays and hospitality TVs — dispatched and service-backed from our Noida headquarters." },
   { slug: "nanded-waghala", name: "Nanded-Waghala", state: "Maharashtra", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Nanded-Waghala, Maharashtra, with certified installation and AMC support." },
+    intro: "Looking for Samsung commercial displays in Nanded-Waghala? Aplus Technology Solutions delivers smart signage, video walls, interactive panels and hotel TVs to organisations across Nanded-Waghala and the wider Maharashtra region, with certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "bhiwandi", name: "Bhiwandi", state: "Maharashtra", region: "west", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for the warehousing and retail businesses of Bhiwandi, Maharashtra, with certified installation and AMC support." },
   { slug: "kalyan", name: "Kalyan-Dombivli", state: "Maharashtra", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Kalyan-Dombivli, Maharashtra, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions is an authorized Samsung distributor serving Kalyan-Dombivli, Maharashtra. We supply and install commercial signage, LED video walls, interactive displays and hospitality TVs for offices, retail and institutions across the city, dispatched and service-backed from our Noida headquarters." },
   { slug: "ulhasnagar", name: "Ulhasnagar", state: "Maharashtra", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Ulhasnagar, Maharashtra, with certified installation and AMC support." },
+    intro: "From single displays to full projects, Aplus Technology Solutions equips Ulhasnagar businesses with Samsung digital signage, LED walls, touch-interactive displays and guest-room TVs — supply, certified installation and AMC across Maharashtra, dispatched and service-backed from our Noida headquarters." },
   { slug: "mira-and-bhayander", name: "Mira-Bhayandar", state: "Maharashtra", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Mira-Bhayandar, Maharashtra, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions brings the complete Samsung commercial-display range — digital signage, video walls, interactive displays and hospitality TVs — to Mira-Bhayandar and the surrounding western India market, dispatched and service-backed from our Noida headquarters." },
   { slug: "ahmedabad", name: "Ahmedabad", state: "Gujarat", region: "west", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays across Ahmedabad — for its corporate offices, textile and retail businesses and education institutions — delivering the full Samsung B2B range with certified installation and AMC support." },
   { slug: "surat", name: "Surat", state: "Gujarat", region: "west", servedFrom: "noida",
@@ -156,11 +156,11 @@ export const cities: City[] = [
   { slug: "vadodara", name: "Vadodara", state: "Gujarat", region: "west", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for corporate and industrial clients across Vadodara, Gujarat, with certified installation and AMC support." },
   { slug: "rajkot", name: "Rajkot", state: "Gujarat", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Rajkot, Gujarat, with certified installation and AMC support." },
+    intro: "Businesses across Rajkot, Gujarat source their Samsung commercial displays from Aplus Technology Solutions — smart signage, video walls, interactive panels and hotel TVs, with delivery, certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "bhavnagar", name: "Bhavnagar", state: "Gujarat", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Bhavnagar, Gujarat, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Bhavnagar, Gujarat — the full range of commercial signage, LED video walls, interactive displays and hospitality TVs — dispatched and service-backed from our Noida headquarters." },
   { slug: "jamnagar", name: "Jamnagar", state: "Gujarat", region: "west", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Jamnagar, Gujarat, with certified installation and AMC support." },
+    intro: "Looking for Samsung commercial displays in Jamnagar? Aplus Technology Solutions delivers digital signage, LED walls, touch-interactive displays and guest-room TVs to organisations across Jamnagar and the wider Gujarat region, with certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   // net-new tier-2 (added 2026-07-24)
   { slug: "gandhinagar", name: "Gandhinagar", state: "Gujarat", region: "west", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for the government offices, GIFT City corporates and education institutions of Gandhinagar, Gujarat, with certified installation and AMC support." },
@@ -177,11 +177,11 @@ export const cities: City[] = [
   { slug: "indore", name: "Indore", state: "Madhya Pradesh", region: "central", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays across Indore — Madhya Pradesh's commercial hub — for its retail, corporate and education sectors, with certified installation and AMC support." },
   { slug: "gwalior", name: "Gwalior", state: "Madhya Pradesh", region: "central", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Gwalior, Madhya Pradesh, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions is an authorized Samsung distributor serving Gwalior, Madhya Pradesh. We supply and install digital signage, video walls, interactive displays and hospitality TVs for offices, retail and institutions across the city, dispatched and service-backed from our Noida headquarters." },
   { slug: "jabalpur", name: "Jabalpur", state: "Madhya Pradesh", region: "central", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Jabalpur, Madhya Pradesh, with certified installation and AMC support." },
+    intro: "From single displays to full projects, Aplus Technology Solutions equips Jabalpur businesses with Samsung smart signage, video walls, interactive panels and hotel TVs — supply, certified installation and AMC across Madhya Pradesh, dispatched and service-backed from our Noida headquarters." },
   { slug: "ujjain", name: "Ujjain", state: "Madhya Pradesh", region: "central", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Ujjain, Madhya Pradesh, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions brings the complete Samsung commercial-display range — commercial signage, LED video walls, interactive displays and hospitality TVs — to Ujjain and the surrounding central India market, dispatched and service-backed from our Noida headquarters." },
   { slug: "raipur", name: "Raipur", state: "Chhattisgarh", region: "central", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for corporate and government clients across Raipur, Chhattisgarh, with certified installation and AMC support." },
   { slug: "bhilai-nagar", name: "Bhilai", state: "Chhattisgarh", region: "central", servedFrom: "noida",
@@ -200,27 +200,27 @@ export const cities: City[] = [
   { slug: "coimbatore", name: "Coimbatore", state: "Tamil Nadu", region: "south", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for industry, education and retail clients across Coimbatore, Tamil Nadu, with certified installation and AMC support." },
   { slug: "madurai", name: "Madurai", state: "Tamil Nadu", region: "south", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Madurai, Tamil Nadu, with certified installation and AMC support." },
+    intro: "Businesses across Madurai, Tamil Nadu source their Samsung commercial displays from Aplus Technology Solutions — digital signage, LED walls, touch-interactive displays and guest-room TVs, with delivery, certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "salem", name: "Salem", state: "Tamil Nadu", region: "south", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Salem, Tamil Nadu, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Salem, Tamil Nadu — the full range of digital signage, video walls, interactive displays and hospitality TVs — dispatched and service-backed from our Noida headquarters." },
   { slug: "tiruchirappalli", name: "Tiruchirappalli (Trichy)", state: "Tamil Nadu", region: "south", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Tiruchirappalli (Trichy), Tamil Nadu, with certified installation and AMC support." },
+    intro: "Looking for Samsung commercial displays in Tiruchirappalli (Trichy)? Aplus Technology Solutions delivers smart signage, video walls, interactive panels and hotel TVs to organisations across Tiruchirappalli (Trichy) and the wider Tamil Nadu region, with certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "hyderabad", name: "Hyderabad", state: "Telangana", region: "south", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays across Hyderabad — from HITEC City corporate campuses to retail, hospitality and government — delivering the full Samsung B2B display range with certified installation and AMC support." },
   { slug: "warangal", name: "Warangal", state: "Telangana", region: "south", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Warangal, Telangana, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions is an authorized Samsung distributor serving Warangal, Telangana. We supply and install commercial signage, LED video walls, interactive displays and hospitality TVs for offices, retail and institutions across the city, dispatched and service-backed from our Noida headquarters." },
   { slug: "vijayawada", name: "Vijayawada", state: "Andhra Pradesh", region: "south", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for corporate, retail and government clients across Vijayawada, Andhra Pradesh, with certified installation and AMC support." },
+    intro: "From single displays to full projects, Aplus Technology Solutions equips Vijayawada businesses with Samsung digital signage, LED walls, touch-interactive displays and guest-room TVs — supply, certified installation and AMC across Andhra Pradesh, dispatched and service-backed from our Noida headquarters." },
   { slug: "visakhapatnam", name: "Visakhapatnam", state: "Andhra Pradesh", region: "south", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for the port, industrial and corporate clients of Visakhapatnam, Andhra Pradesh, with certified installation and AMC support." },
   { slug: "guntur", name: "Guntur", state: "Andhra Pradesh", region: "south", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Guntur, Andhra Pradesh, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions brings the complete Samsung commercial-display range — digital signage, video walls, interactive displays and hospitality TVs — to Guntur and the surrounding southern India market, dispatched and service-backed from our Noida headquarters." },
   { slug: "nellore", name: "Nellore", state: "Andhra Pradesh", region: "south", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Nellore, Andhra Pradesh, with certified installation and AMC support." },
+    intro: "Businesses across Nellore, Andhra Pradesh source their Samsung commercial displays from Aplus Technology Solutions — smart signage, video walls, interactive panels and hotel TVs, with delivery, certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "belgaum", name: "Belagavi (Belgaum)", state: "Karnataka", region: "south", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Belagavi (Belgaum), Karnataka, with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Belagavi (Belgaum), Karnataka — the full range of commercial signage, LED video walls, interactive displays and hospitality TVs — dispatched and service-backed from our Noida headquarters." },
   { slug: "gulbarga", name: "Kalaburagi (Gulbarga)", state: "Karnataka", region: "south", servedFrom: "noida",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Kalaburagi (Gulbarga), Karnataka, with certified installation and AMC support." },
+    intro: "Looking for Samsung commercial displays in Kalaburagi (Gulbarga)? Aplus Technology Solutions delivers digital signage, LED walls, touch-interactive displays and guest-room TVs to organisations across Kalaburagi (Gulbarga) and the wider Karnataka region, with certified installation and AMC dispatched and service-backed from our Noida headquarters." },
   { slug: "mangalore", name: "Mangaluru (Mangalore)", state: "Karnataka", region: "south", servedFrom: "noida",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for the port, education and retail clients of Mangaluru (Mangalore), Karnataka, with certified installation and AMC support." },
   { slug: "kochi", name: "Kochi", state: "Kerala", region: "south", servedFrom: "noida",
@@ -253,17 +253,17 @@ export const cities: City[] = [
   { slug: "haora", name: "Howrah", state: "West Bengal", region: "east", servedFrom: "kolkata",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays across Howrah, West Bengal, served directly from our nearby Kolkata regional office with fast delivery, certified installation and AMC support." },
   { slug: "maheshtala", name: "Maheshtala", state: "West Bengal", region: "east", servedFrom: "kolkata",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Maheshtala, West Bengal, served from our Kolkata regional office with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions is an authorized Samsung distributor serving Maheshtala, West Bengal. We supply and install digital signage, video walls, interactive displays and hospitality TVs for offices, retail and institutions across the city, served from our Kolkata regional office." },
   { slug: "asansol", name: "Asansol", state: "West Bengal", region: "east", servedFrom: "kolkata",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Asansol, West Bengal, served from our Kolkata regional office with certified installation and AMC support." },
+    intro: "From single displays to full projects, Aplus Technology Solutions equips Asansol businesses with Samsung smart signage, video walls, interactive panels and hotel TVs — supply, certified installation and AMC across West Bengal, served from our Kolkata regional office." },
   { slug: "durgapur", name: "Durgapur", state: "West Bengal", region: "east", servedFrom: "kolkata",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for the industrial and institutional clients of Durgapur, West Bengal, served from our Kolkata regional office." },
+    intro: "Aplus Technology Solutions brings the complete Samsung commercial-display range — commercial signage, LED video walls, interactive displays and hospitality TVs — to Durgapur and the surrounding eastern India market, served from our Kolkata regional office." },
   { slug: "siliguri", name: "Siliguri", state: "West Bengal", region: "east", servedFrom: "kolkata",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Siliguri, West Bengal, served from our Kolkata regional office with certified installation and AMC support." },
+    intro: "Businesses across Siliguri, West Bengal source their Samsung commercial displays from Aplus Technology Solutions — digital signage, LED walls, touch-interactive displays and guest-room TVs, with delivery, certified installation and AMC served from our Kolkata regional office." },
   { slug: "bhubaneswar", name: "Bhubaneswar", state: "Odisha", region: "east", servedFrom: "kolkata",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for government, IT and education clients across Bhubaneswar, Odisha, served from our Kolkata regional office." },
   { slug: "cuttack", name: "Cuttack", state: "Odisha", region: "east", servedFrom: "kolkata",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Cuttack, Odisha, served from our Kolkata regional office with certified installation and AMC support." },
+    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for businesses across Cuttack, Odisha — the full range of digital signage, video walls, interactive displays and hospitality TVs — served from our Kolkata regional office." },
   { slug: "guwahati", name: "Guwahati", state: "Assam", region: "east", servedFrom: "kolkata",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for corporate, retail and government clients across Guwahati, Assam — the gateway to the North-East — served from our Kolkata regional office." },
   { slug: "patna", name: "Patna", state: "Bihar", region: "east", servedFrom: "kolkata",
@@ -273,7 +273,7 @@ export const cities: City[] = [
   { slug: "ranchi", name: "Ranchi", state: "Jharkhand", region: "east", servedFrom: "kolkata",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for government, corporate and education clients across Ranchi, Jharkhand, served from our Kolkata regional office." },
   { slug: "dhanbad", name: "Dhanbad", state: "Jharkhand", region: "east", servedFrom: "kolkata",
-    intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for the industrial and institutional clients of Dhanbad, Jharkhand, served from our Kolkata regional office." },
+    intro: "Looking for Samsung commercial displays in Dhanbad? Aplus Technology Solutions delivers smart signage, video walls, interactive panels and hotel TVs to organisations across Dhanbad and the wider Jharkhand region, with certified installation and AMC served from our Kolkata regional office." },
   { slug: "jamshedpur", name: "Jamshedpur", state: "Jharkhand", region: "east", servedFrom: "kolkata",
     intro: "Aplus Technology Solutions supplies and installs Samsung commercial displays for the corporate and industrial clients of Jamshedpur, Jharkhand, served from our Kolkata regional office." },
   // net-new tier-2 (added 2026-07-24)
@@ -295,27 +295,31 @@ export function getCityBySlug(slug: string): City | undefined {
 }
 
 /**
- * Honest, city-named FAQ. Every answer is true for a Noida-HQ / Kolkata-branch
- * company that ships and services nationwide — no fabricated local office.
+ * The "We also serve" internal-link set for a city page.
+ *
+ * Walks the city's own region as a RING — the `limit` entries following this
+ * city, wrapping at the end — instead of taking the first `limit` of the region.
+ * The old `.filter(region).slice(0, limit)` pointed every city in a region at
+ * the same six entries, so those six absorbed every inbound link in the region
+ * and the remaining ~110 city pages were left orphaned (reachable only from
+ * /locations). A ring gives every city exactly `limit` outbound AND exactly
+ * `limit` inbound links.
+ *
+ * Relevance comes for free: `cities` is authored grouped by region and then by
+ * state, so a city's ring neighbours are overwhelmingly its own state's cities.
+ * Ordering is positional, so the result stays deterministic across builds.
  */
-export function cityFaqs(city: City): Array<{ q: string; a: string }> {
-  const office = SERVING_OFFICES[city.servedFrom];
-  return [
-    {
-      q: `Do you deliver Samsung commercial displays to ${city.name}?`,
-      a: `Yes. As an authorized Samsung distributor we dispatch to ${city.name} and across ${city.state} from our ${office.city} ${office.label}, with GST invoicing and pan-India logistics.`,
-    },
-    {
-      q: `Do you provide installation and setup in ${city.name}?`,
-      a: `Yes. We coordinate certified on-site installation and commissioning for ${city.name} projects — including video-wall mounting, alignment and MagicINFO/content setup.`,
-    },
-    {
-      q: `Is service and AMC support available in ${city.name}?`,
-      a: `Yes. On-site service and Annual Maintenance Contracts for ${city.name} are coordinated from our ${office.city} ${office.label} so your displays stay covered after installation.`,
-    },
-    {
-      q: `Can a ${city.name} business get bulk or project pricing?`,
-      a: `Yes. We quote B2B and project volumes with GST invoicing. Request a quote or call us and we'll price your ${city.name} requirement.`,
-    },
-  ];
+export function relatedCities(city: City, limit = 6): City[] {
+  const peers = cities.filter((c) => c.region === city.region);
+  const self = peers.findIndex((c) => c.slug === city.slug);
+  if (self === -1) return [];
+
+  const out: City[] = [];
+  for (let step = 1; step <= limit && step < peers.length; step++) {
+    out.push(peers[(self + step) % peers.length]);
+  }
+  return out;
 }
+
+// NOTE: cityFaqs() moved to lib/cityContent.ts, where it can compose with
+// citySectors(). data/ holds authored facts; lib/ derives copy from them.

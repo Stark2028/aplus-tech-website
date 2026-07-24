@@ -2,9 +2,10 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, ChevronRight, Phone, Truck, Wrench, ShieldCheck } from "lucide-react";
 import type { Metadata } from "next";
-import { cities, getCityBySlug, cityFaqs, SERVING_OFFICES } from "@/data/cities";
-import { products } from "@/data/products";
-import { byLatestThenPopularity } from "@/lib/productSort";
+import { cities, getCityBySlug, relatedCities } from "@/data/cities";
+import { cityFaqs, cityServeCards, citySectors } from "@/lib/cityContent";
+import { cityProducts } from "@/lib/cityProducts";
+import { solutions as allSolutions } from "@/data/solutions";
 import ProductCard from "@/components/ProductCard";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 import {
@@ -65,23 +66,28 @@ export async function generateMetadata({
   };
 }
 
-// Top of the catalog, shown on every city page (same distributor, same catalog
-// everywhere — the city-specific value is the intro, serve block and FAQ).
-const FEATURED = [...products].sort(byLatestThenPopularity).slice(0, 8);
-
 export default async function CityPage({ params }: { params: Promise<PageParams> }) {
   const { city: slug } = await params;
   const city = getCityBySlug(slug);
   if (!city) notFound();
 
-  const office = SERVING_OFFICES[city.servedFrom];
   const faqs = cityFaqs(city);
+  const serveCards = cityServeCards(city);
+  // Only the sectors this city's client-reviewed intro actually names; empty for
+  // the generic intros, where we link the full solution set instead of guessing.
+  const sectors = citySectors(city);
+
+  // Walks the catalog per city instead of pinning every page to the same top 8
+  // — spreads product link equity and stops 122 pages sharing one body.
+  const featured = cityProducts(city, 8);
 
   // A few other cities in the same region, for internal linking (crawlability).
-  const nearby = cities.filter((c) => c.region === city.region && c.slug !== city.slug).slice(0, 6);
+  // Ring-based so inbound links spread evenly instead of piling onto whichever
+  // six cities happen to sit at the top of the region — see relatedCities().
+  const nearby = relatedCities(city, 6);
 
   const jsonLd = [
-    cityServiceLd(city, FEATURED),
+    cityServiceLd(city, featured),
     faqPageLd(faqs.map((f) => ({ question: f.q, answer: f.a }))),
     breadcrumbLd([
       { name: "Home", url: "/" },
@@ -148,21 +154,37 @@ export default async function CityPage({ params }: { params: Promise<PageParams>
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[
-              { icon: Truck, title: "Delivery to " + city.name,
-                body: `Dispatched from our ${office.city} ${office.label} with GST invoicing and pan-India logistics to ${city.name} and across ${city.state}.` },
-              { icon: Wrench, title: "Certified installation",
-                body: `On-site mounting, alignment and MagicINFO/content setup for signage, video walls and interactive displays in ${city.name}.` },
-              { icon: ShieldCheck, title: "Service & AMC",
-                body: `On-site service and Annual Maintenance Contracts for ${city.name}, coordinated from our ${office.city} ${office.label}.` },
-            ].map((f) => (
-              <div key={f.title} className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
-                <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
-                  <f.icon size={18} className="text-blue-600" />
+            {serveCards.map((f, i) => {
+              const Icon = [Truck, Wrench, ShieldCheck][i] ?? Truck;
+              return (
+                <div key={f.title} className="bg-gray-50 border border-gray-100 rounded-2xl p-6">
+                  <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center mb-4">
+                    <Icon size={18} className="text-blue-600" />
+                  </div>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{f.title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{f.body}</p>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{f.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{f.body}</p>
-              </div>
+              );
+            })}
+          </div>
+
+          {/* Sector links — the industries this city's reviewed intro names, or
+              the full set when it names none. Also the only path from a city
+              page into /solutions/*, which previously received no links here. */}
+          <div className="mt-8 flex flex-wrap items-center gap-2.5">
+            <span className="text-sm text-gray-500 mr-1">
+              {sectors.length > 0
+                ? `Common in ${city.name}:`
+                : "Explore by industry:"}
+            </span>
+            {(sectors.length > 0 ? sectors : allSolutions).map((s) => (
+              <Link
+                key={s.slug}
+                href={`/solutions/${s.slug}`}
+                className="inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 hover:border-blue-300 hover:text-blue-700 transition-colors"
+              >
+                {s.title}
+              </Link>
             ))}
           </div>
         </div>
@@ -189,7 +211,7 @@ export default async function CityPage({ params }: { params: Promise<PageParams>
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {FEATURED.map((product) => (
+            {featured.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
