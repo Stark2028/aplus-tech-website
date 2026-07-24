@@ -6,6 +6,7 @@ import type { ChatAttachment, ChatLink, Conversation } from "@/lib/chat/types";
 import { useThread } from "@/lib/chat/useInbox";
 import { isVisitorOnline, formatLastSeen } from "@/lib/chat/presence";
 import { isSendable, MAX_MESSAGE_LEN } from "@/lib/chat/messages";
+import { isNearBottom } from "@/lib/chat/scroll";
 import MessageAttachment from "@/components/chat/MessageAttachment";
 import AttachmentPicker from "./AttachmentPicker";
 import LinkPicker from "./LinkPicker";
@@ -22,7 +23,9 @@ export default function ChatThread({
   const { messages, visitor, error: threadError, sendReply, markRead, setStatus } = useThread(conversation.id);
   const [draft, setDraft] = useState("");
   const [uploadError, setUploadError] = useState("");
-  const end = useRef<HTMLDivElement>(null);
+  const logRef = useRef<HTMLDivElement>(null);
+  // Keep the log pinned to the bottom unless the agent scrolls up to read history.
+  const stickToBottom = useRef(true);
 
   // #5 fix: include messages.length in deps so markRead re-fires whenever a new
   // customer message arrives while the agent is actively viewing the thread.
@@ -32,9 +35,24 @@ export default function ChatThread({
     void markRead();
   }, [conversation.id, markRead, messages.length]);
 
+  // Switching conversations always jumps straight to the newest message.
   useEffect(() => {
-    end.current?.scrollIntoView({ behavior: "smooth" });
+    stickToBottom.current = true;
+    const log = logRef.current;
+    if (log) log.scrollTop = log.scrollHeight;
+  }, [conversation.id]);
+
+  // A new message follows only if the agent is already at the bottom — never
+  // yank them away from history they're reading. Scrolls the log, never the page.
+  useEffect(() => {
+    const log = logRef.current;
+    if (log && stickToBottom.current) log.scrollTop = log.scrollHeight;
   }, [messages.length]);
+
+  const handleLogScroll = () => {
+    const log = logRef.current;
+    if (log) stickToBottom.current = isNearBottom(log);
+  };
 
   const online = isVisitorOnline(visitor?.lastSeenAt ?? null);
 
@@ -138,6 +156,8 @@ export default function ChatThread({
       </header>
 
       <div
+        ref={logRef}
+        onScroll={handleLogScroll}
         role="log"
         aria-live="polite"
         aria-relevant="additions"
@@ -170,7 +190,6 @@ export default function ChatThread({
             </div>
           );
         })}
-        <div ref={end} />
       </div>
 
       <div className="border-t border-gray-200 shrink-0">
