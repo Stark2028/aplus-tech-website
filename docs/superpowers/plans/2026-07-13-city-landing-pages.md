@@ -1,5 +1,19 @@
 # City Landing Pages Implementation Plan
 
+> **STATUS 2026-07-24 — IMPLEMENTED & EXPANDED.** All 7 code tasks executed; `npm test` 302/302,
+> `npm run build` prerenders **120** `/[city]` pages (95 legacy + 25 net-new tier-2). Deltas vs the
+> plan below, all intentional: (1) `data/cities.ts` holds **120** cities, not 95 — the 25 net-new
+> tier-2 additions are marked `// net-new tier-2 (added 2026-07-24)`. (2) The Task-1 test's
+> "exactly 95" fixture became a **required-subset** check (`LEGACY_SLUGS` must all be present; total
+> may grow) so legacy ranking URLs stay guarded while expansion is additive; it also gained a
+> clean-slug regex + a `>= 95` count floor. (3) The city page's `generateMetadata` sets a **bare**
+> `title` (root layout's `%s | Aplus Technology Solutions` template appends the brand) to avoid the
+> doubled-suffix bug the plan's original hardcoded title would have caused — the same latent bug
+> still exists in `app/solutions/[industry]/page.tsx`, left untouched (out of scope). (4) Tests were
+> **appended** to the existing `middleware.test.ts` / `data/cities.test.ts` rather than creating new
+> files. **Still open: Task 8** — client review of all 120 intros (esp. the 25 new). Nothing is
+> committed yet (on `master`; branch before committing).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Restore the 95 legacy city landing pages (`/delhi`, `/mumbai`, …) at their existing root-level URLs so the migration from the legacy PHP site does not 404 them, with content that is honest and genuinely varies by city.

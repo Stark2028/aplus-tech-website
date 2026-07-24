@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { NextRequest } from "next/server";
-import { redirectTo } from "./middleware";
+import { redirectTo, middleware } from "./middleware";
 
 describe("redirectTo", () => {
   it("preserves the query string on redirect", () => {
@@ -37,5 +37,33 @@ describe("redirectTo", () => {
 
     expect(loc.origin).toBe("https://staging.example.com");
     expect(loc.search).toBe("?a=1");
+  });
+});
+
+describe("middleware city handling", () => {
+  const run = (path: string) =>
+    middleware(new NextRequest(new URL(`https://www.aplustechsol.com${path}`)));
+
+  it("passes a legacy city root through untouched (no redirect)", () => {
+    // NextResponse.next() has no Location header; a redirect would be 301/307/308.
+    expect(run("/delhi").headers.get("location")).toBeNull();
+  });
+
+  it("passes a net-new tier-2 city root through untouched", () => {
+    expect(run("/mysuru").headers.get("location")).toBeNull();
+  });
+
+  it("still 301s a city×product URL to the product page", () => {
+    const res = run("/delhi/samsung-interactive-display-flip-3");
+    expect(res.status).toBe(301);
+    expect(res.headers.get("location")).toBe(
+      "https://www.aplustechsol.com/products/samsung-interactive-flip-3"
+    );
+  });
+
+  it("301s the legacy /our-presence page to /locations", () => {
+    const res = run("/our-presence");
+    expect(res.status).toBe(301);
+    expect(res.headers.get("location")).toBe("https://www.aplustechsol.com/locations");
   });
 });

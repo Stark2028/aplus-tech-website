@@ -1,6 +1,7 @@
 import type { Product } from "@/data/products";
 import type { ProductCategory } from "@/data/categories";
 import type { Solution } from "@/data/solutions";
+import type { City } from "@/data/cities";
 import type { UseCaseCombo } from "@/data/useCaseCombos";
 import { formatSize } from "@/lib/formatSize";
 import { PHONE_SCHEMA } from "@/lib/contact";
@@ -196,8 +197,47 @@ export function solutionServiceLd(solution: Solution, featuredProducts: Product[
         "@type": "Offer",
         itemOffered: {
           "@type": "Product",
-          name: `Samsung ${series} Series`,
-          brand: { "@type": "Brand", name: "Samsung" },
+          name: product.name,
+          brand: { "@type": "Brand", name: brandOf(product) },
+        },
+      })),
+    },
+  };
+}
+
+/**
+ * Service JSON-LD for a city landing page. `areaServed` is the City (nested in
+ * its State); `provider` points to the single canonical Organization node by
+ * @id. Deliberately NOT a LocalBusiness — Aplus has no office in this city, and
+ * marking up a local address there would be false.
+ */
+export function cityServiceLd(city: City, productsOnPage: Product[]) {
+  const url = `${SITE}/${city.slug}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${url}#service`,
+    url,
+    name: `Samsung Commercial Displays in ${city.name}`,
+    description: city.intro,
+    serviceType: "Samsung commercial display supply, installation & AMC",
+    provider: { "@id": ORG_ID },
+    areaServed: {
+      "@type": "City",
+      name: city.name,
+      containedInPlace: { "@type": "State", name: city.state },
+    },
+    audience: { "@type": "BusinessAudience", audienceType: "Business" },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: `Samsung displays available in ${city.name}`,
+      itemListElement: productsOnPage.map((p) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Product",
+          "@id": `${SITE}/products/${p.id}#product`,
+          name: p.name,
+          url: `${SITE}/products/${p.id}`,
         },
       })),
     },

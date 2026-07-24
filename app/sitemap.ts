@@ -4,6 +4,7 @@ import { productCategories } from "@/data/categories";
 import { solutions } from "@/data/solutions";
 import { blogPosts } from "@/data/blogs";
 import { useCaseCombos } from "@/data/useCaseCombos";
+import { cities } from "@/data/cities";
 import { SITE } from "@/lib/jsonLd";
 
 // Bump this date whenever you add or update products, categories, or solutions.
@@ -20,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE}/about`,           lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE}/contact`,         lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE}/blogs`,           lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "weekly",  priority: 0.7 },
+    { url: `${SITE}/locations`,       lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE}/privacy`,         lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "yearly",  priority: 0.3 },
     { url: `${SITE}/terms`,           lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "yearly",  priority: 0.3 },
   ];
@@ -60,6 +62,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  const cityUrls: MetadataRoute.Sitemap = cities.map((c) => ({
+    url: `${SITE}/${c.slug}`,
+    lastModified: CATALOG_LAST_UPDATED,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
   return [
     ...staticPages,
     ...productUrls,
@@ -67,5 +76,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...solutionUrls,
     ...comboUrls,
     ...blogUrls,
+    ...cityUrls,
   ];
 }

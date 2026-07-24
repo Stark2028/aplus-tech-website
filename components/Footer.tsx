@@ -32,6 +32,7 @@ const SOLUTION_LINKS = [
 
 const COMPANY_LINKS = [
   { label: "About Us", href: "/about" },
+  { label: "Locations", href: "/locations" },
   { label: "Blogs & Insights", href: "/blogs" },
   { label: "Contact Us", href: "/contact" },
   { label: "Request a Quote", href: "/quote" },

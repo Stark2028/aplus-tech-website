@@ -16,7 +16,8 @@ import { aboutPageLd, breadcrumbLd, organizationLd, jsonLdString } from "@/lib/j
 const ABOUT_URL = "https://www.aplustechsol.com/about";
 
 export const metadata: Metadata = {
-  title: "About Us — Aplus Technology Solutions",
+  // Bare title — the root layout template appends " | Aplus Technology Solutions".
+  title: "About Us",
   description:
     "Aplus Technology Solutions is an authorized Samsung Business Display distributor serving enterprises across India. Learn about our team, values, and track record.",
   alternates: { canonical: ABOUT_URL },

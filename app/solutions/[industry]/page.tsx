@@ -34,7 +34,8 @@ export async function generateMetadata({
     const url = `${SITE}/solutions/${industry}`;
     const description = `Samsung B2B display solutions for ${solution.title.toLowerCase()} — recommended hardware, sizing, and deployment guidance from Aplus Technology Solutions.`;
     return {
-        title: `${solution.title} | Aplus Technology Solutions`,
+        // Bare title — the root layout template appends " | Aplus Technology Solutions".
+        title: solution.title,
         description,
         alternates: { canonical: url },
         openGraph: {

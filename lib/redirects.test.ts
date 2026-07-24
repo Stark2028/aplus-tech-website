@@ -15,7 +15,7 @@ const categoryIds = new Set(productCategories.map((c) => c.id));
 // is NOT reserved would be re-matched by the middleware and could redirect again.
 const RESERVED_ROOTS = new Set([
   "products", "categories", "solutions", "blogs", "product-finder",
-  "compare", "quote", "about", "contact", "privacy", "terms", "api",
+  "compare", "quote", "about", "contact", "privacy", "terms", "api", "locations",
 ]);
 
 describe("legacy WordPress redirects", () => {

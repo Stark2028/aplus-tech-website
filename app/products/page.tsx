@@ -9,7 +9,8 @@ export const revalidate = 3600;
 const PRODUCTS_URL = "https://www.aplustechsol.com/products";
 
 export const metadata: Metadata = {
-  title: "Products | Aplus Technology Solutions",
+  // Bare title — the root layout template appends " | Aplus Technology Solutions".
+  title: "Products",
   description:
     "Browse Samsung Smart Signage, Video Walls, Interactive Displays, Business TVs, and Hospitality TVs distributed by Aplus Technology Solutions.",
   alternates: { canonical: PRODUCTS_URL },

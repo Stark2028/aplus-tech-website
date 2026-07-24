@@ -124,7 +124,7 @@ export const OLD_EXACT_PATH_TO_NEW: Record<string, string> = {
   "contact-us": "/contact",
   "privacy-policy": "/privacy",
   "terms-and-conditions": "/terms",
-  "our-presence": "/contact",
+  "our-presence": "/locations",
   "sitemap": "/",
   "distributor": "/products",
   "suppliers": "/products",

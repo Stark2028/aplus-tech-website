@@ -6,7 +6,8 @@ import type { Metadata } from "next";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Blogs & Insights | Aplus Technology Solutions",
+  // Bare title — the root layout template appends " | Aplus Technology Solutions".
+  title: "Blogs & Insights",
   description:
     "Read insights, guides, and best practices for deploying Samsung commercial displays across enterprise, retail, and hospitality.",
   alternates: { canonical: "https://www.aplustechsol.com/blogs" },

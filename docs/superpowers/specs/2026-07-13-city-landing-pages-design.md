@@ -1,8 +1,22 @@
 # City Landing Pages — Design
 
-**Date:** 2026-07-13
-**Status:** Approved (design), pending implementation plan
+**Date:** 2026-07-13 (expanded 2026-07-24)
+**Status:** Implemented. Base 95 legacy hubs + 25 net-new tier-2 cities = **120 pages** live.
 **Context:** Migration of `aplustechsol.com` from the legacy PHP site to this Next.js site.
+
+> **Expansion — 2026-07-24.** The original 95 (the indexed legacy URLs) were built, plus a
+> curated **25 net-new tier-2 cities** — real commercial/industrial/government/education hubs
+> that were absent from the legacy set: Mysuru, Hubballi-Dharwad, Kozhikode, Thrissur, Vellore,
+> Tirupati, Puducherry, Tiruppur, Thoothukudi (Tuticorin), Panipat, Ambala, Sonipat, Shimla,
+> Mathura, Haridwar, Mohali, Gandhinagar, Anand, Vapi, Panaji (Goa), Bilaspur, Rourkela, Bokaro,
+> Shillong, Dibrugarh. Each carries a distinct, honest intro (real sector hook, no invented local
+> office). The line held at ~tier-2 commercial hubs — deliberately **not** a tier-3 sweep, to
+> avoid the doorway/thin-content risk on a fresh domain. The data model made this additive: one
+> `cities` entry per city; route, sitemap, `/locations`, OG image and schema all derive from it.
+> The test invariant changed from "exactly the 95" to "**the 95 legacy slugs are a required
+> subset**; total may grow" — legacy ranking URLs stay a hard regression guard, new cities are
+> additive. Adding more later = append entries + draft an honest intro. **Client still owes the
+> Task 8 intro review** (all 120, especially the 25 new).
 
 ---
 

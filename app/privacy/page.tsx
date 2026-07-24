@@ -4,7 +4,8 @@ import Link from "next/link";
 const PRIVACY_URL = "https://www.aplustechsol.com/privacy";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Aplus Technology Solutions",
+  // Bare title — the root layout template appends " | Aplus Technology Solutions".
+  title: "Privacy Policy",
   description:
     "Read the privacy policy of Aplus Technology Solutions Pvt. Ltd. — how we collect, use, and protect your data in compliance with India's DPDP Act.",
   alternates: { canonical: PRIVACY_URL },

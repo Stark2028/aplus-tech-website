@@ -4,7 +4,8 @@ import Link from "next/link";
 const TERMS_URL = "https://www.aplustechsol.com/terms";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | Aplus Technology Solutions",
+  // Bare title — the root layout template appends " | Aplus Technology Solutions".
+  title: "Terms & Conditions",
   description:
     "Terms and conditions governing the use of aplustechsol.com and the purchase of Samsung commercial display products from Aplus Technology Solutions Pvt. Ltd.",
   alternates: { canonical: TERMS_URL },
