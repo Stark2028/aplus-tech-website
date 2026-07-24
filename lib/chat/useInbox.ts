@@ -27,6 +27,7 @@ import {
   type VisitorDoc,
 } from "./types";
 import { buildPreview } from "./messages";
+import { isVisitorOnline } from "./presence";
 
 /**
  * The agent's inbox (spec §4). Streams every OPEN conversation, freshest first.
@@ -117,6 +118,66 @@ export function useClosedInbox(enabled: boolean) {
   return { conversations, error };
 }
 
+/**
+ * Real-time presence map for a list of visitor IDs.
+ * Listens to visitors/{visitorId} for all unique IDs in the array and re-evaluates
+ * isVisitorOnline periodically so stale presence decays to offline after 90s.
+ */
+export function useVisitorsPresence(visitorIds: string[]) {
+  const [presenceMap, setPresenceMap] = useState<Record<string, boolean>>({});
+
+  const uniqueIdsKey = Array.from(new Set(visitorIds.filter(Boolean))).sort().join(",");
+
+  useEffect(() => {
+    const ids = uniqueIdsKey ? uniqueIdsKey.split(",") : [];
+    if (ids.length === 0) {
+      setPresenceMap({});
+      return;
+    }
+
+    const db = getDb();
+    const lastSeenMap: Record<string, number> = {};
+
+    const updatePresence = () => {
+      const now = Date.now();
+      const next: Record<string, boolean> = {};
+      for (const id of ids) {
+        next[id] = isVisitorOnline(lastSeenMap[id], now);
+      }
+      setPresenceMap(next);
+    };
+
+    const unsubs = ids.map((id) =>
+      onSnapshot(
+        doc(db, COL.visitors, id),
+        (snap) => {
+          const data = snap.data();
+          if (data?.lastSeenAt) {
+            lastSeenMap[id] = toMillis(data.lastSeenAt);
+          } else {
+            delete lastSeenMap[id];
+          }
+          updatePresence();
+        },
+        () => {
+          delete lastSeenMap[id];
+          updatePresence();
+        }
+      )
+    );
+
+    // Periodically re-evaluate so presence decays after 90s without waiting for snapshot
+    const interval = setInterval(updatePresence, 15_000);
+
+    return () => {
+      unsubs.forEach((unsub) => unsub());
+      clearInterval(interval);
+    };
+  }, [uniqueIdsKey]);
+
+  return presenceMap;
+}
+
 /** One conversation: its messages, the customer's presence, and the actions. */
 export function useThread(conversationId: string | null) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -124,25 +185,14 @@ export function useThread(conversationId: string | null) {
   const [visitorId, setVisitorId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Reset the thread synchronously when the selected conversation changes. Doing
-  // this in the streaming effect would let one render escape with the previous
-  // conversation's messages under the new id (and a synchronous setState in an
-  // effect is an ESLint error in this repo); adjusting state during render closes
-  // that window. Mirrors lib/chat/useConversation.ts.
-  // https://react.dev/reference/react/useState#storing-information-from-previous-renders
   const [prevConversationId, setPrevConversationId] = useState(conversationId);
   if (conversationId !== prevConversationId) {
     setPrevConversationId(conversationId);
     setMessages([]);
     setVisitorId(null);
-    // Clear a stale listener error the instant we switch threads (reset during
-    // render, not in the effect — a synchronous setState in an effect body is
-    // an ESLint error in this repo).
     setError(null);
   }
 
-  // Likewise clear the customer's presence the instant we point at a different
-  // visitor, so a stale "Online" from the previous chat never bleeds through.
   const [prevVisitorId, setPrevVisitorId] = useState(visitorId);
   if (visitorId !== prevVisitorId) {
     setPrevVisitorId(visitorId);
@@ -154,9 +204,6 @@ export function useThread(conversationId: string | null) {
 
     const db = getDb();
 
-    // Every listener carries an error callback: without one, a lapsed token or a
-    // revoked `agent` claim kills the stream SILENTLY and the thread keeps
-    // rendering its last snapshot — the agent believes a live lead went quiet.
     const onError = (err: unknown) => {
       console.error("[useThread]", err);
       setError("Lost the live connection to this chat. Reload to reconnect.");
@@ -172,8 +219,6 @@ export function useThread(conversationId: string | null) {
       query(
         collection(db, COL.conversations, conversationId, COL.messages),
         orderBy("createdAt", "asc"),
-        // limitToLast, NOT limit: ascending order + limit(n) keeps the OLDEST n,
-        // so a thread past 300 messages froze on messages 1–300 forever.
         limitToLast(300)
       ),
       (snap) => {
@@ -190,7 +235,6 @@ export function useThread(conversationId: string | null) {
     };
   }, [conversationId]);
 
-  // Is the customer still watching? (spec §5 — decides "keep typing" vs "call them")
   useEffect(() => {
     if (!visitorId) return;
     return onSnapshot(
@@ -208,8 +252,6 @@ export function useThread(conversationId: string | null) {
             : null
         );
       },
-      // Presence is a nice-to-have; a failed listen shouldn't raise the thread
-      // error banner. Drop presence to null so the UI stops claiming "Online".
       () => setVisitor(null)
     );
   }, [visitorId]);
@@ -220,7 +262,6 @@ export function useThread(conversationId: string | null) {
       const db = getDb();
       const text = (input.text ?? "").trim();
 
-      // Firestore rejects `undefined`. Build the doc from what is actually present.
       const payload: Record<string, unknown> = {
         sender: "agent",
         text,
@@ -239,12 +280,9 @@ export function useThread(conversationId: string | null) {
         lastPreview: buildPreview(input),
         lastSender: "agent",
         unreadForAgent: 0,
-        // An agent reply IS the answer the safety net was waiting for (spec §6.1).
         needsFollowUp: false,
       });
 
-      // Reach them even if they left (spec §6.3). Non-fatal: the reply is already
-      // in the thread, and the console still offers the WhatsApp button.
       const idToken = await getAuthClient().currentUser?.getIdToken();
       void fetch("/api/chat/reply-email", {
         method: "POST",

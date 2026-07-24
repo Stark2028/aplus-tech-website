@@ -9,11 +9,13 @@ export default function ConversationList({
   conversations,
   selectedId,
   onSelect,
+  presenceMap = {},
   emptyLabel = "No conversations.",
 }: {
   conversations: Conversation[];
   selectedId: string | null;
   onSelect: (id: string) => void;
+  presenceMap?: Record<string, boolean>;
   emptyLabel?: string;
 }) {
   if (conversations.length === 0) {
@@ -25,6 +27,8 @@ export default function ConversationList({
       {conversations.map((c) => {
         const selected = c.id === selectedId;
         const name = c.customer.name || "Visitor";
+        const isOnline = presenceMap[c.visitorId] ?? false;
+
         return (
           <li key={c.id}>
             <button
@@ -33,11 +37,17 @@ export default function ConversationList({
                 selected ? "bg-blue-50" : "hover:bg-gray-50"
               } ${c.needsFollowUp ? "border-l-4 border-red-500" : "border-l-4 border-transparent"}`}
             >
-              <Avatar name={name} seed={c.id} />
+              <Avatar name={name} seed={c.id} online={isOnline} />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <span className="flex-1 min-w-0 truncate text-sm font-semibold text-gray-900">
-                    {name}
+                  <span className="flex-1 min-w-0 truncate text-sm font-semibold text-gray-900 flex items-center gap-1.5">
+                    <span className="truncate">{name}</span>
+                    {isOnline && (
+                      <span
+                        className="shrink-0 h-2 w-2 rounded-full bg-emerald-500"
+                        title="Online now"
+                      />
+                    )}
                   </span>
                   <span className="shrink-0 text-[10px] text-gray-400">
                     {formatRelative(c.lastMessageAt)}

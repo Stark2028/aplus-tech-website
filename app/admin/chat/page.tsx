@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, LogOut } from "lucide-react";
 import { useAgentAuth } from "@/lib/chat/useAgentAuth";
-import { useInbox, useClosedInbox } from "@/lib/chat/useInbox";
+import { useInbox, useClosedInbox, useVisitorsPresence } from "@/lib/chat/useInbox";
 import { useTeamHeartbeat } from "@/lib/chat/useTeamHeartbeat";
 import AgentLogin from "@/components/admin/chat/AgentLogin";
 import ConversationList from "@/components/admin/chat/ConversationList";
@@ -23,8 +23,6 @@ export default function AdminChatPage() {
 
   if (!user) return <AgentLogin onSignIn={signIn} error={error} />;
 
-  // Signed in but not an agent. The rules already refuse them everything — this
-  // just explains why the console is empty instead of showing a wall of errors.
   if (!isAgent) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6">
@@ -54,26 +52,20 @@ function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise
 
   const noReply = open.filter((c) => c.needsFollowUp);
   const visible = tab === "open" ? open : tab === "noreply" ? noReply : closed;
+  const presenceMap = useVisitorsPresence(visible.map((c) => c.visitorId));
+
   const counts = {
     open: open.length,
     noreply: noReply.length,
     closed: tab === "closed" ? closed.length : null,
   };
 
-  // Deep link from the escalation email / (Phase 2) a push notification. Read the
-  // ?c= param at mount via a lazy initializer rather than an effect: this repo
-  // enforces react-hooks/set-state-in-effect as an error, and the auth gates above
-  // mean the console never server-renders, so reading window here is client-only
-  // and free of hydration skew. Mirrors lib/chat/useConversation.ts.
   const [selectedId, setSelectedId] = useState<string | null>(() =>
     typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("c") : null
   );
 
-  // "Sales team is online" on every visitor's widget, for as long as this is open.
   useTeamHeartbeat(true);
 
-  // In-app alert: badge the tab title so an unread chat is visible from another
-  // window (spec §4). Push (Phase 2) covers "nothing open at all".
   const unread = open.reduce((n, c) => n + (c.unreadForAgent > 0 ? 1 : 0), 0);
   useEffect(() => {
     document.title = unread > 0 ? `(${unread}) Sales console` : "Sales console";
@@ -100,7 +92,6 @@ function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise
         </p>
       )}
 
-      {/* Mobile: list → tap → thread. Laptop: side by side (spec §4). */}
       <div className="flex-1 min-h-0 flex">
         <aside
           className={`${
@@ -113,6 +104,7 @@ function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise
               conversations={visible}
               selectedId={selectedId}
               onSelect={setSelectedId}
+              presenceMap={presenceMap}
               emptyLabel={
                 tab === "open"
                   ? "No open chats."
