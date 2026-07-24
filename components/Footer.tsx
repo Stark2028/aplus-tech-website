@@ -39,6 +39,7 @@ const COMPANY_LINKS = [
 
 export default function Footer() {
   const pathname = usePathname();
+  if (pathname?.startsWith("/admin")) return null;
 
   // On the homepage the logo link won't navigate, so scroll to top instead.
   const handleHomeClick = (e: React.MouseEvent) => {

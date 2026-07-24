@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 
 /**
  * Lazy-loaded floating UI for the layout shell.
@@ -19,6 +20,11 @@ const CookieConsent = dynamic(() => import("./CookieConsent"), { ssr: false });
 const MobileStickyCTA = dynamic(() => import("./MobileStickyCTA"), { ssr: false });
 
 export default function ClientFloats() {
+  const pathname = usePathname();
+  // The console renders none of the public floating UI (chat bubble, finder,
+  // back-to-top, cookie banner, mobile CTA).
+  if (pathname?.startsWith("/admin")) return null;
+
   return (
     <>
       <div className="print:hidden">
