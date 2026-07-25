@@ -38,7 +38,7 @@ export function redirectTo(req: NextRequest, pathname: string) {
   return NextResponse.redirect(to, 301);
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   const clean = pathname.replace(/\/+$/, ""); // tolerate old trailing slashes
   if (clean === "") return NextResponse.next(); // home
