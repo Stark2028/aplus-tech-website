@@ -104,8 +104,12 @@ rendered in the thread view, i.e. when `conversationId` exists):
   2. a label derived from the `conversation.page` path (last non-empty segment,
      hyphens → spaces, title-cased) for conversations created before this ships
   3. the literal "our website" when neither yields anything usable.
-- **Date:** `conversation.createdAt`, formatted with the existing `time.ts`
-  helper (short "24 Jul" style).
+- **Date:** `conversation.createdAt`, rendered as a short absolute date ("24 Jul").
+  No existing `time.ts` helper produces this exact form (`formatRelative` only
+  falls back to "24 Jul" after 7+ days; `dayLabel` yields "24 July 2026"), so add
+  a small `formatShortDate(ts)` to `lib/chat/time.ts`
+  (`toLocaleDateString("en-IN", { day: "numeric", month: "short" })`), covered by
+  the existing `time.test.ts`.
 - **Copy varies on `startedBy`:**
   - `"customer"` → "You started this chat from **{label}** · {date}"
   - `"agent"` → "Aplus Sales started this chat · {date}"
