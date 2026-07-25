@@ -9,7 +9,6 @@ import { ComparisonProvider } from "@/context/ComparisonContext";
 import { ChatProvider } from "@/context/ChatContext";
 import Analytics from "@/components/Analytics";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
-import PostHogProvider from "@/components/PostHogProvider";
 import PageTransition from "@/components/PageTransition";
 import ClientFloats from "@/components/ClientFloats";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -105,8 +104,6 @@ export default function RootLayout({
       <head>
         {/* Analytics / tracking */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="preconnect" href="https://us.i.posthog.com" />
-        <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
         {/* No font-CDN preconnects on purpose: next/font/google self-hosts the
             woff2 files at build time under /_next/static/media (same origin), so
             fonts.googleapis.com / fonts.gstatic.com are never hit at runtime.
@@ -127,25 +124,23 @@ export default function RootLayout({
           Skip to main content
         </a>
 
-        <PostHogProvider>
-          <QuoteProvider>
-            <ComparisonProvider>
-              <ChatProvider>
-                <div className="min-h-screen flex flex-col">
-                  <Navbar />
-                  <main
-                    id="main-content"
-                    className="flex-1 bg-white"
-                  >
-                    <PageTransition>{children}</PageTransition>
-                  </main>
-                  <Footer />
-                </div>
-                <ClientFloats />
-              </ChatProvider>
-            </ComparisonProvider>
-          </QuoteProvider>
-        </PostHogProvider>
+        <QuoteProvider>
+          <ComparisonProvider>
+            <ChatProvider>
+              <div className="min-h-screen flex flex-col">
+                <Navbar />
+                <main
+                  id="main-content"
+                  className="flex-1 bg-white"
+                >
+                  <PageTransition>{children}</PageTransition>
+                </main>
+                <Footer />
+              </div>
+              <ClientFloats />
+            </ChatProvider>
+          </ComparisonProvider>
+        </QuoteProvider>
       </body>
     </html>
   );

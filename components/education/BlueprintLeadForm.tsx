@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import posthog from "posthog-js";
 import { ArrowRight, CheckCircle2, GraduationCap } from "lucide-react";
 import { classSaathiLeadSchema, type ClassSaathiLeadValues } from "@/lib/formSchemas";
 import { leadFormOptions } from "@/data/education";
@@ -70,12 +69,6 @@ export default function BlueprintLeadForm() {
           student_count: values.student_count,
           primary_goal: values.primary_goal,
         });
-        if (posthog.__loaded) {
-          posthog.capture("class_saathi_lead_submitted", {
-            student_count: values.student_count,
-            primary_goal: values.primary_goal,
-          });
-        }
         setSubmitted(values);
       } else {
         setServerError(

@@ -3,7 +3,7 @@
  *
  * The site already produces every asset the salesperson wants to send, so the
  * console can send a LINK rather than a file: no Storage write, no egress, and
- * the visitor lands back on-site where the lead gate and PostHog still apply.
+ * the visitor lands back on-site where the lead gate still applies.
  *
  * Spec sheets are built client-side (pdf-lib in SpecSheetButton), so there is no
  * PDF URL to link to — a spec-sheet link points at the PDP with ?download=spec,

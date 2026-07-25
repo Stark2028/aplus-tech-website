@@ -8,7 +8,7 @@ import type { ChatLink } from "@/lib/chat/types";
 /**
  * Quick-send links (spec §4.1 A) — search the catalogue, send a product page or
  * its spec sheet as a titled card. The cheapest path: no upload, no egress, and
- * the visitor lands back on-site where the lead gate and PostHog still apply.
+ * the visitor lands back on-site where the lead gate still applies.
  */
 export default function LinkPicker({ onPick }: { onPick: (link: ChatLink) => void }) {
   const [open, setOpen] = useState(false);

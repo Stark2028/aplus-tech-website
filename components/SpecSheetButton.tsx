@@ -49,7 +49,7 @@ export default function SpecSheetButton({ product, compact = false }: Props) {
 
   // A spec-sheet link sent from the sales console (lib/chat/links.ts) lands here
   // as ?download=spec. Fire the SAME gated path the button uses — not triggerPdf
-  // directly — so the lead gate and PostHog tracking still apply. Guard with a
+  // directly — so the lead gate still applies. Guard with a
   // ref (not state) so StrictMode's double-invoke in dev can't fire it twice.
   useEffect(() => {
     if (autoFired.current) return;

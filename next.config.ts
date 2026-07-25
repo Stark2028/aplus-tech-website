@@ -7,7 +7,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 const scriptSrc = [
   "script-src 'self' 'unsafe-inline'",
   isDev ? "'unsafe-eval'" : '',
-  'https://www.googletagmanager.com https://us-assets.i.posthog.com',
+  'https://www.googletagmanager.com',
 ]
   .filter(Boolean)
   .join(' ');
@@ -33,7 +33,7 @@ const securityHeaders = [
       // statically-generated pages. No executable inline JS is emitted by app code
       // (gtag init runs from an external bundle), and JSON-LD is "</script>"-escaped,
       // so the inline XSS vector is minimal. 'unsafe-eval' is dev-only (see above) —
-      // production stays strict; gtag and PostHog operate without it.
+      // production stays strict; gtag operates without it.
       scriptSrc,
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
@@ -44,7 +44,7 @@ const securityHeaders = [
       // pixels (images/cleardot.gif, /ads/ga-audiences) — image beacons only,
       // deliberately NOT added to script-src or connect-src.
       "img-src 'self' data: blob: https://images.unsplash.com https://plus.unsplash.com https://www.aplustechsol.com https://www.google-analytics.com https://www.googletagmanager.com https://stats.g.doubleclick.net https://www.google.com https://www.google.co.in https://firebasestorage.googleapis.com",
-      "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://stats.g.doubleclick.net https://us.i.posthog.com https://us-assets.i.posthog.com https://*.googleapis.com https://firestore.googleapis.com https://fcm.googleapis.com https://firebaseinstallations.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebasestorage.googleapis.com https://*.gstatic.com",
+      "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://stats.g.doubleclick.net https://*.googleapis.com https://firestore.googleapis.com https://fcm.googleapis.com https://firebaseinstallations.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebasestorage.googleapis.com https://*.gstatic.com",
       "worker-src 'self' blob:",
       "frame-src https://www.google.com https://maps.google.com",
       // Clickjacking defense (modern equivalent of X-Frame-Options, honored by
