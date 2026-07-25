@@ -41,27 +41,29 @@ Three independent pieces, smallest-blast-radius first.
 
 ### 1. Route into the thread on open (fixes the burial)
 
-The routing decision is centralized so every entry point behaves identically. Both
-the desktop launcher (`toggleChat`) and the mobile sticky bar
-(`MobileStickyCTA` → `openChat("home")`) funnel through `openChat` in
-`context/ChatContext.tsx`.
+The routing decision lives in exactly one place: `openChat` in
+`context/ChatContext.tsx`. `toggleChat` currently has its own inline open logic —
+it is refactored to *delegate to `openChat("home")` when opening* (and just close
+when already open), so the desktop badge tap and the mobile sticky bar
+(`MobileStickyCTA` → `openChat("home")`) share the same rule instead of drifting.
 
-**Rule:** when the requested view is `"home"` **and** `unread > 0` **and** a
-conversation exists → open the **live thread** (`view = "live"`) instead.
-Otherwise the view is unchanged.
+**Rule (inside `openChat`):** when the requested view is `"home"` **and**
+`unread > 0` **and** a conversation exists → open the **live thread**
+(`view = "live"`) instead. For any other requested view (`"live"`, `"whatsapp"`)
+or when there is no unread reply, the view is unchanged.
 
 - A normal open with no waiting reply still shows the home fork — new visitors and
   visitors with a quiet thread are unaffected.
-- `toggleChat` is routed through the same decision (when it is *opening*, not
-  closing), so the desktop badge tap lands in the thread.
+- The home fork's explicit "Chat now" (`openChat("live")`) and WhatsApp
+  (`openChat("whatsapp")`) picks are honored as-is — the redirect only applies to
+  the default `"home"` request.
 - `unread` still clears to 0 on open (unchanged) — but now the customer actually
   sees the message that the badge was pointing at.
 
 Implementation note: `openChat`/`toggleChat` are currently memoized with `[]`
-deps. To read the live `unread`/`conversationId` at call time they must either
-take those into their dependency array or read them from refs kept in sync. Either
-is fine; the dependency-array form is simplest and these callbacks are not on a
-hot path.
+dependencies. To read the live `unread`/`conversationId` at call time, add them to
+the dependency array (simplest; these callbacks are not on a hot path). `toggleChat`
+also needs `isOpen` (or the `setIsOpen` functional form) to decide open-vs-close.
 
 ### 2. "Aplus Sales" attribution on agent bubbles
 
@@ -97,13 +99,24 @@ rendered in the thread view, i.e. when `conversationId` exists):
 ```
 
 - **Label source:** the page's own `<title>`, captured as a new `pageTitle` field
-  when the chat starts (see §4). A small pure helper `lib/chat/pageLabel.ts`
-  cleans it — strips the trailing site-name suffix (" | Aplus Technology
-  Solutions" / " – Aplus …") and trims. Fallbacks, in order:
-  1. cleaned `conversation.pageTitle`
-  2. a label derived from the `conversation.page` path (last non-empty segment,
-     hyphens → spaces, title-cased) for conversations created before this ships
-  3. the literal "our website" when neither yields anything usable.
+  when the chat starts (see §4). The site title template is `%s | Aplus Technology
+  Solutions` (`app/layout.tsx`), so a page title looks like
+  `Samsung QB55C (LH55QBCEBGCXXL) | Aplus Technology Solutions`. A small pure helper
+  `lib/chat/pageLabel.ts` derives the label:
+  1. **Split the title on `" | "` and take the first non-empty segment.** This
+     robustly drops the brand suffix without depending on its exact wording, and
+     avoids the naive "strip trailing suffix" bug: the **home page default** title
+     is `Aplus Technology Solutions | Authorized Samsung Business Display
+     Distributor` (brand at the *front*), whose first segment is the brand name.
+  2. **Strip a trailing model-code in parentheses** — `Samsung QB55C
+     (LH55QBCEBGCXXL)` → `Samsung QB55C` — so the chip reads cleanly.
+  3. If the resulting segment is empty **or equals the brand name** ("Aplus
+     Technology Solutions", the home-default case) → fall through to the path-derived
+     label from `conversation.page` (last non-empty segment, hyphens → spaces,
+     title-cased) for older conversations, then to the literal **"our website"**.
+
+  Order of sources at render time: cleaned `pageTitle` → path-derived from `page`
+  → "our website".
 - **Date:** `conversation.createdAt`, rendered as a short absolute date ("24 Jul").
   No existing `time.ts` helper produces this exact form (`formatRelative` only
   falls back to "24 Jul" after 7+ days; `dayLabel` yields "24 July 2026"), so add
