@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { NextRequest } from "next/server";
-import { redirectTo } from "./middleware";
+import { redirectTo } from "./proxy";
 
 describe("redirectTo", () => {
   it("preserves the query string on redirect", () => {
