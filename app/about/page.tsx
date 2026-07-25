@@ -1,17 +1,13 @@
 import { ChevronRight, ArrowRight, Linkedin } from "lucide-react";
 import {
   CheckCircleIcon,
-  UsersIcon,
   AwardIcon,
-  HeadphonesIcon,
-  TruckIcon,
-  ShieldCheckIcon,
-  IconTile,
 } from "@/components/icons";
 import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { aboutPageLd, breadcrumbLd, organizationLd, jsonLdString } from "@/lib/jsonLd";
+import PrinciplesSlider from "@/components/sections/PrinciplesSlider";
 
 const ABOUT_URL = "https://www.aplustechsol.com/about";
 
@@ -44,29 +40,6 @@ const STATS = [
   { value: "50+", label: "Cities Served" },
 ];
 
-const VALUES = [
-  {
-    icon: ShieldCheckIcon,
-    title: "Authorized & Genuine",
-    desc: "Every product we supply is 100% genuine Samsung with full manufacturer warranty. We are an official Samsung Business Display partner with an ISO 9001:2015-certified quality management system.",
-  },
-  {
-    icon: UsersIcon,
-    title: "Client-First Approach",
-    desc: "We don't push products — we understand your space, use case, and budget, then recommend exactly what's right for you.",
-  },
-  {
-    icon: TruckIcon,
-    title: "End-to-End Service",
-    desc: "From pre-sales consultation to post-installation support, we manage the entire journey. One point of contact, zero headaches.",
-  },
-  {
-    icon: HeadphonesIcon,
-    title: "Dedicated Support",
-    desc: "A responsive support team that resolves issues fast, with guaranteed response SLAs for enterprise accounts.",
-  },
-];
-
 const TEAM = [
   {
     name: "Anurag Walia",
@@ -95,11 +68,11 @@ const TEAM = [
 
 const MILESTONES = [
   { year: "2020", event: "Founded in Noida and became an Authorized Samsung Business Display Distributor." },
-  { year: "2022", event: "Crossed 100+ enterprise clients; opened Mumbai service center." },
+  { year: "2022", event: "Crossed 100+ enterprise clients." },
   { year: "2023", event: "Launched dedicated hospitality and education verticals." },
   { year: "2024", event: "500+ clients milestone; expanded to 50+ cities pan-India." },
   { year: "2025", event: "Introduced AMC contracts and a dedicated remote support program." },
-  { year: "2026", event: "Achieved ISO 9001:2015 certification; expanding into Tier-2 cities with a new national service partner network." },
+  { year: "2026", event: "Expanded into Tier-2 cities with a new national service partner network." },
 ];
 
 const STORY_PILLARS = [
@@ -263,7 +236,7 @@ export default function AboutPage() {
       </section>
 
       {/* ───────────────── Values ───────────────── */}
-      <section className="py-12 md:py-16 bg-gray-50 border-y border-gray-100">
+      <section className="py-12 md:py-16 bg-gray-50 border-y border-gray-100 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-4">
@@ -274,20 +247,7 @@ export default function AboutPage() {
             </h2>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-gray-100 rounded-3xl overflow-hidden border border-gray-100">
-            {VALUES.map(({ icon: Icon, title, desc }) => (
-              <div
-                key={title}
-                className="group bg-white p-8 hover:bg-linear-to-br hover:from-white hover:to-blue-50/40 transition-colors"
-              >
-                <IconTile className="mb-6">
-                  <Icon className="text-current" size={22} />
-                </IconTile>
-                <h3 className="font-bold text-gray-900 mb-2 tracking-tight">{title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </div>
+          <PrinciplesSlider />
         </div>
       </section>
 

@@ -111,36 +111,39 @@ export default function QuoteItemsCard({
     <div className="space-y-6">
       {/* ─── ITEMS CARD ───────────────────────────────────────────────── */}
       <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
-        <div className="px-6 py-5 border-b border-gray-100 flex justify-between items-center flex-wrap gap-4">
-          <h2 className="font-bold text-gray-800 text-lg flex items-center gap-2">
+        <div className="px-5 sm:px-6 py-4 sm:py-5 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+          <h2 className="font-bold text-gray-900 text-lg flex items-center gap-2">
             <ShoppingBag size={18} className="text-gray-400" />
             Items ({totalItems})
           </h2>
-          <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
             {items.length > 0 && (
               <>
                 <button
+                  type="button"
                   onClick={handleDownload}
                   disabled={isGenerating}
-                  className="text-sm bg-blue-600 hover:bg-blue-700 text-white font-semibold px-3.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm px-3.5 py-2 rounded-xl transition-all shadow-xs disabled:opacity-60 disabled:cursor-not-allowed whitespace-nowrap"
                 >
-                  <Download size={14} />
-                  {isGenerating ? "Preparing PDF…" : "Download PDF"}
+                  <Download size={14} className="shrink-0" />
+                  <span>{isGenerating ? "Preparing…" : "Download"}</span>
                 </button>
                 <Link
                   href={`/compare?ids=${items.map((i) => i.product.id).join(",")}`}
-                  className="text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors flex items-center gap-1.5"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 hover:text-blue-600 font-semibold text-xs sm:text-sm px-3.5 py-2 rounded-xl transition-all shadow-xs whitespace-nowrap"
                 >
-                  <Scale size={15} />
-                  Compare
+                  <Scale size={14} className="shrink-0" />
+                  <span>Compare</span>
                 </Link>
               </>
             )}
             <button
+              type="button"
               onClick={onClear}
-              className="text-sm text-red-400 hover:text-red-600 font-medium transition-colors"
+              className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 bg-white hover:bg-red-50 border border-gray-200 hover:border-red-200 text-red-500 hover:text-red-600 font-semibold text-xs sm:text-sm px-3 py-2 rounded-xl transition-all shadow-xs whitespace-nowrap"
             >
-              Clear all
+              <Trash2 size={14} className="shrink-0" />
+              <span>Clear all</span>
             </button>
           </div>
         </div>
@@ -216,24 +219,6 @@ export default function QuoteItemsCard({
         </div>
       </div>
 
-      {/* ─── TRUST STRIP ──────────────────────────────────────────────── */}
-      <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6">
-        <p className="font-bold text-gray-900 mb-5">Why partner with Aplus?</p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {TRUST_ITEMS.map(({ icon: Icon, title, desc }) => (
-            <div key={title} className="flex items-start gap-3">
-              <div className="bg-blue-100 p-2.5 rounded-xl text-blue-600 shrink-0">
-                <Icon size={20} />
-              </div>
-              <div>
-                <p className="font-bold text-gray-900 text-sm mb-0.5">{title}</p>
-                <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* ─── LEAD GATE MODAL ──────────────────────────────────────────── */}
       <LeadGateModal
         isOpen={isGateOpen}
@@ -252,6 +237,27 @@ export default function QuoteItemsCard({
         privacyNote="Same details used for the Submit Request form below — we'll prefill it for you."
         analyticsKey="quote_pdf_gate"
       />
+    </div>
+  );
+}
+
+export function TrustStrip() {
+  return (
+    <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-6">
+      <p className="font-bold text-gray-900 mb-5">Why partner with Aplus?</p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        {TRUST_ITEMS.map(({ icon: Icon, title, desc }) => (
+          <div key={title} className="flex items-start gap-3">
+            <div className="bg-blue-100 p-2.5 rounded-xl text-blue-600 shrink-0">
+              <Icon size={20} />
+            </div>
+            <div>
+              <p className="font-bold text-gray-900 text-sm mb-0.5">{title}</p>
+              <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

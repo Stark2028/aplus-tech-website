@@ -143,16 +143,25 @@ export default async function ProductPage({
       />
 
       {/* ── TOP CTA BAR ───────────────────────────────────────────── */}
-      <div className="bg-[#0f172a] py-2.5 px-4 text-[12.5px] text-slate-300">
-        <div className="max-w-7xl mx-auto flex items-center justify-center sm:justify-between gap-x-4 gap-y-1 flex-wrap sm:px-2 lg:px-4">
-          <span className="tracking-wide">
-            <span className="font-semibold text-white">{logi ? "Video Conferencing Specialists" : "Authorized Samsung Distributor"}</span>
-            <span className="mx-2 text-slate-600">·</span>
-            Get B2B pricing in 24 hrs
-          </span>
-          <a href={PHONE_TEL} className="font-semibold text-white hover:text-blue-300 transition-colors">
-            Call {PHONE_DISPLAY}
-          </a>
+      <div className="bg-[#0f172a] py-2 sm:py-2.5 px-3 sm:px-4 text-xs sm:text-[12.5px] text-slate-300 border-b border-slate-800/60">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-1 sm:gap-4 text-center sm:text-left">
+          <div className="font-semibold text-white whitespace-nowrap">
+            {logi ? "Video Conferencing Specialists" : "Authorized Samsung Distributor"}
+          </div>
+          <div className="flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
+            <span className="hidden sm:inline text-slate-600" aria-hidden="true">·</span>
+            <span className="text-slate-300 whitespace-nowrap">
+              Get B2B pricing in 24 hrs
+            </span>
+            <span className="text-slate-600" aria-hidden="true">·</span>
+            <a
+              href={PHONE_TEL}
+              className="font-semibold text-white hover:text-blue-300 transition-colors whitespace-nowrap inline-flex items-center gap-1.5"
+            >
+              <Phone size={12} className="text-blue-400 shrink-0" aria-hidden="true" />
+              <span>Call {PHONE_DISPLAY}</span>
+            </a>
+          </div>
         </div>
       </div>
 

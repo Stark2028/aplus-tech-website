@@ -7,7 +7,7 @@ import { useQuote } from "@/context/QuoteContext";
 import EmptyQuoteState from "@/components/quote/EmptyQuoteState";
 import QuoteSuccessState from "@/components/quote/QuoteSuccessState";
 import ProgressStepper from "@/components/quote/ProgressStepper";
-import QuoteItemsCard from "@/components/quote/QuoteItemsCard";
+import QuoteItemsCard, { TrustStrip } from "@/components/quote/QuoteItemsCard";
 import QuoteSubmitForm from "@/components/quote/QuoteSubmitForm";
 
 export default function QuotePageClient() {
@@ -54,7 +54,8 @@ export default function QuotePageClient() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 print:py-0 print:max-w-none print:px-0">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 print:block">
-          <div className="lg:col-span-2 print:col-span-3">
+          {/* Main items card */}
+          <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1 print:col-span-3">
             <QuoteItemsCard
               items={quoteItems}
               totalItems={totalItems}
@@ -64,7 +65,8 @@ export default function QuotePageClient() {
             />
           </div>
 
-          <div className="lg:col-span-1 print:hidden">
+          {/* Form: 2nd on mobile (< lg), top right on desktop (lg:) */}
+          <div className="lg:col-span-1 lg:col-start-3 lg:row-start-1 lg:row-span-2 print:hidden">
             <QuoteSubmitForm
               items={quoteItems}
               totalItems={totalItems}
@@ -74,6 +76,11 @@ export default function QuotePageClient() {
                 clearQuote();
               }}
             />
+          </div>
+
+          {/* Trust Strip: 3rd on mobile (< lg), bottom left on desktop (lg:) */}
+          <div className="lg:col-span-2 lg:col-start-1 lg:row-start-2">
+            <TrustStrip />
           </div>
         </div>
       </div>
