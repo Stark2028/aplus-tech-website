@@ -23,8 +23,10 @@ export default function ComparisonFloatingBar() {
     return (
         <div
             className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom,0px))] md:bottom-6 left-0 right-0 z-50 flex flex-col items-center gap-2 px-4 transition-all duration-300"
+            // `inert` alone hides + de-focuses the closed bar; adding aria-hidden
+            // would fire the focused-ancestor a11y error when the "remove" button
+            // that emptied the comparison list still holds focus as the bar hides.
             inert={!visible}
-            aria-hidden={!visible}
             style={{
                 transform: visible ? "translateY(0)" : "translateY(100px)",
                 opacity: visible ? 1 : 0,

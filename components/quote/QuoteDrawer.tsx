@@ -118,8 +118,10 @@ export default function QuoteDrawer() {
 
   return createPortal(
     <div
+      // `inert` alone hides + de-focuses the closed drawer. aria-hidden here would
+      // fire "aria-hidden on a focused ancestor" when a link inside (e.g. "Browse
+      // Products", which calls closeQuote onClick) still holds focus as it closes.
       inert={!isQuoteOpen ? true : undefined}
-      aria-hidden={!isQuoteOpen}
       className={`fixed inset-0 z-[100] transition-opacity duration-300 motion-reduce:transition-none ${
         isQuoteOpen
           ? "opacity-100 pointer-events-auto"

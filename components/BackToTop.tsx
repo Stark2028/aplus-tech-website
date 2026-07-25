@@ -22,7 +22,9 @@ export default function BackToTop() {
         pointerEvents: visible ? "auto" : "none",
       }}
       aria-label="Back to top"
-      aria-hidden={!visible}
+      // `inert` alone hides + de-focuses the button when scrolled to top; adding
+      // aria-hidden would fire the focused-ancestor a11y error since clicking it
+      // (which scrolls up and hides it) leaves focus on the button as it hides.
       inert={!visible}
     >
       <ChevronUp size={18} />
