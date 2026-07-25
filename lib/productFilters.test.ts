@@ -125,7 +125,7 @@ describe("applyFilters — real catalog brightness regression", () => {
 
 describe("resolution filter", () => {
   const r = (id: string, resolution: string): Product =>
-    ({ id, specs: { resolution, brightness: "", operationTime: "", screenSizes: [] } } as Product);
+    ({ id, specs: { resolution, brightness: "", operationTime: "", screenSizes: [] } } as unknown as Product);
 
   it("matches 4K UHD by keyword or pixel count", () => {
     const out = applyFilters([r("a", "4K UHD"), r("b", "3,840 x 2,160"), r("c", "FHD")], { ...DEFAULT_FILTERS, resolution: "4K UHD" });
@@ -140,7 +140,7 @@ describe("resolution filter", () => {
 
 describe("operation filter", () => {
   const o = (id: string, operationTime: string): Product =>
-    ({ id, specs: { resolution: "", brightness: "", operationTime, screenSizes: [] } } as Product);
+    ({ id, specs: { resolution: "", brightness: "", operationTime, screenSizes: [] } } as unknown as Product);
 
   it("matches on substring so '16/7 (recommended)' still counts as 16/7", () => {
     const out = applyFilters([o("a", "16/7"), o("b", "24/7"), o("c", "16/7 (recommended)")], { ...DEFAULT_FILTERS, operation: "16/7" });
@@ -150,7 +150,7 @@ describe("operation filter", () => {
 
 describe("multi-facet AND semantics", () => {
   const full = (id: string, resolution: string, operationTime: string): Product =>
-    ({ id, specs: { resolution, brightness: "500 nit", operationTime, screenSizes: ["55"] } } as Product);
+    ({ id, specs: { resolution, brightness: "500 nit", operationTime, screenSizes: ["55"] } } as unknown as Product);
 
   it("requires every active facet to match", () => {
     const items = [

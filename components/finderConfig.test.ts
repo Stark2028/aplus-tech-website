@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 import {
   availableSizeRangeIds,
   categoryEnabledForIndustry,
+  DISPLAY_TYPES,
   INDUSTRY_CATEGORY_SCORE,
   SIZE_RANGES,
+  USE_CASE_PRESETS,
 } from "./finderConfig";
 
 // These tests run against the real catalog in data/products — they pin the
@@ -75,5 +77,23 @@ describe("availableSizeRangeIds", () => {
 
   it("returns an empty set for an unknown category", () => {
     expect(availableSizeRangeIds("Nonexistent Category").size).toBe(0);
+  });
+});
+
+describe("USE_CASE_PRESETS integrity", () => {
+  it("has valid industry, category, and sizeRangeId for every preset", () => {
+    const categoryIds = DISPLAY_TYPES.map((d) => d.id);
+    const validIndustries = ["hospitality", "corporate", "education", "retail"];
+
+    expect(USE_CASE_PRESETS.length).toBeGreaterThan(0);
+
+    for (const preset of USE_CASE_PRESETS) {
+      expect(validIndustries).toContain(preset.industry);
+      expect(categoryIds).toContain(preset.category);
+      if (preset.sizeRangeId !== "") {
+        const availableSizes = availableSizeRangeIds(preset.category);
+        expect(availableSizes.has(preset.sizeRangeId)).toBe(true);
+      }
+    }
   });
 });

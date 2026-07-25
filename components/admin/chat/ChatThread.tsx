@@ -116,10 +116,10 @@ export default function ChatThread({
   return (
     <div className="flex h-full">
       <div className="flex min-w-0 flex-1 flex-col bg-white">
-        <header className="flex shrink-0 items-center gap-3 border-b border-gray-200 px-4 py-3">
+        <header className="flex shrink-0 items-center gap-2 border-b border-gray-200 px-3 py-2.5 md:gap-3 md:px-4 md:py-3">
           <button
             onClick={onBack}
-            className="text-gray-400 hover:text-gray-700 md:hidden"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-gray-400 hover:text-gray-700 active:bg-gray-100 md:hidden"
             aria-label="Back to list"
           >
             <ArrowLeft size={18} />
@@ -131,19 +131,22 @@ export default function ChatThread({
             <p className="truncate text-sm font-bold text-gray-900">
               {conversation.customer.name || "Visitor"}
             </p>
-            <p className="flex items-center gap-1.5 text-xs">
-              <span className={`h-1.5 w-1.5 rounded-full ${online ? "bg-green-500" : "bg-gray-300"}`} />
-              <span className={online ? "text-green-700" : "text-gray-400"}>
-                {online
-                  ? `Online${visitor?.currentPage ? ` — viewing ${visitor.currentPage}` : ""}`
-                  : formatLastSeen(visitor?.lastSeenAt ?? null)}
+            <p className="flex items-center gap-1.5 text-xs min-w-0">
+              <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${online ? "bg-green-500" : "bg-gray-300"}`} />
+              <span className={`truncate ${online ? "text-green-700" : "text-gray-400"}`}>
+                {online ? "Online" : formatLastSeen(visitor?.lastSeenAt ?? null)}
               </span>
             </p>
+            {online && visitor?.currentPage && (
+              <p className="truncate text-[11px] text-gray-400">
+                viewing {visitor.currentPage}
+              </p>
+            )}
           </div>
 
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 text-gray-400 transition-colors hover:text-blue-600 lg:hidden"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-gray-400 transition-colors hover:text-blue-600 active:bg-gray-100 lg:hidden"
             aria-label="Customer details"
             title="Customer details"
           >
@@ -195,7 +198,7 @@ export default function ChatThread({
             return (
               <div key={m.id} className={`group flex flex-col ${mine ? "items-end" : "items-start"}`}>
                 <div
-                  className={`flex max-w-[85%] items-center gap-1.5 ${mine ? "flex-row" : "flex-row-reverse"}`}
+                  className={`flex max-w-[90%] items-center gap-1.5 md:max-w-[85%] ${mine ? "flex-row" : "flex-row-reverse"}`}
                 >
                   {deleteControl}
                   <div
@@ -229,7 +232,7 @@ export default function ChatThread({
               {uploadError}
             </p>
           )}
-          <form onSubmit={handleSend} className="flex items-center gap-2 p-3">
+          <form onSubmit={handleSend} className="flex items-center gap-2 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
             <LinkPicker onPick={sendLink} />
             <AttachmentPicker
               conversationId={conversation.id}

@@ -29,6 +29,8 @@ import { trackEvent } from "@/lib/analytics";
 import {
   DISPLAY_TYPES as DISPLAY_TYPE_DATA,
   SIZE_RANGES,
+  USE_CASE_PRESETS,
+  UseCasePreset,
   INDUSTRY_CATEGORY_SCORE,
   availableSizeRangeIds,
   categoryEnabledForIndustry,
@@ -177,6 +179,19 @@ export default function ProductFinderSection({
     });
   };
 
+  const handleSelectPreset = (preset: UseCasePreset) => {
+    setIndustry(preset.industry);
+    setDisplayType(preset.category);
+    setSizeRangeId(preset.sizeRangeId);
+    setStep("results");
+    trackEvent("product_finder_preset", { preset: preset.id });
+    trackEvent("product_finder_complete", {
+      industry: preset.industry,
+      display_type: preset.category,
+      size_range: preset.sizeRangeId || "any",
+    });
+  };
+
   const stepLabel = step === "results" ? "" : ["", "Your Industry", "Display Type", "Screen Size"][step as number];
 
   const industryLabel = industry && industry !== "any"
@@ -318,6 +333,26 @@ export default function ProductFinderSection({
         {/* Step 1: Industry */}
         {step === 1 && (
           <>
+            {/* Quick Presets */}
+            <div className="mb-8">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3 text-center">
+                Or pick a popular setup:
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-2 max-w-2xl mx-auto">
+                {USE_CASE_PRESETS.map((preset) => (
+                  <button
+                    key={preset.id}
+                    type="button"
+                    onClick={() => handleSelectPreset(preset)}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 bg-gray-50/80 hover:bg-blue-50 hover:border-blue-300 text-gray-700 hover:text-blue-700 text-xs font-medium transition-all shadow-xs group"
+                  >
+                    <Sparkles size={13} className="text-blue-500 group-hover:scale-110 transition-transform shrink-0" />
+                    <span>{preset.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {INDUSTRIES.map(({ id, label, sub, Icon }) => (
                 <button

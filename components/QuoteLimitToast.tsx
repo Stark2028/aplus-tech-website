@@ -19,7 +19,7 @@ export default function QuoteLimitToast() {
     <div
       role="status"
       aria-live="polite"
-      className="fixed top-20 left-0 right-0 z-50 flex justify-center px-4 transition-all duration-200"
+      className="fixed top-20 left-0 right-0 z-50 flex justify-center px-4 transition-all duration-200 motion-reduce:transition-none"
       style={{
         opacity: limitReached ? 1 : 0,
         transform: limitReached ? "translateY(0)" : "translateY(-8px)",

@@ -13,7 +13,7 @@ import PostHogProvider from "@/components/PostHogProvider";
 import PageTransition from "@/components/PageTransition";
 import ClientFloats from "@/components/ClientFloats";
 import ScrollProgress from "@/components/ScrollProgress";
-import { Toaster } from "sonner";
+import ResponsiveToaster from "@/components/ResponsiveToaster";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? "";
 
@@ -115,7 +115,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} ${jakartaSans.variable} ${spaceGroteskCard.variable} ${plexMonoCard.variable} bg-background text-foreground`}>
         <ScrollProgress />
-        <Toaster richColors position="bottom-right" />
+        <ResponsiveToaster />
         <Analytics gaId={GA_ID} />
         <VercelAnalytics />
 

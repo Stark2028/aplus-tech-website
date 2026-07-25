@@ -32,29 +32,44 @@ const VALUES = [
   },
 ];
 
+function PrincipleCard({ icon: Icon, title, desc }: { icon: any; title: string; desc: string }) {
+  return (
+    <div className="group bg-white p-7 sm:p-8 rounded-3xl border border-gray-200/80 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 h-full flex flex-col justify-between">
+      <div>
+        <IconTile className="mb-6">
+          <Icon className="text-current" size={22} />
+        </IconTile>
+        <h3 className="font-bold text-gray-900 text-lg mb-2.5 tracking-tight">
+          {title}
+        </h3>
+        <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function PrinciplesSlider() {
   return (
-    <AutoSlider
-      slideWidth="w-[88vw] sm:w-[360px]"
-      slideMaxWidth="max-w-md"
-      interval={3800}
-    >
-      {VALUES.map(({ icon: Icon, title, desc }) => (
-        <div
-          key={title}
-          className="group bg-white p-7 sm:p-8 rounded-3xl border border-gray-200/80 shadow-sm hover:shadow-xl hover:border-blue-300 transition-all duration-300 h-full flex flex-col justify-between"
+    <>
+      {/* Desktop & Tablet: 4-Column Grid View */}
+      <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {VALUES.map((val) => (
+          <PrincipleCard key={val.title} {...val} />
+        ))}
+      </div>
+
+      {/* Mobile: Horizontal Auto-Moving Slider */}
+      <div className="md:hidden">
+        <AutoSlider
+          slideWidth="w-[88vw] sm:w-[360px]"
+          slideMaxWidth="max-w-md"
+          interval={3800}
         >
-          <div>
-            <IconTile className="mb-6">
-              <Icon className="text-current" size={22} />
-            </IconTile>
-            <h3 className="font-bold text-gray-900 text-lg mb-2.5 tracking-tight">
-              {title}
-            </h3>
-            <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
-          </div>
-        </div>
-      ))}
-    </AutoSlider>
+          {VALUES.map((val) => (
+            <PrincipleCard key={val.title} {...val} />
+          ))}
+        </AutoSlider>
+      </div>
+    </>
   );
 }

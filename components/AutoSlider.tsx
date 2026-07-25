@@ -28,7 +28,7 @@ export default function AutoSlider({
 
   const scroll = (dir: "left" | "right") => {
     const el = scrollRef.current;
-    if (!el) return;
+    if (!el || el.clientWidth === 0) return;
     const slideEl = el.firstElementChild as HTMLElement | null;
     const amount = slideEl ? slideEl.offsetWidth + 20 : el.clientWidth * 0.82;
     el.scrollBy({ left: dir === "right" ? amount : -amount, behavior: "smooth" });
@@ -38,7 +38,7 @@ export default function AutoSlider({
     const id = setInterval(() => {
       if (paused) return;
       const el = scrollRef.current;
-      if (!el) return;
+      if (!el || el.clientWidth === 0) return;
       const maxScroll = el.scrollWidth - el.clientWidth;
       if (el.scrollLeft >= maxScroll - 10) {
         el.scrollTo({ left: 0 });

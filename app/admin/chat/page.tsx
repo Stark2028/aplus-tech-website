@@ -5,10 +5,13 @@ import { Loader2, LogOut } from "lucide-react";
 import { useAgentAuth } from "@/lib/chat/useAgentAuth";
 import { useInbox, useClosedInbox, useVisitorsPresence } from "@/lib/chat/useInbox";
 import { useTeamHeartbeat } from "@/lib/chat/useTeamHeartbeat";
+import { getAuthClient } from "@/lib/firebase/client";
+import type { Conversation } from "@/lib/chat/types";
 import AgentLogin from "@/components/admin/chat/AgentLogin";
 import ConversationList from "@/components/admin/chat/ConversationList";
 import ChatThread from "@/components/admin/chat/ChatThread";
 import InboxTabs, { type TabKey } from "@/components/admin/chat/InboxTabs";
+import ConfirmDialog from "@/components/admin/chat/ConfirmDialog";
 
 export default function AdminChatPage() {
   const { ready, user, isAgent, signIn, signOutAgent, error } = useAgentAuth();
@@ -73,9 +76,46 @@ function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise
 
   const selected = [...open, ...closed].find((c) => c.id === selectedId) ?? null;
 
+  // ── Long-press delete from the closed-conversations list ──
+  const [deleteTarget, setDeleteTarget] = useState<Conversation | null>(null);
+  const [deletingConv, setDeletingConv] = useState(false);
+  const [deleteConvError, setDeleteConvError] = useState<string | null>(null);
+
+  const handleDeleteFromList = async () => {
+    if (!deleteTarget) return;
+    setDeletingConv(true);
+    setDeleteConvError(null);
+    try {
+      const idToken = await getAuthClient().currentUser?.getIdToken();
+      const res = await fetch("/api/chat/delete-conversation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
+        },
+        body: JSON.stringify({ conversationId: deleteTarget.id }),
+      });
+      if (!res.ok) {
+        const body = (await res.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(body?.error || "Couldn't delete the conversation. Please try again.");
+      }
+      setDeleteTarget(null);
+      // If the deleted conversation was selected, clear it
+      if (selectedId === deleteTarget.id) setSelectedId(null);
+    } catch (err) {
+      setDeleteConvError(
+        err instanceof Error ? err.message : "Couldn't delete the conversation. Please try again."
+      );
+    } finally {
+      setDeletingConv(false);
+    }
+  };
+
   return (
     <div className="h-screen flex flex-col">
-      <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3 shrink-0">
+      <header className={`bg-white border-b border-gray-200 px-4 py-3 items-center gap-3 shrink-0 ${
+        selected ? "hidden md:flex" : "flex"
+      }`}>
         <span className="font-bold text-sm text-gray-900">Sales console</span>
         <span className="flex-1 text-xs text-gray-400 truncate">{email}</span>
         <button
@@ -105,6 +145,14 @@ function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise
               selectedId={selectedId}
               onSelect={setSelectedId}
               presenceMap={presenceMap}
+              onLongPressDelete={
+                tab === "closed"
+                  ? (c) => {
+                      setDeleteConvError(null);
+                      setDeleteTarget(c);
+                    }
+                  : undefined
+              }
               emptyLabel={
                 tab === "open"
                   ? "No open chats."
@@ -126,6 +174,19 @@ function Console({ email, onSignOut }: { email: string; onSignOut: () => Promise
           )}
         </div>
       </div>
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Delete this conversation?"
+        body={`This permanently deletes the entire chat with ${
+          deleteTarget?.customer.name || "this visitor"
+        }, including every message. It can't be undone.`}
+        confirmLabel="Delete conversation"
+        busy={deletingConv}
+        error={deleteConvError}
+        onConfirm={() => void handleDeleteFromList()}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

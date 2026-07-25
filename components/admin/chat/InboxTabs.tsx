@@ -25,8 +25,8 @@ export default function InboxTabs({
           <button
             key={t.key}
             onClick={() => onChange(t.key)}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors ${
-              on ? "bg-blue-600 text-white" : "text-gray-500 hover:bg-gray-100"
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-colors active:scale-[0.97] ${
+              on ? "bg-blue-600 text-white" : "text-gray-500 hover:bg-gray-100 active:bg-gray-200"
             }`}
           >
             {t.label}

@@ -132,18 +132,24 @@ export default function CustomerPanel({
       {open &&
         mounted &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex lg:hidden">
+          <div className="fixed inset-0 z-50 flex flex-col justify-end lg:hidden">
+            {/* Backdrop */}
             <button
-              className="flex-1 bg-black/30"
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
               onClick={onCloseSidebar}
               aria-label="Close customer details"
             />
-            <aside className="flex w-72 max-w-[80%] flex-col overflow-y-auto border-l border-gray-200 bg-gray-50">
-              <div className="flex justify-end p-2">
+            {/* Bottom sheet */}
+            <aside
+              className="relative flex max-h-[85vh] w-full flex-col overflow-y-auto rounded-t-3xl bg-white shadow-2xl animate-[slideUp_0.3s_ease-out]"
+            >
+              {/* Handle bar + close */}
+              <div className="sticky top-0 z-10 flex flex-col items-center bg-white pt-3 pb-1 rounded-t-3xl">
+                <div className="h-1 w-12 rounded-full bg-gray-300" />
                 <button
                   onClick={onCloseSidebar}
                   aria-label="Close customer details"
-                  className="p-1 text-gray-400 hover:text-gray-700"
+                  className="absolute right-3 top-2.5 p-1.5 text-gray-400 hover:text-gray-700"
                 >
                   <X size={18} />
                 </button>

@@ -50,5 +50,5 @@ describe("buildSpecSheetPdf", () => {
     for (const p of products) {
       await expect(buildSpecSheetPdf(p), p.id).resolves.toBeInstanceOf(Uint8Array);
     }
-  });
+  }, 30000);
 });

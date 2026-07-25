@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 import { Product } from "@/data/products";
 
 export interface QuoteItem {
@@ -15,6 +16,8 @@ interface QuoteContextType {
     updateQuantity: (productId: string, quantity: number) => void;
     clearQuote: () => void;
     isQuoteOpen: boolean;
+    openQuote: () => void;
+    closeQuote: () => void;
     toggleQuote: () => void;
     limitReached: boolean;
 }
@@ -70,29 +73,46 @@ export function QuoteProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem("b2b_quote_cart", JSON.stringify(quoteItems));
     }, [quoteItems]);
 
-    const addItem = useCallback((product: Product, quantity = 1) => {
-        setQuoteItems((prev) => {
-            const existing = prev.find((item) => item.product.id === product.id);
+    const openQuote = useCallback(() => setIsQuoteOpen(true), []);
+    const closeQuote = useCallback(() => setIsQuoteOpen(false), []);
+
+    const addItem = useCallback(
+        (product: Product, quantity = 1) => {
+            const existing = quoteItems.find((item) => item.product.id === product.id);
             if (existing) {
-                return prev.map((item) =>
-                    item.product.id === product.id
-                        ? { ...item, quantity: item.quantity + quantity }
-                        : item
+                setQuoteItems((prev) =>
+                    prev.map((item) =>
+                        item.product.id === product.id
+                            ? { ...item, quantity: item.quantity + quantity }
+                            : item
+                    )
                 );
+                toast.success(`${product.name} added to quote`, {
+                    action: {
+                        label: "View Quote",
+                        onClick: openQuote,
+                    },
+                });
+                return;
             }
-            // Adding a new distinct product would exceed the cap: flash a notice
-            // and leave the cart unchanged rather than building an oversized
-            // payload the contact API would later reject with an opaque error.
-            if (prev.length >= MAX_QUOTE_ITEMS) {
+
+            if (quoteItems.length >= MAX_QUOTE_ITEMS) {
                 setLimitReached(true);
                 if (limitTimerRef.current) clearTimeout(limitTimerRef.current);
                 limitTimerRef.current = setTimeout(() => setLimitReached(false), 2500);
-                return prev;
+                return;
             }
-            return [...prev, { product, quantity }];
-        });
-        setIsQuoteOpen(true);
-    }, []);
+
+            setQuoteItems((prev) => [...prev, { product, quantity }]);
+            toast.success(`${product.name} added to quote`, {
+                action: {
+                    label: "View Quote",
+                    onClick: openQuote,
+                },
+            });
+        },
+        [quoteItems, openQuote]
+    );
 
     const removeItem = useCallback((productId: string) => {
         setQuoteItems((prev) => prev.filter((item) => item.product.id !== productId));
@@ -121,10 +141,23 @@ export function QuoteProvider({ children }: { children: React.ReactNode }) {
             updateQuantity,
             clearQuote,
             isQuoteOpen,
+            openQuote,
+            closeQuote,
             toggleQuote,
             limitReached,
         }),
-        [quoteItems, isQuoteOpen, addItem, removeItem, updateQuantity, clearQuote, toggleQuote, limitReached]
+        [
+            quoteItems,
+            isQuoteOpen,
+            openQuote,
+            closeQuote,
+            addItem,
+            removeItem,
+            updateQuantity,
+            clearQuote,
+            toggleQuote,
+            limitReached,
+        ]
     );
 
     return <QuoteContext.Provider value={value}>{children}</QuoteContext.Provider>;

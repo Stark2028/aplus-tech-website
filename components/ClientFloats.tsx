@@ -14,6 +14,7 @@ import { usePathname } from "next/navigation";
 const ChatLauncher = dynamic(() => import("./chat/ChatLauncher"), { ssr: false });
 const ComparisonFloatingBar = dynamic(() => import("./ComparisonFloatingBar"), { ssr: false });
 const QuoteLimitToast = dynamic(() => import("./QuoteLimitToast"), { ssr: false });
+const QuoteDrawer = dynamic(() => import("./quote/QuoteDrawer"), { ssr: false });
 const FinderFloatButton = dynamic(() => import("./FinderFloatButton"), { ssr: false });
 const BackToTop = dynamic(() => import("./BackToTop"), { ssr: false });
 const CookieConsent = dynamic(() => import("./CookieConsent"), { ssr: false });
@@ -31,6 +32,7 @@ export default function ClientFloats() {
         <ChatLauncher />
         <ComparisonFloatingBar />
         <QuoteLimitToast />
+        <QuoteDrawer />
         <FinderFloatButton />
         <BackToTop />
         <CookieConsent />

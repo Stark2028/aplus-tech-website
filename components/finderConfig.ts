@@ -15,6 +15,52 @@ export const DISPLAY_TYPES = [
   { id: "LED Signage", label: "LED Signage", sub: "Direct-view LED walls" },
 ];
 
+export type IndustryId = "hospitality" | "corporate" | "education" | "retail";
+
+export interface UseCasePreset {
+  id: string;
+  label: string;
+  sub: string;
+  industry: IndustryId;
+  category: string;
+  sizeRangeId: string;
+}
+
+export const USE_CASE_PRESETS: UseCasePreset[] = [
+  {
+    id: "boardroom",
+    label: "10-Person Boardroom",
+    sub: "Interactive collaboration screen",
+    industry: "corporate",
+    category: "Interactive Display",
+    sizeRangeId: "large",
+  },
+  {
+    id: "hotel-lobby",
+    label: "Hotel Lobby Video Wall",
+    sub: "High-impact grand entrance display",
+    industry: "hospitality",
+    category: "Video Wall",
+    sizeRangeId: "",
+  },
+  {
+    id: "classroom",
+    label: "Smart Classroom",
+    sub: "Interactive learning & teaching screen",
+    industry: "education",
+    category: "Interactive Display",
+    sizeRangeId: "large",
+  },
+  {
+    id: "retail-signage",
+    label: "Retail Storefront Signage",
+    sub: "High-brightness promotional displays",
+    industry: "retail",
+    category: "Digital Signage",
+    sizeRangeId: "medium",
+  },
+];
+
 // Half-open [min, max): each boundary inch (50/75/100) belongs to exactly one
 // bucket, so a 75" panel is "Large" only — not also "Standard". Mirrors the
 // brightness-band partition fix in lib/productFilters.ts.
