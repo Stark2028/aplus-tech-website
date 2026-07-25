@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Send, Phone, Loader2 } from "lucide-react";
 import { useChat } from "@/context/ChatContext";
 import { isSendable, MAX_MESSAGE_LEN } from "@/lib/chat/messages";
+import { formatClock, formatShortDate } from "@/lib/chat/time";
+import { resolvePageLabel } from "@/lib/chat/pageLabel";
+import type { Conversation } from "@/lib/chat/types";
 import MessageAttachment from "./MessageAttachment";
 import { getCachedLead } from "@/lib/leadGate";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
@@ -28,7 +32,7 @@ const FIELDS = [
  */
 export default function LiveChat({ onWhatsApp }: { onWhatsApp: () => void }) {
   const pathname = usePathname();
-  const { ready, conversationId, messages, error, resumeExpired, startConversation, sendMessage } = useChat();
+  const { ready, conversationId, conversation, messages, error, resumeExpired, startConversation, sendMessage } = useChat();
 
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
@@ -192,7 +196,8 @@ export default function LiveChat({ onWhatsApp }: { onWhatsApp: () => void }) {
         aria-relevant="additions"
         className="flex-1 overflow-y-auto p-4 space-y-3"
       >
-        {messages.map((m) => {
+        {conversation && <OriginChip conversation={conversation} />}
+        {messages.map((m, i) => {
           if (m.sender === "system") {
             return (
               <div key={m.id} className="space-y-2">
@@ -205,8 +210,27 @@ export default function LiveChat({ onWhatsApp }: { onWhatsApp: () => void }) {
             );
           }
           const mine = m.sender === "customer";
+          // Show the "Aplus Sales" header only on the FIRST bubble of an agent
+          // run — any customer/system message breaks the run.
+          const prev = messages[i - 1];
+          const showAgentHeader = m.sender === "agent" && (!prev || prev.sender !== "agent");
           return (
-            <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
+            <div key={m.id} className={`flex flex-col ${mine ? "items-end" : "items-start"}`}>
+              {showAgentHeader && (
+                <div className="flex items-center gap-1.5 mb-1 ml-0.5">
+                  <Image
+                    src="/logo.png"
+                    alt="Aplus"
+                    width={16}
+                    height={16}
+                    className="rounded bg-white object-contain"
+                  />
+                  <span className="text-[11px] font-semibold text-gray-600">Aplus Sales</span>
+                  {formatClock(m.createdAt) && (
+                    <span className="text-[10px] text-gray-400">{formatClock(m.createdAt)}</span>
+                  )}
+                </div>
+              )}
               <div
                 className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm ${
                   mine ? "bg-blue-600 text-white rounded-br-md" : "bg-gray-100 text-gray-800 rounded-bl-md"
@@ -240,6 +264,24 @@ export default function LiveChat({ onWhatsApp }: { onWhatsApp: () => void }) {
         </button>
       </form>
     </>
+  );
+}
+
+/** Origin chip: where and when the chat began (design §3). */
+function OriginChip({ conversation }: { conversation: Conversation }) {
+  const label = resolvePageLabel({ pageTitle: conversation.pageTitle, page: conversation.page });
+  const date = formatShortDate(conversation.createdAt);
+  const text =
+    conversation.startedBy === "agent"
+      ? "Aplus Sales started this chat"
+      : `You started this chat from ${label}`;
+  return (
+    <div className="text-center">
+      <span className="inline-block text-[11px] text-gray-500 bg-gray-50 border border-gray-200 rounded-full px-3 py-1">
+        {text}
+        {date ? ` · ${date}` : ""}
+      </span>
+    </div>
   );
 }
 

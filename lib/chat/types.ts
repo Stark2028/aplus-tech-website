@@ -51,6 +51,8 @@ export interface Conversation {
   customer: ChatCustomer;
   startedBy: "customer" | "agent";
   page: string;
+  /** The page <title> captured when the chat began — source for the origin chip. */
+  pageTitle?: string;
   status: "open" | "closed";
   /** Set by /api/chat/escalate, cleared on the next agent reply (spec §6). */
   needsFollowUp: boolean;
@@ -107,6 +109,7 @@ export function mapConversation(id: string, data: Record<string, unknown>): Conv
     customer: (data.customer ?? { name: "", email: "", phone: "" }) as ChatCustomer,
     startedBy: (data.startedBy ?? "customer") as "customer" | "agent",
     page: (data.page ?? "") as string,
+    pageTitle: (data.pageTitle ?? "") as string,
     status: (data.status ?? "open") as "open" | "closed",
     needsFollowUp: Boolean(data.needsFollowUp),
     createdAt: toMillis(data.createdAt),

@@ -22,7 +22,7 @@ import { useChat } from "@/context/ChatContext";
  */
 export default function MobileStickyCTA() {
   const pathname = usePathname();
-  const { openChat } = useChat();
+  const { openChat, unread } = useChat();
 
   const isQuote = pathname.startsWith("/quote");
 
@@ -47,13 +47,28 @@ export default function MobileStickyCTA() {
         <button
           type="button"
           onClick={openLiveChat}
-          aria-label="Chat with sales"
+          aria-label={
+            unread > 0
+              ? `Chat with sales, ${unread} new ${unread === 1 ? "message" : "messages"}`
+              : "Chat with sales"
+          }
           className={`${
             isQuote ? "col-span-12" : "col-span-3"
-          } flex items-center justify-center gap-1.5 bg-blue-600 active:bg-blue-700 text-white font-semibold text-sm rounded-xl py-3 transition-colors`}
+          } relative flex items-center justify-center gap-1.5 bg-blue-600 active:bg-blue-700 text-white font-semibold text-sm rounded-xl py-3 transition-colors`}
         >
           <MessageCircle size={15} aria-hidden="true" />
           Chat
+          {/* Unread agent replies — the desktop launcher badge has no mobile twin,
+              so without this a salesperson's reply is counted but never shown on
+              phones. ring (not border) keeps the box size stable. */}
+          {unread > 0 && (
+            <span
+              aria-hidden="true"
+              className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1 bg-red-500 rounded-full text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white"
+            >
+              {unread}
+            </span>
+          )}
         </button>
 
         {!isQuote && (

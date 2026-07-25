@@ -118,25 +118,27 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
   }, [messages, isOpen]);
 
   const openChat = useCallback((next: ChatView = "home") => {
-    setView(next);
+    // A default "home" open with an unread agent reply lands in the thread, not
+    // the marketing menu — otherwise the reply the badge pointed at stays buried.
+    // Explicit "live"/"whatsapp" picks are honored as-is.
+    const target: ChatView = next === "home" && unread > 0 && conversationId ? "live" : next;
+    setView(target);
     setUnread(0);
     setIsOpen(true);
     setHasEngaged(true);
-  }, []);
+  }, [unread, conversationId]);
 
   const closeChat = useCallback(() => setIsOpen(false), []);
 
   const toggleChat = useCallback(() => {
-    setIsOpen((open) => {
-      if (open) return false;
-      setView("home");
-      setUnread(0);
-      return true;
-    });
-    // Any toggle implies the visitor reached for the widget — engage so a fresh
-    // anonymous session is minted (no-op once already engaged).
-    setHasEngaged(true);
-  }, []);
+    // Delegate the OPEN path to openChat so the "route to the reply" rule lives in
+    // exactly one place; closing stays trivial. openChat also engages the session.
+    if (isOpen) {
+      setIsOpen(false);
+      return;
+    }
+    openChat("home");
+  }, [isOpen, openChat]);
 
   const value = useMemo(
     () => ({
