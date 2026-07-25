@@ -44,3 +44,9 @@ export function dayLabel(ts: number, now: number = Date.now()): string {
   if (sameDay(ts, yesterday.getTime())) return "Yesterday";
   return new Date(ts).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
 }
+
+/** Short absolute date for the origin chip: "24 Jul". Empty for a missing ts. */
+export function formatShortDate(ts: number): string {
+  if (!ts) return "";
+  return new Date(ts).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+}

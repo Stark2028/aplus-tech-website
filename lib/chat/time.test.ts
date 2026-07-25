@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatRelative, formatClock, sameDay, dayLabel } from "./time";
+import { formatRelative, formatClock, sameDay, dayLabel, formatShortDate } from "./time";
 
 const NOW = new Date("2026-07-24T12:00:00Z").getTime();
 const MIN = 60_000, HOUR = 3_600_000, DAY = 86_400_000;
@@ -56,5 +56,16 @@ describe("dayLabel", () => {
     expect(label).not.toBe("Today");
     expect(label).not.toBe("Yesterday");
     expect(label.length).toBeGreaterThan(0);
+  });
+});
+
+describe("formatShortDate", () => {
+  it("returns empty string for 0", () => {
+    expect(formatShortDate(0)).toBe("");
+  });
+  it("renders a short day + month with no year", () => {
+    const out = formatShortDate(new Date("2026-07-24T06:00:00Z").getTime());
+    expect(out).toMatch(/^\d{1,2} \w{3}$/); // e.g. "24 Jul" — locale/TZ tolerant
+    expect(out).not.toMatch(/\d{4}/); // no year
   });
 });
