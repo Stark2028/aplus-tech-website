@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, CheckCircle2, GraduationCap } from "lucide-react";
 import { classSaathiLeadSchema, type ClassSaathiLeadValues } from "@/lib/formSchemas";
+import { registerIndianPhone } from "@/lib/phone";
 import { leadFormOptions } from "@/data/education";
 import { trackEvent } from "@/lib/analytics";
 
@@ -177,7 +178,7 @@ export default function BlueprintLeadForm() {
               </div>
               <div>
                 <label htmlFor="cs-phone" className={labelClass}>Phone</label>
-                <input id="cs-phone" type="tel" placeholder="+91 99999 99999" className={inputClass} {...register("phone")} />
+                <input id="cs-phone" type="tel" inputMode="tel" placeholder="+91 99999 99999" className={inputClass} {...registerIndianPhone(register("phone"))} />
                 {errors.phone && <p className="mt-1 text-xs text-red-600">{errors.phone.message}</p>}
               </div>
             </div>

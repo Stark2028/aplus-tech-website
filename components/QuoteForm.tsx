@@ -7,6 +7,7 @@ import { Send, CheckCircle, Loader2 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 import { toast } from "sonner";
 import { quoteFormSchema, type QuoteFormValues } from "@/lib/formSchemas";
+import { registerIndianPhone } from "@/lib/phone";
 
 /** Tiny helper — renders a red error message beneath a field */
 function FieldError({ message }: { message?: string }) {
@@ -153,6 +154,7 @@ export default function QuoteForm({ productName }: { productName: string }) {
           <input
             id="qf-phone"
             type="tel"
+            inputMode="tel"
             autoComplete="tel"
             placeholder="+91 98765 43210"
             aria-invalid={!!errors.phone}
@@ -160,7 +162,7 @@ export default function QuoteForm({ productName }: { productName: string }) {
             className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition ${
               errors.phone ? "border-red-400 bg-red-50" : "border-gray-300"
             }`}
-            {...register("phone")}
+            {...registerIndianPhone(register("phone"))}
           />
           <span id="qf-phone-error">
             <FieldError message={errors.phone?.message} />

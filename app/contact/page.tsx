@@ -19,6 +19,7 @@ import {
   IconTile,
 } from "@/components/icons";
 import { contactFormSchema, type ContactFormValues } from "@/lib/formSchemas";
+import { registerIndianPhone } from "@/lib/phone";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 
 function FieldError({ message }: { message?: string }) {
@@ -315,10 +316,10 @@ export default function ContactPage() {
                         <label className="block text-sm font-semibold text-gray-700 mb-1.5 transition-colors group-focus-within:text-blue-600">
                           Phone Number <span className="text-red-500">*</span>
                         </label>
-                        <input type="tel" autoComplete="tel" placeholder="+91 98765 43210"
+                        <input type="tel" inputMode="tel" autoComplete="tel" placeholder="+91 98765 43210"
                           aria-invalid={!!errors.phone}
                           className={`w-full px-4 py-3.5 border rounded-xl text-sm bg-gray-50/50 hover:bg-gray-50 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all placeholder:text-gray-400 ${errors.phone ? "border-red-400" : "border-gray-200"}`}
-                          {...register("phone")}
+                          {...registerIndianPhone(register("phone"))}
                         />
                         <FieldError message={errors.phone?.message} />
                       </div>

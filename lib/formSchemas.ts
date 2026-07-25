@@ -1,10 +1,9 @@
 import { z } from "zod";
+import { extractIndianMobile } from "./phone";
 
-// Permissive phone shape: only +, digits, spaces, hyphens and parens are
-// allowed characters. The old matcher quantified the whole class ({8,18}), so
-// it counted separators as "length" — "--------" passed while a valid 16-digit
-// international number with spaces was rejected. Validation of length is done on
-// the DIGIT count instead (see `phone` below).
+// Allowed characters: a leading +, digits, spaces, hyphens and parens. This is
+// only a junk filter (letters, symbols) — the actual Indian-mobile rule is
+// applied by `extractIndianMobile` on the digits (see `phone` below).
 const phoneCharsRegex = /^[+]?[\d\s()-]+$/;
 
 const name = z
@@ -24,11 +23,11 @@ const phone = z
   .string()
   .trim()
   .min(1, "Phone number is required")
-  .regex(phoneCharsRegex, "Enter a valid phone number")
-  .refine((v) => {
-    const digits = v.match(/\d/g)?.length ?? 0;
-    return digits >= 8 && digits <= 15; // E.164 caps the subscriber number at 15
-  }, "Enter a valid phone number");
+  .regex(phoneCharsRegex, "Enter a valid 10-digit Indian mobile number")
+  .refine(
+    (v) => extractIndianMobile(v) !== null,
+    "Enter a valid 10-digit Indian mobile number"
+  );
 
 export const quoteFormSchema = z.object({
   name,

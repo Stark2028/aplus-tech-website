@@ -19,6 +19,7 @@ import {
 import { trackEvent } from "@/lib/analytics";
 import { toast } from "sonner";
 import { leadGateSchema, type LeadGateValues } from "@/lib/formSchemas";
+import { registerIndianPhone } from "@/lib/phone";
 
 function FieldError({ message }: { message?: string }) {
   if (!message) return null;
@@ -345,11 +346,12 @@ export default function LeadGateModal({
                     </label>
                     <input
                       type="tel"
+                      inputMode="tel"
                       autoComplete="tel"
                       placeholder="+91 98765 43210"
                       aria-invalid={!!errors.phone}
                       className={`w-full px-4 py-2.5 bg-white/70 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-sm ${errors.phone ? "border-red-400" : "border-gray-200"}`}
-                      {...register("phone")}
+                      {...registerIndianPhone(register("phone"))}
                     />
                     <FieldError message={errors.phone?.message} />
                   </div>
