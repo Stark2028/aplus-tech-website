@@ -64,7 +64,7 @@ export default function SpecSheetButton({ product, compact = false }: Props) {
         onClick={handleClick}
         disabled={isGenerating}
         className={`flex items-center justify-center w-full py-3.5 border border-slate-200 rounded-xl font-semibold text-slate-700 hover:border-slate-300 hover:text-blue-700 hover:bg-slate-50 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 bg-white disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 ${
-          compact ? "gap-1.5 px-2 text-[13px] whitespace-nowrap" : "gap-2 text-[15px]"
+          compact ? "gap-1.5 px-2 text-sm whitespace-nowrap" : "gap-2 text-[15px]"
         }`}
       >
         <FileDown size={compact ? 16 : 18} />

@@ -285,21 +285,21 @@ export default async function ProductPage({
               />
 
               {/* Direct contact */}
-              <div className="flex gap-3">
+              <div className="grid grid-cols-2 gap-2.5">
                 <a
                   href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(product.name)}.%20Please%20share%20pricing.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 bg-linear-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-400 text-white py-3.5 rounded-xl font-semibold text-sm shadow-sm"
+                  className="w-full flex items-center justify-center gap-1.5 px-2 bg-white border border-emerald-200 text-emerald-600 py-3.5 rounded-xl font-semibold text-sm shadow-sm hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300"
                 >
-                  <WhatsAppIcon />
+                  <WhatsAppIcon className="w-4 h-4 fill-current shrink-0" />
                   WhatsApp
                 </a>
                 <a
                   href={`tel:+${WHATSAPP_NUMBER}`}
-                  className="flex-1 flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 py-3.5 rounded-xl font-semibold text-sm shadow-sm"
+                  className="w-full flex items-center justify-center gap-1.5 px-2 bg-white border border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 hover:text-blue-700 py-3.5 rounded-xl font-semibold text-sm shadow-sm hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300"
                 >
-                  <Phone size={15} />
+                  <Phone size={16} />
                   Call Us
                 </a>
               </div>
@@ -513,21 +513,21 @@ export default async function ProductPage({
                 </div>
 
                 {/* Direct contact */}
-                <div className="flex gap-3 mt-4">
+                <div className="grid grid-cols-2 gap-2.5 mt-4">
                   <a
                     href={`https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27m%20interested%20in%20the%20${encodeURIComponent(product.name)}.%20Please%20share%20pricing.`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 bg-linear-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-400 text-white py-3.5 rounded-xl font-semibold text-[14px] shadow-sm shadow-emerald-500/20 hover:shadow-md hover:shadow-emerald-500/20 hover:-translate-y-0.5 transition-all duration-300"
+                    className="w-full flex items-center justify-center gap-1.5 px-2 bg-white border border-emerald-200 text-emerald-600 py-3.5 rounded-xl font-semibold text-sm shadow-sm hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300"
                   >
-                    <WhatsAppIcon />
+                    <WhatsAppIcon className="w-4 h-4 fill-current shrink-0" />
                     WhatsApp
                   </a>
                   <a
                     href={PHONE_TEL}
-                    className="flex-1 flex items-center justify-center gap-2 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-700 py-3.5 rounded-xl font-semibold text-[14px] shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+                    className="w-full flex items-center justify-center gap-1.5 px-2 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 hover:text-blue-700 text-slate-700 py-3.5 rounded-xl font-semibold text-sm shadow-sm hover:shadow-sm hover:-translate-y-0.5 transition-all duration-300"
                   >
-                    <Phone size={15} />
+                    <Phone size={16} />
                     Call Us
                   </a>
                 </div>

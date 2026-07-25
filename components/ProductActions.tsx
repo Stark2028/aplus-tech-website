@@ -57,21 +57,21 @@ export default function ProductActions({
 
             {/* Compare — secondary. Shares one row with the spec-sheet slot
                 when provided, otherwise full width (matches the stack's sizing) */}
-            <div className={specSheetSlot ? "flex gap-2.5" : "contents"}>
+            <div className={specSheetSlot ? "grid grid-cols-2 gap-2.5" : "contents"}>
                 <button
                     onClick={handleCompareToggle}
                     className={`${specSheetSlot
-                            ? "flex-1 py-3.5 px-2 text-[13px] whitespace-nowrap gap-1.5"
-                            : "w-full py-3.5 px-6 text-[15px] gap-2"
-                        } rounded-xl font-semibold flex items-center justify-center border transition-all duration-300 ${isComparing
+                            ? "w-full px-2 whitespace-nowrap"
+                            : "w-full px-6"
+                        } py-3.5 text-sm gap-1.5 rounded-xl font-semibold flex items-center justify-center border transition-all duration-300 ${isComparing
                             ? "bg-blue-50 border-blue-200 text-blue-700"
-                            : "bg-white border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50 hover:-translate-y-0.5 hover:shadow-sm"
+                            : "bg-white border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 hover:text-blue-700 hover:-translate-y-0.5 hover:shadow-sm"
                         }`}
                 >
                     <Scale size={16} strokeWidth={isComparing ? 2.5 : 2} />
                     {isComparing ? (specSheetSlot ? "In Compare" : "Added to Compare") : "Compare"}
                 </button>
-                {specSheetSlot && <div className="flex-1 flex">{specSheetSlot}</div>}
+                {specSheetSlot}
             </div>
         </div>
     );
