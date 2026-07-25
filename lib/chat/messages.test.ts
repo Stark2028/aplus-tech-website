@@ -1,6 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { buildPreview, isSendable, MAX_MESSAGE_LEN, PREVIEW_LEN } from "./messages";
-import { toMillis } from "./types";
+import { buildPreview, isSendable, summaryFromMessages, MAX_MESSAGE_LEN, PREVIEW_LEN } from "./messages";
+import { toMillis, type ChatMessage } from "./types";
+
+function msg(partial: Partial<ChatMessage> & Pick<ChatMessage, "id" | "sender" | "createdAt">): ChatMessage {
+  return { text: "", ...partial };
+}
 
 describe("buildPreview", () => {
   it("uses the text when present", () => {
@@ -64,6 +68,40 @@ describe("isSendable", () => {
       isSendable({ attachment: { url: "u", name: "a.pdf", mime: "application/pdf", size: 1 } })
     ).toBe(true);
     expect(isSendable({ link: { url: "u", label: "QB65", kind: "product" } })).toBe(true);
+  });
+});
+
+describe("summaryFromMessages", () => {
+  it("returns null when the thread is empty", () => {
+    expect(summaryFromMessages([])).toBeNull();
+  });
+
+  it("summarises the newest message by createdAt", () => {
+    const result = summaryFromMessages([
+      msg({ id: "a", sender: "customer", text: "First", createdAt: 100 }),
+      msg({ id: "b", sender: "agent", text: "Latest reply", createdAt: 200 }),
+    ]);
+    expect(result).toEqual({ lastPreview: "Latest reply", lastSender: "agent", lastMessageAt: 200 });
+  });
+
+  it("finds the newest by timestamp, not array position", () => {
+    const result = summaryFromMessages([
+      msg({ id: "b", sender: "agent", text: "Newest", createdAt: 200 }),
+      msg({ id: "a", sender: "customer", text: "Older", createdAt: 100 }),
+    ]);
+    expect(result).toEqual({ lastPreview: "Newest", lastSender: "agent", lastMessageAt: 200 });
+  });
+
+  it("previews a file-only newest message by its attachment name", () => {
+    const result = summaryFromMessages([
+      msg({
+        id: "a",
+        sender: "agent",
+        createdAt: 100,
+        attachment: { url: "u", name: "QB65.pdf", mime: "application/pdf", size: 10 },
+      }),
+    ]);
+    expect(result).toEqual({ lastPreview: "📎 QB65.pdf", lastSender: "agent", lastMessageAt: 100 });
   });
 });
 

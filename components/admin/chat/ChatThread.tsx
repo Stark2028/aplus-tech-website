@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Send, ArrowLeft, CheckCheck, Info } from "lucide-react";
+import { Send, ArrowLeft, CheckCheck, Info, Trash2 } from "lucide-react";
 import type { ChatAttachment, ChatLink, Conversation } from "@/lib/chat/types";
 import { useThread } from "@/lib/chat/useInbox";
+import ConfirmDialog from "./ConfirmDialog";
 import { isVisitorOnline, formatLastSeen } from "@/lib/chat/presence";
 import { isSendable, MAX_MESSAGE_LEN } from "@/lib/chat/messages";
 import { isNearBottom } from "@/lib/chat/scroll";
@@ -23,10 +24,17 @@ export default function ChatThread({
   conversation: Conversation;
   onBack: () => void;
 }) {
-  const { messages, visitor, error: threadError, sendReply, markRead, setStatus } = useThread(conversation.id);
+  const { messages, visitor, error: threadError, sendReply, markRead, setStatus, deleteMessage, deleteConversation } =
+    useThread(conversation.id);
   const [draft, setDraft] = useState("");
   const [uploadError, setUploadError] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  // Which message is asking "Delete? · Cancel" — a two-step guard so a single
+  // click never triggers an irreversible, both-sides-visible delete by accident.
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [showDeleteConv, setShowDeleteConv] = useState(false);
+  const [deletingConv, setDeletingConv] = useState(false);
+  const [deleteConvError, setDeleteConvError] = useState<string | null>(null);
   const logRef = useRef<HTMLDivElement>(null);
   // Keep the log pinned to the bottom unless the agent scrolls up to read history.
   const stickToBottom = useRef(true);
@@ -79,6 +87,20 @@ export default function ChatThread({
   const sendLink = async (link: ChatLink) => {
     await sendReply({ text: draft.trim(), link }).catch(() => {});
     setDraft("");
+  };
+
+  const handleDeleteConversation = async () => {
+    setDeletingConv(true);
+    setDeleteConvError(null);
+    try {
+      await deleteConversation();
+      // The row drops out of the inbox on its own once its doc is gone; leave the
+      // thread by returning to the list. onBack unmounts us, so no state reset.
+      onBack();
+    } catch {
+      setDeletingConv(false);
+      setDeleteConvError("Couldn't delete the conversation. Please try again.");
+    }
   };
 
   // "Hi Rahul, following up on your chat about…" — the context line is the whole
@@ -148,31 +170,47 @@ export default function ChatThread({
               );
             }
             const m = item.message;
+            const deleteControl = (
+              <MessageDeleteControl
+                confirming={confirmDeleteId === m.id}
+                onAsk={() => setConfirmDeleteId(m.id)}
+                onConfirm={() => {
+                  setConfirmDeleteId(null);
+                  void deleteMessage(m);
+                }}
+                onCancel={() => setConfirmDeleteId(null)}
+              />
+            );
             if (m.sender === "system") {
               return (
-                <p
-                  key={m.id}
-                  className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-center text-[11px] text-gray-500"
-                >
-                  {m.text}
-                </p>
+                <div key={m.id} className="group flex items-center justify-center gap-1.5">
+                  <p className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-center text-[11px] text-gray-500">
+                    {m.text}
+                  </p>
+                  {deleteControl}
+                </div>
               );
             }
             const mine = m.sender === "agent";
             return (
-              <div key={m.id} className={`flex flex-col ${mine ? "items-end" : "items-start"}`}>
+              <div key={m.id} className={`group flex flex-col ${mine ? "items-end" : "items-start"}`}>
                 <div
-                  className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm ${
-                    mine ? "rounded-br-md bg-blue-600 text-white" : "rounded-bl-md bg-gray-100 text-gray-800"
-                  }`}
+                  className={`flex max-w-[85%] items-center gap-1.5 ${mine ? "flex-row" : "flex-row-reverse"}`}
                 >
-                  {m.text && <p className="whitespace-pre-wrap break-words">{m.text}</p>}
-                  <MessageAttachment attachment={m.attachment} link={m.link} />
-                  {m.emailedAt && (
-                    <p className="mt-1 flex items-center gap-1 text-[10px] text-blue-100">
-                      <CheckCheck size={11} /> Emailed
-                    </p>
-                  )}
+                  {deleteControl}
+                  <div
+                    className={`min-w-0 rounded-2xl px-3.5 py-2.5 text-sm ${
+                      mine ? "rounded-br-md bg-blue-600 text-white" : "rounded-bl-md bg-gray-100 text-gray-800"
+                    }`}
+                  >
+                    {m.text && <p className="whitespace-pre-wrap break-words">{m.text}</p>}
+                    <MessageAttachment attachment={m.attachment} link={m.link} />
+                    {m.emailedAt && (
+                      <p className="mt-1 flex items-center gap-1 text-[10px] text-blue-100">
+                        <CheckCheck size={11} /> Emailed
+                      </p>
+                    )}
+                  </div>
                 </div>
                 <span className="mt-0.5 px-1 text-[10px] text-gray-400">{formatClock(m.createdAt)}</span>
               </div>
@@ -224,9 +262,69 @@ export default function ChatThread({
         online={online}
         waHref={waHref}
         onCloseChat={() => setStatus("closed")}
+        onReopenChat={() => setStatus("open")}
+        onDeleteConversation={() => {
+          setDeleteConvError(null);
+          setShowDeleteConv(true);
+        }}
         open={sidebarOpen}
         onCloseSidebar={() => setSidebarOpen(false)}
       />
+
+      <ConfirmDialog
+        open={showDeleteConv}
+        title="Delete this conversation?"
+        body={`This permanently deletes the entire chat with ${
+          conversation.customer.name || "this visitor"
+        }, including every message. It can't be undone.`}
+        confirmLabel="Delete conversation"
+        busy={deletingConv}
+        error={deleteConvError}
+        onConfirm={() => void handleDeleteConversation()}
+        onCancel={() => setShowDeleteConv(false)}
+      />
     </div>
+  );
+}
+
+/**
+ * The per-message delete affordance: a faint trash icon revealed on row hover
+ * (or keyboard focus). Clicking it does NOT delete — it swaps to an inline
+ * "Delete · Cancel" so an irreversible, both-sides-visible delete always takes a
+ * deliberate second click. `group-hover` is driven by the `group` on each message row.
+ */
+function MessageDeleteControl({
+  confirming,
+  onAsk,
+  onConfirm,
+  onCancel,
+}: {
+  confirming: boolean;
+  onAsk: () => void;
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
+  if (confirming) {
+    return (
+      <span className="flex shrink-0 items-center gap-1 text-[10px] font-semibold">
+        <button onClick={onConfirm} className="text-red-600 hover:underline">
+          Delete
+        </button>
+        <span className="text-gray-300">·</span>
+        <button onClick={onCancel} className="text-gray-400 hover:underline">
+          Cancel
+        </button>
+      </span>
+    );
+  }
+  return (
+    <button
+      onClick={onAsk}
+      aria-label="Delete message"
+      title="Delete message"
+      className="shrink-0 text-gray-300 opacity-0 transition-opacity hover:text-red-600 focus:opacity-100 group-hover:opacity-100"
+    >
+      <Trash2 size={13} />
+    </button>
   );
 }

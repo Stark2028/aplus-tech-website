@@ -23,6 +23,7 @@ import { setCachedLead } from "@/lib/leadGate";
 import { COL, mapConversation, mapMessage, type ChatCustomer, type ChatMessage, type Conversation } from "./types";
 import { buildPreview } from "./messages";
 import { shouldEscalate } from "./escalation";
+import { isConversationDeleted } from "./conversationLifecycle";
 
 const TIMEOUT_NOTICE =
   "Sorry — our team is tied up. We have your details and will reply on WhatsApp/email shortly.";
@@ -224,6 +225,33 @@ export function useConversation(engaged = false) {
     );
   }, [conversationId]);
 
+  // ── recover when the conversation is deleted from the console ───────────────
+  // An agent can wipe a whole conversation from the sales console. The compound
+  // "find open conversation" query above cannot see that: it only emits an
+  // ambiguous empty snapshot, which its guard deliberately ignores so a freshly
+  // created thread survives its transient-empty beat. Watching THIS conversation
+  // by id is unambiguous — the doc exists the instant startConversation writes it
+  // (so this never trips on the flap), and reports a server-confirmed absence
+  // only on a real delete. When that happens, drop the dead id so the widget
+  // falls back to the pre-chat form; otherwise the visitor keeps typing into a
+  // thread whose message writes the rules now silently reject (ownsThread() does
+  // get() on the missing conversation), i.e. "the message isn't going" until a
+  // full refresh clears the stale in-memory id.
+  useEffect(() => {
+    if (!conversationId) return;
+    return onSnapshot(
+      doc(getDb(), COL.conversations, conversationId),
+      (snap) => {
+        if (!isConversationDeleted({ exists: snap.exists(), fromCache: snap.metadata.fromCache })) return;
+        if (conversationIdRef.current?.id === conversationId) conversationIdRef.current = null;
+        setConversationId(null);
+        setConversation(null);
+      },
+      // A listen error is already surfaced by the message stream's onError above.
+      () => {}
+    );
+  }, [conversationId]);
+
   // ── the 3-minute unanswered timer (spec §6.1) ──────────────────────────────────
   // Runs in the WAITING CUSTOMER'S OWN BROWSER, which is exactly why the safety
   // net fires when no console is open anywhere: no cron, no paid plan.
@@ -314,6 +342,7 @@ export function useConversation(engaged = false) {
         customer,
         startedBy: "customer",
         page,
+        pageTitle: typeof document !== "undefined" ? document.title : "",
         status: "open",
         needsFollowUp: false,
         createdAt: serverTimestamp(),

@@ -14,6 +14,8 @@ export default function CustomerPanel({
   online,
   waHref,
   onCloseChat,
+  onReopenChat,
+  onDeleteConversation,
   open,
   onCloseSidebar,
 }: {
@@ -22,6 +24,8 @@ export default function CustomerPanel({
   online: boolean;
   waHref: string | null;
   onCloseChat: () => void;
+  onReopenChat: () => void;
+  onDeleteConversation: () => void;
   open: boolean;
   onCloseSidebar: () => void;
 }) {
@@ -93,12 +97,29 @@ export default function CustomerPanel({
         <Detail label="Currently on" value={online ? visitor?.currentPage || "—" : "—"} />
       </dl>
 
-      <button
-        onClick={onCloseChat}
-        className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-500 transition-colors hover:text-gray-900"
-      >
-        Close chat
-      </button>
+      <div className="flex flex-col gap-2">
+        {conversation.status === "closed" ? (
+          <button
+            onClick={onReopenChat}
+            className="rounded-lg border border-blue-200 px-3 py-2 text-xs font-semibold text-blue-600 transition-colors hover:bg-blue-50"
+          >
+            Reopen chat
+          </button>
+        ) : (
+          <button
+            onClick={onCloseChat}
+            className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-500 transition-colors hover:text-gray-900"
+          >
+            Close chat
+          </button>
+        )}
+        <button
+          onClick={onDeleteConversation}
+          className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 transition-colors hover:bg-red-50"
+        >
+          Delete conversation
+        </button>
+      </div>
     </div>
   );
 

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   limit,
   limitToLast,
@@ -11,6 +12,7 @@ import {
   orderBy,
   query,
   serverTimestamp,
+  Timestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -26,7 +28,7 @@ import {
   type Conversation,
   type VisitorDoc,
 } from "./types";
-import { buildPreview } from "./messages";
+import { buildPreview, summaryFromMessages } from "./messages";
 import { isVisitorOnline } from "./presence";
 
 /**
@@ -322,5 +324,62 @@ export function useThread(conversationId: string | null) {
     [conversationId]
   );
 
-  return { messages, visitor, error, sendReply, markRead, setStatus };
+  // Hard-delete one message. The Firestore rule already allows an agent to delete
+  // any message (firestore.rules — messages `allow update, delete: if isAgent()`),
+  // and the live snapshot removes the bubble from BOTH this console and the
+  // customer's open widget, since they render the same doc.
+  const deleteMessage = useCallback(
+    async (message: ChatMessage) => {
+      if (!conversationId) return;
+      const db = getDb();
+      await deleteDoc(doc(db, COL.conversations, conversationId, COL.messages, message.id));
+
+      // If the deleted message was the newest, the conversation's inbox summary
+      // (lastPreview / lastSender / lastMessageAt) still describes a message that
+      // no longer exists. Recompute it from what remains so the list line and the
+      // inbox ordering stay honest. Only the newest message feeds the summary, so
+      // deleting an older one needs no write. lastMessageAt is written as a
+      // Timestamp (not a raw number): Firestore orders numbers before all
+      // timestamps, so a number here would drop the row beneath every other
+      // conversation in the inbox's orderBy("lastMessageAt").
+      const wasNewest = messages.every(
+        (m) => m.id === message.id || m.createdAt <= message.createdAt
+      );
+      if (!wasNewest) return;
+
+      const summary = summaryFromMessages(messages.filter((m) => m.id !== message.id));
+      await updateDoc(
+        doc(db, COL.conversations, conversationId),
+        summary
+          ? {
+              lastPreview: summary.lastPreview,
+              lastSender: summary.lastSender,
+              lastMessageAt: Timestamp.fromMillis(summary.lastMessageAt),
+            }
+          : { lastPreview: "" }
+      ).catch(() => {});
+    },
+    [conversationId, messages]
+  );
+
+  // Permanently delete the whole conversation. Goes through the Admin-SDK route
+  // (not a client write) because deleting the conversation doc does NOT remove
+  // its `messages` subcollection — recursiveDelete on the server wipes the whole
+  // tree in one call, regardless of message count. Throws on failure so the
+  // caller keeps the thread on screen and surfaces an error.
+  const deleteConversation = useCallback(async () => {
+    if (!conversationId) return;
+    const idToken = await getAuthClient().currentUser?.getIdToken();
+    const res = await fetch("/api/chat/delete-conversation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
+      },
+      body: JSON.stringify({ conversationId }),
+    });
+    if (!res.ok) throw new Error("delete-conversation-failed");
+  }, [conversationId]);
+
+  return { messages, visitor, error, sendReply, markRead, setStatus, deleteMessage, deleteConversation };
 }
