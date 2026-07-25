@@ -22,7 +22,7 @@ import { trackEvent } from "@/lib/analytics";
 import { setCachedLead } from "@/lib/leadGate";
 import { COL, mapConversation, mapMessage, type ChatCustomer, type ChatMessage, type Conversation } from "./types";
 import { buildPreview } from "./messages";
-import { shouldEscalate } from "./escalation";
+import { shouldEscalate, shouldStopEscalating } from "./escalation";
 import { isConversationDeleted } from "./conversationLifecycle";
 
 const TIMEOUT_NOTICE =
@@ -263,6 +263,11 @@ export function useConversation(engaged = false) {
   // the client never retried because the guard was already flipped.
   const noticePosted = useRef(false);
   const escalated = useRef(false);
+  // Bounds the retry loop: a failed escalation (500, network error, or a 429
+  // from a tripped rate limit) must not retry every 20s forever. After
+  // MAX_ESCALATE_ATTEMPTS failures — or immediately on a 429 — we back off.
+  const escalateFailures = useRef(0);
+  const escalationStopped = useRef(false);
   useEffect(() => {
     if (!conversationId || !conversation) return;
 
@@ -285,7 +290,7 @@ export function useConversation(engaged = false) {
         needsFollowUp: conversation.needsFollowUp,
         now: Date.now(),
       });
-      if (!due || escalated.current) return;
+      if (!due || escalated.current || escalationStopped.current) return;
 
       const db = getDb();
       // The apology lands in the thread even if the route below fails — but only
@@ -316,10 +321,21 @@ export function useConversation(engaged = false) {
         if (res.ok) {
           escalated.current = true;
           trackEvent("chat_unanswered", { conversationId });
+        } else {
+          escalateFailures.current += 1;
+          if (shouldStopEscalating(escalateFailures.current, res.status)) {
+            escalationStopped.current = true;
+          }
         }
       } catch {
         // Network error — non-fatal (spec §11): the notice is stored and the
-        // chat-start email + Zoho lead already landed. Retry on the next tick.
+        // chat-start email + Zoho lead already landed. Retry on the next tick,
+        // but give up after MAX_ESCALATE_ATTEMPTS so a persistent outage can't
+        // hammer the endpoint forever.
+        escalateFailures.current += 1;
+        if (shouldStopEscalating(escalateFailures.current, null)) {
+          escalationStopped.current = true;
+        }
       }
     };
 

@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { shouldEscalate, UNANSWERED_TIMEOUT_MS } from "./escalation";
+import {
+  shouldEscalate,
+  shouldStopEscalating,
+  MAX_ESCALATE_ATTEMPTS,
+  UNANSWERED_TIMEOUT_MS,
+} from "./escalation";
 
 const NOW = 1_700_000_000_000;
 const base = {
@@ -42,5 +47,24 @@ describe("shouldEscalate", () => {
 
   it("does not escalate when the customer has never sent anything", () => {
     expect(shouldEscalate({ ...base, lastCustomerMessageAt: null })).toBe(false);
+  });
+});
+
+describe("shouldStopEscalating", () => {
+  it("keeps retrying while under the attempt cap on transient failures", () => {
+    expect(shouldStopEscalating(1, 500)).toBe(false);
+    expect(shouldStopEscalating(MAX_ESCALATE_ATTEMPTS - 1, 500)).toBe(false);
+    expect(shouldStopEscalating(1, null)).toBe(false); // network error
+  });
+
+  it("gives up once the attempt cap is reached", () => {
+    expect(shouldStopEscalating(MAX_ESCALATE_ATTEMPTS, 500)).toBe(true);
+    expect(shouldStopEscalating(MAX_ESCALATE_ATTEMPTS + 1, null)).toBe(true);
+  });
+
+  it("stops immediately on a 429, regardless of attempt count", () => {
+    // Retrying a rate-limited endpoint every 20s only prolongs the storm.
+    expect(shouldStopEscalating(0, 429)).toBe(true);
+    expect(shouldStopEscalating(1, 429)).toBe(true);
   });
 });
