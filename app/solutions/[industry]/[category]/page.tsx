@@ -3,10 +3,9 @@ import Link from "next/link";
 import { ArrowRight, ChevronRight, Phone, Check } from "lucide-react";
 import type { Metadata } from "next";
 import { solutions } from "@/data/solutions";
-import { showcaseProducts } from "@/lib/showcaseProducts";
 import { getCategoryById, type CategorySlug } from "@/data/categories";
 import { categoryBrand } from "@/lib/categoryBrand";
-import { byLatestThenPopularity } from "@/lib/productSort";
+import { resolveComboProducts } from "@/lib/comboProducts";
 import { useCaseCombos, getCombo } from "@/data/useCaseCombos";
 import ProductCard from "@/components/ProductCard";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
@@ -93,20 +92,9 @@ export default async function IndustryCategoryPage({
 
   const brand = categoryBrand(categoryObj);
 
-  // Products matching BOTH this category AND one of the solution's recommended series.
-  const matchingProducts = showcaseProducts.filter(
-    (p) =>
-      p.category === categoryObj.name &&
-      solution.recommendedSeries.some((series) => p.series.includes(series))
-  ).sort(byLatestThenPopularity);
+  const { products: featuredProducts, usedFallback: showingFallback } =
+    resolveComboProducts(combo, categoryObj, solution);
 
-  // Fallback: if the combo has no recommended-series matches, show top products in the category.
-  const featuredProducts =
-    matchingProducts.length > 0
-      ? matchingProducts.slice(0, 8)
-      : showcaseProducts.filter((p) => p.category === categoryObj.name).sort(byLatestThenPopularity).slice(0, 4);
-
-  const showingFallback = matchingProducts.length === 0;
   const accentGradient = GRADIENTS[industry] || "from-blue-900 via-blue-950 to-slate-900";
 
   const jsonLd = [

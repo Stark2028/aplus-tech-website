@@ -23,6 +23,17 @@ export interface UseCaseCombo {
   /** Category id — must match an entry in data/categories.ts */
   category: CategorySlug;
 
+  /**
+   * Curated product ids, in display order. Takes precedence over the
+   * solution's recommendedSeries match.
+   *
+   * Required for any non-Samsung category: recommendedSeries carries only
+   * Samsung series, and adding Logitech series to it would leak Logitech
+   * products onto the Samsung-worded /solutions/[industry] hub, which reads
+   * the same array.
+   */
+  productIds?: string[];
+
   /** SEO H1. Should be searchable, ~50-65 chars. */
   title: string;
   /** Hero subtitle, 1 sentence. */
@@ -399,6 +410,195 @@ export const useCaseCombos: UseCaseCombo[] = [
       { q: "What about staff training content management?", a: "Samsung MagicINFO supports back-of-house playlists for training content (compliance, product knowledge, safety) that loop during specific hours. Or we plug into your LMS so e-learning content plays directly on the break-room TV." },
     ],
     ctaHeading: "Outfitting retail back-of-house across multiple locations?",
+  },
+
+  // ─── VIDEO CONFERENCING (Logitech) ────────────────────────────────────────
+  {
+    industry: "corporate",
+    category: "video-conferencing",
+    productIds: [
+      "logitech-rally-bar-huddle",
+      "logitech-rally-bar-mini",
+      "logitech-rally-bar",
+      "logitech-rally-plus",
+      "logitech-tap",
+      "logitech-roommate",
+    ],
+    title: "Video Conferencing for Corporate Offices & Boardrooms",
+    subtitle:
+      "One hardware standard from huddle room to boardroom, running Microsoft Teams Rooms and Zoom Rooms.",
+    intro:
+      "Hybrid meetings only work when every room joins the same way. Logitech room systems give a corporate estate one standard — the same controller and one-touch join in a two-person huddle room and a sixteen-seat boardroom — so IT supports one platform instead of five. Aplus supplies, installs and maintains the range across India.",
+    useCases: [
+      {
+        title: "Boardroom Systems",
+        description:
+          "Modular cameras and distributed mic pods keep the far end audible and everyone in frame around a long table.",
+      },
+      {
+        title: "Huddle & Focus Rooms",
+        description:
+          "Compact all-in-one bars turn two-person and small-team rooms into one-touch-join spaces with no room PC to manage.",
+      },
+      {
+        title: "Training & Town Hall Rooms",
+        description:
+          "Wide-angle cameras and room-filling audio let remote staff follow an all-hands or training session as if they were in the room.",
+      },
+      {
+        title: "Executive Suites",
+        description:
+          "Premium PTZ optics and one-touch control let an executive assistant start a call without troubleshooting a source switch.",
+      },
+      {
+        title: "Multi-Floor Standardisation",
+        description:
+          "The same bar, controller and platform build repeats across every floor and office, so support scripts and spares carry over unchanged.",
+      },
+    ],
+    faqs: [
+      {
+        q: "Can we run one hardware standard across rooms of very different sizes?",
+        a: "Yes. Logitech's bar lineup scales from a huddle-room unit to a boardroom-grade PTZ camera and modular mic pods while keeping the same controller and one-touch join experience in every room. That means your IT team supports one platform and one set of spares, not a different system per floor.",
+      },
+      {
+        q: "Can the same rooms run both Microsoft Teams and Zoom?",
+        a: "Yes. Logitech room systems run Microsoft Teams Rooms out of the box and Zoom Rooms out of the box, and you choose which platform a given room runs. Organisations mid-migration between the two, or running both by department, can standardise on the hardware while keeping the platform decision separate.",
+      },
+      {
+        q: "How does a phased rollout across floors or cities work?",
+        a: "Most estates start with one floor or one office as a pilot, confirm the room-size ladder and controller choice, then repeat the design city by city. Because the hardware and configuration are identical per room tier, later phases move faster than the pilot — there's no re-design, only re-ordering.",
+      },
+      {
+        q: "What does Aplus supply and support?",
+        a: "Aplus supplies genuine Logitech hardware on a GST invoice, handles mounting and cabling, configures each room for your meeting platform and calendar system, and provides AMC support with on-site response across India. A free room survey is available before you commit to a design.",
+      },
+    ],
+    ctaHeading: "Standardising meeting rooms across your offices?",
+  },
+  {
+    industry: "education",
+    category: "video-conferencing",
+    productIds: [
+      "logitech-rally-bar-mini",
+      "logitech-rally-bar",
+      "logitech-rally-ai-camera",
+      "logitech-scribe",
+      "logitech-tap",
+    ],
+    title: "Video Conferencing for Hybrid Classrooms & Campuses",
+    subtitle:
+      "Lecture capture, remote guest faculty and hybrid viva sessions on one Logitech hardware standard.",
+    intro:
+      "A lecture hall or seminar room has different needs from an office meeting room — a wider camera view for a full class, a clear feed of the whiteboard, and a platform that visiting faculty from another campus can join without help. Logitech's room systems cover lecture theatres down to staff-room meetings, installed and supported by Aplus across India.",
+    useCases: [
+      {
+        title: "Hybrid Lecture Halls",
+        description:
+          "A wide-angle PTZ camera keeps an entire lecture theatre in frame so remote students see the room, not just the lectern.",
+      },
+      {
+        title: "Lecture Capture & Whiteboard Streaming",
+        description:
+          "An AI whiteboard camera streams what's written on the board with enhanced contrast, so remote and recorded viewers can actually read it.",
+      },
+      {
+        title: "Remote Guest Faculty Sessions",
+        description:
+          "One-touch join lets a visiting professor from another campus or institution present into a classroom without a technician present.",
+      },
+      {
+        title: "Examiner & Viva Sessions",
+        description:
+          "Reliable one-to-few video calling supports remote examiners and external panel members sitting in on a viva without travel.",
+      },
+      {
+        title: "Staff-Room & Admin Meetings",
+        description:
+          "Compact huddle-room bars equip smaller staff rooms and administrative offices with the same one-touch join as the lecture halls.",
+      },
+    ],
+    faqs: [
+      {
+        q: "Can a lecture hall camera cover a full class, not just the front row?",
+        a: "Yes. A wide-angle PTZ camera such as Rally Bar or Rally AI Camera is sized to the room, so a full lecture theatre — not only the lectern area — stays in frame for remote students. We confirm the room's seating layout during the site survey and size the camera to it.",
+      },
+      {
+        q: "Can remote or recorded viewers actually read the whiteboard?",
+        a: "Yes, with a dedicated whiteboard camera. It enhances marker contrast and streams the board clearly instead of relying on the room camera's wide shot, and a transparency effect keeps the board legible even when a lecturer is standing in front of it. This is a common addition for lecture capture and recorded courses.",
+      },
+      {
+        q: "Do guest faculty or external examiners need any special software?",
+        a: "No. The room joins standard Microsoft Teams Rooms or Zoom Rooms calls, so a guest lecturer or an external examiner joins from their own laptop or phone using the platform link you send — nothing to install on the classroom side.",
+      },
+      {
+        q: "Can smaller staff rooms use simpler hardware than the main lecture halls?",
+        a: "Yes. A compact huddle-room bar is enough for a staff room or a small admin meeting, while lecture halls take a wider-angle camera sized to the room. Both run the same one-touch join, so staff moving between a small meeting and a lecture hall use an identical interface. Aplus specs each room to its actual size and use."
+      },
+    ],
+    ctaHeading: "Equipping classrooms and lecture halls for hybrid teaching?",
+  },
+  {
+    industry: "hospitality",
+    category: "video-conferencing",
+    productIds: [
+      "logitech-rally-plus",
+      "logitech-rally-bar",
+      "logitech-tap",
+      "logitech-tap-scheduler",
+      "logitech-roommate",
+    ],
+    title: "Video Conferencing for Hotel Meeting Spaces & Banquets",
+    subtitle:
+      "Turn banquet halls and business-centre rooms into a sellable hybrid-meeting amenity, standardised across properties.",
+    intro:
+      "Corporate guests increasingly ask whether a banquet or meeting room can host a hybrid session, not just an in-person one. Logitech room systems turn a business centre or a pre-function space into video-conferencing-ready inventory that a sales team can quote with confidence, while keeping back-of-house and management meetings on the same standard. Aplus supplies, installs and maintains deployments across India.",
+    useCases: [
+      {
+        title: "Hybrid Banquet & Conference Facilities",
+        description:
+          "Modular cameras and expandable mic pods let a banquet or conference hall be sold as a hybrid-capable venue, not just a physical one.",
+      },
+      {
+        title: "Business-Centre Meeting Rooms",
+        description:
+          "One-touch join equips the hotel's business centre with the same reliable video calling corporate guests expect from their own office.",
+      },
+      {
+        title: "Back-of-House Management Meetings",
+        description:
+          "Compact room bars connect general managers and department heads for multi-property calls without booking a guest-facing space.",
+      },
+      {
+        title: "Pre-Function Scheduling Displays",
+        description:
+          "Outside-room scheduling panels show event and meeting-room availability at a glance during multi-event days.",
+      },
+      {
+        title: "Multi-Property Standardisation",
+        description:
+          "The same room system and controller repeat across every property in a group, so staff transferring between hotels need no retraining.",
+      },
+    ],
+    faqs: [
+      {
+        q: "Can we sell our banquet hall as a hybrid-meeting venue to corporate clients?",
+        a: "Yes. A modular camera and mic-pod system scales to a banquet-size room, so it can host a genuine hybrid conference rather than only an in-room event. This gives your sales team a feature to quote against corporate and MICE bookings that specifically ask for hybrid capability.",
+      },
+      {
+        q: "Do we need different hardware for the business centre versus the banquet hall?",
+        a: "Usually yes, sized to each room. A business-centre meeting room is typically small enough for a single all-in-one bar, while a banquet or conference hall needs a modular camera and mic pods to cover the larger floor. Both run the same controller and one-touch join, so guests and staff have one experience regardless of room."
+      },
+      {
+        q: "How do scheduling panels help during a multi-event day?",
+        a: "A panel mounted outside each pre-function or meeting room shows live availability, so event staff and guests can see at a glance which rooms are free between back-to-back bookings. This cuts down on staff having to check a paper schedule or radio the events desk during a busy conference day.",
+      },
+      {
+        q: "Can a hotel group standardise this across multiple properties?",
+        a: "Yes. Aplus specs the same room-system and controller combination per room tier — business centre, mid-size meeting room, banquet hall — and repeats it property by property. That keeps installation, staff training and AMC support consistent across a chain, and spares are interchangeable between properties."
+      },
+    ],
+    ctaHeading: "Making your meeting and banquet spaces hybrid-ready?",
   },
 ];
 
