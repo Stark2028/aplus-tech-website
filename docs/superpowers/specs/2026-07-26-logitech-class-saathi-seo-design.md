@@ -96,7 +96,7 @@ Product sets are derived from the room band each product already declares in
 | Slug | Kind | Products (by id) |
 |---|---|---|
 | `huddle-rooms` | room | `logitech-rally-bar-huddle`, `logitech-meetup-2`, `logitech-tap-ip`, `logitech-tap-scheduler` |
-| `medium-meeting-rooms` | room | `logitech-rally-bar-mini`, `logitech-rally-bar`, `logitech-ptz-pro-2`, `logitech-rally-camera`, `logitech-tap`, `logitech-roommate` |
+| `medium-meeting-rooms` | room | `logitech-rally-bar-mini`, `logitech-rally-bar`, `logitech-rally-ai-camera`, `logitech-ptz-pro-2`, `logitech-rally-camera`, `logitech-tap`, `logitech-roommate` |
 | `boardrooms` | room | `logitech-rally-plus`, `logitech-rally-board-65`, `logitech-rally-ai-camera-pro`, `logitech-sight`, `logitech-scribe`, `logitech-tap` |
 | `microsoft-teams-rooms` | platform | `logitech-rally-bar-huddle`, `logitech-rally-bar-mini`, `logitech-rally-bar`, `logitech-rally-board-65`, `logitech-tap-ip`, `logitech-roommate`, `logitech-tap-scheduler` |
 | `zoom-rooms` | platform | `logitech-rally-bar-huddle`, `logitech-rally-bar-mini`, `logitech-rally-bar`, `logitech-rally-plus`, `logitech-rally-board-65`, `logitech-tap`, `logitech-roommate` |
@@ -109,7 +109,14 @@ differentiate on body content: deployment modes (on-device appliance vs. room
 compute vs. network-only controller), the room ladder for that platform, and
 platform-specific FAQs. This is enforced by test, see T1.
 
-All URLs are `/categories/video-conferencing/{slug}`.
+All URLs are `/categories/video-conferencing/{slug}`. All 16 Logitech products appear
+in at least one room guide.
+
+`lib/categoryBrand.ts` has no `education` branch today, so `categoryBrand()` on the
+education category falls through to the Samsung default and returns brand "Samsung"
+with the "Samsung Authorized Distributor" eyebrow. Nothing calls it for education
+today because the category page returns early at `page.tsx:125`, but the new
+sub-route will. Add an education branch before wiring anything up.
 
 ### Class Saathi — 3 pages (new route)
 
