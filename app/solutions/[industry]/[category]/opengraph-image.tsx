@@ -1,7 +1,9 @@
 import { ImageResponse } from "next/og";
 import { useCaseCombos } from "@/data/useCaseCombos";
+import { getCategoryById } from "@/data/categories";
+import { categoryBrand } from "@/lib/categoryBrand";
 
-export const alt = "Industry + Category Solution — Samsung B2B Displays | Aplus Technology Solutions";
+export const alt = "Industry + Category Solution | Aplus Technology Solutions";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -12,6 +14,7 @@ export default async function Image({
 }) {
   const { industry, category } = await params;
   const combo = useCaseCombos.find((c) => c.industry === industry && c.category === category);
+  const categoryObj = getCategoryById(category as Parameters<typeof getCategoryById>[0]);
 
   if (!combo) {
     return new ImageResponse(
@@ -93,7 +96,7 @@ export default async function Image({
             alignItems: "center",
           }}
         >
-          Samsung Displays
+          {categoryObj ? `${categoryBrand(categoryObj).brand} ${categoryObj.navLabel}` : "Solution"}
         </div>
       </div>
 

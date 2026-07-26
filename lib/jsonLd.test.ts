@@ -1,7 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { productLd, categoryCollectionLd } from "./jsonLd";
+import { productLd, categoryCollectionLd, industryCategoryServiceLd } from "./jsonLd";
 import type { Product } from "@/data/products";
 import type { ProductCategory } from "@/data/categories";
+import { getCategoryById } from "@/data/categories";
+import { solutions } from "@/data/solutions";
+import type { UseCaseCombo } from "@/data/useCaseCombos";
 
 const samsung: Product = {
   id: "samsung-qet-series", name: "Samsung QET", category: "Digital Signage",
@@ -52,5 +55,47 @@ describe("categoryCollectionLd naming", () => {
     const ld = categoryCollectionLd(cat, []) as any;
     expect(ld.name).not.toMatch(/samsung/i);
     expect(ld.name).toMatch(/Logitech|Video Conferencing/);
+  });
+});
+
+const BANNED = /authoriz|partner|certif|samsung/i;
+
+function fakeCombo(category: "digital-signage" | "video-conferencing"): UseCaseCombo {
+  return {
+    industry: "corporate",
+    category,
+    title: "T",
+    subtitle: "S",
+    intro: "I",
+    useCases: [],
+    faqs: [],
+    ctaHeading: "C",
+  };
+}
+
+describe("industryCategoryServiceLd brand awareness", () => {
+  it("keeps Samsung wording for a Samsung category", () => {
+    const ld = industryCategoryServiceLd(
+      fakeCombo("digital-signage"),
+      solutions.find((s) => s.slug === "corporate")!,
+      getCategoryById("digital-signage")!,
+      []
+    );
+    expect(ld.hasOfferCatalog.name).toBe(
+      "Samsung Digital Signage recommended for Corporate & Workplace"
+    );
+  });
+
+  it("emits zero Samsung wording for the video conferencing category", () => {
+    const ld = industryCategoryServiceLd(
+      fakeCombo("video-conferencing"),
+      solutions.find((s) => s.slug === "corporate")!,
+      getCategoryById("video-conferencing")!,
+      []
+    );
+    expect(ld.hasOfferCatalog.name).toBe(
+      "Logitech Video Conferencing recommended for Corporate & Workplace"
+    );
+    expect(BANNED.test(JSON.stringify(ld))).toBe(false);
   });
 });

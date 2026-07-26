@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { solutions } from "@/data/solutions";
 import { showcaseProducts } from "@/lib/showcaseProducts";
 import { getCategoryById, type CategorySlug } from "@/data/categories";
+import { categoryBrand } from "@/lib/categoryBrand";
 import { byLatestThenPopularity } from "@/lib/productSort";
 import { useCaseCombos, getCombo } from "@/data/useCaseCombos";
 import ProductCard from "@/components/ProductCard";
@@ -89,6 +90,8 @@ export default async function IndustryCategoryPage({
   if (!combo || !solution || !categoryObj) {
     notFound();
   }
+
+  const brand = categoryBrand(categoryObj);
 
   // Products matching BOTH this category AND one of the solution's recommended series.
   const matchingProducts = showcaseProducts.filter(
@@ -214,7 +217,7 @@ export default async function IndustryCategoryPage({
                   {showingFallback ? "From this category" : "Recommended for you"}
                 </p>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-                  Samsung {categoryObj.navLabel.toLowerCase()} for {solution.title.toLowerCase()}
+                  {brand.brand} {categoryObj.navLabel.toLowerCase()} for {solution.title.toLowerCase()}
                 </h2>
               </div>
               <Link
@@ -279,7 +282,7 @@ export default async function IndustryCategoryPage({
                 Also for {solution.title.toLowerCase()}
               </p>
               <h2 className="text-2xl font-bold text-gray-900">
-                Other display categories used in {solution.title.toLowerCase()}
+                Other {brand.hardwareNoun} categories used in {solution.title.toLowerCase()}
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -321,7 +324,7 @@ export default async function IndustryCategoryPage({
                   {combo.ctaHeading}
                 </h2>
                 <p className="text-blue-100/90 text-lg max-w-xl leading-relaxed">
-                  Share your requirements and our solution architects will recommend the right Samsung hardware, sizing, and deployment plan.
+                  Share your requirements and our solution architects will recommend the right {brand.brand} {brand.hardwareNoun}s, sizing, and deployment plan.
                 </p>
               </div>
               <div className="lg:col-span-5 flex flex-col gap-3">

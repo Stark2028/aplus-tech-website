@@ -6,6 +6,9 @@ import {
 } from "./categoryBrand";
 import type { ProductCategory } from "@/data/categories";
 import type { Product } from "@/data/products";
+import { getCategoryById } from "@/data/categories";
+
+const BANNED = /authoriz|partner|certif|samsung/i;
 
 const base = { tagline: "t", subtitle: "s", overview: "o" };
 
@@ -101,5 +104,39 @@ describe("categoryCountLabel", () => {
 describe("categoryHeroSizeRange — display categories", () => {
   it("returns a real formatted range for signage", () => {
     expect(categoryHeroSizeRange(signage, [signageProduct])).toBe("43″ to 75″");
+  });
+});
+
+describe("categoryBrand hardwareNoun", () => {
+  it("gives Samsung hardware categories the display noun", () => {
+    expect(categoryBrand(getCategoryById("digital-signage")!).hardwareNoun).toBe("display");
+    expect(categoryBrand(getCategoryById("video-walls")!).hardwareNoun).toBe("display");
+  });
+
+  it("gives video conferencing the room-system noun", () => {
+    expect(categoryBrand(getCategoryById("video-conferencing")!).hardwareNoun).toBe("room system");
+  });
+
+  it("gives software the platform noun", () => {
+    expect(categoryBrand(getCategoryById("software")!).hardwareNoun).toBe("platform");
+  });
+});
+
+describe("categoryBrand non-Samsung branches", () => {
+  it("never returns Samsung wording for video conferencing", () => {
+    const blob = JSON.stringify(categoryBrand(getCategoryById("video-conferencing")!));
+    expect(BANNED.test(blob)).toBe(false);
+  });
+
+  it("never returns Samsung wording for education", () => {
+    const blob = JSON.stringify(categoryBrand(getCategoryById("education")!));
+    expect(BANNED.test(blob)).toBe(false);
+  });
+
+  it("gives education a Class Saathi brand and no size range", () => {
+    const b = categoryBrand(getCategoryById("education")!);
+    expect(b.brand).toBe("Class Saathi");
+    expect(b.showSizeRange).toBe(false);
+    expect(b.hardwareNoun).toBe("classroom solution");
   });
 });

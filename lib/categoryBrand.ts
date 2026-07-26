@@ -29,6 +29,13 @@ export interface CategoryBrand {
   eyebrow: string;
   /** Noun for the product count, singular + plural (e.g. "model"/"models"). */
   unitNoun: { one: string; many: string };
+  /**
+   * Noun for this category's products in running copy — "display" for Samsung
+   * panels, "room system" for Logitech VC, "platform" for cloud software. Lets
+   * shared chrome say "Other display categories" vs "Other room-system
+   * categories" without a per-category branch at the call site.
+   */
+  hardwareNoun: string;
   /** Whether the "Size Range" stat is meaningful for this category. */
   showSizeRange: boolean;
 }
@@ -39,6 +46,7 @@ export function categoryBrand(category: ProductCategory): CategoryBrand {
       brand: "Logitech",
       eyebrow: "Enterprise Video Conferencing",
       unitNoun: { one: "model", many: "models" },
+      hardwareNoun: "room system",
       // VC products carry stray/max-display screenSizes (e.g. a Tap controller's
       // 10.1" touchscreen, a bar's max 65" panel) that produce a nonsense
       // "10.1″ to 65″" range for hardware that has no screen of its own.
@@ -54,7 +62,23 @@ export function categoryBrand(category: ProductCategory): CategoryBrand {
       h1: "Content Management Software",
       eyebrow: "Samsung Authorized Distributor",
       unitNoun: { one: "platform", many: "platforms" },
+      hardwareNoun: "platform",
       showSizeRange: false, // cloud software has no screen sizes
+    };
+  }
+
+  // Education is Class Saathi (TagHive), not Samsung. Without this branch the
+  // category falls through to the Samsung default and returns an "Authorized
+  // Samsung Distributor" eyebrow — a content-truth violation the moment any
+  // education surface calls this helper.
+  if (category.id === "education") {
+    return {
+      brand: "Class Saathi",
+      h1: "Class Saathi Smart Classrooms",
+      eyebrow: "Education · Class Saathi by TagHive",
+      unitNoun: { one: "solution", many: "solutions" },
+      hardwareNoun: "classroom solution",
+      showSizeRange: false,
     };
   }
 
@@ -63,6 +87,7 @@ export function categoryBrand(category: ProductCategory): CategoryBrand {
     brand: "Samsung",
     eyebrow: "Samsung Authorized Distributor",
     unitNoun: { one: "model", many: "models" },
+    hardwareNoun: "display",
     showSizeRange: true,
   };
 }

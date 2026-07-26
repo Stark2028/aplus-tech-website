@@ -6,6 +6,7 @@ import { formatSize } from "@/lib/formatSize";
 import { PHONE_SCHEMA } from "@/lib/contact";
 import { modelCodeFor } from "@/lib/modelCodes";
 import { brandOf, BRAND_JSONLD_NAME, BRAND_MANUFACTURER } from "@/lib/brand";
+import { categoryBrand } from "@/lib/categoryBrand";
 
 export const SITE = "https://www.aplustechsol.com";
 
@@ -231,7 +232,9 @@ export function industryCategoryServiceLd(
     isPartOf: { "@id": `${SITE}/solutions/${combo.industry}#service` },
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: `Samsung ${category.navLabel} recommended for ${solution.title}`,
+      // Brand comes from categoryBrand, not a literal: Video Conferencing is
+      // Logitech and must never carry Samsung wording in structured data.
+      name: `${categoryBrand(category).brand} ${category.navLabel} recommended for ${solution.title}`,
       itemListElement: productsOnPage.map((p) => ({
         "@type": "Offer",
         itemOffered: {
