@@ -1,6 +1,9 @@
+import Link from "next/link";
 import dynamic from "next/dynamic";
-import { breadcrumbLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
+import { ArrowRight } from "lucide-react";
+import { breadcrumbLd, faqPageLd, jsonLdString, classSaathiProductLd, itemListLd } from "@/lib/jsonLd";
 import { educationFaqs } from "@/data/education";
+import { educationSegments } from "@/data/educationSegments";
 import { spaceGrotesk, plexMono } from "@/app/fonts-accent";
 import EducationHero from "./EducationHero";
 import AwardsStrip from "./AwardsStrip";
@@ -17,6 +20,14 @@ const BlueprintLeadForm = dynamic(() => import("./BlueprintLeadForm"));
 
 export default function EducationLanding() {
   const jsonLd = [
+    classSaathiProductLd(),
+    itemListLd(
+      "Class Saathi guides",
+      educationSegments.map((s) => ({
+        name: s.navLabel,
+        url: `/categories/education/${s.slug}`,
+      }))
+    ),
     breadcrumbLd([
       { name: "Home", url: "/" },
       { name: "Products", url: "/products" },
@@ -74,6 +85,40 @@ export default function EducationLanding() {
       </section>
 
       <EducationFaq />
+
+      {/* Segment strip — the crawl path from this ranking parent down to the
+          three audience/comparison pages; without it those pages are orphaned. */}
+      <section className="bg-gray-50 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+          <div className="max-w-2xl mx-auto text-center mb-10">
+            <p className="edu-eyebrow text-emerald-700 mb-3">Explore by audience</p>
+            <h2 className="edu-display text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+              Class Saathi for your classroom
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {educationSegments.map((segment) => (
+              <Link
+                key={segment.slug}
+                href={`/categories/education/${segment.slug}`}
+                className="group edu-card-grad rounded-2xl p-6 flex flex-col hover:-translate-y-0.5 transition-transform"
+              >
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{segment.navLabel}</h3>
+                <p className="text-gray-600 text-sm leading-relaxed flex-1">{segment.subtitle}</p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700">
+                  Learn more
+                  <ArrowRight
+                    size={15}
+                    aria-hidden="true"
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <ClosingCta />
     </main>
   );

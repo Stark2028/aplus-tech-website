@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { productLd, categoryCollectionLd, industryCategoryServiceLd } from "./jsonLd";
+import { productLd, categoryCollectionLd, industryCategoryServiceLd, classSaathiProductLd, itemListLd } from "./jsonLd";
 import type { Product } from "@/data/products";
 import type { ProductCategory } from "@/data/categories";
 import { getCategoryById } from "@/data/categories";
@@ -59,6 +59,33 @@ describe("categoryCollectionLd naming", () => {
 });
 
 const BANNED = /authoriz|partner|certif|samsung/i;
+
+describe("classSaathiProductLd", () => {
+  const ld = classSaathiProductLd();
+
+  it("is a TagHive-branded Product with no offers node", () => {
+    expect(ld["@type"]).toBe("Product");
+    expect(ld.brand).toEqual({ "@type": "Brand", name: "TagHive" });
+    expect("offers" in ld).toBe(false);
+  });
+
+  it("carries no partnership language and no bare Samsung mention", () => {
+    const blob = JSON.stringify(ld);
+    expect(blob).not.toMatch(/authori[sz]ed|official|certified|partner/i);
+    expect(blob.match(/Samsung(?! C-Lab)/g) ?? []).toHaveLength(0);
+  });
+});
+
+describe("itemListLd", () => {
+  it("numbers items from 1 and absolutises urls", () => {
+    const ld = itemListLd("Segments", [{ name: "A", url: "/categories/education/a" }]);
+    expect(ld.numberOfItems).toBe(1);
+    expect(ld.itemListElement[0].position).toBe(1);
+    expect(ld.itemListElement[0].url).toBe(
+      "https://www.aplustechsol.com/categories/education/a"
+    );
+  });
+});
 
 function fakeCombo(category: "digital-signage" | "video-conferencing"): UseCaseCombo {
   return {

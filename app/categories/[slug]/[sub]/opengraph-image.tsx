@@ -1,21 +1,33 @@
 import { ImageResponse } from "next/og";
 import { getVcRoomGuide } from "@/data/vcRoomGuides";
+import { getEducationSegment } from "@/data/educationSegments";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
+// Both kinds carry navLabel/subtitle; only "room" VC guides carry roomBands.
+// A shared local shape keeps the render code below kind-agnostic.
+function resolveOg(slug: string, sub: string) {
+  if (slug === "education") {
+    const segment = getEducationSegment(sub);
+    return segment ? ({ kind: "education" as const, page: segment }) : null;
+  }
+  const guide = getVcRoomGuide(sub);
+  return guide ? ({ kind: "vc" as const, page: guide }) : null;
+}
 
 export async function generateImageMetadata({
   params,
 }: {
   params: Promise<{ slug: string; sub: string }>;
 }) {
-  const { sub } = await params;
-  const guide = getVcRoomGuide(sub);
+  const { slug, sub } = await params;
+  const found = resolveOg(slug, sub);
 
   return [
     {
       id: "og",
-      alt: guide ? `${guide.navLabel} — Aplus Technology Solutions` : "Aplus Technology Solutions",
+      alt: found ? `${found.page.navLabel} — Aplus Technology Solutions` : "Aplus Technology Solutions",
       size,
       contentType,
     },
@@ -27,10 +39,10 @@ export default async function Image({
 }: {
   params: Promise<{ slug: string; sub: string }>;
 }) {
-  const { sub } = await params;
-  const guide = getVcRoomGuide(sub);
+  const { slug, sub } = await params;
+  const found = resolveOg(slug, sub);
 
-  if (!guide) {
+  if (!found) {
     return new ImageResponse(
       <div
         style={{
@@ -51,24 +63,44 @@ export default async function Image({
     );
   }
 
-  // This route only ever serves Logitech VC guides, so the blue ramp is the
-  // only theme — no education branch here (that lives on the category OG image).
-  const theme = {
-    bg: "linear-gradient(135deg, #050b15 0%, #0d1f40 60%, #0a1628 100%)",
-    glow: "rgba(37, 99, 235, 0.18)",
-    chipBg: "rgba(37,99,235,0.2)",
-    chipBorder: "1px solid rgba(37,99,235,0.4)",
-    chipText: "#93c5fd",
-    label: "#60a5fa",
-    pillBg: "rgba(37,99,235,0.15)",
-    pillBorder: "1px solid rgba(37,99,235,0.3)",
-    cta: "rgba(37,99,235,0.9)",
-  };
+  const { page } = found;
+  const isEducation = found.kind === "education";
+
+  // Education swaps the site-blue chrome for a Class Saathi emerald ramp —
+  // same ramp as app/categories/[slug]/opengraph-image.tsx:69-80.
+  const theme = isEducation
+    ? {
+        bg: "linear-gradient(135deg, #04140c 0%, #0b3a25 60%, #06281a 100%)",
+        glow: "rgba(16,185,129,0.18)",
+        chipBg: "rgba(16,185,129,0.2)",
+        chipBorder: "1px solid rgba(16,185,129,0.4)",
+        chipText: "#6ee7b7",
+        label: "#34d399",
+        pillBg: "rgba(16,185,129,0.15)",
+        pillBorder: "1px solid rgba(16,185,129,0.3)",
+        cta: "rgba(5,150,105,0.9)",
+      }
+    : {
+        bg: "linear-gradient(135deg, #050b15 0%, #0d1f40 60%, #0a1628 100%)",
+        glow: "rgba(37, 99, 235, 0.18)",
+        chipBg: "rgba(37,99,235,0.2)",
+        chipBorder: "1px solid rgba(37,99,235,0.4)",
+        chipText: "#93c5fd",
+        label: "#60a5fa",
+        pillBg: "rgba(37,99,235,0.15)",
+        pillBorder: "1px solid rgba(37,99,235,0.3)",
+        cta: "rgba(37,99,235,0.9)",
+      };
 
   // Room guides carry a size band ("Huddle Rooms", "Large Rooms", ...);
-  // platform guides (Teams/Zoom) don't, so fall back to the guide's own kind label.
+  // platform guides and education segments don't, so guard the access —
+  // education segments lack roomBands entirely, same as platform guides.
   const secondaryLabel =
-    guide.kind === "room" && guide.roomBands ? guide.roomBands.join(" / ") : "Platform Guide";
+    found.kind === "vc" && found.page.kind === "room" && found.page.roomBands
+      ? found.page.roomBands.join(" / ")
+      : isEducation
+      ? "Class Saathi Guide"
+      : "Platform Guide";
 
   return new ImageResponse(
     <div
@@ -114,7 +146,7 @@ export default async function Image({
             alignItems: "center",
           }}
         >
-          Video Conferencing
+          {isEducation ? "Education" : "Video Conferencing"}
         </div>
       </div>
 
@@ -136,14 +168,14 @@ export default async function Image({
       <div
         style={{
           color: "#ffffff",
-          fontSize: guide.navLabel.length > 30 ? 48 : 56,
+          fontSize: page.navLabel.length > 30 ? 48 : 56,
           fontWeight: 900,
           lineHeight: 1.1,
           marginBottom: 28,
           maxWidth: 800,
         }}
       >
-        {guide.navLabel}
+        {page.navLabel}
       </div>
 
       {/* Body */}
@@ -156,7 +188,7 @@ export default async function Image({
           maxWidth: 820,
         }}
       >
-        {guide.subtitle}
+        {page.subtitle}
       </div>
 
       {/* Guide-kind pill */}
@@ -179,7 +211,11 @@ export default async function Image({
           marginBottom: 48,
         }}
       >
-        {guide.kind === "room" ? "Room Sizing Guide" : "Platform Deployment Guide"}
+        {isEducation
+          ? "Class Saathi by TagHive"
+          : found.kind === "vc" && found.page.kind === "room"
+          ? "Room Sizing Guide"
+          : "Platform Deployment Guide"}
       </div>
 
       {/* Footer */}

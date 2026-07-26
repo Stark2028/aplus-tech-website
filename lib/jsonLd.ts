@@ -10,10 +10,10 @@ import { categoryBrand } from "@/lib/categoryBrand";
 
 export const SITE = "https://www.aplustechsol.com";
 
-const ORG_ID = `${SITE}/#organization`;
+export const ORG_ID = `${SITE}/#organization`;
 
 /** Absolute URL helper — leaves http(s) urls untouched, prefixes relative paths with SITE. */
-function abs(url: string): string {
+export function abs(url: string): string {
   return /^https?:\/\//i.test(url) ? url : `${SITE}${url.startsWith("/") ? "" : "/"}${url}`;
 }
 
@@ -280,6 +280,50 @@ export function faqPageLd(items: Array<{ question: string; answer: string }>) {
         "@type": "Answer",
         text: item.answer,
       },
+    })),
+  };
+}
+
+/**
+ * Product node for Class Saathi (TagHive), emitted on the education landing.
+ *
+ * No `offers` — same reasoning as productLd above: Google rejects Offer without
+ * a numeric price, and this is a quote-only B2B catalog. The resulting
+ * "Missing field 'offers'" Search Console warning is accepted site-wide.
+ *
+ * TRUTH POLICY: every field here traces to the Class Saathi brochure or
+ * tag-hive.com. "Samsung" appears only inside "Samsung C-Lab".
+ */
+export function classSaathiProductLd() {
+  const url = `${SITE}/categories/education`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": `${url}#product`,
+    name: "Class Saathi",
+    description:
+      "Bluetooth clicker-based learning and assessment solution with an AI-powered platform, for classrooms with no internet connection required.",
+    url,
+    category: "Education",
+    brand: { "@type": "Brand", name: "TagHive" },
+    manufacturer: { "@type": "Organization", name: "TagHive Inc.", url: "https://tag-hive.com" },
+    audience: { "@type": "EducationalAudience", educationalRole: "school" },
+    isRelatedTo: { "@id": ORG_ID },
+  };
+}
+
+/** Generic ItemList node — used to declare a page's child pages. */
+export function itemListLd(name: string, items: Array<{ name: string; url: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name,
+    numberOfItems: items.length,
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      url: abs(it.url),
     })),
   };
 }

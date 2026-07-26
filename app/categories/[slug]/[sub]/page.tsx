@@ -2,9 +2,11 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getCategoryById, type CategorySlug } from "@/data/categories";
 import { vcRoomGuides, getVcRoomGuide } from "@/data/vcRoomGuides";
+import { educationSegments, getEducationSegment } from "@/data/educationSegments";
 import { SITE, breadcrumbLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
 import { subPageCrumbs } from "@/lib/subPageCrumbs";
 import VcRoomGuideView from "@/components/vc/VcRoomGuide";
+import EducationSegmentPage from "@/components/education/EducationSegmentPage";
 
 export const revalidate = 3600;
 
@@ -20,7 +22,10 @@ interface PageParams {
 }
 
 export async function generateStaticParams() {
-  return vcRoomGuides.map((g) => ({ slug: "video-conferencing", sub: g.slug }));
+  return [
+    ...vcRoomGuides.map((g) => ({ slug: "video-conferencing", sub: g.slug })),
+    ...educationSegments.map((s) => ({ slug: "education", sub: s.slug })),
+  ];
 }
 
 /** Resolve a (slug, sub) pair to its page payload, or null. */
@@ -30,6 +35,10 @@ function resolve(slug: CategorySlug, sub: string) {
   if (slug === "video-conferencing") {
     const guide = getVcRoomGuide(sub);
     return guide ? ({ kind: "vc", category, guide } as const) : null;
+  }
+  if (slug === "education") {
+    const segment = getEducationSegment(sub);
+    return segment ? ({ kind: "education", category, segment } as const) : null;
   }
   return null;
 }
@@ -43,7 +52,9 @@ export async function generateMetadata({
   const found = resolve(slug, sub);
   if (!found) return {};
   const url = `${SITE}/categories/${slug}/${sub}`;
-  const { title, intro, navLabel } = found.guide;
+  // Both kinds share these fields — the route never needs the rest of either shape.
+  const page = found.kind === "vc" ? found.guide : found.segment;
+  const { title, intro, navLabel } = page;
   return {
     title,
     description: intro,
@@ -73,10 +84,11 @@ export default async function CategorySubPage({
   const found = resolve(slug, sub);
   if (!found) notFound();
 
-  const { category, guide } = found;
+  const { category } = found;
+  const page = found.kind === "vc" ? found.guide : found.segment;
   const jsonLd = [
-    breadcrumbLd(subPageCrumbs(category, guide)),
-    faqPageLd(guide.faqs.map((f) => ({ question: f.q, answer: f.a }))),
+    breadcrumbLd(subPageCrumbs(category, page)),
+    faqPageLd(page.faqs.map((f) => ({ question: f.q, answer: f.a }))),
   ];
 
   return (
@@ -85,7 +97,11 @@ export default async function CategorySubPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
       />
-      <VcRoomGuideView guide={guide} category={category} />
+      {found.kind === "vc" ? (
+        <VcRoomGuideView guide={found.guide} category={category} />
+      ) : (
+        <EducationSegmentPage segment={found.segment} category={category} />
+      )}
     </>
   );
 }
