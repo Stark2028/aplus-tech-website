@@ -4,10 +4,12 @@ import { productCategories } from "@/data/categories";
 import { solutions } from "@/data/solutions";
 import { blogPosts } from "@/data/blogs";
 import { useCaseCombos } from "@/data/useCaseCombos";
+import { vcRoomGuides } from "@/data/vcRoomGuides";
+import { educationSegments } from "@/data/educationSegments";
 import { SITE } from "@/lib/jsonLd";
 
 // Bump this date whenever you add or update products, categories, or solutions.
-const CATALOG_LAST_UPDATED = new Date("2026-07-11");
+const CATALOG_LAST_UPDATED = new Date("2026-07-26");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // NOTE: /quote and /compare are intentionally omitted — they are transactional
@@ -60,6 +62,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  // Logitech VC room/platform guides and Class Saathi segment pages —
+  // nested under /categories/{video-conferencing,education}/{slug}.
+  const vcGuideUrls: MetadataRoute.Sitemap = vcRoomGuides.map((g) => ({
+    url: `${SITE}/categories/video-conferencing/${g.slug}`,
+    lastModified: CATALOG_LAST_UPDATED,
+    changeFrequency: "monthly",
+    priority: 0.75,
+  }));
+
+  const educationSegmentUrls: MetadataRoute.Sitemap = educationSegments.map((s) => ({
+    url: `${SITE}/categories/education/${s.slug}`,
+    lastModified: CATALOG_LAST_UPDATED,
+    changeFrequency: "monthly",
+    priority: 0.75,
+  }));
+
   return [
     ...staticPages,
     ...productUrls,
@@ -67,5 +85,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...solutionUrls,
     ...comboUrls,
     ...blogUrls,
+    ...vcGuideUrls,
+    ...educationSegmentUrls,
   ];
 }
