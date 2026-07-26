@@ -21,7 +21,13 @@ posts between them; Logitech VC and Class Saathi carry zero of each.
 | Product detail pages (FAQ + Product LD + OG) | yes | yes (16 products) | n/a (zero catalog products) |
 | `/solutions/{industry}/{category}` pages | **16** | **0** | **0** |
 | Blog posts | 4 | **0** | **0** |
-| Footer + home CategoryGrid links | yes | Footer + grid | **neither** (navbar dropdowns only) |
+| Footer link to the category page | yes | yes | **no** (navbar dropdowns only) |
+| Home CategoryGrid tile | yes | yes | **no** |
+
+Note the CategoryGrid tiles link to `/products?category={id}`, not `/categories/{id}`
+(`components/sections/CategoryGrid.tsx`, `CategoryTile`), so they are catalog-filter
+entry points rather than links to the category landing pages. This matters for
+Fix 7 below.
 
 The Class Saathi JSON-LD gap has a specific cause: the education branch returns at
 `app/categories/[slug]/page.tsx:125` before the `jsonLd` array is constructed, so
@@ -147,6 +153,20 @@ This mirrors `/solutions/[industry]/[category]` and avoids introducing a literal
 `app/categories/video-conferencing/` directory, which would raise the question of
 whether `/categories/video-conferencing` itself still resolves to `[slug]`.
 
+**Breadcrumbs are 4 levels, not 3.** Both existing parents put `/products` at level
+two — `app/categories/[slug]/page.tsx:145-149` and
+`components/education/EducationLanding.tsx:20-24` each emit
+`Home -> Products -> {Category}`. A child page must extend that trail rather than
+invent a shorter one, or its `BreadcrumbList` will contradict its own parent's:
+
+```text
+Home (/) -> Products (/products) -> Video Conferencing (/categories/video-conferencing)
+  -> Huddle Rooms (/categories/video-conferencing/huddle-rooms)
+```
+
+The same 4-level shape applies to the education segments. The visible breadcrumb nav
+and the `BreadcrumbList` JSON-LD must match.
+
 Each new route also gets an `opengraph-image.tsx`. Satori constraints apply: every
 container needs an explicit `display: flex`, and `inline-flex` is unsupported.
 
@@ -241,9 +261,19 @@ already knows VC is Logitech and Software is Samsung — with a `hardwareNoun` f
    includes 16 Logitech products. Rewrite the description to name every category
    present, and make the H1 and eyebrow accurate for a mixed-brand catalog.
 3. **Class Saathi JSON-LD.** Add to `EducationLanding.tsx` a `Product` node (name
-   "Class Saathi", brand TagHive, no `offers` — matching the `productLd` convention
-   of omitting offers rather than inventing a price) plus an `ItemList` of the three
+   "Class Saathi", brand TagHive, no `offers`) plus an `ItemList` of the three
    segment pages, alongside the existing Breadcrumb and FAQPage.
+
+   This will raise a "Missing field 'offers'" **warning** (not an error) in Search
+   Console. That is an accepted, site-wide tradeoff already documented at
+   `lib/jsonLd.ts:82-91` and already true of every existing Samsung product node:
+   Google rejects `Offer` without a numeric price and rejects `AggregateOffer`
+   without `lowPrice`/`highPrice`, so a quote-only B2B catalog either omits offers
+   or invents a price. Do **not** "fix" the warning by adding
+   `priceSpecification: "Contact for pricing"` — `Offer.price` requires a number and
+   `priceSpecification` expects a `PriceSpecification` object, so that turns a
+   warning into a hard error. Do not use `@type: "EducationalApplication"` either;
+   that string is a schema.org `applicationCategory` *value*, not a type.
 4. **Footer.** `components/Footer.tsx:29` points "Education" at `/solutions/education`
    (Samsung interactive displays). Add a distinct entry for `/categories/education`.
 5. **Logitech product pages link to their room guide.** Each product's
@@ -254,14 +284,32 @@ already knows VC is Logitech and Software is Samsung — with a `hardwareNoun` f
    and feeds both the visible `FAQSection` and the home page's FAQPage structured
    data via `components/sections/HomeJsonLd.tsx:1`. Add one Logitech VC FAQ and one
    Class Saathi FAQ.
-7. **Home CategoryGrid (needs a visual check).** The grid is exactly 7 category
-   tiles plus a synthetic "View all products" tile — a clean 2x4 at `lg`. Adding an
-   Education tile makes 9 and breaks the grid. Recommendation: replace the synthetic
-   tile with the Education tile, preserving 2x4 (the `/products` link already exists
-   in the navbar and footer). Verify visually before committing; if the tradeoff is
-   unacceptable, skip this item — `/categories/education` is already linked
-   sitewide from the navbar dropdowns, so the home tile is an improvement, not a
-   fix.
+7. **Home CategoryGrid (needs a visual check, and a special-cased href).** The grid
+   is exactly 7 category tiles plus a synthetic "View all products" tile — a clean
+   2x4 at `lg`. Adding an Education tile makes 9 and breaks the grid.
+   Recommendation: replace the synthetic tile with the Education tile, preserving
+   2x4 (the `/products` link already exists in the navbar and footer).
+
+   Two constraints the implementer must not miss:
+
+   - **The href must differ from every other tile.** `CategoryTile` links to
+     `/products?category={id}`, but `/products?category=education` is a no-op:
+     `education` is excluded from `categoriesWithProducts`, and
+     `components/ProductsCategoryNav.tsx:21` ignores any category param failing that
+     check, so there is no section to scroll to. The Education tile must link
+     directly to `/categories/education`. That means `CategoryCard` needs an
+     optional `href` override rather than a hardcoded template.
+   - **The tile needs a two-word `title` array.** `CategoryTile` renders
+     `title[0]<br/>title[1]` and reconstructs the accessible name via
+     `aria-label={`${title[0]} ${title[1]}`}`; a single-element title would produce a
+     broken label. Use `["Class Saathi", "Education"]` or similar.
+
+   Removing `ViewAllTile` is safe from an accessibility standpoint — it is a plain
+   `<Link>` wrapping `<span>`s, with no ARIA roles or keyboard hooks the grid
+   depends on. Still verify the layout visually before committing; if the tradeoff
+   is unacceptable, skip this item entirely — `/categories/education` is already
+   linked sitewide from the navbar dropdowns, so the home tile is an improvement,
+   not a fix.
 8. **Sitemap.** Add all 15 new URLs (11 pages + 4 blog posts) and bump
    `CATALOG_LAST_UPDATED` in `app/sitemap.ts`. The 3 combos are picked up
    automatically by the existing `useCaseCombos` mapping; the 5 guides and 3
@@ -270,6 +318,13 @@ already knows VC is Logitech and Software is Samsung — with a `hardwareNoun` f
 9. **Cross-link strips.** A "By room size / By platform" section on the VC category
    page linking the 5 guides; a segment strip on the education landing linking the
    3 segments. Both also give the new pages a crawl path from a ranking parent.
+10. **Sibling cross-link between the two platform guides.** Each of
+    `microsoft-teams-rooms` and `zoom-rooms` carries an explicit inline link to the
+    other ("Deploying Zoom Rooms instead? See the Zoom Rooms hardware guide"). Since
+    these two pages necessarily share most of their products, a user-visible pointer
+    declaring them complementary rather than interchangeable is the strongest
+    available signal that each serves a distinct intent — and it is a real
+    navigational aid, not a markup trick. Complements the T1 identical-string guard.
 
 ## Content policy
 
@@ -313,6 +368,11 @@ chrome on it must come from the brand-aware helper rather than a hardcoded strin
 - **T4 `lib/jsonLd.test.ts`** — `industryCategoryServiceLd` produces a brand-correct
   `OfferCatalog` name for a VC combo and is unchanged for Samsung combos.
 - **T5 sitemap** — all 15 new URLs are present and unique.
+- **T6 breadcrumbs** — the sub-page crumb trail is built by a small pure helper
+  (e.g. `subPageCrumbs(category, sub)`) rather than inline JSX, so it can be
+  asserted: 4 entries, in order, `Home -> Products -> {Category} -> {Sub}`, with the
+  category URL matching the parent page's own trail. Guards against a child whose
+  `BreadcrumbList` contradicts its parent.
 
 Run with `npm test` (vitest). A runtime pass with the `verify` skill covers the OG
 images, the new routes returning 200, an unknown `(slug, sub)` pair returning a real
@@ -331,6 +391,11 @@ images, the new routes returning 200, an unknown `(slug, sub)` pair returning a 
   in `lib/nonEmptyCategories.ts`. The landing page already serves this role.
 - `/solutions` hub copy for Samsung categories, beyond the five brand-aware fixes
   named above.
+- Rotating the anchor text on the 16 product-page links from Fix 5. The anchors
+  already vary by room band ("Huddle Rooms" / "Medium Meeting Rooms" /
+  "Boardrooms"), and consistent descriptive internal anchor text aids topical
+  clarity rather than harming it. Artificial variation adds maintenance cost and
+  loses signal.
 
 ## Risks
 
