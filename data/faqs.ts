@@ -32,4 +32,12 @@ export const FAQS: FAQ[] = [
     q: "Are your products genuine Samsung products?",
     a: "Yes. As an Authorized Samsung Business Display Distributor, we exclusively supply official, manufacturer-warranted stock.",
   },
+  {
+    q: "Do you supply Logitech video conferencing systems too?",
+    a: "Yes. We supply, install and maintain Logitech Rally Bar, Rally Bar Mini, Rally Bar Huddle, Rally Board 65 and Rally Plus for huddle rooms through boardrooms. Each runs Microsoft Teams Rooms and Zoom Rooms out of the box, so most rooms need no separate room PC.",
+  },
+  {
+    q: "What is Class Saathi and does it need internet in the classroom?",
+    a: "Class Saathi pairs Bluetooth clickers with an AI-powered learning platform so every student can answer every question, with no internet required in class. Aplus helps schools across India see it live and plan a rollout.",
+  },
 ];

@@ -28,6 +28,7 @@ const SOLUTION_LINKS = [
   { label: "Corporate", href: "/solutions/corporate" },
   { label: "Education", href: "/solutions/education" },
   { label: "Retail", href: "/solutions/retail" },
+  { label: "Class Saathi (Education)", href: "/categories/education" },
 ];
 
 const COMPANY_LINKS = [

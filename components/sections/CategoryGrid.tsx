@@ -8,6 +8,7 @@ import {
   LedIcon,
   UsersIcon,
   CloudIcon,
+  GraduationCapIcon,
   IconTile,
 } from "@/components/icons";
 import { getCategoryById, type CategorySlug } from "@/data/categories";
@@ -27,10 +28,15 @@ interface CategoryCard {
   // The single non-Samsung category (Logitech VC) reads as a muted outlier:
   // neutral gray wash + slate accent, no Samsung-adjacent styling.
   muted?: boolean;
+  /**
+   * Overrides the default /products?category={id} link. Required for Education:
+   * it has zero catalog products, so the filtered-catalog URL is a no-op.
+   */
+  href?: string;
 }
 
-// Eight equal tiles in a 2×4 grid (lg): the seven categories plus a synthetic
-// "View all products" tile that completes the grid. Order = reading order.
+// Eight equal tiles in a 2×4 grid (lg): the seven Samsung/Logitech categories
+// plus Education (Class Saathi). Order = reading order.
 const CATEGORY_CARDS: CategoryCard[] = [
   {
     id: "digital-signage",
@@ -90,6 +96,15 @@ const CATEGORY_CARDS: CategoryCard[] = [
     gradient: "from-slate-100 via-slate-50/50 to-transparent",
     muted: true,
   },
+  {
+    id: "education",
+    href: "/categories/education",
+    Icon: GraduationCapIcon, // already exists in components/icons — do not add a new one
+    title: ["Class Saathi", "Education"],
+    iconColor: "#059669",
+    accentClass: "text-emerald-600",
+    gradient: "from-emerald-50 via-emerald-50/40 to-transparent",
+  },
 ];
 
 /**
@@ -101,7 +116,7 @@ function CategoryTile({ card }: { card: CategoryCard }) {
   const category = getCategoryById(card.id);
   return (
     <Link
-      href={`/products?category=${card.id}`}
+      href={card.href ?? `/products?category=${card.id}`}
       className="group relative bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 block h-full"
     >
       <div className="h-1" style={{ backgroundColor: card.iconColor }} />
@@ -154,28 +169,6 @@ function CategoryTile({ card }: { card: CategoryCard }) {
   );
 }
 
-/**
- * Synthetic "View all products" tile. Not a category (never in categories.ts
- * or the mobile carousel) — it completes the 2×4 grid's eighth cell and adds a
- * quiet exit to the full catalog.
- */
-function ViewAllTile() {
-  return (
-    <Link
-      href="/products"
-      className="group relative rounded-2xl border border-dashed border-gray-300 bg-gray-50/60 hover:bg-white hover:border-gray-400 hover:shadow-xl transition-all duration-300 flex flex-col items-center justify-center text-center p-6 h-full"
-    >
-      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white border border-gray-200 text-gray-500 group-hover:text-gray-900 group-hover:border-gray-300 transition-colors mb-4">
-        <ArrowRight size={20} />
-      </span>
-      <span className="text-base font-semibold text-gray-700 group-hover:text-gray-900 transition-colors">
-        View all products
-      </span>
-      <span className="text-sm text-gray-400 mt-1">Browse the full catalog</span>
-    </Link>
-  );
-}
-
 export default function CategoryGrid() {
   return (
     <section className="pt-8 pb-3 md:pt-14 md:pb-4 bg-gray-50">
@@ -190,8 +183,7 @@ export default function CategoryGrid() {
             MobileProductScroller with breakpoint="md" hides its own rail at
             md+, and renderGrid={false} suppresses its built-in desktop grid
             entirely — the uniform grid below is the single desktop layout, so
-            the tiles are no longer rendered a third time into a dead subtree.
-            The synthetic View-all tile is intentionally excluded here. */}
+            the tiles are no longer rendered a third time into a dead subtree. */}
         <MobileProductScroller
           breakpoint="md"
           renderGrid={false}
@@ -207,13 +199,12 @@ export default function CategoryGrid() {
         </MobileProductScroller>
 
         {/* ── DESKTOP / TABLET (md+): uniform grid ──────────────────────
-            md: 2 columns (4 rows).  lg: 4 columns (2 rows).  Eight equal tiles:
-            seven categories + the View-all CTA. */}
+            md: 2 columns (4 rows).  lg: 4 columns (2 rows).  Eight equal
+            category tiles. */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
           {CATEGORY_CARDS.map((card) => (
             <CategoryTile key={card.id} card={card} />
           ))}
-          <ViewAllTile />
         </div>
       </div>
     </section>

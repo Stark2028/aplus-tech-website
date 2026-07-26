@@ -28,6 +28,7 @@ import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { PHONE_DISPLAY, PHONE_TEL } from "@/lib/contact";
 import { specLabels } from "@/lib/vcSpecLabels";
 import { isLogitech } from "@/lib/brand";
+import { vcRoomGuides } from "@/data/vcRoomGuides";
 
 export const revalidate = 3600;
 
@@ -124,6 +125,12 @@ export default async function ProductPage({
   const labels = specLabels(product);
   const logi = isLogitech(product);
 
+  // Room guides that recommend this product. Derived from the guide's curated
+  // productIds, so the link can never point at a guide that does not list it.
+  const roomGuidesForProduct = isLogitech(product)
+    ? vcRoomGuides.filter((g) => g.kind === "room" && g.productIds.includes(product.id))
+    : [];
+
   const jsonLd = [
     productLd(product),
     breadcrumbLd([
@@ -186,6 +193,27 @@ export default async function ProductPage({
           </nav>
         </div>
       </div>
+
+      {roomGuidesForProduct.length > 0 && (
+        <div className="bg-gray-50 border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <p className="text-sm text-gray-600">
+              Rooms this fits:{" "}
+              {roomGuidesForProduct.map((g, i) => (
+                <span key={g.slug}>
+                  {i > 0 && ", "}
+                  <Link
+                    href={`/categories/video-conferencing/${g.slug}`}
+                    className="font-semibold text-blue-600 hover:text-blue-700"
+                  >
+                    {g.navLabel}
+                  </Link>
+                </span>
+              ))}
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         {/* ── MOBILE ONLY: Title & Series Header ── */}

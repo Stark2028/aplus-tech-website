@@ -73,7 +73,7 @@ export async function generateMetadata({
   const isVc = category.id === "video-conferencing";
   return {
     title: isVc
-      ? `${category.navLabel} — Price, Models & Specs`
+      ? `Logitech ${category.navLabel} — Price, Models & Specs`
       : `Samsung ${category.navLabel} — Price, Models & Specs`,
     description: isVc
       ? `${category.description} B2B pricing, installation and AMC support across India.`
@@ -81,9 +81,10 @@ export async function generateMetadata({
     keywords: isVc
       ? [
           `Logitech ${category.navLabel}`,
-          `${category.navLabel} price India`,
-          `${category.navLabel} dealer`,
-          "video conferencing systems",
+          "Logitech video conferencing price India",
+          "Logitech Rally Bar dealer India",
+          "Microsoft Teams Rooms hardware India",
+          "Zoom Rooms hardware India",
           "Aplus Technology Solutions",
         ]
       : [
