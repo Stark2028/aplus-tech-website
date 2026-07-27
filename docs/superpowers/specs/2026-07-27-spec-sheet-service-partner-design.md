@@ -66,8 +66,14 @@ The two Logitech guards stay exactly as they are:
 
 Both remain green because only the Samsung branch and `SAMSUNG_TRUST_CARDS` change. The "always exactly three cards" invariant is unaffected — no card is added or removed.
 
+## Terminology: "Service Partner", not "Service Center"
+
+Claim accuracy was raised with the user during brainstorming and **confirmed on 2026-07-27: Aplus holds both the distribution and the service authorization.** The user left the exact term to us. "Service Partner" was chosen over "Samsung Authorized Service Center" because:
+
+- "Service Center" is higher-volume as a search term in India, but that volume is consumer intent — phone and home-TV repair. On a B2B commercial-display datasheet it attracts the wrong audience and implies a walk-in repair counter rather than an on-site service entity.
+- "Service Partner" matches the language the sheet already uses. The trust strip promises "Site survey, mounting and commissioning across India" — partner-level, at the customer's site.
+- It keeps the merged line grammatical: one `Authorized Samsung` governs both nouns (*Commercial Display Distributor & Service Partner*). "Service Center" would force an awkward second clause.
+
 ## Risks
 
-Structurally none: two string constants in one file, both measured against the layout that consumes them.
-
-The real exposure is **claim accuracy**. This asserts an active Samsung service-partner authorization on a document customers retain. It was flagged to the user during brainstorming, along with the note that Samsung service programs are typically named separately from display distribution — if the official designation differs, the string must be corrected to the exact program name before release.
+Structurally none: two string constants in one file, both measured against the layout that consumes them. The claim-accuracy question that was the only real exposure is now resolved (above).
