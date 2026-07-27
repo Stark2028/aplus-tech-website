@@ -44,13 +44,13 @@ const TEAM = [
   {
     name: "Anurag Walia",
     role: "Director",
-    image: "/team/anurag-walia-v4.jpg",
+    image: "/team/anurag-walia-v5.jpg",
     linkedin: "https://www.linkedin.com/in/anurag-walia-bba9103/",
   },
   {
     name: "Savita Walia",
     role: "Director",
-    image: "/team/savita-walia.jpg",
+    image: "/team/savita-walia-v2.jpg",
   },
   {
     name: "Sunil Kumar",
