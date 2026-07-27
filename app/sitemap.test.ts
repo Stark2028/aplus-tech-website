@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import sitemap from "@/app/sitemap";
 import { vcRoomGuides } from "@/data/vcRoomGuides";
 import { educationSegments } from "@/data/educationSegments";
+import { cities } from "@/data/cities";
 import { SITE } from "@/lib/jsonLd";
 
 describe("sitemap", () => {
@@ -37,6 +38,13 @@ describe("sitemap", () => {
       "formative-assessment-without-internet",
     ]) {
       expect(urls).toContain(`${SITE}/blogs/${s}`);
+    }
+  });
+
+  it("includes every city landing page and the /locations index", () => {
+    expect(urls).toContain(`${SITE}/locations`);
+    for (const c of cities) {
+      expect(urls).toContain(`${SITE}/${c.slug}`);
     }
   });
 });

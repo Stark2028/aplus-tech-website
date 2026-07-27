@@ -6,6 +6,7 @@ import {
   OLD_EXACT_PATH_TO_NEW,
   MERGED_PRODUCT_TO_CANONICAL,
 } from "@/lib/redirects";
+import { CITY_SLUGS } from "@/data/cities";
 
 // New / reserved top-level routes the migration redirects must never touch,
 // so requests to the live site never loop or get hijacked.
@@ -22,6 +23,7 @@ const RESERVED_ROOTS = new Set([
   "privacy",
   "terms",
   "api",
+  "locations",
 ]);
 
 /**
@@ -45,6 +47,15 @@ export function proxy(req: NextRequest) {
 
   const segments = clean.split("/").filter(Boolean);
   const first = segments[0];
+
+  // Legacy city landing pages (/delhi, /mumbai, …) are real routes now. Guard
+  // them BEFORE the product-slug fallthrough below, which matches on the last
+  // path segment and would otherwise 301 a single-segment city path away if a
+  // product slug ever shared its name. Today no collision exists (asserted in
+  // data/cities.test.ts); this keeps it safe as the catalog grows.
+  if (segments.length === 1 && CITY_SLUGS.has(first)) {
+    return NextResponse.next();
+  }
 
   // Products removed as duplicates still 301 to the twin they duplicated, so the
   // ranking equity of their URLs (and of every old slug that redirects into one)
