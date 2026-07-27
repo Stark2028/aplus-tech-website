@@ -61,7 +61,7 @@ const IMG_PANEL_W = 190;
 const IMG_PANEL_H = 120;
 
 const SAMSUNG_TRUST_CARDS: ReadonlyArray<readonly [string, string]> = [
-  ["Samsung Authorized", "Genuine India-spec units with full Samsung warranty."],
+  ["Samsung Authorized", "Genuine India-spec units, full Samsung warranty, authorized service."],
   ["Pan-India Installation", "Site survey, mounting and commissioning across India."],
   ["ISO 9001:2015", "Certified quality management, GST invoicing, bulk pricing."],
 ];
@@ -86,7 +86,7 @@ export function trustCardsFor(
 export function distributorLineFor(product: Pick<Product, "brand">): string {
   return isLogitech(product)
     ? "Commercial Video Conferencing Supply & Installation · India"
-    : "Authorized Samsung Commercial Display Distributor · India";
+    : "Authorized Samsung Commercial Display Distributor & Service Partner · India";
 }
 
 interface Ctx {
