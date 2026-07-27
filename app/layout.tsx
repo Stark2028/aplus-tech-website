@@ -9,6 +9,7 @@ import { ComparisonProvider } from "@/context/ComparisonContext";
 import { ChatProvider } from "@/context/ChatContext";
 import Analytics from "@/components/Analytics";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import PageTransition from "@/components/PageTransition";
 import ClientFloats from "@/components/ClientFloats";
 import ScrollProgress from "@/components/ScrollProgress";
@@ -115,6 +116,7 @@ export default function RootLayout({
         <ResponsiveToaster />
         <Analytics gaId={GA_ID} />
         <VercelAnalytics />
+        <SpeedInsights />
 
         {/* Skip-to-content for keyboard/screen-reader users */}
         <a
