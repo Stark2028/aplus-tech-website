@@ -55,9 +55,33 @@ export async function generateMetadata({
   // Both kinds share these fields — the route never needs the rest of either shape.
   const page = found.kind === "vc" ? found.guide : found.segment;
   const { title, intro, navLabel } = page;
+  // Without an explicit keywords array, Next.js has these pages inherit
+  // app/layout.tsx's global Samsung-signage keywords — which puts "Samsung
+  // authorized distributor" in the <head> of Logitech and Class Saathi pages.
+  // Same branch as the parent app/categories/[slug]/page.tsx, extended per
+  // guide/segment via navLabel rather than a hardcoded list per slug.
+  const keywords =
+    found.kind === "vc"
+      ? [
+          `Logitech ${navLabel}`,
+          `${navLabel} video conferencing India`,
+          "Logitech video conferencing price India",
+          "Microsoft Teams Rooms hardware India",
+          "Zoom Rooms hardware India",
+          "Aplus Technology Solutions",
+        ]
+      : [
+          `Class Saathi ${navLabel}`,
+          "Class Saathi",
+          "classroom clickers",
+          "student response system",
+          "smart classroom India",
+          "Aplus Technology Solutions",
+        ];
   return {
     title,
     description: intro,
+    keywords,
     alternates: { canonical: url },
     openGraph: {
       type: "website",

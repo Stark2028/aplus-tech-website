@@ -37,6 +37,13 @@ export interface EducationSegment {
    * not a new product claim, so it stays outside the truth-policy tests' scope.
    */
   ctaBody: string;
+  /**
+   * Closing-CTA button label. Same rationale as ctaBody: a single hardcoded
+   * "Request a School Demo" button sat next to ctaBody's carefully-branched
+   * noun and put "School" under the coaching-institutes and comparison pages,
+   * which are not school-specific. Kept short for the button, not a new claim.
+   */
+  ctaLabel: string;
 }
 
 export const educationSegments: EducationSegment[] = [
@@ -96,6 +103,7 @@ export const educationSegments: EducationSegment[] = [
     ctaHeading: "See Class Saathi live in your school",
     ctaBody:
       "Tell us about your school and an Aplus education specialist will reach out with pricing, a live demonstration and a rollout plan.",
+    ctaLabel: "Request a School Demo",
   },
   {
     slug: "coaching-institutes",
@@ -153,6 +161,7 @@ export const educationSegments: EducationSegment[] = [
     ctaHeading: "Bring AI-powered batch assessment to your institute",
     ctaBody:
       "Tell us about your batches and an Aplus education specialist will reach out with pricing, a live demonstration and a rollout plan.",
+    ctaLabel: "Request a Demo for Your Batches",
   },
   {
     slug: "clickers-vs-alternatives",
@@ -210,6 +219,7 @@ export const educationSegments: EducationSegment[] = [
     ctaHeading: "See a dedicated clicker system in action",
     ctaBody:
       "Tell us which options you're evaluating and an Aplus education specialist will reach out with pricing, a live demonstration and a rollout plan.",
+    ctaLabel: "Request a Demo",
   },
 ];
 

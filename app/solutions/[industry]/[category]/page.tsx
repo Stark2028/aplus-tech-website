@@ -48,9 +48,25 @@ export async function generateMetadata({
   if (!combo) return { title: "Solution Not Found | Aplus Tech" };
 
   const url = `${SITE}/solutions/${industry}/${category}`;
+  // Only the 3 Logitech VC combos get an explicit keywords array. Without it
+  // they inherit app/layout.tsx's global Samsung-signage keywords, same defect
+  // as the category sub-route. The 16 pre-existing Samsung combos must keep
+  // emitting exactly what they do today, so the key is omitted entirely for
+  // them (not set to undefined) rather than branched to a Samsung-specific list.
+  const isVc = category === "video-conferencing";
   return {
     title: combo.title,
     description: combo.intro,
+    ...(isVc && {
+      keywords: [
+        "Logitech video conferencing",
+        combo.title,
+        "Logitech video conferencing price India",
+        "Microsoft Teams Rooms hardware India",
+        "Zoom Rooms hardware India",
+        "Aplus Technology Solutions",
+      ],
+    }),
     alternates: { canonical: url },
     openGraph: {
       type: "website",

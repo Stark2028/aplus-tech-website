@@ -154,7 +154,7 @@ export default function EducationSegmentPage({ segment, category }: EducationSeg
                   href="#lead-form"
                   className="inline-flex items-center justify-center gap-2 bg-white text-emerald-700 font-semibold px-6 py-4 rounded-lg hover:bg-emerald-50 transition-colors shadow-lg shadow-emerald-950/30"
                 >
-                  Request a School Demo
+                  {segment.ctaLabel}
                 </Link>
                 <a
                   href={PHONE_TEL}
