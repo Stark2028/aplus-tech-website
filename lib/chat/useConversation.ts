@@ -24,9 +24,17 @@ import { COL, mapConversation, mapMessage, type ChatCustomer, type ChatMessage, 
 import { buildPreview } from "./messages";
 import { shouldEscalate, shouldStopEscalating } from "./escalation";
 import { isConversationDeleted } from "./conversationLifecycle";
+import { shouldRetryStream, streamRetryDelayMs } from "./streamRetry";
 
 const TIMEOUT_NOTICE =
   "Sorry — our team is tied up. We have your details and will reply on WhatsApp/email shortly.";
+
+/**
+ * Shown only after the message stream has failed to re-attach MAX_STREAM_RETRIES
+ * times. Kept as a constant so a later good snapshot can retract exactly this
+ * banner without clearing an unrelated error.
+ */
+const STREAM_ERROR = "We lost the connection. Try WhatsApp or call us.";
 
 interface StartInput {
   customer: ChatCustomer;
@@ -198,31 +206,79 @@ export function useConversation(engaged = false) {
         setConversationId(first.id);
         setConversation(mapConversation(first.id, first.data() as Record<string, unknown>));
       },
-      () => setError("Chat is unavailable right now.")
+      (err) => {
+        // Logged for the same reason as the message stream below: a customer
+        // widget that fails silently can only be debugged from the server side.
+        console.error("[chat] conversation lookup failed", err.code, err);
+        setError("Chat is unavailable right now.");
+      }
     );
   }, [uid]);
 
   // ── stream the thread ─────────────────────────────────────────────────────
+  // Re-attaches itself when the listener dies. `onSnapshot`'s error callback is
+  // TERMINAL — the SDK swallows and retries recoverable network trouble on its
+  // own, so anything that reaches us has already detached the listener for good.
+  // A single such failure used to freeze the customer's thread EMPTY for the rest
+  // of the page's life: their messages and the agent's replies kept landing in
+  // Firestore (the sales console saw the lot) while the widget showed nothing,
+  // and only a full reload — which re-attaches the listener — brought it back.
+  // We do that re-attach ourselves, with a bounded backoff (lib/chat/streamRetry).
   useEffect(() => {
     if (!conversationId) return;
-    const q = query(
-      collection(getDb(), COL.conversations, conversationId, COL.messages),
-      orderBy("createdAt", "asc"),
-      // limitToLast, NOT limit: with an ascending order, limit(n) keeps the
-      // OLDEST n, so once a thread crossed 200 messages it pinned to messages
-      // 1–200 and stopped updating forever. limitToLast keeps the most recent
-      // 200 while preserving ascending render order.
-      limitToLast(200)
-    );
-    return onSnapshot(
-      q,
-      (snap) => {
-        setMessages(
-          snap.docs.map((d) => mapMessage(d.id, d.data() as Record<string, unknown>))
-        );
-      },
-      () => setError("We lost the connection. Try WhatsApp or call us.")
-    );
+
+    let unsubscribe: (() => void) | null = null;
+    let retryTimer: ReturnType<typeof setTimeout> | null = null;
+    let failures = 0;
+    let cancelled = false;
+
+    const attach = () => {
+      if (cancelled) return;
+      const q = query(
+        collection(getDb(), COL.conversations, conversationId, COL.messages),
+        orderBy("createdAt", "asc"),
+        // limitToLast, NOT limit: with an ascending order, limit(n) keeps the
+        // OLDEST n, so once a thread crossed 200 messages it pinned to messages
+        // 1–200 and stopped updating forever. limitToLast keeps the most recent
+        // 200 while preserving ascending render order.
+        limitToLast(200)
+      );
+      unsubscribe = onSnapshot(
+        q,
+        (snap) => {
+          // A good snapshot heals the stream: reset the budget so a long session
+          // survives repeated blips, and clear the banner if we put one up.
+          failures = 0;
+          setError((prev) => (prev === STREAM_ERROR ? null : prev));
+          setMessages(
+            snap.docs.map((d) => mapMessage(d.id, d.data() as Record<string, unknown>))
+          );
+        },
+        (err) => {
+          // The listener is already detached here — dropping the handle keeps the
+          // cleanup below from calling a dead unsubscribe.
+          unsubscribe = null;
+          failures += 1;
+          // Logged, not swallowed: the widget's listeners used to discard the
+          // error object entirely, which is why a broken thread produced NOTHING
+          // in DevTools and had to be diagnosed from the server side.
+          console.error("[chat] message stream failed", err.code, err);
+          if (!shouldRetryStream(failures)) {
+            setError(STREAM_ERROR);
+            return;
+          }
+          retryTimer = setTimeout(attach, streamRetryDelayMs(failures));
+        }
+      );
+    };
+
+    attach();
+
+    return () => {
+      cancelled = true;
+      if (retryTimer) clearTimeout(retryTimer);
+      unsubscribe?.();
+    };
   }, [conversationId]);
 
   // ── recover when the conversation is deleted from the console ───────────────
@@ -247,8 +303,9 @@ export function useConversation(engaged = false) {
         setConversationId(null);
         setConversation(null);
       },
-      // A listen error is already surfaced by the message stream's onError above.
-      () => {}
+      // A listen error is already surfaced by the message stream's onError above,
+      // so this one only needs to be visible in DevTools, not to the customer.
+      (err) => console.error("[chat] conversation watch failed", err.code, err)
     );
   }, [conversationId]);
 

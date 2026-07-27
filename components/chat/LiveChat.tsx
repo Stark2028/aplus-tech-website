@@ -245,6 +245,19 @@ export default function LiveChat({ onWhatsApp }: { onWhatsApp: () => void }) {
         <div ref={threadEnd} />
       </div>
 
+      {/* A thread-level failure MUST be visible here. The error screen above is
+          gated on `!conversationId`, so once a conversation exists it can never
+          fire — a message stream that died after the thread opened rendered as a
+          perfectly normal, permanently EMPTY chat with no hint anything was
+          wrong. The stream now re-attaches itself (lib/chat/streamRetry); this
+          banner is what the customer sees if that finally gives up. */}
+      {error && (
+        <div role="alert" className="border-t border-red-100 bg-red-50 px-3 py-2.5 space-y-2.5">
+          <p className="text-xs text-red-700">{error}</p>
+          <Fallbacks onWhatsApp={onWhatsApp} />
+        </div>
+      )}
+
       <form onSubmit={handleSend} className="border-t border-gray-100 p-3 flex items-center gap-2">
         <input
           value={draft}
