@@ -56,6 +56,8 @@ export const OLD_PRODUCT_SLUG_TO_ID: Record<string, string> = {
   "samsung-60-inch-4k-business-pro-tv-bed-h-series": "samsung-business-tv-bed-h",
   "samsung-business-tv-befx-h2": "samsung-business-tv-befx-h2",
   "samsung-business-tv-be85f-h2": "samsung-business-tv-befx-h2",
+  // GA-observed legacy SKU URL (…/samsung-business-tv-beh-k2) — same BEFX-H2 display.
+  "samsung-business-tv-beh-k2": "samsung-business-tv-befx-h2",
   "samsung-business-tv-uhd-crystal-4k-bec-h": "samsung-business-tv-bec-h",
 
   // ── Hotel TV ──
@@ -109,6 +111,7 @@ export const OLD_CATEGORY_ROOT_TO_ID: Record<string, string> = {
   "samsung-smart-signage": "digital-signage",
   "video-wall": "video-walls",
   "samsung-interactive-display": "interactive",
+  "samsung-interactive-displays": "interactive", // GA-observed plural variant
   "touch-display": "interactive",
   "samsung-business-tv": "commercial-tv",
   "samsung-hotel-tv": "commercial-tv",
@@ -129,6 +132,11 @@ export const OLD_EXACT_PATH_TO_NEW: Record<string, string> = {
   "distributor": "/products",
   "suppliers": "/products",
   "exporters": "/products",
+  // GA-observed legacy pages absent from the sitemap. Sent to the closest live
+  // page so they 301 instead of 404 (there is no /solutions index page).
+  "services": "/products",
+  "displays-screens-india": "/products",
+  "dahlv": "/products", // unidentified legacy slug — safe catch-all to the catalog
 };
 
 /**
