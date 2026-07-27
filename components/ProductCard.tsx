@@ -134,16 +134,13 @@ export default function ProductCard({ product }: ProductCardProps) {
             {formatSkuLine(product)}
           </p>
           <h3
-            className="text-[1.15rem] font-bold text-slate-900 mt-1 mb-2.5 leading-snug tracking-tight line-clamp-2"
+            className="text-[1.15rem] font-bold text-slate-900 mt-1 leading-snug tracking-tight line-clamp-2"
             style={{ fontFamily: "var(--font-card-display)" }}
           >
             <Link href={`/products/${product.id}`} className="hover:text-blue-600 transition-colors">
               {product.name}
             </Link>
           </h3>
-          <p className="text-slate-500 text-[13px] leading-relaxed line-clamp-2">
-            {product.description}
-          </p>
         </div>
 
         {/* Key Specs Grid */}
