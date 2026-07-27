@@ -9,7 +9,7 @@ export const revalidate = 3600;
 const PRODUCTS_URL = "https://www.aplustechsol.com/products";
 
 export const metadata: Metadata = {
-  title: "Products | Aplus Technology Solutions",
+  title: "Products",
   description:
     "Browse Samsung Smart Signage, Video Walls, Interactive Displays, LED Signage, Hospitality & Business TVs and cloud software, plus Logitech video conferencing systems — supplied, installed and supported across India by Aplus Technology Solutions.",
   alternates: { canonical: PRODUCTS_URL },

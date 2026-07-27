@@ -30,12 +30,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
     const { industry } = await params;
     const solution = solutions.find((s) => s.slug === industry);
-    if (!solution) return { title: "Solution Not Found | Aplus Tech" };
+    if (!solution) return { title: "Solution Not Found" };
 
     const url = `${SITE}/solutions/${industry}`;
     const description = `Samsung B2B display solutions for ${solution.title.toLowerCase()} — recommended hardware, sizing, and deployment guidance from Aplus Technology Solutions.`;
     return {
-        title: `${solution.title} | Aplus Technology Solutions`,
+        title: solution.title,
         description,
         alternates: { canonical: url },
         openGraph: {

@@ -12,7 +12,7 @@ import PrinciplesSlider from "@/components/sections/PrinciplesSlider";
 const ABOUT_URL = "https://www.aplustechsol.com/about";
 
 export const metadata: Metadata = {
-  title: "About Us — Aplus Technology Solutions",
+  title: "About Us",
   description:
     "Aplus Technology Solutions is an authorized Samsung Business Display distributor serving enterprises across India. Learn about our team, values, and track record.",
   alternates: { canonical: ABOUT_URL },

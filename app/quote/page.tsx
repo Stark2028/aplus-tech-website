@@ -4,7 +4,7 @@ import QuotePageClient from "@/components/QuotePageClient";
 const QUOTE_URL = "https://www.aplustechsol.com/quote";
 
 export const metadata: Metadata = {
-  title: "Request a Quote | Aplus Technology Solutions",
+  title: "Request a Quote",
   description:
     "Request a personalized quote for Samsung commercial displays, video walls, and interactive screens. Bulk B2B pricing with GST invoice — response within 24 hours.",
   alternates: { canonical: QUOTE_URL },
