@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { FileDown } from "lucide-react";
 import type { Product } from "@/data/products";
@@ -44,22 +44,19 @@ export default function SpecSheetButton({ product, compact = false }: Props) {
     setIsOpen(true);
   }, [isGenerating, product.id]); // eslint-disable-line react-hooks/exhaustive-deps -- triggerPdf is a plain fn, not memoized
 
-  const searchParams = useSearchParams();
-  const autoFired = useRef(false);
-
-  // A spec-sheet link sent from the sales console (lib/chat/links.ts) lands here
-  // as ?download=spec. Fire the SAME gated path the button uses — not triggerPdf
-  // directly — so the lead gate still applies. Guard with a
-  // ref (not state) so StrictMode's double-invoke in dev can't fire it twice.
-  useEffect(() => {
-    if (autoFired.current) return;
-    if (searchParams.get("download") !== "spec") return;
-    autoFired.current = true;
-    handleClick();
-  }, [searchParams, handleClick]);
-
   return (
     <>
+      {/* useSearchParams() forces the nearest Suspense boundary to bail out to
+          client-side rendering during static prerender. This route has a
+          loading.tsx, so that boundary is the ENTIRE page — leaving the static
+          HTML with no h1, no body and no JSON-LD, which AI crawlers (they don't
+          run JS) saw as an empty shell. Keeping the hook in its own boundary
+          confines the bailout to this invisible node so the page still
+          prerenders. Same pattern as components/Analytics.tsx. */}
+      <Suspense fallback={null}>
+        <SpecSheetAutoDownload onAutoDownload={handleClick} />
+      </Suspense>
+
       <button
         onClick={handleClick}
         disabled={isGenerating}
@@ -94,4 +91,28 @@ export default function SpecSheetButton({ product, compact = false }: Props) {
       />
     </>
   );
+}
+
+/**
+ * A spec-sheet link sent from the sales console (lib/chat/links.ts) lands here
+ * as ?download=spec. Fires the SAME gated path the button uses — not triggerPdf
+ * directly — so the lead gate still applies.
+ *
+ * Split out of SpecSheetButton purely to contain the useSearchParams() render
+ * bailout (see the Suspense wrapper at the call site). Renders nothing.
+ */
+function SpecSheetAutoDownload({ onAutoDownload }: { onAutoDownload: () => void }) {
+  const searchParams = useSearchParams();
+  // Guard with a ref (not state) so StrictMode's double-invoke in dev can't
+  // fire it twice.
+  const autoFired = useRef(false);
+
+  useEffect(() => {
+    if (autoFired.current) return;
+    if (searchParams.get("download") !== "spec") return;
+    autoFired.current = true;
+    onAutoDownload();
+  }, [searchParams, onAutoDownload]);
+
+  return null;
 }
