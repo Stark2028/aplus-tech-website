@@ -54,8 +54,14 @@ export function proxy(req: NextRequest) {
   // path segment and would otherwise 301 a single-segment city path away if a
   // product slug ever shared its name. Today no collision exists (asserted in
   // data/cities.test.ts); this keeps it safe as the catalog grows.
-  if (segments.length === 1 && CITY_SLUGS.has(first)) {
-    return NextResponse.next();
+  if (segments.length === 1) {
+    if (CITY_SLUGS.has(first)) return NextResponse.next();
+    // /Noida and /NOIDA reached the old case-insensitive Apache host but 404 on
+    // Vercel, so fold them onto the canonical lowercase hub rather than losing
+    // them. City × product URLs already survived this — the product lookup below
+    // keys off the last segment — so only the bare city root needed handling.
+    const lower = first.toLowerCase();
+    if (CITY_SLUGS.has(lower)) return redirectTo(req, `/${lower}`);
   }
 
   // Products removed as duplicates still 301 to the twin they duplicated, so the
@@ -89,7 +95,9 @@ export function proxy(req: NextRequest) {
 
   // Any old product page — matched on the LAST segment so every prefix
   // (category root, city, distributor/suppliers/exporters) resolves at once.
-  const last = segments[segments.length - 1];
+  // Lowercased because inbound links from other sites capitalise slugs freely
+  // and every key in the map is lowercase.
+  const last = segments[segments.length - 1].toLowerCase();
   const productId = OLD_PRODUCT_SLUG_TO_ID[last];
   if (productId) {
     return redirectTo(req, `/products/${productId}`);

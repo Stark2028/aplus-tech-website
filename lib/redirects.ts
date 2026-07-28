@@ -66,6 +66,25 @@ export const OLD_PRODUCT_SLUG_TO_ID: Record<string, string> = {
   "samsung-hotel-tv-hg85u800f": "samsung-hotel-tv-hu8000f",
   "samsung-hotel-tv-4k-uhd-crystal-hgbu800": "samsung-hotel-tv-hgbu800",
 
+  // ── Search-Console-observed slugs (GSC "Soft 404" export, 2026-07-28) ──
+  // These four accounted for 128 of the 133 soft-404s Google reported. They are
+  // absent from the archived WordPress sitemap, so only Search Console surfaced
+  // them — do not remove without re-checking that report.
+  //
+  // NOTE the misspelling: the old site published "dispaly", and that typo'd URL
+  // is the one Google indexed across 96 city/role pages. The correctly spelled
+  // slug above is kept too; both must resolve.
+  "samsung-led-dispaly-mp016f": "samsung-mp016f",
+  // QBC-N has no catalog entry of its own; QBC is the same Crystal UHD line.
+  "samsung-crystal-uhd-signage-display-qbc-n-series": "samsung-signage-qbc",
+  "samsung-be50d-h": "samsung-business-tv-bed-h",
+  "samsung-55-inch-video-wall-display-vmc-e-series": "samsung-vmc-e",
+
+  // From the archived WordPress sitemap rather than GSC — 99 city/role URLs.
+  // The discontinued UH55F-E has no catalog entry; VHB-E is its successor on the
+  // same FHD extreme-narrow-bezel line.
+  "samsung-videowall-extreme-narrow-bezels-uh55fe-series": "samsung-vhb-e",
+
   // ── Legacy per-SKU pages (older R/T-gen), mapped to their current series ──
   "samsung-qb13rt": "samsung-qbc-t",
   "samsung-qb24rt": "samsung-qbc-t",
@@ -104,6 +123,131 @@ export const OLD_PRODUCT_SLUG_TO_ID: Record<string, string> = {
   "samsung-wm65b": "samsung-flip-pro-wm85b",
   "samsung-wm75b": "samsung-flip-pro-wm85b",
   "samsung-wm85b": "samsung-flip-pro-wm85b",
+
+  // ── The city × SKU matrix ───────────────────────────────────────────────────
+  // The old site published one page per SKU per city (/mumbai/samsung-qb43c/).
+  // Only the SKUs with measurable traffic were ever mapped above, which left the
+  // long tail 404ing: 49 unmapped SKUs × 110 city/role roots ≈ 5,400 URLs. That
+  // reconciles the archived sitemap (2,195 URLs) with the ~7,650 pages Search
+  // Console reports, so this block is the rest of the old site.
+  //
+  // Slugs are reconstructed from each series and its screen sizes, using the
+  // spellings proven by URLs known to be real: samsung-qb43c, samsung-qm32r-t,
+  // samsung-be50d-h (GSC), samsung-business-tv-be85f-h2 (GSC), and the client-
+  // reported samsung-qm55c. The old CMS was inconsistent about hyphens and about
+  // the samsung-business-tv-/samsung-hotel-tv- prefix, so both spellings are
+  // listed. An entry for a URL that never existed is inert — an unused key —
+  // whereas a missing one costs ~110 live URLs, so this errs toward listing more.
+  "samsung-be43c-h": "samsung-business-tv-bec-h",
+  "samsung-be50c-h": "samsung-business-tv-bec-h",
+  "samsung-be55c-h": "samsung-business-tv-bec-h",
+  "samsung-be65c-h": "samsung-business-tv-bec-h",
+  "samsung-be70c-h": "samsung-business-tv-bec-h",
+  "samsung-be75c-h": "samsung-business-tv-bec-h",
+  "samsung-be85c-h": "samsung-business-tv-bec-h",
+  "samsung-business-tv-be43c-h": "samsung-business-tv-bec-h",
+  "samsung-business-tv-be50c-h": "samsung-business-tv-bec-h",
+  "samsung-business-tv-be55c-h": "samsung-business-tv-bec-h",
+  "samsung-business-tv-be65c-h": "samsung-business-tv-bec-h",
+  "samsung-business-tv-be70c-h": "samsung-business-tv-bec-h",
+  "samsung-business-tv-be75c-h": "samsung-business-tv-bec-h",
+  "samsung-business-tv-be85c-h": "samsung-business-tv-bec-h",
+  "samsung-be43d-h": "samsung-business-tv-bed-h",
+  "samsung-be55d-h": "samsung-business-tv-bed-h",
+  "samsung-be60d-h": "samsung-business-tv-bed-h",
+  "samsung-be65d-h": "samsung-business-tv-bed-h",
+  "samsung-be70d-h": "samsung-business-tv-bed-h",
+  "samsung-be75d-h": "samsung-business-tv-bed-h",
+  "samsung-business-tv-be43d-h": "samsung-business-tv-bed-h",
+  "samsung-business-tv-be50d-h": "samsung-business-tv-bed-h",
+  "samsung-business-tv-be55d-h": "samsung-business-tv-bed-h",
+  "samsung-business-tv-be60d-h": "samsung-business-tv-bed-h",
+  "samsung-business-tv-be65d-h": "samsung-business-tv-bed-h",
+  "samsung-business-tv-be70d-h": "samsung-business-tv-bed-h",
+  "samsung-business-tv-be75d-h": "samsung-business-tv-bed-h",
+  "samsung-be43f-h2": "samsung-business-tv-befx-h2",
+  "samsung-be50f-h2": "samsung-business-tv-befx-h2",
+  "samsung-be55f-h2": "samsung-business-tv-befx-h2",
+  "samsung-be65f-h2": "samsung-business-tv-befx-h2",
+  "samsung-be75f-h2": "samsung-business-tv-befx-h2",
+  "samsung-be85f-h2": "samsung-business-tv-befx-h2",
+  "samsung-business-tv-be43f-h2": "samsung-business-tv-befx-h2",
+  "samsung-business-tv-be50f-h2": "samsung-business-tv-befx-h2",
+  "samsung-business-tv-be55f-h2": "samsung-business-tv-befx-h2",
+  "samsung-business-tv-be65f-h2": "samsung-business-tv-befx-h2",
+  "samsung-business-tv-be75f-h2": "samsung-business-tv-befx-h2",
+  "samsung-hg43bu800": "samsung-hotel-tv-hgbu800",
+  "samsung-hg55bu800": "samsung-hotel-tv-hgbu800",
+  "samsung-hg65bu800": "samsung-hotel-tv-hgbu800",
+  "samsung-hotel-tv-hg43bu800": "samsung-hotel-tv-hgbu800",
+  "samsung-hotel-tv-hg50bu800": "samsung-hotel-tv-hgbu800",
+  "samsung-hotel-tv-hg55bu800": "samsung-hotel-tv-hgbu800",
+  "samsung-hotel-tv-hg65bu800": "samsung-hotel-tv-hgbu800",
+  "samsung-hg43u701f": "samsung-hotel-tv-hu7010f",
+  "samsung-hg50u701f": "samsung-hotel-tv-hu7010f",
+  "samsung-hg55u701f": "samsung-hotel-tv-hu7010f",
+  "samsung-hg65u701f": "samsung-hotel-tv-hu7010f",
+  "samsung-hg75u701f": "samsung-hotel-tv-hu7010f",
+  "samsung-hotel-tv-hg43u701f": "samsung-hotel-tv-hu7010f",
+  "samsung-hotel-tv-hg50u701f": "samsung-hotel-tv-hu7010f",
+  "samsung-hotel-tv-hg65u701f": "samsung-hotel-tv-hu7010f",
+  "samsung-hotel-tv-hg75u701f": "samsung-hotel-tv-hu7010f",
+  "samsung-hg43u800f": "samsung-hotel-tv-hu8000f",
+  "samsung-hg50u800f": "samsung-hotel-tv-hu8000f",
+  "samsung-hg55u800f": "samsung-hotel-tv-hu8000f",
+  "samsung-hg65u800f": "samsung-hotel-tv-hu8000f",
+  "samsung-hg75u800f": "samsung-hotel-tv-hu8000f",
+  "samsung-hg85u800f": "samsung-hotel-tv-hu8000f",
+  "samsung-hotel-tv-hg43u800f": "samsung-hotel-tv-hu8000f",
+  "samsung-hotel-tv-hg50u800f": "samsung-hotel-tv-hu8000f",
+  "samsung-hotel-tv-hg55u800f": "samsung-hotel-tv-hu8000f",
+  "samsung-hotel-tv-hg65u800f": "samsung-hotel-tv-hu8000f",
+  "samsung-hotel-tv-hg75u800f": "samsung-hotel-tv-hu8000f",
+  "samsung-wa86c": "samsung-interactive-wac",
+  "samsung-wa86d": "samsung-interactive-wad",
+  "samsung-qb13c-t": "samsung-qbc-t",
+  "samsung-qb13ct": "samsung-qbc-t",
+  "samsung-qb24c-t": "samsung-qbc-t",
+  "samsung-qb24ct": "samsung-qbc-t",
+  "samsung-qe43t": "samsung-qet-series",
+  "samsung-qe50t": "samsung-qet-series",
+  "samsung-qe65t": "samsung-qet-series",
+  "samsung-qe70t": "samsung-qet-series",
+  "samsung-qe82t": "samsung-qet-series",
+  "samsung-qp105dx": "samsung-qpdx105",
+  "samsung-qb13r-b": "samsung-signage-qbr-b",
+  "samsung-qb13rb": "samsung-signage-qbr-b",
+  "samsung-qb24r-b": "samsung-signage-qbr-b",
+  "samsung-qb24rb": "samsung-signage-qbr-b",
+  "samsung-qh43c": "samsung-signage-qhc",
+  "samsung-qh50c": "samsung-signage-qhc",
+  "samsung-qh55c": "samsung-signage-qhc",
+  "samsung-qh65c": "samsung-signage-qhc",
+  "samsung-qh75c": "samsung-signage-qhc",
+  "samsung-qm43c": "samsung-signage-qmc",
+  "samsung-qm50c": "samsung-signage-qmc",
+  "samsung-qm55c": "samsung-signage-qmc",
+  "samsung-qm85c": "samsung-signage-qmc",
+  "samsung-qm32rt": "samsung-touch-qmr-t",
+  "samsung-qm43r-t": "samsung-touch-qmr-t",
+  "samsung-qm43rt": "samsung-touch-qmr-t",
+  "samsung-qm55r-t": "samsung-touch-qmr-t",
+  "samsung-qm55rt": "samsung-touch-qmr-t",
+  "samsung-vh55b-e": "samsung-vhb-e",
+  "samsung-vh55be": "samsung-vhb-e",
+  "samsung-vh55c-e": "samsung-vhc-e",
+  "samsung-vh55ce": "samsung-vhc-e",
+  "samsung-vh55c-r": "samsung-vhc-r",
+  "samsung-vh55cr": "samsung-vhc-r",
+  "samsung-vm55b-r": "samsung-videowall-vmb-r",
+  "samsung-vm55br": "samsung-videowall-vmb-r",
+  "samsung-vm55c-r": "samsung-videowall-vmc-r",
+  "samsung-vm55b-e": "samsung-vmb-e",
+  "samsung-vm55b-u": "samsung-vmb-u-55",
+  "samsung-vm55c-e": "samsung-vmc-e",
+  "samsung-wa65f": "samsung-waf-series",
+  "samsung-wa75f": "samsung-waf-series",
+  "samsung-wa86f": "samsung-waf-series",
 };
 
 /** Old category-root segment → new category id (route becomes /categories/{id}). */
@@ -137,6 +281,11 @@ export const OLD_EXACT_PATH_TO_NEW: Record<string, string> = {
   "services": "/products",
   "displays-screens-india": "/products",
   "dahlv": "/products", // unidentified legacy slug — safe catch-all to the catalog
+  // WordPress internal search results (/search/?search=…). Google indexed a few,
+  // so send them to the catalog rather than a 404; redirectTo carries the query
+  // string across harmlessly. The new site's SearchAction points at /products?q=,
+  // so nothing generates these any more.
+  "search": "/products",
 };
 
 /**
