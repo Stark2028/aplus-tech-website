@@ -166,3 +166,18 @@ export const MERGED_PRODUCT_TO_CANONICAL: Record<string, string> = {
   "samsung-vm55c-e": "samsung-vmc-e",
   "samsung-vh55c-e": "samsung-vhc-e",
 };
+
+/**
+ * Old WordPress blog-post slug → new destination. The new site rewrote its blog
+ * library under different slugs, so /blog/{old-slug} cannot fall through to
+ * /blogs/{old-slug} — that 404s. Each of the four legacy posts (which carry
+ * inbound links) 301s to its closest live equivalent: a topical new post, or the
+ * product it was about. Any unmapped /blog/* path falls back to the /blogs index
+ * in proxy.ts, never a 404. Targets sit under reserved roots, so no loop.
+ */
+export const OLD_BLOG_SLUG_TO_NEW: Record<string, string> = {
+  "complete-guide-to-samsung-smart-signage-solutions": "/blogs/planning-your-samsung-digital-signage-rollout",
+  "experience-the-benefits-of-visual-marketing-with-samsungs-qmr-series-smart-led-display": "/blogs/planning-your-samsung-digital-signage-rollout",
+  "benefits-of-using-samsung-business-tv-uhd-crystal-4k-for-your-office": "/blogs/choosing-between-business-tv-and-smart-signage",
+  "samsung-hospitality-tv-hgbu800": "/products/samsung-hotel-tv-hgbu800",
+};

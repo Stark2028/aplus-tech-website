@@ -1,15 +1,18 @@
 import { describe, it, expect } from "vitest";
 import { products } from "@/data/products";
 import { productCategories } from "@/data/categories";
+import { blogPosts } from "@/data/blogs";
 import {
   OLD_PRODUCT_SLUG_TO_ID,
   OLD_CATEGORY_ROOT_TO_ID,
   OLD_EXACT_PATH_TO_NEW,
   MERGED_PRODUCT_TO_CANONICAL,
+  OLD_BLOG_SLUG_TO_NEW,
 } from "@/lib/redirects";
 
 const productIds = new Set(products.map((p) => p.id));
 const categoryIds = new Set(productCategories.map((c) => c.id));
+const blogSlugs = new Set(blogPosts.map((b) => b.slug));
 
 // Mirrors RESERVED_ROOTS in middleware.ts. A redirect target whose first segment
 // is NOT reserved would be re-matched by the middleware and could redirect again.
@@ -40,12 +43,27 @@ describe("legacy WordPress redirects", () => {
       ...Object.values(OLD_PRODUCT_SLUG_TO_ID).map((id) => `/products/${id}`),
       ...Object.values(OLD_CATEGORY_ROOT_TO_ID).map((id) => `/categories/${id}`),
       ...Object.values(OLD_EXACT_PATH_TO_NEW),
+      ...Object.values(OLD_BLOG_SLUG_TO_NEW),
     ];
     const loopable = targets.filter((t) => {
       const first = t.split("/").filter(Boolean)[0];
       return first !== undefined && !RESERVED_ROOTS.has(first);
     });
     expect(loopable).toEqual([]);
+  });
+
+  it("every blog-post redirect target is a live blog post or product", () => {
+    // A /blog/{old-slug} that 301s into a non-existent /blogs/{slug} 404s and
+    // dumps the inbound links the redirect exists to preserve.
+    const dead = Object.entries(OLD_BLOG_SLUG_TO_NEW)
+      .filter(([, dest]) => {
+        const [root, slug] = dest.split("/").filter(Boolean);
+        if (root === "blogs") return !blogSlugs.has(slug);
+        if (root === "products") return !productIds.has(slug);
+        return true; // any other shape is unexpected → fail
+      })
+      .map(([from, dest]) => `${from} -> ${dest}`);
+    expect(dead).toEqual([]);
   });
 });
 

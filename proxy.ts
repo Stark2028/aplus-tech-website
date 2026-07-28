@@ -5,6 +5,7 @@ import {
   OLD_CATEGORY_ROOT_TO_ID,
   OLD_EXACT_PATH_TO_NEW,
   MERGED_PRODUCT_TO_CANONICAL,
+  OLD_BLOG_SLUG_TO_NEW,
 } from "@/lib/redirects";
 import { CITY_SLUGS } from "@/data/cities";
 
@@ -72,10 +73,13 @@ export function proxy(req: NextRequest) {
   // Never interfere with the new site's own routes.
   if (RESERVED_ROOTS.has(first)) return NextResponse.next();
 
-  // Old blog → new blogs (root and posts).
+  // Old blog → new blogs. The four legacy posts have bespoke targets (their new
+  // slugs differ, so /blogs/{old-slug} would 404); everything else — including
+  // the /blog root — falls back to the /blogs index rather than a dead page.
   if (first === "blog") {
-    const rest = segments.slice(1).join("/");
-    return redirectTo(req, rest ? `/blogs/${rest}` : "/blogs");
+    const slug = segments.slice(1).join("/");
+    const mapped = OLD_BLOG_SLUG_TO_NEW[slug];
+    return redirectTo(req, mapped ?? "/blogs");
   }
 
   // Single-segment static / role-root pages.
