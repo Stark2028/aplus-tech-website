@@ -92,14 +92,14 @@ describe("allProductsCollectionLd", () => {
   const items = [samsung, logitech];
 
   it("is a CollectionPage bound to the canonical org", () => {
-    const ld = allProductsCollectionLd(items) as any;
+    const ld = allProductsCollectionLd(items);
     expect(ld["@type"]).toBe("CollectionPage");
     expect(ld.url).toBe("https://www.aplustechsol.com/products");
     expect(ld.isPartOf["@id"]).toBe("https://www.aplustechsol.com/#organization");
   });
 
   it("lists every product with an absolute URL", () => {
-    const ld = allProductsCollectionLd(items) as any;
+    const ld = allProductsCollectionLd(items);
     expect(ld.mainEntity["@type"]).toBe("ItemList");
     expect(ld.mainEntity.numberOfItems).toBe(2);
     expect(ld.mainEntity.itemListElement[0]).toMatchObject({
@@ -157,10 +157,10 @@ describe("industryCategoryServiceLd brand awareness", () => {
 });
 
 describe("organizationLd entity signals", () => {
-  const org = () => organizationLd() as any;
+  const org = () => organizationLd();
 
   it("declares what the company knows about", () => {
-    const k = org().knowsAbout as string[];
+    const k = org().knowsAbout;
     expect(Array.isArray(k)).toBe(true);
     expect(k.length).toBeGreaterThan(4);
     expect(k.join(" ")).toMatch(/digital signage/i);
@@ -181,7 +181,7 @@ describe("organizationLd entity signals", () => {
   });
 
   it("lists only verified sameAs profiles", () => {
-    const same = org().sameAs as string[];
+    const same = org().sameAs;
     expect(same).toEqual(
       expect.arrayContaining([
         "https://in.linkedin.com/company/aplus-technology-solutions-pvt-ltd",

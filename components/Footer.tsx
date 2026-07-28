@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { SAMSUNG_CREDENTIAL } from "@/lib/credentials";
 import { Phone, ArrowRight } from "lucide-react";
 import {
   MapPinIcon,
@@ -106,9 +107,17 @@ export default function Footer() {
                   className="h-12 w-auto object-contain"
                 />
               </Link>
-              <p className="text-sm leading-relaxed text-slate-400">
-                Authorized Samsung Display distributor providing end-to-end commercial solutions across India.
-              </p>
+              <div>
+                <p className="text-sm leading-relaxed text-slate-400">
+                  Authorized Samsung Display distributor providing end-to-end commercial solutions across India.
+                </p>
+                {/* Full credential in prose — the site-wide wording lives in
+                    lib/credentials.ts so page copy, JSON-LD and the spec-sheet
+                    PDF can never drift apart. */}
+                <p className="text-xs leading-relaxed text-slate-500 mt-2">
+                  {SAMSUNG_CREDENTIAL}
+                </p>
+              </div>
             </div>
 
             {/* Trust badges */}

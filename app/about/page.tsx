@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import { aboutPageLd, breadcrumbLd, organizationLd, jsonLdString } from "@/lib/jsonLd";
+import { SAMSUNG_CREDENTIAL } from "@/lib/credentials";
 import PrinciplesSlider from "@/components/sections/PrinciplesSlider";
 
 const ABOUT_URL = "https://www.aplustechsol.com/about";
@@ -208,6 +209,9 @@ export default function AboutPage() {
 
                   <dl className="space-y-5">
                     {[
+                      // Stated in prose, not only inside generated PDFs: AI answer
+                      // engines read pages. Wording is fixed in lib/credentials.ts.
+                      { k: "Samsung authorization", v: SAMSUNG_CREDENTIAL },
                       { k: "Certification", v: "Authorized Samsung B2B Partner" },
                       { k: "Quality System", v: "ISO 9001:2015 Certified" },
                       { k: "Coverage", v: "Pan-India · 50+ cities" },
