@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { productLd, categoryCollectionLd, industryCategoryServiceLd, classSaathiProductLd, itemListLd, allProductsCollectionLd } from "./jsonLd";
+import { productLd, categoryCollectionLd, industryCategoryServiceLd, classSaathiProductLd, itemListLd, allProductsCollectionLd, organizationLd } from "./jsonLd";
+import { SAMSUNG_CREDENTIAL } from "./credentials";
 import type { Product } from "@/data/products";
 import type { ProductCategory } from "@/data/categories";
 import { getCategoryById } from "@/data/categories";
@@ -152,5 +153,47 @@ describe("industryCategoryServiceLd brand awareness", () => {
       "Logitech Video Conferencing recommended for Corporate & Workplace"
     );
     expect(BANNED.test(JSON.stringify(ld))).toBe(false);
+  });
+});
+
+describe("organizationLd entity signals", () => {
+  const org = () => organizationLd() as any;
+
+  it("declares what the company knows about", () => {
+    const k = org().knowsAbout as string[];
+    expect(Array.isArray(k)).toBe(true);
+    expect(k.length).toBeGreaterThan(4);
+    expect(k.join(" ")).toMatch(/digital signage/i);
+  });
+
+  it("declares the Samsung credential with the approved wording", () => {
+    const json = JSON.stringify(org());
+    expect(json).toContain(SAMSUNG_CREDENTIAL);
+    expect(json).not.toMatch(/service cent(er|re)/i);
+  });
+
+  it("records the founding year from the About timeline", () => {
+    expect(org().foundingDate).toBe("2020");
+  });
+
+  it("serves India", () => {
+    expect(JSON.stringify(org().areaServed)).toMatch(/India/);
+  });
+
+  it("lists only verified sameAs profiles", () => {
+    const same = org().sameAs as string[];
+    expect(same).toEqual(
+      expect.arrayContaining([
+        "https://in.linkedin.com/company/aplus-technology-solutions-pvt-ltd",
+        "https://www.instagram.com/aplus_tech_sol/",
+      ]),
+    );
+    for (const url of same) expect(url).toMatch(/^https:\/\//);
+  });
+
+  it("never invents ratings", () => {
+    const json = JSON.stringify(org());
+    expect(json).not.toContain("aggregateRating");
+    expect(json).not.toContain("ratingValue");
   });
 });

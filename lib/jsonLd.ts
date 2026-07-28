@@ -8,6 +8,7 @@ import { PHONE_SCHEMA } from "@/lib/contact";
 import { modelCodeFor } from "@/lib/modelCodes";
 import { brandOf, BRAND_JSONLD_NAME, BRAND_MANUFACTURER } from "@/lib/brand";
 import { categoryBrand } from "@/lib/categoryBrand";
+import { SAMSUNG_CREDENTIAL } from "@/lib/credentials";
 
 export const SITE = "https://www.aplustechsol.com";
 
@@ -56,8 +57,32 @@ export function organizationLd() {
       availableLanguage: "en",
     },
     openingHours: "Mo-Sa 10:00-18:00",
+    // From the About timeline: "2020 — Founded in Noida and became an
+    // Authorized Samsung Business Display Distributor."
+    foundingDate: "2020",
+    knowsAbout: [
+      "Digital signage",
+      "Video wall displays",
+      "Interactive flat panel displays",
+      "Hospitality and hotel television systems",
+      "LED display systems",
+      "Video conferencing rooms",
+      "Commercial display installation",
+      "Annual maintenance contracts",
+    ],
+    hasCredential: {
+      "@type": "EducationalOccupationalCredential",
+      name: SAMSUNG_CREDENTIAL,
+      credentialCategory: "Authorized partner",
+      recognizedBy: { "@type": "Organization", name: "Samsung" },
+    },
+    areaServed: { "@type": "Country", name: "India" },
+    // Every URL here was fetched and confirmed HTTP 200 (2026-07-28). Do not add
+    // a profile — GBP, Facebook, a directory listing — without doing the same.
     sameAs: [
       "https://in.linkedin.com/company/aplus-technology-solutions-pvt-ltd",
+      "https://www.instagram.com/aplus_tech_sol/",
+      "https://tracxn.com/d/companies/aplus-technology-solutions/__X0jfs978sJ_zMaSRtjyU_qU725oQEJuIEa77TUJnqP0",
     ],
   };
 }
