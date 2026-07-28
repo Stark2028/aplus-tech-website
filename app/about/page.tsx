@@ -55,13 +55,13 @@ const TEAM = [
   {
     name: "Sunil Kumar",
     role: "Director",
-    image: "/team/sunil-kumar.jpg",
+    image: "/team/sunil-kumar-v2.jpg",
     linkedin: "https://www.linkedin.com/in/sunil-kumar-a5850217/",
   },
   {
     name: "R.K Dasgupta",
     role: "Director",
-    image: "/team/rk-dasgupta.jpg",
+    image: "/team/rk-dasgupta-v2.jpg",
     linkedin: "https://www.linkedin.com/in/ramkrishna-dasgupta-75b61294",
   },
 ];
