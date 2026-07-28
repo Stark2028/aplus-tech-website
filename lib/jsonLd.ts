@@ -175,6 +175,42 @@ export function categoryCollectionLd(
 }
 
 /**
+ * CollectionPage + ItemList for the full /products catalogue listing.
+ *
+ * Mirrors categoryCollectionLd but spans every category, so the catalogue root
+ * is no longer the only high-priority page on the site with no structured data.
+ * No `offers` — same quote-only reasoning as productLd.
+ *
+ * Callers pass the products the page actually renders (showcaseProducts), not
+ * every product in data/: an ItemList that names discontinued models absent
+ * from the grid would describe a page that does not exist.
+ */
+export function allProductsCollectionLd(allProducts: Product[]) {
+  const url = `${SITE}/products`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": `${url}#collection`,
+    url,
+    name: "Commercial Displays & Video Conferencing — Full Catalogue",
+    description:
+      "Every Samsung commercial display, Logitech video conferencing system and " +
+      "classroom solution Aplus Technology Solutions supplies across India.",
+    isPartOf: { "@id": ORG_ID },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: allProducts.length,
+      itemListElement: allProducts.map((p, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `${SITE}/products/${p.id}`,
+        name: p.name,
+      })),
+    },
+  };
+}
+
+/**
  * Service JSON-LD for an industry / solution page.
  * Provider points to the canonical Organization node via @id.
  */

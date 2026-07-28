@@ -3,6 +3,7 @@ import { showcaseProducts } from "@/lib/showcaseProducts";
 import { categoriesWithProducts } from "@/lib/nonEmptyCategories";
 import ProductsCategoryNav from "@/components/ProductsCategoryNav";
 import ProductsClientShell from "@/components/ProductsClientShell";
+import { allProductsCollectionLd, breadcrumbLd, jsonLdString } from "@/lib/jsonLd";
 
 export const revalidate = 3600;
 
@@ -31,8 +32,23 @@ export const metadata: Metadata = {
 };
 
 export default function ProductsListingPage() {
+  // ItemList mirrors the grid below, so it is built from showcaseProducts —
+  // the same list ProductsClientShell renders — not from every product in data/.
+  const jsonLd = [
+    allProductsCollectionLd(showcaseProducts),
+    breadcrumbLd([
+      { name: "Home", url: "/" },
+      { name: "Products", url: "/products" },
+    ]),
+  ];
+
   return (
     <div className="bg-gray-50 min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }}
+      />
+
       {/* Hero header */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">

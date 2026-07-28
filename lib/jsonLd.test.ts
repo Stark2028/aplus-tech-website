@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { productLd, categoryCollectionLd, industryCategoryServiceLd, classSaathiProductLd, itemListLd } from "./jsonLd";
+import { productLd, categoryCollectionLd, industryCategoryServiceLd, classSaathiProductLd, itemListLd, allProductsCollectionLd } from "./jsonLd";
 import type { Product } from "@/data/products";
 import type { ProductCategory } from "@/data/categories";
 import { getCategoryById } from "@/data/categories";
@@ -84,6 +84,34 @@ describe("itemListLd", () => {
     expect(ld.itemListElement[0].url).toBe(
       "https://www.aplustechsol.com/categories/education/a"
     );
+  });
+});
+
+describe("allProductsCollectionLd", () => {
+  const items = [samsung, logitech];
+
+  it("is a CollectionPage bound to the canonical org", () => {
+    const ld = allProductsCollectionLd(items) as any;
+    expect(ld["@type"]).toBe("CollectionPage");
+    expect(ld.url).toBe("https://www.aplustechsol.com/products");
+    expect(ld.isPartOf["@id"]).toBe("https://www.aplustechsol.com/#organization");
+  });
+
+  it("lists every product with an absolute URL", () => {
+    const ld = allProductsCollectionLd(items) as any;
+    expect(ld.mainEntity["@type"]).toBe("ItemList");
+    expect(ld.mainEntity.numberOfItems).toBe(2);
+    expect(ld.mainEntity.itemListElement[0]).toMatchObject({
+      "@type": "ListItem",
+      position: 1,
+      url: "https://www.aplustechsol.com/products/samsung-qet-series",
+    });
+  });
+
+  it("emits no offers and no ratings", () => {
+    const json = JSON.stringify(allProductsCollectionLd(items));
+    expect(json).not.toContain("offers");
+    expect(json).not.toContain("aggregateRating");
   });
 });
 
