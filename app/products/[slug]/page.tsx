@@ -19,6 +19,7 @@ import WhatsAppIcon from "@/components/quote/WhatsAppIcon";
 import { Metadata } from "next";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import MobileProductScroller from "@/components/MobileProductScroller";
+import KeyFacts from "@/components/KeyFacts";
 import { breadcrumbLd, productLd, faqPageLd, jsonLdString } from "@/lib/jsonLd";
 import { buildProductFaqs } from "@/lib/productFaq";
 import { modelCodeFor } from "@/lib/modelCodes";
@@ -332,6 +333,10 @@ export default async function ProductPage({
                 </a>
               </div>
             </div>
+
+            {/* Answer-first key facts — a dense, extractable label/value block
+                ahead of the prose, because AI engines retrieve chunks, not pages. */}
+            <KeyFacts product={product} />
 
             {/* Key highlights */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-7">
