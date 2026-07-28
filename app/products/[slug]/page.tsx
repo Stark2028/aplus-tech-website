@@ -470,12 +470,18 @@ export default async function ProductPage({
                 >
                   {skuLine}
                 </p>
-                <h1
+                {/*
+                  Not an <h1>: the mobile header above already carries the page's
+                  single h1 with identical text. This block is the desktop copy of
+                  the same title — CSS hides one per breakpoint, but both reach the
+                  HTML, so making both h1 shipped a duplicate to every crawler.
+                */}
+                <p
                   className="text-2xl font-bold text-slate-900 mb-3 leading-snug tracking-tight"
                   style={{ fontFamily: "var(--font-card-display)" }}
                 >
                   {product.name}
-                </h1>
+                </p>
                 <p className="text-slate-500 text-[14px] leading-relaxed mb-6">
                   {product.description}
                 </p>

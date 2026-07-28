@@ -50,6 +50,13 @@ describe.skipIf(productPages.length === 0)("product page static HTML", () => {
     expect(missing).toEqual([]);
   });
 
+  it("ships exactly one <h1> per product page", () => {
+    const offenders = productPages
+      .map((f) => ({ f, count: (read(f).match(/<h1[ >]/g) ?? []).length }))
+      .filter(({ count }) => count !== 1);
+    expect(offenders).toEqual([]);
+  });
+
   it("ships a real <script type=application/ld+json> element, not flight data", () => {
     const missing = productPages.filter(
       (f) => !/<script[^>]*type="application\/ld\+json"/.test(read(f)),
