@@ -23,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE}/about`,           lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE}/contact`,         lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE}/blogs`,           lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "weekly",  priority: 0.7 },
+    { url: `${SITE}/samsung-india-model-codes`, lastModified: CATALOG_LAST_UPDATED, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE}/locations`,       lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE}/privacy`,         lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "yearly",  priority: 0.3 },
     { url: `${SITE}/terms`,           lastModified: CATALOG_LAST_UPDATED,  changeFrequency: "yearly",  priority: 0.3 },
