@@ -25,6 +25,7 @@ import { buildPreview } from "./messages";
 import { shouldEscalate, shouldStopEscalating } from "./escalation";
 import { isConversationDeleted } from "./conversationLifecycle";
 import { shouldRetryStream, streamRetryDelayMs } from "./streamRetry";
+import { captureLead } from "./leadCapture";
 
 const TIMEOUT_NOTICE =
   "Sorry — our team is tied up. We have your details and will reply on WhatsApp/email shortly.";
@@ -433,20 +434,18 @@ export function useConversation(engaged = false) {
 
       // The durable backup — email + Zoho lead — fires regardless of what the
       // live chat does next (spec §6.1: "the lead exists before anyone replies").
-      void fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: customer.name,
-          email: customer.email,
-          phone: customer.phone,
-          message,
-          company_website: "",
-          inquiry_type: "Website Live Chat",
-          subject: "New Website Live Chat",
-          from_name: "Aplus Website Live Chat",
-        }),
-      }).catch(() => {});
+      // Not awaited: the visitor's message is already in Firestore, so the chat
+      // must open immediately whether or not the backup lands. captureLead
+      // never throws, and reports failures through trackEvent — console logging
+      // would be stripped from the production bundle by compiler.removeConsole,
+      // which is how this failing went unnoticed while leads were lost.
+      void captureLead(
+        { name: customer.name, email: customer.email, phone: customer.phone, message },
+        {
+          onFailure: (reason) =>
+            trackEvent("chat_lead_capture_failed", { reason, page }),
+        }
+      );
 
       setCachedLead({ name: customer.name, email: customer.email, phone: customer.phone });
       trackEvent("chat_started", { page });
