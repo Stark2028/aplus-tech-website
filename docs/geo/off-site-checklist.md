@@ -44,8 +44,10 @@ Inconsistent NAP is the single most common reason an entity fails to resolve.
 GBP is the strongest single corroboration signal for a business entity, and it feeds Google's
 own AI surfaces directly.
 
-- **Current state:** _unverified — confirm whether a listing already exists before creating one._
-  A duplicate listing is worse than none.
+- **Current state:** _still unverified as of 2026-07-29 — **must be checked by hand in Google
+  Maps**._ Maps listings do not reliably surface in ordinary web search, so absence from search
+  results is NOT evidence that no profile exists. A duplicate listing is worse than none, so
+  search before creating.
 - **Action:**
   1. Search Google Maps for "Aplus Technology Solutions Noida" and for the phone number.
   2. If a listing exists, claim it. If it exists and is claimed by the previous agency
@@ -94,20 +96,57 @@ Answer engines lean on these for Indian supplier queries.
 
 | Directory | Current state | Action | Owner | URL |
 |---|---|---|---|---|
-| IndiaMART | _unverified_ | Claim or create; align NAP; list categories | | |
-| Justdial | _unverified_ | Claim or create; align NAP | | |
-| TradeIndia | _unverified_ | Claim or create; align NAP | | |
+| IndiaMART | **EXISTS** (confirmed 200, 2026-07-29). Listed as *New Delhi, Delhi* — conflicts with canonical Noida. Name reads "Private Limited", not "Pvt. Ltd." | **Claim, then align NAP** — see the address decision below | | `https://www.indiamart.com/aplus-technology-solutions/profile.html` |
+| Justdial | **NOT FOUND** (searched 2026-07-29) | Create from scratch; align NAP | | |
+| TradeIndia | **EXISTS** (confirmed 200, 2026-07-29). Name matches canonical exactly. Address `B-127, Sector-2, Noida` conflicts with canonical `Supernova Astralis, Sector-94`. No website link, no Samsung wording | **Claim; fix address; add website URL + credential** | | `https://www.tradeindia.com/aplus-technology-solutions-pvt-ltd-38683806/` |
 
 For each: search first, claim second, create only if genuinely absent. Record the exact
 name/address/phone **as found** before editing — that is the audit trail for item 5.
+
+### ⚠️ Address decision required before editing anything
+
+Three different addresses are live for this company right now, and they cannot all be right:
+
+| Source | Address |
+|---|---|
+| This site (`lib/jsonLd.ts`) | Supernova Astralis, **Sector-94**, Noida, UP 201301 |
+| TradeIndia | B-127, **Sector-2**, Noida, UP 201301 |
+| IndiaMART | **New Delhi, Delhi** |
+
+TradeIndia also shows GSTIN `07AAUCA5631L1Z6`. The `07` prefix is the Delhi state code, which
+corroborates a **Delhi registered office** — so IndiaMART may be quoting the registered address
+rather than being simply wrong.
+
+**Do not "fix" the directories until Sunil confirms which address is the business location.**
+NAP consistency is about the *physical place customers deal with*, not the tax registration, so
+the operational Noida address is the likely canonical choice — but picking the wrong one and
+propagating it across every listing is worse than the current inconsistency. Once decided, the
+chosen address must also match `lib/jsonLd.ts`.
 
 ## 5. NAP consistency audit
 
 One row per listing discovered anywhere, including ones nobody at Aplus created.
 
+Audited 2026-07-29. "As found" values are recorded **before** any edit — this is the audit trail.
+
 | Source | Name as found | Address as found | Phone as found | Matches canonical? | Fixed on |
 |---|---|---|---|---|---|
-| | | | | | |
+| TradeIndia | `Aplus Technology Solutions Pvt. Ltd.` | `B-127,Sector-2, Noida, Uttar Pradesh, 201301, India` | not published | **Name ✅ / Address ✗** (Sector-2 vs Sector-94). No phone, no website link, no Samsung wording | |
+| IndiaMART | `Aplus Technology Solutions Private Limited` | `New Delhi, Delhi` | not displayed (behind "Call Now") | **Name ✗** ("Private Limited") **/ Address ✗** (Delhi vs Noida) | |
+| LinkedIn | not audited | not audited | not audited | pending — see item 3 | |
+| Google Business Profile | unknown | unknown | unknown | pending — see item 1 | |
+
+Corroborating facts found during the audit (no action needed, recorded for consistency):
+
+- **Founded 2020** on both directories — matches `foundingDate` in `organizationLd()` ✅
+- GSTIN `07AAUCA5631L1Z6` (TradeIndia) — `07` = Delhi state code
+- Contact person listed as `M Chandel (Senior BDM)` / `Mr. Madhur Chandel, Manager`
+- Neither directory carries any Samsung authorization wording — the credential is currently
+  corroborated **nowhere off-site**, which is the single biggest gap on this page
+
+**Do not add either directory URL to `sameAs` yet.** Both return HTTP 200, so they pass the
+mechanical precondition, but pointing the entity at listings that contradict its own address
+would corroborate the wrong facts. Fix the NAP first, then add them.
 
 Stale listings carrying an old address or number actively harm entity resolution. Finding and
 correcting them matters as much as creating new ones.
