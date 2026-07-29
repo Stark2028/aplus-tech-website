@@ -59,6 +59,10 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // proxy.ts owns trailing-slash normalisation so legacy redirects resolve in
+  // ONE hop (Next's own strip-slash 308 would otherwise run first). See the
+  // trailing-slash block in proxy.ts before changing this.
+  skipTrailingSlashRedirect: true,
   images: {
     formats: ['image/avif', 'image/webp'],
     // Cache optimised images for 7 days on the CDN edge —

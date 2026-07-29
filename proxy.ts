@@ -41,10 +41,17 @@ export function redirectTo(req: NextRequest, pathname: string) {
   return NextResponse.redirect(to, 301);
 }
 
-export function proxy(req: NextRequest) {
+/**
+ * Resolve a request to its legacy 301, or `null` if nothing here handles it.
+ *
+ * Returning `null` (rather than NextResponse.next()) for pass-through is what
+ * lets `proxy` below apply trailing-slash normalisation at a single exit point
+ * — see the comment there for why that ordering matters.
+ */
+function resolve(req: NextRequest): NextResponse | null {
   const pathname = req.nextUrl.pathname;
   const clean = pathname.replace(/\/+$/, ""); // tolerate old trailing slashes
-  if (clean === "") return NextResponse.next(); // home
+  if (clean === "") return null; // home
 
   const segments = clean.split("/").filter(Boolean);
   const first = segments[0];
@@ -55,7 +62,7 @@ export function proxy(req: NextRequest) {
   // product slug ever shared its name. Today no collision exists (asserted in
   // data/cities.test.ts); this keeps it safe as the catalog grows.
   if (segments.length === 1) {
-    if (CITY_SLUGS.has(first)) return NextResponse.next();
+    if (CITY_SLUGS.has(first)) return null;
     // /Noida and /NOIDA reached the old case-insensitive Apache host but 404 on
     // Vercel, so fold them onto the canonical lowercase hub rather than losing
     // them. City × product URLs already survived this — the product lookup below
@@ -77,7 +84,7 @@ export function proxy(req: NextRequest) {
   }
 
   // Never interfere with the new site's own routes.
-  if (RESERVED_ROOTS.has(first)) return NextResponse.next();
+  if (RESERVED_ROOTS.has(first)) return null;
 
   // Old blog → new blogs. The four legacy posts have bespoke targets (their new
   // slugs differ, so /blogs/{old-slug} would 404); everything else — including
@@ -108,6 +115,26 @@ export function proxy(req: NextRequest) {
     return redirectTo(req, `/categories/${OLD_CATEGORY_ROOT_TO_ID[first]}`);
   }
 
+  return null;
+}
+
+export function proxy(req: NextRequest) {
+  const redirect = resolve(req);
+  if (redirect) return redirect;
+
+  // next.config.ts sets skipTrailingSlashRedirect, so Next no longer strips
+  // trailing slashes before this middleware runs. Normalising here — AFTER
+  // legacy resolution — is what collapses the old site's 2-hop chains
+  // (/{old}/ → /{old} → /products/{id}) into a single 301: legacy paths have
+  // already returned above and never reach this branch. Every unhandled
+  // trailing-slash path MUST 308 here, or it would render as a duplicate of
+  // its canonical URL.
+  const { pathname } = req.nextUrl;
+  if (pathname !== "/" && pathname.endsWith("/")) {
+    const to = new URL(pathname.replace(/\/+$/, "") || "/", req.url);
+    to.search = req.nextUrl.search;
+    return NextResponse.redirect(to, 308);
+  }
   return NextResponse.next();
 }
 
