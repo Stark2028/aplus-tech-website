@@ -97,31 +97,31 @@ Answer engines lean on these for Indian supplier queries.
 | Directory | Current state | Action | Owner | URL |
 |---|---|---|---|---|
 | IndiaMART | **EXISTS** (confirmed 200, 2026-07-29). Listed as *New Delhi, Delhi* — conflicts with canonical Noida. Name reads "Private Limited", not "Pvt. Ltd." | **Claim, then align NAP** — see the address decision below | | `https://www.indiamart.com/aplus-technology-solutions/profile.html` |
-| Justdial | **NOT FOUND** (searched 2026-07-29) | Create from scratch; align NAP | | |
+| Justdial | **EXISTS** (confirmed 200, 2026-07-29). Filed under *New Ashok Nagar, Delhi* — conflicts with canonical Noida | **Claim; fix address to the corporate office** | | `https://www.justdial.com/Delhi/Aplus-Technology-Solutions-Pvt-Ltd-New-Ashok-Nagar/011PXX11-XX11-221217210135-E7W3_BZDET` |
 | TradeIndia | **EXISTS** (confirmed 200, 2026-07-29). Name matches canonical exactly. Address `B-127, Sector-2, Noida` conflicts with canonical `Supernova Astralis, Sector-94`. No website link, no Samsung wording | **Claim; fix address; add website URL + credential** | | `https://www.tradeindia.com/aplus-technology-solutions-pvt-ltd-38683806/` |
 
 For each: search first, claim second, create only if genuinely absent. Record the exact
 name/address/phone **as found** before editing — that is the audit trail for item 5.
 
-### ⚠️ Address decision required before editing anything
+### ✅ Address resolved (Sunil, 2026-07-29)
 
-Three different addresses are live for this company right now, and they cannot all be right:
+**The corporate office is `Supernova Astralis, Sector-94, Noida, UP 201301`** — the address
+already in `lib/jsonLd.ts`. **No code change needed; the site is correct.** Every listing below
+must be aligned *to it*.
 
-| Source | Address |
-|---|---|
-| This site (`lib/jsonLd.ts`) | Supernova Astralis, **Sector-94**, Noida, UP 201301 |
-| TradeIndia | B-127, **Sector-2**, Noida, UP 201301 |
-| IndiaMART | **New Delhi, Delhi** |
+Aplus holds **multiple GST registrations** (normal for multi-state operations), which is why
+directories show different addresses — TradeIndia's GSTIN `07AAUCA5631L1Z6` carries the `07`
+Delhi state code. Those are registration addresses, not the place customers deal with.
 
-TradeIndia also shows GSTIN `07AAUCA5631L1Z6`. The `07` prefix is the Delhi state code, which
-corroborates a **Delhi registered office** — so IndiaMART may be quoting the registered address
-rather than being simply wrong.
+| Source | Address as found | Verdict |
+|---|---|---|
+| This site (`lib/jsonLd.ts`) | Supernova Astralis, **Sector-94**, Noida, UP 201301 | ✅ **canonical** |
+| TradeIndia | B-127, **Sector-2**, Noida, UP 201301 | ✗ update |
+| IndiaMART | **New Delhi, Delhi** | ✗ update |
+| Justdial | **New Ashok Nagar, Delhi** | ✗ update |
 
-**Do not "fix" the directories until Sunil confirms which address is the business location.**
-NAP consistency is about the *physical place customers deal with*, not the tax registration, so
-the operational Noida address is the likely canonical choice — but picking the wrong one and
-propagating it across every listing is worse than the current inconsistency. Once decided, the
-chosen address must also match `lib/jsonLd.ts`.
+NAP consistency is about the *physical place customers deal with*, not tax registration — so a
+GST address must never be published as the business location on a listing.
 
 ## 5. NAP consistency audit
 
@@ -133,6 +133,7 @@ Audited 2026-07-29. "As found" values are recorded **before** any edit — this 
 |---|---|---|---|---|---|
 | TradeIndia | `Aplus Technology Solutions Pvt. Ltd.` | `B-127,Sector-2, Noida, Uttar Pradesh, 201301, India` | not published | **Name ✅ / Address ✗** (Sector-2 vs Sector-94). No phone, no website link, no Samsung wording | |
 | IndiaMART | `Aplus Technology Solutions Private Limited` | `New Delhi, Delhi` | not displayed (behind "Call Now") | **Name ✗** ("Private Limited") **/ Address ✗** (Delhi vs Noida) | |
+| Justdial | `Aplus Technology Solutions Pvt Ltd` | `New Ashok Nagar, Delhi` (per listing URL) | not captured | **Address ✗** (Delhi vs Noida corporate office) | |
 | LinkedIn | not audited | not audited | not audited | pending — see item 3 | |
 | Google Business Profile | unknown | unknown | unknown | pending — see item 1 | |
 
@@ -167,11 +168,21 @@ curl -s -o /dev/null -w "%{http_code}\n" -A "Mozilla/5.0" -L "<url>"
 A `sameAs` pointing at a 404 or a soft-redirect is worse than no `sameAs` — it tells the engine
 the entity's own self-description is unreliable.
 
-Currently in `sameAs` (all confirmed 200 on 2026-07-28):
+Currently in `sameAs` — **all three re-verified 200 on 2026-07-29**:
 
 - `https://in.linkedin.com/company/aplus-technology-solutions-pvt-ltd`
 - `https://www.instagram.com/aplus_tech_sol/`
 - `https://tracxn.com/d/companies/aplus-technology-solutions/__X0jfs978sJ_zMaSRtjyU_qU725oQEJuIEa77TUJnqP0`
+
+### Candidates not yet added
+
+| URL | Status | Blocker |
+|---|---|---|
+| `https://www.facebook.com/aplustechsol/` | **Unverifiable by machine** — returns `400` to curl; Meta blocks automated fetches. A page name did render via another path, so it likely exists | Needs a human to open it in a browser and confirm it is the live, correct Aplus page. Then it can be added — the 400 is an anti-bot artifact, not a dead link |
+| TradeIndia, IndiaMART, Justdial listings | All confirmed **200** | **NAP is wrong on all three.** Adding them now would corroborate the wrong address. Fix the listings first, then add |
+
+The 200 check is a floor, not the whole test: a live URL carrying contradictory facts weakens
+the entity just as a dead one does.
 
 ## Truth policy
 
