@@ -2,6 +2,15 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> **STATUS 2026-07-29 — Phase A COMPLETE and live in production** (master `4e4a892`).
+> Verified on production: `/delhi/samsung-signage-display-qbc-series/` → exactly **one** 301 →
+> 200; `/sitemap/sitemap-{1,2,3}.xml` serve **6312/6312/6310 = 18,934** legacy URLs; real
+> `/sitemap.xml` still 248; `/delhi/` → 308 (duplicate-content guard). 524 tests pass, `tsc`
+> clean, lint unchanged at the pre-existing 8 errors / 3 warnings.
+> **Phase B: B1–B4 done** (ownership confirmed, legacy sitemaps resubmitted, 16-month GSC data
+> archived to `docs/seo/gsc-archive/2026-07/`, Bing imported + `sitemap.xml` submitted).
+> **Remaining: B5–B8 and Phase C.**
+
 **Goal:** Accelerate Google's processing of the WordPress→Next.js migration by reviving the old sitemap URLs with the full legacy-URL inventory, and collapse legacy redirect chains from 2 hops to 1.
 
 **Architecture:** A build-time generator (`lib/legacySitemaps.ts`) derives every legacy WordPress URL from the existing redirect maps and serves them as XML at the exact sitemap URLs still submitted in Google Search Console (`/sitemap/sitemap-{1,2,3}.xml`). Separately, `skipTrailingSlashRedirect` in `next.config.ts` moves trailing-slash normalization into `proxy.ts`, so a legacy URL like `/delhi/samsung-signage-display-qbc-series/` 301s directly to its product page in one hop instead of two.
@@ -40,7 +49,7 @@ The site migrated from WordPress (~7,507 URLs) to Next.js on Vercel (248 URLs) a
 - Consumes: `OLD_PRODUCT_SLUG_TO_ID`, `OLD_CATEGORY_ROOT_TO_ID`, `OLD_EXACT_PATH_TO_NEW`, `OLD_BLOG_SLUG_TO_NEW` from `@/lib/redirects`; `SITE` from `@/lib/jsonLd`; `proxy` from `@/proxy` (tests only).
 - Produces: `LEGACY_CITY_SLUGS: readonly string[]` (data/legacyCities.ts); `legacyPaths(): string[]`, `buildLegacySitemap(part: number): string`, `LEGACY_SITEMAP_PARTS = 3` (lib/legacySitemaps.ts). Task 2's route handlers call `buildLegacySitemap(1|2|3)`.
 
-- [ ] **Step 1: Create `data/legacyCities.ts`**
+- [x] **Step 1: Create `data/legacyCities.ts`**
 
 Move the 95-slug list currently inlined in `data/cities.test.ts` (lines ~16–35) into a shared module. Copy the list **verbatim** from the test file — do not retype it:
 
@@ -65,16 +74,16 @@ export const LEGACY_CITY_SLUGS: readonly string[] = [
 ];
 ```
 
-- [ ] **Step 2: Point `data/cities.test.ts` at the shared list**
+- [x] **Step 2: Point `data/cities.test.ts` at the shared list**
 
 In `data/cities.test.ts`: delete the inline `const LEGACY_SLUGS = [...]` block (keep its explanatory comment, moving it if needed), add `import { LEGACY_CITY_SLUGS } from "@/data/legacyCities";`, and rename the two usages of `LEGACY_SLUGS` → `LEGACY_CITY_SLUGS`.
 
-- [ ] **Step 3: Run the cities tests to verify nothing broke**
+- [x] **Step 3: Run the cities tests to verify nothing broke**
 
 Run: `npx vitest run data/cities.test.ts`
 Expected: all tests PASS (same count as before the edit).
 
-- [ ] **Step 4: Write the failing test for the inventory**
+- [x] **Step 4: Write the failing test for the inventory**
 
 Create `lib/legacySitemaps.test.ts`:
 
@@ -142,12 +151,12 @@ describe("buildLegacySitemap", () => {
 
 Note: the 301-resolution test iterates ~19k paths through the pure `proxy()` function; it runs in a few seconds. Do not "optimize" it down to a sample — full coverage is the point (spot-checks are how the original redirect gap survived; see `docs/seo/README.md` §13).
 
-- [ ] **Step 5: Run test to verify it fails**
+- [x] **Step 5: Run test to verify it fails**
 
 Run: `npx vitest run lib/legacySitemaps.test.ts`
 Expected: FAIL — cannot resolve `./legacySitemaps`.
 
-- [ ] **Step 6: Implement `lib/legacySitemaps.ts`**
+- [x] **Step 6: Implement `lib/legacySitemaps.ts`**
 
 ```ts
 import {
@@ -198,17 +207,17 @@ export function buildLegacySitemap(part: number): string {
 }
 ```
 
-- [ ] **Step 7: Run test to verify it passes**
+- [x] **Step 7: Run test to verify it passes**
 
 Run: `npx vitest run lib/legacySitemaps.test.ts`
 Expected: PASS (all 6 tests). If the 301-resolution test fails, the failure list tells you which legacy path doesn't resolve — fix the path generation (or discover a real redirect gap, which must then be fixed in `lib/redirects.ts`, not papered over in the test).
 
-- [ ] **Step 8: Run the full suite**
+- [x] **Step 8: Run the full suite**
 
 Run: `npm test`
 Expected: 511 + 6 new + cities tests still passing, 0 failures.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add data/legacyCities.ts data/cities.test.ts lib/legacySitemaps.ts lib/legacySitemaps.test.ts
@@ -235,7 +244,7 @@ Notes for the implementer:
 - `app/sitemap.ts` (the real sitemap at `/sitemap.xml`) is a Next metadata route and is unrelated; do not touch it.
 - The bare `/sitemap` and `/sitemap/` paths keep their existing 301 via `OLD_EXACT_PATH_TO_NEW` — these new routes don't affect them.
 
-- [ ] **Step 1: Create the three route handlers**
+- [x] **Step 1: Create the three route handlers**
 
 `app/sitemap/sitemap-1.xml/route.ts` (siblings are identical except the part number):
 
@@ -262,12 +271,12 @@ export function GET() {
 
 Create `sitemap-2.xml/route.ts` and `sitemap-3.xml/route.ts` the same way with `buildLegacySitemap(2)` and `buildLegacySitemap(3)`.
 
-- [ ] **Step 2: Build and verify the routes exist**
+- [x] **Step 2: Build and verify the routes exist**
 
 Run: `npm run build`
 Expected: build succeeds; the route list printed at the end includes `/sitemap/sitemap-1.xml`, `-2`, `-3` as static (○ or ƒ-free) routes.
 
-- [ ] **Step 3: Verify served content locally**
+- [x] **Step 3: Verify served content locally**
 
 ```powershell
 Start-Process cmd -ArgumentList "/c","npm run start -- -p 3110"; Start-Sleep -Seconds 6
@@ -279,7 +288,7 @@ Get-NetTCPConnection -LocalPort 3110 -State Listen | ForEach-Object { Stop-Proce
 
 Expected: XML starting `<?xml version="1.0"`, part 1 has ~6,300 `<loc>` entries, part 3 has the remainder (parts 1+2+3 sum to `legacyPaths().length`). The final line kills the server — do not skip it (stale servers poison later verification on this machine).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add app/sitemap
@@ -303,7 +312,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 
 Background: Next currently 308s `/{path}/` → `/{path}` *before* `proxy.ts` runs, so every legacy trailing-slash URL costs 2 hops. `skipTrailingSlashRedirect: true` hands that responsibility to us: `proxy.ts` already tolerates trailing slashes internally (the `clean` variable), so legacy URLs resolve to their 301 in one hop, and everything else gets the 308 Next used to produce. **Critical invariant: with the config flag on, any trailing-slash path the proxy passes through would RENDER at both `/foo` and `/foo/` (duplicate content). The proxy must therefore 308 every unhandled trailing-slash path itself.** The refactor below guarantees this structurally: `resolve()` returns `null` for pass-through, and the single exit point in `proxy()` applies the 308 before falling through to `NextResponse.next()`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 Append to `proxy.test.ts`:
 
@@ -359,12 +368,12 @@ describe("trailing-slash normalisation (single-hop redirects)", () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify the new block fails**
+- [x] **Step 2: Run tests to verify the new block fails**
 
 Run: `npx vitest run proxy.test.ts`
 Expected: the four 308 tests FAIL (proxy currently returns pass-through for those paths); the 301 and pass-through tests already pass.
 
-- [ ] **Step 3: Refactor `proxy.ts`**
+- [x] **Step 3: Refactor `proxy.ts`**
 
 Three changes, no logic rewrites:
 
@@ -394,7 +403,7 @@ export function proxy(req: NextRequest) {
 }
 ```
 
-- [ ] **Step 4: Enable the config flag**
+- [x] **Step 4: Enable the config flag**
 
 In `next.config.ts`, add one line at the top of the `nextConfig` object (line ~61):
 
@@ -406,12 +415,12 @@ const nextConfig: NextConfig = {
   skipTrailingSlashRedirect: true,
 ```
 
-- [ ] **Step 5: Run the full suite and typecheck**
+- [x] **Step 5: Run the full suite and typecheck**
 
 Run: `npm test && npx tsc --noEmit`
 Expected: all tests PASS (including Task 1's 19k-path resolution test — it proves the refactor didn't alter any legacy 301), tsc clean.
 
-- [ ] **Step 6: Runtime verification over real HTTP**
+- [x] **Step 6: Runtime verification over real HTTP**
 
 Unit tests can't see the config flag interaction — verify against a real server (build first: the flag is read at build/serve time):
 
@@ -427,7 +436,7 @@ Get-NetTCPConnection -LocalPort 3110 -State Listen | ForEach-Object { Stop-Proce
 
 Expected, in order: **exactly one** `301` with `location: /products/samsung-signage-qbc` then `200`; one `308` → `/delhi` then `200`; a direct `200`; a `200` for llms.txt (dotted path, bypasses proxy — confirms no regression). If `/delhi/` returns `200` instead of `308`, the proxy fell through without normalising — stop and fix before committing (that's live duplicate content).
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add proxy.ts proxy.test.ts next.config.ts
@@ -447,7 +456,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>"
 - Consumes: everything above, deployed to Vercel production.
 - Produces: updated master reference; live site verified.
 
-- [ ] **Step 1: Update `docs/seo/README.md`**
+- [x] **Step 1: Update `docs/seo/README.md`**
 
 Three edits:
 
@@ -477,7 +486,7 @@ whichever first.
 
 3. In §11 Open items, remove the "Trailing-slash redirect chain" row and add: `| Remove legacy sitemaps when wave completes | Aplus | §4b exit criterion |`.
 
-- [ ] **Step 2: Commit, push, deploy**
+- [x] **Step 2: Commit, push, deploy**
 
 ```bash
 git add docs/seo/README.md
@@ -489,7 +498,7 @@ git push
 
 Vercel deploys master automatically. Wait for the deployment to finish (check `npx vercel ls` or the dashboard) before the next step.
 
-- [ ] **Step 3: Verify live production**
+- [x] **Step 3: Verify live production**
 
 ```bash
 curl -sIL -A "Googlebot/2.1" "https://www.aplustechsol.com/delhi/samsung-signage-display-qbc-series/" | grep -iE "HTTP/|location"
@@ -504,10 +513,10 @@ Expected: exactly one `301` → `location: /products/samsung-signage-qbc` → `2
 
 ## Phase B — GSC & off-site checklist (Sunil, no code — do after Phase A deploys)
 
-- [ ] **B1. Secure GSC ownership.** GSC → Settings → Users and permissions + Ownership verification. Confirm at least one verification method YOU control (HTML tag on the new site, or a DNS TXT record you added in GoDaddy yourself — not one the agency added). If the only verification is agency-era, add your own today; losing verification = losing all this data.
-- [ ] **B2. Resubmit the legacy sitemaps.** GSC → Sitemaps: the old entries `sitemap/sitemap-1.xml`, `-2`, `-3` should flip from error to Success on their next fetch; resubmit each one manually to trigger it now. Keep `sitemap.xml` submitted too. Within ~1 week the sitemap.xml report's denominator should become 248 (the "50 indexed / 10 not" you saw was stale agency-era state).
-- [ ] **B3. Archive 16 months of GSC data THIS WEEK.** GSC keeps only 16 months; the old site's baseline rolls off month by month and is irreplaceable. Performance → Search results → date = 16 months, **no filters** → Export for: Queries, Pages, Countries, Devices. Also Links → Export external links. Store in `docs/seo/gsc-archive/2026-07/` in the repo or a safe folder.
-- [ ] **B4. Bing Webmaster Tools** (~10 min). bing.com/webmasters → "Import from Google Search Console". Bing's index feeds ChatGPT/Copilot answers — this directly serves the GEO work already shipped. Verify `sitemap.xml` is listed after import.
+- [x] **B1. Secure GSC ownership.** GSC → Settings → Users and permissions + Ownership verification. Confirm at least one verification method YOU control (HTML tag on the new site, or a DNS TXT record you added in GoDaddy yourself — not one the agency added). If the only verification is agency-era, add your own today; losing verification = losing all this data.
+- [x] **B2. Resubmit the legacy sitemaps.** GSC → Sitemaps: the old entries `sitemap/sitemap-1.xml`, `-2`, `-3` should flip from error to Success on their next fetch; resubmit each one manually to trigger it now. Keep `sitemap.xml` submitted too. Within ~1 week the sitemap.xml report's denominator should become 248 (the "50 indexed / 10 not" you saw was stale agency-era state).
+- [x] **B3. Archive 16 months of GSC data THIS WEEK.** GSC keeps only 16 months; the old site's baseline rolls off month by month and is irreplaceable. Performance → Search results → date = 16 months, **no filters** → Export for: Queries, Pages, Countries, Devices. Also Links → Export external links. Store in `docs/seo/gsc-archive/2026-07/` in the repo or a safe folder.
+- [x] **B4. Bing Webmaster Tools** (~10 min). bing.com/webmasters → "Import from Google Search Console". Bing's index feeds ChatGPT/Copilot answers — this directly serves the GEO work already shipped. Verify `sitemap.xml` is listed after import.
 - [ ] **B5. Google Business Profile.** Search Google Maps for "Aplus Technology Solutions". If a profile exists and the agency owns it → request ownership transfer (Google's "Request access" flow, takes ~7 days). Do NOT create a duplicate. Once owned: correct NAP (name/address/phone must match the site footer exactly), set service areas (Noida HQ + Kolkata office + service cities), add the Samsung credential wording from `lib/credentials.ts` — "Authorized Samsung Commercial Display Distributor & Service Partner", never "Service Center".
 - [ ] **B6. Off-site corroboration checklist** — work through `docs/geo/off-site-checklist.md` (GBP → Samsung partner locator → LinkedIn → India B2B directories). Any new profile URL goes into `sameAs` in `lib/jsonLd.ts` ONLY after fetching it and confirming HTTP 200 (truth policy).
 - [ ] **B7. Weekly monitoring** (every Monday, 10 min). GSC → Indexing → Pages, note four numbers:
