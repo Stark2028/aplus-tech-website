@@ -195,3 +195,53 @@ describe("redirect map integrity", () => {
     expect(looping).toEqual([]);
   });
 });
+
+describe("trailing-slash normalisation (single-hop redirects)", () => {
+  const run = (path: string) =>
+    proxy(new NextRequest(new URL(`https://www.aplustechsol.com${path}`)));
+
+  it("301s a legacy trailing-slash URL straight to its final target (1 hop)", () => {
+    const res = run("/delhi/samsung-signage-display-qbc-series/");
+    expect(res.status).toBe(301);
+    expect(new URL(res.headers.get("location")!).pathname).toBe(
+      "/products/samsung-signage-qbc"
+    );
+  });
+
+  it("308s a live route's trailing-slash variant to the canonical path", () => {
+    const res = run("/delhi/");
+    expect(res.status).toBe(308);
+    expect(new URL(res.headers.get("location")!).pathname).toBe("/delhi");
+  });
+
+  it("308s a reserved-root trailing-slash variant", () => {
+    const res = run("/products/samsung-signage-qbc/");
+    expect(res.status).toBe(308);
+    expect(new URL(res.headers.get("location")!).pathname).toBe(
+      "/products/samsung-signage-qbc"
+    );
+  });
+
+  it("preserves the query string on the 308", () => {
+    const res = run("/products/samsung-signage-qbc/?utm_source=x&gclid=abc");
+    const loc = new URL(res.headers.get("location")!);
+    expect(res.status).toBe(308);
+    expect(loc.searchParams.get("utm_source")).toBe("x");
+    expect(loc.searchParams.get("gclid")).toBe("abc");
+  });
+
+  it("leaves the bare home path alone", () => {
+    expect(run("/").headers.get("location")).toBeNull();
+  });
+
+  it("collapses a run of slashes to home without looping", () => {
+    const res = run("//");
+    expect(res.status).toBe(308);
+    expect(new URL(res.headers.get("location")!).pathname).toBe("/");
+  });
+
+  it("still passes clean canonical paths through untouched", () => {
+    expect(run("/delhi").headers.get("location")).toBeNull();
+    expect(run("/products/samsung-signage-qbc").headers.get("location")).toBeNull();
+  });
+});

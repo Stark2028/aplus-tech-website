@@ -12,36 +12,25 @@ import {
   MERGED_PRODUCT_TO_CANONICAL,
 } from "@/lib/redirects";
 import { cityServiceLd } from "@/lib/jsonLd";
+import { LEGACY_CITY_SLUGS } from "@/data/legacyCities";
 
-// The 95 legacy city hub slugs, harvested from the live sitemaps. These are
-// INDEXED, ranking URLs — every one must always be present, or the migration
-// 404s a page Google already ranks. The list is therefore a REQUIRED SUBSET,
-// not an exact match: net-new tier-2 cities (added 2026-07-24) are additive
-// growth pages and legitimately push the total above 95. Dropping or renaming
-// any legacy slug must still fail this test.
-const LEGACY_SLUGS = [
-  "agra","ahmedabad","ajmer","aligarh","allahabad","ambattur","amravati","amritsar","asansol","aurangabad",
-  "bangalore","bareilly","belgaum","bhavnagar","bhilai-nagar","bhiwandi","bhopal","bhubaneswar","bikaner",
-  "chandigarh","chennai","coimbatore","cuttack","dehradun","delhi","dhanbad","durgapur","faridabad","firozabad",
-  "gaya","ghaziabad","gorakhpur","greater-noida","gulbarga","guntur","gurgaon","guwahati","gwalior","haora",
-  "hyderabad","indore","jabalpur","jaipur","jalandhar","jalgaon","jammu","jamnagar","jamshedpur","jhansi","jodhpur",
-  "kalyan","kanpur","kochi","kolapur","kolkata","kota","lucknow","ludhiana","madurai","maheshtala","mangalore",
-  "meerut","mira-and-bhayander","moradabad","mumbai","nagpur","nanded-waghala","nashik","navi-mumbai","nellore",
-  "noida","patna","pimpri-and-chinchwad","pune","raipur","rajkot","ranchi","saharanpur","salem","sangli","siliguri",
-  "solapur","srinagar","surat","thane","thiruvananthapuram","tiruchirappalli","udaipur","ujjain","ulhasnagar",
-  "vadodara","varanasi","vijayawada","visakhapatnam","warangal",
-];
+// LEGACY_CITY_SLUGS is the 95 legacy city hub slugs harvested from the live
+// sitemaps. These are INDEXED, ranking URLs — every one must always be present,
+// or the migration 404s a page Google already ranks. The list is therefore a
+// REQUIRED SUBSET, not an exact match: net-new tier-2 cities (added 2026-07-24)
+// are additive growth pages and legitimately push the total above 95. Dropping
+// or renaming any legacy slug must still fail this test.
 
 describe("city data integrity", () => {
   const slugSet = new Set(cities.map((c) => c.slug));
 
   it("keeps every legacy ranking slug (required subset — never drop one)", () => {
-    const missing = LEGACY_SLUGS.filter((s) => !slugSet.has(s));
+    const missing = LEGACY_CITY_SLUGS.filter((s) => !slugSet.has(s));
     expect(missing).toEqual([]);
   });
 
   it("has at least the 95 legacy cities (expansion is additive)", () => {
-    expect(cities.length).toBeGreaterThanOrEqual(LEGACY_SLUGS.length);
+    expect(cities.length).toBeGreaterThanOrEqual(LEGACY_CITY_SLUGS.length);
   });
 
   it("has no duplicate slugs", () => {
