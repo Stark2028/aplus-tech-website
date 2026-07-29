@@ -44,10 +44,12 @@ Inconsistent NAP is the single most common reason an entity fails to resolve.
 GBP is the strongest single corroboration signal for a business entity, and it feeds Google's
 own AI surfaces directly.
 
-- **Current state:** _still unverified as of 2026-07-29 — **must be checked by hand in Google
-  Maps**._ Maps listings do not reliably surface in ordinary web search, so absence from search
-  results is NOT evidence that no profile exists. A duplicate listing is worse than none, so
-  search before creating.
+- **Current state (2026-07-29): a profile EXISTS and is ACTIVELY MANAGED.** Confirmed by Sunil:
+  searching the canonical phone `+91 93105 09909` in Google Maps returns Aplus, and the profile
+  carries **multiple Posts** — content nobody at Aplus published. Ownership is therefore held by
+  a third party, most likely the previous agency (VRD Creative, who also hold a `Full` user role
+  on the Search Console property).
+  **→ This is an ownership TRANSFER, not a creation. Never create a second listing.**
 - **Action:**
   1. Search Google Maps for "Aplus Technology Solutions Noida" and for the phone number.
   2. If a listing exists, claim it. If it exists and is claimed by the previous agency
@@ -178,7 +180,7 @@ Currently in `sameAs` — **all three re-verified 200 on 2026-07-29**:
 
 | URL | Status | Blocker |
 |---|---|---|
-| `https://www.facebook.com/aplustechsol/` | **Unverifiable by machine** — returns `400` to curl; Meta blocks automated fetches. A page name did render via another path, so it likely exists | Needs a human to open it in a browser and confirm it is the live, correct Aplus page. Then it can be added — the 400 is an anti-bot artifact, not a dead link |
+| `https://www.facebook.com/aplustechsol/` | **Confirmed Aplus-owned but EMPTY** (Sunil, 2026-07-29). Machine check returns `400` — Meta anti-bot, not a dead link | Add to `sameAs` **after** populating it. An empty page links identity but corroborates no facts; filling in NAP, website, category and the credential turns it into a real corroboration source. ~10 min |
 | TradeIndia, IndiaMART, Justdial listings | All confirmed **200** | **NAP is wrong on all three.** Adding them now would corroborate the wrong address. Fix the listings first, then add |
 
 The 200 check is a floor, not the whole test: a live URL carrying contradictory facts weakens
