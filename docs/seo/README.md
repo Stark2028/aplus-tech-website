@@ -229,8 +229,25 @@ than redeclaring a competing entity.
 | Model codes | `BreadcrumbList` |
 
 **Deliberate omission: no `offers`.** Google rejects `Offer` without a numeric price and
-`AggregateOffer` without low/high. This is a quote-only B2B catalogue. The resulting
-"Missing field 'offers'" warning is **accepted site-wide** — documented in `productLd`.
+`AggregateOffer` without low/high. This is a quote-only B2B catalogue, so `productLd` emits no
+`offers`, `review` or `aggregateRating`.
+
+⚠️ **This surfaces in Search Console as red, not amber. Expect it and do not "fix" it.**
+Verified 2026-07-30, Product snippets report:
+
+> **Invalid 136 · Valid 0 · "1 critical issue"** — `Either "offers", "review", or
+> "aggregateRating" should be specified`
+
+`Valid 0` is the only achievable outcome: Google requires one of those three fields for rich-result
+eligibility and all three are unavailable to us. **The cost is product rich results only** — no
+effect on indexing, crawling or ranking. Leave *Validation* as **Not Started**; there is nothing
+to validate.
+
+The only two remedies are (a) real prices, a business decision against the quote-only model, or
+(b) fabricated ratings — which breaches §10 *and* Google's fake-review policy, risking a manual
+action far worse than a missing snippet. **Do not confuse this with the review-snippet false
+alarm in §10** — that one is `Missing field ratingValue` on legacy URLs. Two different reports,
+both leave-alone, for different reasons.
 
 ---
 
@@ -410,6 +427,7 @@ mid-transition** — it is the one genuinely destructive move available.
 | Trap | Why it's wrong |
 |---|---|
 | "Add ratings to fix the Review snippet errors" | Fabrication. §10. |
+| "Product snippets shows Invalid 136 / Valid 0 with a *critical* issue — something broke" | Nothing broke. It is the quote-only catalogue having no `offers`/`review`/`aggregateRating`, and `Valid 0` is the only reachable value. Costs rich results only, never rankings. §7. |
 | "Rebuild the 7,650 city pages" | Doorway pages. 969 clicks/yr across all of them. §2. |
 | "Grep the HTML for the text — it's there, so it's crawlable" | Matches the RSC payload, not rendered HTML. §12. |
 | "`npm run lint` should be green" | It never has been. 8 pre-existing errors. §1. |
