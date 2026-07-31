@@ -36,6 +36,23 @@ export function organizationLd() {
     "@type": ["Organization", "LocalBusiness"],
     "@id": ORG_ID,
     name: "Aplus Technology Solutions Pvt. Ltd.",
+    // The registered name as filed with the MCA. Company-registry sites
+    // (ZaubaCorp, Tofler, IndiaMART, Justdial) outranked this site for
+    // "aplus technology solutions private limited" because they carry the exact
+    // registered string and the site carried none of it — `name` above uses the
+    // trading form. legalName + the CIN identifier below tie this entity to the
+    // same MCA record those sites rank on. Also rendered visibly on /about.
+    legalName: "Aplus Technology Solutions Private Limited",
+    alternateName: [
+      "Aplus Technology Solutions",
+      "Aplus Techsol",
+      "Aplus Technology",
+    ],
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "CIN",
+      value: "U72900DL2020PTC374888",
+    },
     url: SITE,
     logo: { "@type": "ImageObject", url: `${SITE}/logo.png` },
     image: `${SITE}/og-default.png`,

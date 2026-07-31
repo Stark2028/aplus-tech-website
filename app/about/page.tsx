@@ -217,6 +217,10 @@ export default function AboutPage() {
                       { k: "Coverage", v: "Pan-India · 50+ cities" },
                       { k: "Support", v: "Dedicated Technical Support" },
                       { k: "Founded", v: "2020 · India" },
+                      // The registered name in full. Company-registry sites rank
+                      // for it because they state it and we did not; this is the
+                      // visible half of `legalName` in organizationLd().
+                      { k: "Registered name", v: "Aplus Technology Solutions Private Limited" },
                       { k: "CIN", v: "U72900DL2020PTC374888" },
                       { k: "GSTIN", v: "07AAUCA5631L1Z6" },
                     ].map((row, i, arr) => (

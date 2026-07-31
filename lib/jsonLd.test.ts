@@ -1,4 +1,6 @@
 import { describe, it, expect } from "vitest";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { productLd, categoryCollectionLd, industryCategoryServiceLd, classSaathiProductLd, itemListLd, allProductsCollectionLd, organizationLd } from "./jsonLd";
 import { SAMSUNG_CREDENTIAL } from "./credentials";
 import type { Product } from "@/data/products";
@@ -153,6 +155,47 @@ describe("industryCategoryServiceLd brand awareness", () => {
       "Logitech Video Conferencing recommended for Corporate & Workplace"
     );
     expect(BANNED.test(JSON.stringify(ld))).toBe(false);
+  });
+});
+
+describe("organizationLd legal identity", () => {
+  const org = () => organizationLd();
+
+  // Registry sites (ZaubaCorp, Tofler, IndiaMART, Justdial) outrank the site for
+  // "aplus technology solutions private limited" because they carry the exact
+  // registered string and the site never did. legalName + the CIN identifier tie
+  // this entity to the same MCA record those sites are ranking on.
+  it("declares the registered legal name in full", () => {
+    expect(org().legalName).toBe("Aplus Technology Solutions Private Limited");
+  });
+
+  it("keeps the trading name as `name`, not the legal one", () => {
+    expect(org().name).toBe("Aplus Technology Solutions Pvt. Ltd.");
+  });
+
+  it("lists the short forms people actually search", () => {
+    const alts = org().alternateName as string[];
+    expect(alts).toEqual(
+      expect.arrayContaining(["Aplus Technology Solutions", "Aplus Techsol"]),
+    );
+  });
+
+  it("carries the CIN as a typed identifier", () => {
+    const id = org().identifier as { propertyID: string; value: string };
+    expect(id.propertyID).toBe("CIN");
+    expect(id.value).toBe("U72900DL2020PTC374888");
+  });
+
+  it("matches the CIN rendered in the footer and on /about", () => {
+    const cin = (org().identifier as { value: string }).value;
+    for (const f of ["components/Footer.tsx", "app/about/page.tsx"]) {
+      expect(readFileSync(join(process.cwd(), f), "utf8")).toContain(cin);
+    }
+  });
+
+  it("states the registered name visibly on /about, not only in schema", () => {
+    const about = readFileSync(join(process.cwd(), "app/about/page.tsx"), "utf8");
+    expect(about).toContain("Private Limited");
   });
 });
 
