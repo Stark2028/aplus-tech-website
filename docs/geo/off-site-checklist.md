@@ -154,6 +154,78 @@ would corroborate the wrong facts. Fix the NAP first, then add them.
 Stale listings carrying an old address or number actively harm entity resolution. Finding and
 correcting them matters as much as creating new ones.
 
+## 5b. Access register (added 2026-07-31)
+
+Every account that affects search visibility, and who holds it. **Access is the blocker on most
+of the work below** — you cannot fix a listing you cannot log into.
+
+Prompted by the 2026-07-31 SERP review: the Google Business Profile shows
+**"Add missing information → Add website"**, i.e. the panel that owns the brand query does not
+link to the site at all. That single missing field is why registry sites outrank the domain for
+"aplus technology solutions private limited".
+
+### Tier 1 — control of the entity (do first)
+
+| # | Account | State | Action |
+|---|---|---|---|
+| 1 | **Google Business Profile** | Exists, **not claimed by Aplus**, 105 reviews @ 4.9, **NO website link** | Click "Own this business?" → ownership transfer (likely VRD Creative). Then **add the website URL** — highest-value single field anywhere in this document |
+| 2 | **Google Search Console** | Aplus has access — but **VRD Creative holds a `Full` role** | Audit Settings → Users and permissions. Remove or downgrade third parties who no longer need it |
+| 3 | **DNS / registrar** | Registrar = GoDaddy; **DNS hosted on VRD Creative's cPanel** | Get direct control. Needed to retire the dead `mail.` / `belden.` / `odisha.` subdomains and to make any future DNS change without a third party |
+| 4 | **Vercel** | Aplus-controlled | Confirm who else has project access |
+| 5 | **Google Analytics (GA4)** | Unaudited | Confirm ownership; check for agency-era users |
+| 6 | **Bing Webmaster Tools** | Aplus-controlled, sitemap submitted 2026-07-29 | — |
+
+### Tier 2 — directories that currently outrank the site for its own brand name
+
+Confirmed on the SERP for "aplus technology solutions private limited", 2026-07-31.
+
+| # | Platform | State | Action |
+|---|---|---|---|
+| 7 | **IndiaMART** | Exists. Name "Private Limited", city **New Delhi** (conflicts with canonical Noida). Ranks above the site | Claim → fix NAP → add website link → credential |
+| 8 | **Justdial** | Exists, **New Ashok Nagar, Delhi**, 106 reviews @ 4.9. Ranks above the site | Claim → fix address to corporate office → add website |
+| 9 | **TradeIndia** | Exists, name ✅, address `B-127 Sector-2` ✗, no website link | Claim → fix address → add website + credential |
+| 10 | **AmbitionBox** | Exists (employer profile, 4.3 ★). Ranks above the site | Claimable as employer — lower priority, but it is on page 1 |
+| 11 | **Tracxn** | Exists, already in `sameAs` | Claimable; verify the details are current |
+
+### Tier 3 — social
+
+| # | Platform | State | Action |
+|---|---|---|---|
+| 12 | **LinkedIn** | Live, in `sameAs`, 150+ followers | Confirm admin access. Set website, founded 2020, specialties, credential |
+| 13 | **Facebook** | Exists, **empty** | Populate NAP, website, category, credential |
+| 14 | **Instagram** | Live, in `sameAs` | Bio: credential + Noida + website link |
+
+### Tier 4 — create new
+
+| # | Platform | Action |
+|---|---|---|
+| 15 | **Bing Places** | Create after the GBP transfer, then import from GBP |
+| 16 | **GeM** | Seller registration. Heavier lift (GST, bank, docs); also a sales channel |
+| 17 | **Samsung partner locator** | Not an account — ask the Samsung India B2B contact to confirm/fix the listing |
+
+### Not claimable — informational only
+
+`ZaubaCorp`, `Tofler`, `TheCompanyCheck`, `Connect2India`, `Masters India` scrape MCA/GST filings
+and generally cannot be edited. They rank for the brand name because they carry the exact legal
+string **"APLUS TECHNOLOGY SOLUTIONS PRIVATE LIMITED"**. The counter-move is on-site, not on
+theirs: add `legalName` to `organizationLd()` and put the registered name + CIN
+(`U72900DL2020PTC374888`) in the footer, so the site itself matches that query.
+
+---
+
+## 6. Additional platforms (added 2026-07-30, driven by the AI answer baseline)
+
+The baseline capture (`ai-answer-baseline.md`) showed ChatGPT quoting "GeM supplier" as a
+credential for a competitor, and Copilot's underlying index is Bing. Both are cheap to miss.
+
+| Platform | Why | Action | Owner | URL |
+|---|---|---|---|---|
+| **GeM (Government e-Marketplace)** | ChatGPT cited "Samsung Authorized Dealer & GeM supplier" as Sunlite's credential — GeM registration is itself a quotable third-party fact, and it opens government sales | Register as a seller; list the display catalogue. Heavier lift (GST, bank, docs) — schedule it, don't block on it | | |
+| **Bing Places** | Bing is the index behind Microsoft Copilot. Free, ~15 min, can import from GBP | Do **after** the GBP transfer completes, then import. NOT the same as Bing Webmaster (below) — Places is the business listing, Webmaster is site indexing | | |
+| **Bing Webmaster Tools** | Bing's index feeds Copilot, DuckDuckGo, Yahoo — and ChatGPT's live search has leaned on it | **Sitemap submitted 2026-07-29** ✅. **Submit `sitemap.xml` ONLY — do NOT submit the legacy sitemaps to Bing** (decided 2026-07-31). The §4b trick is Google-specific: it works by overwriting sitemap URLs *already registered in GSC* from the agency era, forcing recrawl of ~5.3k Google-indexed legacy URLs. Bing has no such registration and a fresh property's modest crawl budget must go to the 248 real pages, not 18,934 redirects. Bing finds the 301s through normal recrawl. Remaining: URL-submit the top ~10 pages incl. `/samsung-india-model-codes`, run Site Scan once, record the Search Performance baseline. IndexNow only if the 248 still aren't indexed after ~2 weeks | | |
+| **Instagram bio** | Already in `sameAs`, but the bio is the only crawlable text on the page | Bio: credential wording + Noida + website link | | `https://www.instagram.com/aplus_tech_sol/` |
+| YouTube (optional) | Installation/demo videos corroborate the installer/AMC claim; low priority | Only if content exists anyway — do not create an empty channel | | |
+
 ---
 
 ## Feeding results back into the code
